@@ -1,14 +1,54 @@
 import type { Metadata } from "next";
-import PlaceholderPage from "@/components/ui/PlaceholderPage";
+import { prisma } from "@/lib/prisma";
+import AuthForms from "@/components/account/AuthForms";
+import AccountDashboard from "@/components/account/AccountDashboard";
 
 export const metadata: Metadata = { title: "Compte" };
+export const dynamic = "force-dynamic";
 
-export default function ComptePage() {
+async function getSessionUser() {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    return null;
+  }
+  try {
+    const { createClient } = await import("@/lib/supabase/server");
+    const supabase = await createClient();
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
+    if (!authUser) return null;
+
+    const dbUser = await prisma.user.findUnique({
+      where: { supabaseId: authUser.id },
+      include: { orders: { orderBy: { createdAt: "desc" } } },
+    });
+    return dbUser;
+  } catch (error) {
+    console.error("[compte] getSessionUser:", error);
+    return null;
+  }
+}
+
+export default async function ComptePage() {
+  const user = await getSessionUser();
+
   return (
-    <PlaceholderPage
-      eyebrow="Compte"
-      title="Espace client"
-      message="La création de compte et le suivi de commande arrivent bientôt."
-    />
+    <div className="flex min-h-[70vh] flex-col items-center justify-center px-5 pt-24">
+      {user ? (
+        <AccountDashboard
+          name={user.name}
+          email={user.email}
+          orders={user.orders.map((o) => ({
+            id: o.id,
+            orderNumber: o.orderNumber,
+            status: o.status,
+            total: Number(o.total),
+            createdAt: o.createdAt.toISOString(),
+          }))}
+        />
+      ) : (
+        <AuthForms />
+      )}
+    </div>
   );
 }
