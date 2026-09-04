@@ -12,8 +12,16 @@ la capture d'écran du panneau navigateur s'est révélée non fiable pendant ce
 | Vérification | Résultat |
 |---|---|
 | `npx tsc --noEmit` | ✅ Aucune erreur |
-| `npm run build` (Next.js 15.5.25) | ✅ 23 routes générées, aucune erreur de compilation |
+| `npm run build` (Next.js 15.5.25) | ✅ 33 routes générées, aucune erreur de compilation |
 | ESLint (`next/core-web-vitals`, `next/typescript`) | ✅ Configuré, aucune erreur bloquante |
+| `npm run test:e2e` (Playwright, `tests/navigation.spec.ts`, 9 tests) | ✅ 9/9 — a trouvé et corrigé 2 problèmes réels au premier passage (voir ci-dessous) |
+
+### Bugs trouvés par la suite Playwright elle-même
+
+- Le titre "Administration" sur `/admin/login` était un `<p>`, pas un `<h1>` — corrigé (bénéfice
+  accessibilité en plus de rendre le test possible).
+- Le sélecteur de test pour le lien "Catalogue" de la navigation était ambigu (4 liens
+  "Catalogue" sur la homepage) — corrigé en scopant au `<nav>`.
 
 ## Vérifications manuelles (navigateur réel, serveur dev local)
 
@@ -52,4 +60,4 @@ la capture d'écran du panneau navigateur s'est révélée non fiable pendant ce
 2. Publier au moins un produit avec un vrai prix/stock.
 3. Parcours complet : catalogue → produit → personnalisation → panier → checkout → confirmation → vérification dans `/admin/commandes`.
 4. Ouvrir le panneau navigateur au premier plan et reprendre une vérification par capture d'écran (desktop + mobile) pour la direction artistique.
-5. Introduire Playwright pour figer ces parcours en tests automatisés (`tests/`).
+5. Étendre `tests/` avec un `commerce.spec.ts` couvrant ajout au panier → checkout → commande réelle → vérification dans `/admin/commandes`, une fois qu'un produit est publié.

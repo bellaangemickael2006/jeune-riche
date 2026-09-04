@@ -26,6 +26,12 @@ next-env.d.ts
 # prisma
 prisma/dev.db
 
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
 # dump d'assets bruts fourni par l'utilisateur — les copies organisées
 # vivent dans public/ (voir ART_DIRECTION.md). Conservé sur disque, non versionné.
 /imagelogoetvetement/

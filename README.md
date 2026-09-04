@@ -88,4 +88,11 @@ types/          types partagés
 
 ## Tests
 
-Voir [TESTS.md](TESTS.md). Pas encore de suite Playwright automatisée — à ajouter (voir TODO.md).
+```bash
+npx playwright install chromium   # une seule fois
+npm run test:e2e                  # lance le serveur dev et exécute la suite
+```
+
+`tests/navigation.spec.ts` couvre les parcours qui ne dépendent pas d'une base de données
+(navigation, états vides honnêtes, 404, redirection admin). Voir [TESTS.md](TESTS.md) pour le
+détail des vérifications effectuées et ce qui reste à couvrir une fois Supabase provisionné.

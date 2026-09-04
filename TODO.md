@@ -33,7 +33,7 @@
 
 - Upload d'image direct (Supabase Storage) — l'admin ajoute une image par URL/chemin pour l'instant.
 - Favoris : implémentés côté client (`/favoris`, bouton sur la fiche produit, persistant en localStorage). Le modèle `WishlistItem` existe en base pour une synchronisation par compte, non branchée — pour l'instant les favoris sont liés à l'appareil, pas au compte.
-- Compte client (`/compte`) — page placeholder honnête créée, inscription/connexion client réelles pas encore construites (seul l'admin a une authentification Supabase fonctionnelle pour l'instant).
+- Compte client (`/compte`) : inscription, connexion et historique de commandes réels (Supabase Auth). Non testé de bout en bout faute de projet Supabase provisionné cette session.
 - `/drops` affiche les vrais drops en base (vide pour l'instant) ; `/a-propos`, `/livraison`, `/retours`, `/contact`, `/conditions`, `/confidentialite` existent en placeholders honnêtes ("à venir") plutôt qu'en 404 — contenu réel à fournir avant l'ouverture des ventes.
 - Multilingue FR/EN (architecture non démarrée).
 - Multi-devise (architecture non démarrée).
@@ -41,7 +41,7 @@
 - Scène 3D (three.js/R3F installé mais non utilisé) — à réserver à un usage ciblé (ex. logo hero) une fois la base fonctionnelle validée, jamais au détriment de la performance.
 - GSAP/ScrollTrigger, Lenis — dépendances installées, non branchées ; les animations actuelles utilisent Framer Motion + CSS.
 - Sticky stacking, marquee, spotlight — non implémentés (finition, étape 10).
-- Tests automatisés (Playwright) — pas encore de suite ; voir TESTS.md pour la méthode de vérification manuelle utilisée cette session.
+- Tests automatisés : scaffold Playwright ajouté (`playwright.config.ts`, `tests/navigation.spec.ts`) couvrant les parcours vérifiables sans base de données (navigation, états vides, 404, redirection admin). À étendre avec des parcours commerce réels (`tests/commerce.spec.ts`) une fois Supabase provisionné et au moins un produit publié.
 - Grain/bloom cinématographique — non ajouté.
 
 ## Dette technique connue

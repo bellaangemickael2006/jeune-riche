@@ -46,7 +46,7 @@ function AdminLoginForm() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-ink px-5">
       <form onSubmit={handleSubmit} className="w-full max-w-sm border border-line p-8">
-        <p className="font-display text-xl uppercase text-paper">Administration</p>
+        <h1 className="font-display text-xl uppercase text-paper">Administration</h1>
         <p className="mt-1 text-xs text-paper/40">JEUNE RICHE</p>
 
         {erreur === "acces_refuse" && (
