@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: var(--font-anton);
+  --font-body: var(--font-inter);
+  --font-editorial: var(--font-fraunces);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  background-color: #0b0b0c;
+  color: #f5f4f1;
+  font-family: var(--font-body);
+}
+
+::selection {
+  background-color: #c81e2b;
+  color: #f5f4f1;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+.font-editorial {
+  font-family: var(--font-editorial);
+}
+
+/* focus visible states — accessibilité clavier */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #c81e2b;
+  outline-offset: 3px;
+}
+
+/* custom cursor — desktop uniquement, fallback natif sur touch */
+@media (hover: hover) and (pointer: fine) {
+  .cursor-dot {
+    mix-blend-mode: exclusion;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

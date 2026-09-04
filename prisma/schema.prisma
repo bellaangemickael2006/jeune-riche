@@ -1,0 +1,287 @@
+// JEUNE RICHE — schéma Prisma
+// Base : Supabase PostgreSQL. Voir ART_DIRECTION.md pour le contexte produit.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ---------- Enums ----------
+
+enum Role {
+  CLIENT
+  ADMIN
+}
+
+enum ProductStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ImageType {
+  FRONT
+  BACK
+  DETAIL
+  LIFESTYLE
+  MOCKUP // référence de design tant qu'aucune vraie photo n'existe
+}
+
+enum OrderStatus {
+  NOUVELLE
+  CONFIRMEE
+  PREPARATION
+  EXPEDIEE
+  LIVREE
+  ANNULEE
+}
+
+enum DropStatus {
+  COMING_SOON
+  PRE_ORDER
+  AVAILABLE
+  SOLD_OUT
+  ENDED
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+// ---------- Core ----------
+
+model User {
+  id            String   @id @default(cuid())
+  supabaseId    String   @unique // lien vers auth.users (Supabase Auth)
+  email         String   @unique
+  name          String?
+  role          Role     @default(CLIENT)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  orders        Order[]
+  reviews       Review[]
+  wishlist      WishlistItem[]
+  cart          Cart?
+  restockAlerts RestockRequest[]
+
+  @@map("users")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
+  description String?
+  sortOrder   Int       @default(0)
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                     String        @id @default(cuid())
+  name                   String
+  slug                   String        @unique
+  description             String?
+  price                  Decimal?      @db.Decimal(10, 2) // null tant que le prix réel n'a pas été saisi en admin
+  status                 ProductStatus @default(DRAFT)
+  published              Boolean       @default(false)
+  personalizationEnabled Boolean       @default(false)
+  personalizationMaxLen  Int           @default(16)
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  dropId String?
+  drop   Drop?   @relation(fields: [dropId], references: [id])
+
+  images     ProductImage[]
+  variants   ProductVariant[]
+  reviews    Review[]
+  wishlist   WishlistItem[]
+  sizeGuide  SizeGuide?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("products")
+}
+
+model ProductImage {
+  id        String    @id @default(cuid())
+  productId String
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  type      ImageType
+  url       String
+  alt       String
+  sortOrder Int       @default(0)
+  isPrimary Boolean   @default(false)
+
+  @@map("product_images")
+}
+
+model ProductVariant {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      String
+  color     String
+  sku       String  @unique
+  stock     Int     @default(0)
+  priceOverride Decimal? @db.Decimal(10, 2)
+
+  cartItems      CartItem[]
+  orderItems     OrderItem[]
+  restockAlerts  RestockRequest[]
+
+  @@unique([productId, size, color])
+  @@map("product_variants")
+}
+
+model SizeGuide {
+  id        String  @id @default(cuid())
+  productId String  @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  // mesures réelles saisies en admin — jamais générées automatiquement
+  rows      Json    // [{ size: "M", chest: "...", length: "..." }, ...]
+
+  @@map("size_guides")
+}
+
+// ---------- Panier / commande ----------
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String?    @unique
+  user      User?      @relation(fields: [userId], references: [id])
+  sessionId String?    @unique // panier invité, avant connexion
+  items     CartItem[]
+  updatedAt DateTime   @updatedAt
+  createdAt DateTime   @default(now())
+
+  @@map("carts")
+}
+
+model CartItem {
+  id              String         @id @default(cuid())
+  cartId          String
+  cart            Cart           @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  variantId       String
+  variant         ProductVariant @relation(fields: [variantId], references: [id])
+  quantity        Int            @default(1)
+  personalization String?
+  createdAt       DateTime       @default(now())
+
+  @@map("cart_items")
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  userId          String?
+  user            User?       @relation(fields: [userId], references: [id])
+  status          OrderStatus @default(NOUVELLE)
+
+  customerEmail   String
+  customerName    String
+  shippingAddress Json
+
+  subtotal        Decimal     @db.Decimal(10, 2)
+  shippingCost    Decimal     @db.Decimal(10, 2) @default(0)
+  total           Decimal     @db.Decimal(10, 2)
+
+  items           OrderItem[]
+
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id              String         @id @default(cuid())
+  orderId         String
+  order           Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variantId       String
+  variant         ProductVariant @relation(fields: [variantId], references: [id])
+  productName     String         // snapshot au moment de la commande
+  size            String
+  color           String
+  quantity        Int
+  unitPrice       Decimal        @db.Decimal(10, 2)
+  personalization String?
+
+  @@map("order_items")
+}
+
+// ---------- Engagement ----------
+
+model Review {
+  id            String       @id @default(cuid())
+  productId     String
+  product       Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId        String
+  user          User         @relation(fields: [userId], references: [id])
+  rating        Int
+  comment       String
+  status        ReviewStatus @default(PENDING)
+  verifiedOrder Boolean      @default(false) // vrai uniquement si commande livrée liée
+  createdAt     DateTime     @default(now())
+
+  @@map("reviews")
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}
+
+model RestockRequest {
+  id         String         @id @default(cuid())
+  userId     String?
+  user       User?          @relation(fields: [userId], references: [id])
+  email      String
+  variantId  String
+  variant    ProductVariant @relation(fields: [variantId], references: [id])
+  notified   Boolean        @default(false)
+  createdAt  DateTime       @default(now())
+
+  @@map("restock_requests")
+}
+
+model Drop {
+  id          String     @id @default(cuid())
+  name        String
+  slug        String     @unique
+  description String?
+  startsAt    DateTime
+  endsAt      DateTime?
+  status      DropStatus @default(COMING_SOON)
+  products    Product[]
+
+  @@map("drops")
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  source    String   @default("newsletter") // newsletter | waitlist | drop
+  createdAt DateTime @default(now())
+
+  @@map("newsletter_subscribers")
+}
