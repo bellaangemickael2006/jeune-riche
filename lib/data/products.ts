@@ -60,6 +60,23 @@ export async function getProductBySlug(slug: string) {
   }
 }
 
+export async function getProductsBySlugs(slugs: string[]) {
+  if (slugs.length === 0) return [];
+  try {
+    return await prisma.product.findMany({
+      where: { slug: { in: slugs }, published: true, status: "PUBLISHED" },
+      include: {
+        images: { orderBy: { sortOrder: "asc" } },
+        variants: true,
+        category: true,
+      },
+    });
+  } catch (error) {
+    console.error("[data] getProductsBySlugs:", error);
+    return [];
+  }
+}
+
 export async function getCategories() {
   try {
     return await prisma.category.findMany({ orderBy: { sortOrder: "asc" } });

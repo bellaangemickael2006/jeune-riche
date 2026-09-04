@@ -31,6 +31,7 @@ Dernière mise à jour : 2026-09-04 (session nocturne autonome).
 **Étape 5 — Fiche produit** ✅
 - `/catalogue/[slug]` : galerie (vignettes MOCKUP clairement étiquetées "référence de design"), sélection couleur/taille à partir des variantes réelles, personnalisation avec aperçu live + sanitation + limite de caractères, guide des tailles (masqué si aucune donnée), avis clients avec badge "Client vérifié" uniquement si `verifiedOrder`.
 - Bouton "Me prévenir" (RestockRequest) quand une variante est en rupture.
+- Favoris (`/favoris`) : liste persistante côté client (localStorage), toggle sur la fiche produit.
 
 **Étape 6 — Panier** ✅
 - Store Zustand persistant (localStorage), tiroir latéral + page `/panier` dédiée, personnalisation conservée par ligne d'article.

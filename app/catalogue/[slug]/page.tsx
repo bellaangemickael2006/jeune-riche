@@ -5,6 +5,7 @@ import Gallery from "@/components/product/Gallery";
 import AddToCart from "@/components/product/AddToCart";
 import SizeGuide from "@/components/product/SizeGuide";
 import Reviews from "@/components/product/Reviews";
+import WishlistButton from "@/components/product/WishlistButton";
 
 export async function generateMetadata({
   params,
@@ -66,6 +67,8 @@ export default async function ProductPage({
               personalizationMaxLen={product.personalizationMaxLen}
             />
           </div>
+
+          <WishlistButton slug={product.slug} className="mt-4" />
 
           {product.sizeGuide && <SizeGuide rows={product.sizeGuide.rows as never} />}
 

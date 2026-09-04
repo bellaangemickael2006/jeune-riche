@@ -54,6 +54,12 @@ export default function Header() {
 
       <div className="flex items-center gap-5">
         <Link
+          href="/favoris"
+          className="hidden font-body text-[13px] uppercase tracking-widest2 text-paper/80 transition-colors hover:text-paper md:block"
+        >
+          Favoris
+        </Link>
+        <Link
           href="/compte"
           className="hidden font-body text-[13px] uppercase tracking-widest2 text-paper/80 transition-colors hover:text-paper md:block"
         >

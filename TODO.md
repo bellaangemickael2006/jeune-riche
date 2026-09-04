@@ -32,7 +32,7 @@
 ## Fonctionnalités prévues par le brief mais non implémentées cette session
 
 - Upload d'image direct (Supabase Storage) — l'admin ajoute une image par URL/chemin pour l'instant.
-- Wishlist / favoris (modèle `WishlistItem` prêt en base, pas d'UI).
+- Favoris : implémentés côté client (`/favoris`, bouton sur la fiche produit, persistant en localStorage). Le modèle `WishlistItem` existe en base pour une synchronisation par compte, non branchée — pour l'instant les favoris sont liés à l'appareil, pas au compte.
 - Compte client (`/compte`) — page placeholder honnête créée, inscription/connexion client réelles pas encore construites (seul l'admin a une authentification Supabase fonctionnelle pour l'instant).
 - `/drops` affiche les vrais drops en base (vide pour l'instant) ; `/a-propos`, `/livraison`, `/retours`, `/contact`, `/conditions`, `/confidentialite` existent en placeholders honnêtes ("à venir") plutôt qu'en 404 — contenu réel à fournir avant l'ouverture des ventes.
 - Multilingue FR/EN (architecture non démarrée).
