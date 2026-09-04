@@ -33,8 +33,8 @@
 
 - Upload d'image direct (Supabase Storage) — l'admin ajoute une image par URL/chemin pour l'instant.
 - Wishlist / favoris (modèle `WishlistItem` prêt en base, pas d'UI).
-- Compte client (`/compte`) — page liée en nav, pas encore construite.
-- Pages `/drops`, `/a-propos`, `/livraison`, `/retours`, `/contact`, `/conditions`, `/confidentialite` — liées en nav/footer mais pas encore créées (404 propre en attendant).
+- Compte client (`/compte`) — page placeholder honnête créée, inscription/connexion client réelles pas encore construites (seul l'admin a une authentification Supabase fonctionnelle pour l'instant).
+- `/drops` affiche les vrais drops en base (vide pour l'instant) ; `/a-propos`, `/livraison`, `/retours`, `/contact`, `/conditions`, `/confidentialite` existent en placeholders honnêtes ("à venir") plutôt qu'en 404 — contenu réel à fournir avant l'ouverture des ventes.
 - Multilingue FR/EN (architecture non démarrée).
 - Multi-devise (architecture non démarrée).
 - Carte cadeau (hors scope tant que non demandé explicitement).
