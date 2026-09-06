@@ -5,10 +5,10 @@ import {
   updateProduct,
   addVariant,
   deleteVariant,
-  addProductImage,
   deleteProductImage,
   deleteProduct,
 } from "@/lib/actions/products";
+import { ImageUploadForm, VideoUploadForm } from "@/components/admin/MediaUploadForm";
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -20,7 +20,6 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
   const updateProductWithId = updateProduct.bind(null, product.id);
   const addVariantWithId = addVariant.bind(null, product.id);
-  const addImageWithId = addProductImage.bind(null, product.id);
 
   return (
     <div className="max-w-3xl">
@@ -163,35 +162,16 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           ))}
         </div>
 
-        <form action={addImageWithId} className="mt-4 flex flex-wrap items-end gap-3">
-          <label className="block">
-            <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">
-              URL (ex: /images/products/...)
-            </span>
-            <input name="url" required className="w-72 border border-line bg-transparent px-3 py-2 text-sm text-paper" />
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Alt</span>
-            <input name="alt" className="w-40 border border-line bg-transparent px-3 py-2 text-sm text-paper" />
-          </label>
-          <label className="block">
-            <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Type</span>
-            <select name="type" className="border border-line bg-transparent px-3 py-2 text-sm text-paper">
-              <option className="bg-ink" value="MOCKUP">MOCKUP</option>
-              <option className="bg-ink" value="FRONT">FRONT</option>
-              <option className="bg-ink" value="BACK">BACK</option>
-              <option className="bg-ink" value="DETAIL">DETAIL</option>
-              <option className="bg-ink" value="LIFESTYLE">LIFESTYLE</option>
-            </select>
-          </label>
-          <button className="border border-paper px-4 py-2 text-xs uppercase tracking-widest2 text-paper">
-            Ajouter l&apos;image
-          </button>
-        </form>
+        <ImageUploadForm productId={product.id} />
         <p className="mt-2 text-[11px] text-paper/30">
-          L&apos;upload direct (Supabase Storage) n&apos;est pas encore branché — voir TODO.md.
-          Utilisez pour l&apos;instant un chemin sous /public/images ou une URL externe.
+          Le fichier est envoyé vers Supabase Storage ; l&apos;aperçu ci-dessus montre le rendu réel
+          avant confirmation.
         </p>
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Vidéo de présentation</h2>
+        <VideoUploadForm productId={product.id} currentVideoUrl={product.videoUrl} />
       </section>
     </div>
   );

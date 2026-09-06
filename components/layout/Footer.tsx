@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const COLUMNS = [
   {
@@ -31,7 +32,14 @@ export default function Footer() {
     <footer className="border-t border-line bg-ink px-5 py-16 md:px-10 md:py-20">
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[1.2fr_repeat(3,1fr)]">
         <div>
-          <p className="font-display text-xl uppercase tracking-wide text-paper">Jeune Riche</p>
+          <Image
+            src="/images/logo/logo-transparent.png"
+            alt="JEUNE RICHE"
+            width={160}
+            height={160}
+            className="h-14 w-14 object-contain"
+          />
+          <p className="font-display mt-3 text-lg uppercase tracking-wide text-paper">Jeune Riche</p>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-paper/50">
             Newsletter — soyez informé des prochains drops.
           </p>

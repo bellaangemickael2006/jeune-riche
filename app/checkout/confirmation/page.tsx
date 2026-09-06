@@ -11,7 +11,7 @@ export default async function ConfirmationPage({
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-ink px-5 text-center">
       <Image
-        src="/images/logo/logo-white-on-black.png"
+        src="/images/logo/logo-transparent.png"
         alt="JEUNE RICHE"
         width={100}
         height={100}

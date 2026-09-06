@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/store/cart";
 import Magnetic from "@/components/ui/Magnetic";
@@ -17,26 +16,31 @@ const NAV = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
   const count = useCart((s) => s.count());
   const openCart = useCart((s) => s.open);
 
-  const isHome = pathname === "/";
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <header
       className={cn(
-        "absolute inset-x-0 top-0 z-40 flex items-center justify-between px-5 py-5 md:px-10 md:py-7",
-        !isHome && "relative bg-ink"
+        "fixed inset-x-0 top-0 z-40 flex items-center justify-between px-5 py-4 transition-colors duration-500 md:px-10 md:py-5",
+        scrolled ? "bg-ink/90 backdrop-blur-md" : "bg-transparent"
       )}
     >
-      <Link href="/" className="flex items-center gap-3" aria-label="JEUNE RICHE — accueil">
+      <Link href="/" className="flex items-center" aria-label="JEUNE RICHE — accueil">
         <Image
-          src="/images/logo/logo-white-on-black.png"
+          src="/images/logo/logo-transparent.png"
           alt="JEUNE RICHE"
-          width={140}
-          height={140}
-          className="h-9 w-9 object-contain md:h-11 md:w-11"
+          width={200}
+          height={200}
+          className="h-16 w-16 object-contain md:h-20 md:w-20"
           priority
         />
       </Link>

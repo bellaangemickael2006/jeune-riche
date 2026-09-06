@@ -39,7 +39,7 @@ export default function IntroOverlay() {
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
             <Image
-              src="/images/logo/logo-white-on-black.png"
+              src="/images/logo/logo-transparent.png"
               alt="JEUNE RICHE"
               width={200}
               height={200}

@@ -1,9 +1,28 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
+
+const MEDIA_BUCKET = "product-media";
+const MAX_MEDIA_BYTES = 25 * 1024 * 1024; // 25 Mo, suffisant pour photo/courte vidéo produit
+
+let bucketEnsured = false;
+
+async function ensureMediaBucket() {
+  if (bucketEnsured) return;
+  const supabase = createAdminClient();
+  const { data: buckets } = await supabase.storage.listBuckets();
+  if (!buckets?.some((b) => b.name === MEDIA_BUCKET)) {
+    await supabase.storage.createBucket(MEDIA_BUCKET, {
+      public: true,
+      fileSizeLimit: MAX_MEDIA_BYTES,
+    });
+  }
+  bucketEnsured = true;
+}
 
 const DIACRITICS_REGEX = new RegExp("[\\u0300-\\u036f]", "g");
 
@@ -40,6 +59,7 @@ export async function createProduct(formData: FormData) {
     },
   });
 
+  revalidateTag("products");
   revalidatePath("/admin/produits");
   redirect(`/admin/produits/${product.id}`);
 }
@@ -67,6 +87,7 @@ export async function updateProduct(productId: string, formData: FormData) {
     },
   });
 
+  revalidateTag("products");
   revalidatePath("/admin/produits");
   revalidatePath(`/admin/produits/${productId}`);
   revalidatePath("/catalogue");
@@ -75,6 +96,7 @@ export async function updateProduct(productId: string, formData: FormData) {
 export async function deleteProduct(productId: string) {
   await requireAdmin();
   await prisma.product.delete({ where: { id: productId } });
+  revalidateTag("products");
   revalidatePath("/admin/produits");
   redirect("/admin/produits");
 }
@@ -109,7 +131,7 @@ export async function deleteVariant(variantId: string, productId: string) {
 
 export async function addProductImage(productId: string, formData: FormData) {
   await requireAdmin();
-  const url = String(formData.get("url") ?? "").trim();
+  const file = formData.get("file");
   const alt = String(formData.get("alt") ?? "").trim();
   const type = String(formData.get("type") ?? "MOCKUP") as
     | "FRONT"
@@ -117,14 +139,43 @@ export async function addProductImage(productId: string, formData: FormData) {
     | "DETAIL"
     | "LIFESTYLE"
     | "MOCKUP";
-  if (!url) throw new Error("URL requise.");
+
+  if (!(file instanceof File) || file.size === 0) {
+    throw new Error("Fichier image requis.");
+  }
+  if (!file.type.startsWith("image/")) {
+    throw new Error("Le fichier sélectionné n'est pas une image.");
+  }
+  if (file.size > MAX_MEDIA_BYTES) {
+    throw new Error("Fichier trop volumineux (25 Mo max).");
+  }
+
+  await ensureMediaBucket();
+  const supabase = createAdminClient();
+  const ext = file.name.split(".").pop() || "jpg";
+  const path = `${productId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from(MEDIA_BUCKET)
+    .upload(path, await file.arrayBuffer(), { contentType: file.type, upsert: false });
+  if (uploadError) throw new Error(`Échec de l'upload : ${uploadError.message}`);
+
+  const { data } = supabase.storage.from(MEDIA_BUCKET).getPublicUrl(path);
 
   const count = await prisma.productImage.count({ where: { productId } });
 
   await prisma.productImage.create({
-    data: { productId, url, alt: alt || "JEUNE RICHE", type, sortOrder: count, isPrimary: count === 0 },
+    data: {
+      productId,
+      url: data.publicUrl,
+      alt: alt || "JEUNE RICHE",
+      type,
+      sortOrder: count,
+      isPrimary: count === 0,
+    },
   });
 
+  revalidateTag("products");
   revalidatePath(`/admin/produits/${productId}`);
   revalidatePath("/catalogue");
 }
@@ -132,5 +183,46 @@ export async function addProductImage(productId: string, formData: FormData) {
 export async function deleteProductImage(imageId: string, productId: string) {
   await requireAdmin();
   await prisma.productImage.delete({ where: { id: imageId } });
+  revalidateTag("products");
+  revalidatePath(`/admin/produits/${productId}`);
+}
+
+export async function setProductVideo(productId: string, formData: FormData) {
+  await requireAdmin();
+  const file = formData.get("file");
+
+  if (!(file instanceof File) || file.size === 0) {
+    throw new Error("Fichier vidéo requis.");
+  }
+  if (!file.type.startsWith("video/")) {
+    throw new Error("Le fichier sélectionné n'est pas une vidéo.");
+  }
+  if (file.size > MAX_MEDIA_BYTES) {
+    throw new Error("Fichier trop volumineux (25 Mo max).");
+  }
+
+  await ensureMediaBucket();
+  const supabase = createAdminClient();
+  const ext = file.name.split(".").pop() || "mp4";
+  const path = `${productId}/video-${Date.now()}.${ext}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from(MEDIA_BUCKET)
+    .upload(path, await file.arrayBuffer(), { contentType: file.type, upsert: false });
+  if (uploadError) throw new Error(`Échec de l'upload : ${uploadError.message}`);
+
+  const { data } = supabase.storage.from(MEDIA_BUCKET).getPublicUrl(path);
+
+  await prisma.product.update({ where: { id: productId }, data: { videoUrl: data.publicUrl } });
+
+  revalidateTag("products");
+  revalidatePath(`/admin/produits/${productId}`);
+  revalidatePath("/catalogue");
+}
+
+export async function removeProductVideo(productId: string) {
+  await requireAdmin();
+  await prisma.product.update({ where: { id: productId }, data: { videoUrl: null } });
+  revalidateTag("products");
   revalidatePath(`/admin/produits/${productId}`);
 }

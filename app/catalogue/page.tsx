@@ -68,7 +68,7 @@ export default async function CataloguePage({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 md:gap-x-6">
+        <div className="grid grid-cols-2 gap-x-3 gap-y-8 sm:grid-cols-3 md:grid-cols-4 md:gap-x-5 lg:grid-cols-5 xl:grid-cols-6">
           {cardData.map((product, i) => (
             <ProductCard key={product.id} product={product} index={i} />
           ))}

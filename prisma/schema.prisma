@@ -96,6 +96,7 @@ model Product {
   published              Boolean       @default(false)
   personalizationEnabled Boolean       @default(false)
   personalizationMaxLen  Int           @default(16)
+  videoUrl               String? // vidéo de présentation optionnelle (Supabase Storage)
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
