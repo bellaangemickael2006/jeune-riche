@@ -43,7 +43,7 @@ export default async function NewProductPage() {
               ))}
             </select>
           </label>
-          <Field label="Prix (EUR, laisser vide si à définir)" name="price" type="number" />
+          <Field label="Prix (FCFA, laisser vide si à définir)" name="price" type="number" />
           <label className="block">
             <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Description</span>
             <textarea

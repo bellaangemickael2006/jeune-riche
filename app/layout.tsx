@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
 import { Anton, Fraunces, Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import CartDrawer from "@/components/cart/CartDrawer";
-import CustomCursor from "@/components/ui/CustomCursor";
-import WhatsappButton from "@/components/ui/WhatsappButton";
-import SmoothScroll from "@/components/providers/SmoothScroll";
+import SiteChrome from "@/components/providers/SiteChrome";
 import StoreHydration from "@/components/providers/StoreHydration";
-import GrainOverlay from "@/components/ui/GrainOverlay";
 import { siteUrl } from "@/lib/utils";
 
 const anton = Anton({
@@ -55,14 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className={`${anton.variable} ${fraunces.variable} ${inter.variable}`}>
       <body className="bg-ink font-body text-paper antialiased">
         <StoreHydration />
-        <SmoothScroll />
-        <GrainOverlay />
-        <CustomCursor />
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <CartDrawer />
-        <WhatsappButton />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

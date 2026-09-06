@@ -152,6 +152,11 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
               <span className="absolute left-1 top-1 bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase text-paper/70">
                 {img.type}
               </span>
+              {img.color && (
+                <span className="absolute left-1 bottom-7 bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase text-paper/70">
+                  {img.color}
+                </span>
+              )}
               <form
                 action={async () => { "use server"; await deleteProductImage(img.id, product.id); }}
                 className="absolute bottom-1 right-1"
@@ -162,7 +167,10 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           ))}
         </div>
 
-        <ImageUploadForm productId={product.id} />
+        <ImageUploadForm
+          productId={product.id}
+          colors={Array.from(new Set(product.variants.map((v) => v.color)))}
+        />
         <p className="mt-2 text-[11px] text-paper/30">
           Le fichier est envoyé vers Supabase Storage ; l&apos;aperçu ci-dessus montre le rendu réel
           avant confirmation.

@@ -133,6 +133,7 @@ export async function addProductImage(productId: string, formData: FormData) {
   await requireAdmin();
   const file = formData.get("file");
   const alt = String(formData.get("alt") ?? "").trim();
+  const color = String(formData.get("color") ?? "").trim();
   const type = String(formData.get("type") ?? "MOCKUP") as
     | "FRONT"
     | "BACK"
@@ -169,6 +170,7 @@ export async function addProductImage(productId: string, formData: FormData) {
       productId,
       url: data.publicUrl,
       alt: alt || "JEUNE RICHE",
+      color: color || null,
       type,
       sortOrder: count,
       isPrimary: count === 0,

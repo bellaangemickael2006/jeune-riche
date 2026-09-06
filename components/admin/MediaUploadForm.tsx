@@ -5,10 +5,11 @@ import { addProductImage, setProductVideo, removeProductVideo } from "@/lib/acti
 
 const IMAGE_TYPES = ["MOCKUP", "FRONT", "BACK", "DETAIL", "LIFESTYLE"] as const;
 
-export function ImageUploadForm({ productId }: { productId: string }) {
+export function ImageUploadForm({ productId, colors }: { productId: string; colors: string[] }) {
   const [preview, setPreview] = useState<string | null>(null);
   const [alt, setAlt] = useState("");
   const [type, setType] = useState<(typeof IMAGE_TYPES)[number]>("MOCKUP");
+  const [color, setColor] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const fileRef = useRef<HTMLInputElement>(null);
@@ -32,11 +33,13 @@ export function ImageUploadForm({ productId }: { productId: string }) {
     formData.set("file", file);
     formData.set("alt", alt);
     formData.set("type", type);
+    formData.set("color", color);
     startTransition(async () => {
       try {
         await addProductImage(productId, formData);
         setPreview(null);
         setAlt("");
+        setColor("");
         fileHeld.current = null;
         if (fileRef.current) fileRef.current.value = "";
       } catch (err) {
@@ -85,6 +88,27 @@ export function ImageUploadForm({ productId }: { productId: string }) {
           ))}
         </select>
       </label>
+      {colors.length > 0 && (
+        <label className="block">
+          <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">
+            Couleur (pour changer le rendu selon le nuancier client)
+          </span>
+          <select
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            className="border border-line bg-transparent px-3 py-2 text-sm text-paper"
+          >
+            <option className="bg-ink" value="">
+              Toutes couleurs
+            </option>
+            {colors.map((c) => (
+              <option key={c} className="bg-ink" value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       <button
         type="submit"
         disabled={isPending}

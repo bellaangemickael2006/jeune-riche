@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
 import { useCart } from "@/store/cart";
 import Magnetic from "@/components/ui/Magnetic";
 
@@ -16,24 +15,11 @@ const NAV = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const count = useCart((s) => s.count());
   const openCart = useCart((s) => s.open);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
-    <header
-      className={cn(
-        "fixed inset-x-0 top-0 z-40 flex items-center justify-between px-5 py-4 transition-colors duration-500 md:px-10 md:py-5",
-        scrolled ? "bg-ink/90 backdrop-blur-md" : "bg-transparent"
-      )}
-    >
+    <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-line bg-ink px-5 py-4 md:px-10 md:py-5">
       <Link href="/" className="flex items-center" aria-label="JEUNE RICHE — accueil">
         <Image
           src="/images/logo/logo-transparent.png"
