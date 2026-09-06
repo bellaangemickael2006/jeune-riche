@@ -20,3 +20,9 @@ export function sanitizePersonalization(input: string, maxLen = 16): string {
     .replace(/[^a-zA-Z0-9À-ÿ _-]/g, "")
     .slice(0, maxLen);
 }
+
+// `||` (pas `??`) : Vercel peut définir la variable comme chaîne vide plutôt
+// que de l'omettre, ce que `??` laisserait passer et casserait `new URL("")`.
+export function siteUrl(): string {
+  return process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+}

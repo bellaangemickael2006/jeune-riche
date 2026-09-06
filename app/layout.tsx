@@ -5,6 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
 import CustomCursor from "@/components/ui/CustomCursor";
+import { siteUrl } from "@/lib/utils";
 
 const anton = Anton({
   subsets: ["latin"],
@@ -28,7 +29,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(siteUrl()),
   title: {
     default: "JEUNE RICHE",
     template: "%s — JEUNE RICHE",
