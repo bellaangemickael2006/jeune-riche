@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { sendEmail, orderConfirmationEmail } from "@/lib/email";
 
 const lineSchema = z.object({
   variantId: z.string(),
@@ -99,6 +100,18 @@ export async function POST(req: NextRequest) {
 
       return created;
     });
+
+    // L'email ne doit jamais faire échouer la commande si l'envoi rate.
+    sendEmail({
+      to: customerEmail,
+      subject: `Commande ${order.orderNumber} — JEUNE RICHE`,
+      html: orderConfirmationEmail({
+        orderNumber: order.orderNumber,
+        customerName,
+        items: resolvedLines,
+        total,
+      }),
+    }).catch((error) => console.error("[api/checkout] email confirmation:", error));
 
     return NextResponse.json({ ok: true, orderNumber: order.orderNumber });
   } catch (error) {

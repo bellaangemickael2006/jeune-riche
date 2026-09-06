@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import CampaignForm from "@/components/admin/CampaignForm";
 
 export default async function AdminNewsletterPage() {
   let subscribers: Awaited<ReturnType<typeof load>> = [];
@@ -43,6 +44,8 @@ export default async function AdminNewsletterPage() {
           </tbody>
         </table>
       )}
+
+      {available && subscribers.length > 0 && <CampaignForm />}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { sendEmail, newsletterWelcomeEmail } from "@/lib/email";
 
 const schema = z.object({ email: z.string().email() });
 
@@ -16,11 +17,20 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await prisma.newsletterSubscriber.upsert({
+    const existing = await prisma.newsletterSubscriber.findUnique({
       where: { email: parsed.data.email },
-      update: {},
-      create: { email: parsed.data.email, source: "newsletter" },
     });
+
+    if (!existing) {
+      await prisma.newsletterSubscriber.create({
+        data: { email: parsed.data.email, source: "newsletter" },
+      });
+      await sendEmail({
+        to: parsed.data.email,
+        subject: "Bienvenue chez JEUNE RICHE",
+        html: newsletterWelcomeEmail(),
+      });
+    }
   } catch (error) {
     console.error("[api/newsletter]", error);
     return NextResponse.json({ error: "Erreur serveur." }, { status: 500 });
