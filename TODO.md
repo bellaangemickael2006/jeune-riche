@@ -39,10 +39,11 @@
 - Multi-devise (architecture non démarrée).
 - Carte cadeau (hors scope tant que non demandé explicitement).
 - Scène 3D (three.js/R3F installé mais non utilisé) — à réserver à un usage ciblé (ex. logo hero) une fois la base fonctionnelle validée, jamais au détriment de la performance.
-- GSAP/ScrollTrigger, Lenis — dépendances installées, non branchées ; les animations actuelles utilisent Framer Motion + CSS.
-- Sticky stacking, marquee, spotlight — non implémentés (finition, étape 10).
-- Tests automatisés : scaffold Playwright ajouté (`playwright.config.ts`, `tests/navigation.spec.ts`) couvrant les parcours vérifiables sans base de données (navigation, états vides, 404, redirection admin). À étendre avec des parcours commerce réels (`tests/commerce.spec.ts`) une fois Supabase provisionné et au moins un produit publié.
-- Grain/bloom cinématographique — non ajouté.
+- ✅ Lenis (smooth scroll) + GSAP (ScrollTrigger enregistré, prêt pour du scroll complexe) branchés globalement.
+- ✅ Marquee, spotlight (curseur), grain cinématique, curseur magnétique, tilt 3D sur les cartes produit, word-pull-up, text-scramble, masque circulaire à l'intro — tous implémentés (`components/ui/*`).
+- Sticky stacking — non implémenté (pas encore de contenu réel type "pièce phare/drop" pour le justifier ; à faire quand un drop existera).
+- Bloom/post-processing 3D (`@react-three/postprocessing`) — non ajouté, réservé à un usage ciblé futur (voir scène 3D ci-dessus).
+- Tests automatisés : scaffold Playwright ajouté (`playwright.config.ts`, `tests/navigation.spec.ts`) couvrant les parcours vérifiables sans base de données (navigation, états vides, 404, redirection admin). À étendre avec des parcours commerce réels (`tests/commerce.spec.ts`) maintenant que Supabase est provisionné, une fois un produit publié.
 
 ## Dette technique connue
 

@@ -20,9 +20,10 @@ Dernière mise à jour : 2026-09-04 (session nocturne autonome).
 
 **Étape 3 — Homepage** ✅
 - Vidéo hero (`hero-production.mp4`) plein écran, autoplay/muted/loop/playsInline, fallback image si erreur de lecture.
-- Intro cinématographique courte (logo, fondu), une fois par session, bouton "Passer" visible immédiatement, respecte `prefers-reduced-motion`.
-- Grille de catégories (6 catégories réelles), teaser manifeste.
-- Curseur personnalisé (`mix-blend-mode: exclusion`, désactivé sur tactile).
+- Intro cinématographique courte (logo, révélation par masque circulaire), une fois par session, bouton "Passer" visible immédiatement, respecte `prefers-reduced-motion`.
+- Grille de catégories (6 catégories réelles) avec reveal en cascade, marquee de marque, teaser manifeste avec spotlight suivant le curseur.
+- Curseur personnalisé (`mix-blend-mode: exclusion`, s'agrandit sur les éléments interactifs, désactivé sur tactile).
+- Titre héros en word-pull-up, tagline en text-scramble, CTA magnétique, smooth scroll Lenis + GSAP ScrollTrigger enregistré globalement, grain cinématique en overlay, cartes produit avec tilt 3D + glow au survol.
 
 **Étape 4 — Catalogue** ✅
 - `/catalogue` avec filtres par catégorie (les 6 réelles), recherche par nom (`?q=`), état vide honnête si aucun produit publié.
@@ -52,7 +53,7 @@ Dernière mise à jour : 2026-09-04 (session nocturne autonome).
 - Drops : liste + création simple.
 - Newsletter : liste des abonnés. Clients : liste.
 
-**Étape 10-11 — Finition / Performance** — partiellement fait (voir TODO) : états vides partout, `prefers-reduced-motion` respecté, images via `next/image`, vidéos servies en statique (pas de fonction serverless).
+**Étape 10-11 — Finition / Performance** — largement fait (voir TODO pour le reste) : états vides partout, `prefers-reduced-motion` respecté partout (composants d'animation dédiés), images via `next/image`, vidéos servies en statique (pas de fonction serverless), micro-interactions (curseur, magnet, tilt, spotlight, grain, marquee) branchées sur l'accueil et le manifeste. Reste : sticky stacking (pas de contenu "drop" pour le justifier), post-processing 3D.
 
 **Étape 12 — QA** — partiellement fait. Build de production vérifié. Navigation testée via navigateur réel (DOM/accessibilité/réseau/console) : homepage, catalogue (état vide), fiche produit (404 propre), manifeste, admin (redirection de sécurité). Voir [TESTS.md](TESTS.md) pour le détail et les limites rencontrées.
 
