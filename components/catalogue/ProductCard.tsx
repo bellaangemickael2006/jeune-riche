@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { formatPrice, cn } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import type { ProductCardData } from "@/types";
 import FadeIn from "@/components/ui/FadeIn";
 
@@ -48,28 +48,34 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
           className="relative aspect-[4/5] overflow-hidden bg-studio"
         >
           {primary && (
-            <Image
-              src={primary.url}
-              alt={primary.alt}
-              fill
-              sizes="(max-width: 768px) 50vw, 25vw"
-              className={cn(
-                "object-contain p-4 transition-all duration-500 ease-editorial group-hover:scale-[1.03]",
-                hovered && secondary ? "opacity-0" : "opacity-100"
-              )}
-            />
+            <motion.div
+              animate={{ opacity: hovered && secondary ? 0 : 1, scale: hovered ? 1.03 : 1 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={primary.url}
+                alt={primary.alt}
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-contain p-4"
+              />
+            </motion.div>
           )}
           {secondary && (
-            <Image
-              src={secondary.url}
-              alt={secondary.alt}
-              fill
-              sizes="(max-width: 768px) 50vw, 25vw"
-              className={cn(
-                "object-contain p-4 transition-opacity duration-500 ease-editorial",
-                hovered ? "opacity-100" : "opacity-0"
-              )}
-            />
+            <motion.div
+              animate={{ opacity: hovered ? 1 : 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={secondary.url}
+                alt={secondary.alt}
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-contain p-4"
+              />
+            </motion.div>
           )}
           <motion.div
             aria-hidden

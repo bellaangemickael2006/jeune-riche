@@ -13,7 +13,7 @@ export default function ManifestePage() {
 
       <section className="mx-auto max-w-2xl px-5 py-24 text-center md:px-10">
         <p className="font-editorial text-2xl italic leading-relaxed text-paper md:text-3xl">
-          Une couronne gravée sur un visage tribal. Le noir, le blanc, et le rouge qui tranche.
+          Une couronne gravée sur un visage tribal. Le noir qui affirme, le blanc qui respire — rien d&apos;autre.
         </p>
         <p className="mt-8 text-sm leading-relaxed text-paper/50">
           JEUNE RICHE assume la tension entre le luxe et la rue, entre la discipline du minimalisme
