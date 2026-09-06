@@ -12,8 +12,10 @@
   box-sizing: border-box;
 }
 
+/* le smooth scroll est géré par Lenis (SmoothScroll.tsx) — scroll-behavior
+   natif désactivé pour éviter tout conflit entre les deux moteurs */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -62,6 +64,28 @@ select:focus-visible {
 @media (hover: hover) and (pointer: fine) {
   .cursor-dot {
     mix-blend-mode: exclusion;
+  }
+}
+
+/* marquee — deux rangées défilant en sens opposés (catalogue, accueil) */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.animate-marquee-left {
+  animation: marquee-left 32s linear infinite;
+}
+.animate-marquee-right {
+  animation: marquee-right 32s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-left,
+  .animate-marquee-right {
+    animation: none;
   }
 }
 

@@ -5,6 +5,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
 import CustomCursor from "@/components/ui/CustomCursor";
+import SmoothScroll from "@/components/providers/SmoothScroll";
+import GrainOverlay from "@/components/ui/GrainOverlay";
 import { siteUrl } from "@/lib/utils";
 
 const anton = Anton({
@@ -50,6 +52,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${anton.variable} ${fraunces.variable} ${inter.variable}`}>
       <body className="bg-ink font-body text-paper antialiased">
+        <SmoothScroll />
+        <GrainOverlay />
         <CustomCursor />
         <Header />
         <main>{children}</main>

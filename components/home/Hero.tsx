@@ -3,6 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import WordPullUp from "@/components/ui/WordPullUp";
+import TextScramble from "@/components/ui/TextScramble";
+import Magnetic from "@/components/ui/Magnetic";
+import FadeIn from "@/components/ui/FadeIn";
 
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -45,26 +49,33 @@ export default function Hero() {
       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-ink/40" />
 
       <div className="relative z-10 flex w-full flex-col gap-8 px-5 pb-14 md:px-10 md:pb-20">
-        <p className="font-body text-xs uppercase tracking-widest2 text-paper/70">
-          Luxe streetwear — identité tribale
-        </p>
-        <h1 className="font-display max-w-3xl text-[13vw] uppercase leading-[0.92] text-paper md:text-[7vw]">
-          Jeune Riche
-        </h1>
-        <div className="flex flex-wrap items-center gap-6">
-          <Link
-            href="/catalogue"
-            className="bg-blood px-8 py-4 text-xs uppercase tracking-widest2 text-paper transition-transform duration-300 ease-editorial hover:scale-[1.02]"
-          >
-            Voir le catalogue
-          </Link>
+        <TextScramble
+          text="LUXE STREETWEAR — IDENTITÉ TRIBALE"
+          immediate
+          className="font-body text-xs uppercase tracking-widest2 text-paper/70"
+        />
+        <WordPullUp
+          text="Jeune Riche"
+          as="h1"
+          immediate
+          className="font-display max-w-3xl text-[13vw] uppercase leading-[0.92] text-paper md:text-[7vw]"
+        />
+        <FadeIn delay={0.5} immediate className="flex flex-wrap items-center gap-6">
+          <Magnetic strength={0.4}>
+            <Link
+              href="/catalogue"
+              className="inline-block bg-blood px-8 py-4 text-xs uppercase tracking-widest2 text-paper transition-transform duration-300 ease-editorial hover:scale-[1.02]"
+            >
+              Voir le catalogue
+            </Link>
+          </Magnetic>
           <Link
             href="/manifeste"
             className="text-xs uppercase tracking-widest2 text-paper/80 underline underline-offset-4 transition-colors hover:text-paper"
           >
             Le manifeste
           </Link>
-        </div>
+        </FadeIn>
       </div>
 
       <div className="absolute bottom-6 right-6 hidden flex-col items-center gap-2 text-paper/50 md:flex">

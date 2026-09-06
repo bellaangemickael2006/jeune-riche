@@ -6,6 +6,7 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/store/cart";
+import Magnetic from "@/components/ui/Magnetic";
 
 const NAV = [
   { label: "Catalogue", href: "/catalogue" },
@@ -42,13 +43,14 @@ export default function Header() {
 
       <nav className="hidden items-center gap-9 md:flex">
         {NAV.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="font-body text-[13px] uppercase tracking-widest2 text-paper/80 transition-colors duration-300 ease-editorial hover:text-paper"
-          >
-            {item.label}
-          </Link>
+          <Magnetic key={item.href} strength={0.5}>
+            <Link
+              href={item.href}
+              className="inline-block font-body text-[13px] uppercase tracking-widest2 text-paper/80 transition-colors duration-300 ease-editorial hover:text-paper"
+            >
+              {item.label}
+            </Link>
+          </Magnetic>
         ))}
       </nav>
 

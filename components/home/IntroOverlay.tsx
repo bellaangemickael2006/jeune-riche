@@ -28,8 +28,9 @@ export default function IntroOverlay() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ clipPath: "circle(0% at 50% 50%)" }}
+          initial={{ clipPath: "circle(150% at 50% 50%)" }}
+          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
           className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-ink"
         >
           <motion.div

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import WordPullUp from "@/components/ui/WordPullUp";
 
 export default function ManifesteHero() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -31,9 +32,12 @@ export default function ManifesteHero() {
         <Image src="/images/badge/badge-black-on-white.png" alt="JEUNE RICHE" fill className="object-cover" />
       )}
       <div className="absolute inset-0 bg-ink/50" />
-      <h1 className="relative z-10 px-5 text-center font-display text-[16vw] uppercase leading-none text-paper md:text-[9vw]">
-        Manifeste
-      </h1>
+      <WordPullUp
+        text="Manifeste"
+        as="h1"
+        immediate
+        className="relative z-10 px-5 text-center font-display text-[16vw] uppercase leading-none text-paper md:text-[9vw]"
+      />
     </section>
   );
 }

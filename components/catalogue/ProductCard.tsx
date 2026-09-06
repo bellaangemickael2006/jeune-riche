@@ -2,62 +2,99 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { formatPrice, cn } from "@/lib/utils";
 import type { ProductCardData } from "@/types";
+import FadeIn from "@/components/ui/FadeIn";
 
 export default function ProductCard({ product, index }: { product: ProductCardData; index: number }) {
   const [hovered, setHovered] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+  const rotateX = useSpring(useTransform(mouseY, [0, 1], [6, -6]), { stiffness: 200, damping: 20 });
+  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-6, 6]), { stiffness: 200, damping: 20 });
+  const glowX = useTransform(mouseX, (v) => `${v * 100}%`);
+  const glowY = useTransform(mouseY, (v) => `${v * 100}%`);
+
+  function handleMouseMove(e: React.MouseEvent) {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    mouseX.set((e.clientX - rect.left) / rect.width);
+    mouseY.set((e.clientY - rect.top) / rect.height);
+  }
+
+  function handleLeave() {
+    setHovered(false);
+    mouseX.set(0.5);
+    mouseY.set(0.5);
+  }
+
   const primary = product.images[0];
   const secondary = product.images[1] ?? primary;
   const totalStock = product.variants.reduce((sum, v) => sum + v.stock, 0);
 
   return (
-    <Link
-      href={`/catalogue/${product.slug}`}
-      className="group block"
-      style={{ animationDelay: `${index * 60}ms` }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <div className="relative aspect-[4/5] overflow-hidden bg-line">
-        {primary && (
-          <Image
-            src={primary.url}
-            alt={primary.alt}
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className={cn(
-              "object-cover transition-all duration-500 ease-editorial group-hover:scale-[1.03]",
-              hovered && secondary ? "opacity-0" : "opacity-100"
-            )}
+    <FadeIn delay={index * 0.05} y={16}>
+      <Link href={`/catalogue/${product.slug}`} className="group block">
+        <motion.div
+          ref={ref}
+          onMouseEnter={() => setHovered(true)}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleLeave}
+          style={{ rotateX, rotateY, transformPerspective: 800 }}
+          className="relative aspect-[4/5] overflow-hidden bg-line"
+        >
+          {primary && (
+            <Image
+              src={primary.url}
+              alt={primary.alt}
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className={cn(
+                "object-cover transition-all duration-500 ease-editorial group-hover:scale-[1.03]",
+                hovered && secondary ? "opacity-0" : "opacity-100"
+              )}
+            />
+          )}
+          {secondary && (
+            <Image
+              src={secondary.url}
+              alt={secondary.alt}
+              fill
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className={cn(
+                "object-cover transition-opacity duration-500 ease-editorial",
+                hovered ? "opacity-100" : "opacity-0"
+              )}
+            />
+          )}
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style={{
+              background: useTransform(
+                [glowX, glowY],
+                ([gx, gy]) => `radial-gradient(280px circle at ${gx} ${gy}, rgba(245,244,241,0.12), transparent 70%)`
+              ),
+            }}
           />
-        )}
-        {secondary && (
-          <Image
-            src={secondary.url}
-            alt={secondary.alt}
-            fill
-            sizes="(max-width: 768px) 50vw, 25vw"
-            className={cn(
-              "object-cover transition-opacity duration-500 ease-editorial",
-              hovered ? "opacity-100" : "opacity-0"
-            )}
-          />
-        )}
-        {totalStock === 0 && (
-          <span className="absolute left-3 top-3 bg-ink px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper">
-            Épuisé
-          </span>
-        )}
-      </div>
-      <div className="mt-3 flex items-start justify-between">
-        <div>
-          <p className="text-xs uppercase tracking-widest2 text-paper/40">{product.category.name}</p>
-          <p className="mt-1 text-sm text-paper">{product.name}</p>
+          {totalStock === 0 && (
+            <span className="absolute left-3 top-3 bg-ink px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper">
+              Épuisé
+            </span>
+          )}
+        </motion.div>
+        <div className="mt-3 flex items-start justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-widest2 text-paper/40">{product.category.name}</p>
+            <p className="mt-1 text-sm text-paper">{product.name}</p>
+          </div>
+          <p className="text-sm text-paper/70">{formatPrice(product.price)}</p>
         </div>
-        <p className="text-sm text-paper/70">{formatPrice(product.price)}</p>
-      </div>
-    </Link>
+      </Link>
+    </FadeIn>
   );
 }
