@@ -45,7 +45,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
           onMouseMove={handleMouseMove}
           onMouseLeave={handleLeave}
           style={{ rotateX, rotateY, transformPerspective: 800 }}
-          className="relative aspect-[4/5] overflow-hidden bg-line"
+          className="relative aspect-[4/5] overflow-hidden bg-studio"
         >
           {primary && (
             <Image
@@ -54,7 +54,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
               className={cn(
-                "object-cover transition-all duration-500 ease-editorial group-hover:scale-[1.03]",
+                "object-contain p-4 transition-all duration-500 ease-editorial group-hover:scale-[1.03]",
                 hovered && secondary ? "opacity-0" : "opacity-100"
               )}
             />
@@ -66,7 +66,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
               fill
               sizes="(max-width: 768px) 50vw, 25vw"
               className={cn(
-                "object-cover transition-opacity duration-500 ease-editorial",
+                "object-contain p-4 transition-opacity duration-500 ease-editorial",
                 hovered ? "opacity-100" : "opacity-0"
               )}
             />
@@ -77,7 +77,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
             style={{
               background: useTransform(
                 [glowX, glowY],
-                ([gx, gy]) => `radial-gradient(280px circle at ${gx} ${gy}, rgba(245,244,241,0.12), transparent 70%)`
+                ([gx, gy]) => `radial-gradient(280px circle at ${gx} ${gy}, rgba(200,30,43,0.14), transparent 70%)`
               ),
             }}
           />
@@ -87,12 +87,12 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
             </span>
           )}
         </motion.div>
-        <div className="mt-3 flex items-start justify-between">
+        <div className="mt-3 flex items-start justify-between gap-3">
           <div>
-            <p className="text-xs uppercase tracking-widest2 text-paper/40">{product.category.name}</p>
-            <p className="mt-1 text-sm text-paper">{product.name}</p>
+            <p className="text-[11px] uppercase tracking-widest2 text-paper/40">{product.category.name}</p>
+            <p className="mt-1 font-editorial text-base text-paper">{product.name}</p>
           </div>
-          <p className="text-sm text-paper/70">{formatPrice(product.price)}</p>
+          <p className="shrink-0 text-sm text-paper/70">{formatPrice(product.price)}</p>
         </div>
       </Link>
     </FadeIn>

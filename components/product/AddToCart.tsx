@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useCart } from "@/store/cart";
-import { formatPrice, sanitizePersonalization, cn } from "@/lib/utils";
+import { formatPrice, sanitizePersonalization, swatchColor, cn } from "@/lib/utils";
 
 type Variant = { id: string; size: string; color: string; stock: number };
 
@@ -57,12 +57,12 @@ export default function AddToCart({
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="font-display text-2xl text-paper">{formatPrice(price)}</p>
+      <p className="font-editorial text-2xl text-paper">{formatPrice(price)}</p>
 
       {colors.length > 0 && (
         <div>
           <p className="mb-2 text-xs uppercase tracking-widest2 text-paper/50">Couleur</p>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-4">
             {colors.map((c) => (
               <button
                 key={c}
@@ -71,12 +71,19 @@ export default function AddToCart({
                   const first = variants.find((v) => v.color === c);
                   setSize(first?.size ?? "");
                 }}
-                className={cn(
-                  "border px-4 py-2 text-xs uppercase tracking-widest2",
-                  color === c ? "border-paper bg-paper text-ink" : "border-line text-paper/70"
-                )}
+                aria-pressed={color === c}
+                className="flex flex-col items-center gap-1.5"
               >
-                {c}
+                <span
+                  style={{ backgroundColor: swatchColor(c) }}
+                  className={cn(
+                    "h-7 w-7 border transition-all",
+                    color === c ? "border-paper ring-1 ring-offset-2 ring-offset-ink ring-paper" : "border-line/60"
+                  )}
+                />
+                <span className={cn("text-[10px] uppercase tracking-wide", color === c ? "text-paper" : "text-paper/40")}>
+                  {c}
+                </span>
               </button>
             ))}
           </div>
@@ -85,22 +92,39 @@ export default function AddToCart({
 
       {sizesForColor.length > 0 && (
         <div>
-          <p className="mb-2 text-xs uppercase tracking-widest2 text-paper/50">Taille</p>
-          <div className="flex flex-wrap gap-2">
-            {sizesForColor.map((v) => (
-              <button
-                key={v.id}
-                onClick={() => setSize(v.size)}
-                disabled={v.stock === 0}
-                className={cn(
-                  "h-10 w-10 border text-xs uppercase",
-                  size === v.size ? "border-paper bg-paper text-ink" : "border-line text-paper/70",
-                  v.stock === 0 && "cursor-not-allowed opacity-30 line-through"
-                )}
-              >
-                {v.size}
-              </button>
-            ))}
+          <label htmlFor="size-select" className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
+            Taille
+          </label>
+          <div className="flex gap-3">
+            <select
+              id="size-select"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+              className="flex-1 border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper focus:border-paper focus:outline-none"
+            >
+              {sizesForColor.map((v) => (
+                <option key={v.id} value={v.size} disabled={v.stock === 0} className="bg-ink">
+                  {v.size}
+                  {v.stock === 0 ? " — épuisé" : ""}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={handleAdd}
+              disabled={!canAdd}
+              className={cn(
+                "shrink-0 px-6 py-3 text-xs uppercase tracking-widest2 transition-all",
+                canAdd ? "bg-blood text-paper hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
+              )}
+            >
+              {price === null
+                ? "Prix à définir"
+                : !selectedVariant || !inStock
+                  ? "Indisponible"
+                  : added
+                    ? "Ajouté ✓"
+                    : "Ajouter au panier"}
+            </button>
           </div>
         </div>
       )}
@@ -134,23 +158,6 @@ export default function AddToCart({
           )}
         </div>
       )}
-
-      <button
-        onClick={handleAdd}
-        disabled={!canAdd}
-        className={cn(
-          "w-full py-4 text-xs uppercase tracking-widest2 transition-all",
-          canAdd ? "bg-paper text-ink hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
-        )}
-      >
-        {price === null
-          ? "Prix à définir"
-          : !selectedVariant || !inStock
-            ? "Indisponible"
-            : added
-              ? "Ajouté au panier ✓"
-              : "Ajouter au panier"}
-      </button>
 
       {!inStock && selectedVariant && <NotifyMe variantId={selectedVariant.id} />}
     </div>

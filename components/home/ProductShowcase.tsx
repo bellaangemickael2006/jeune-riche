@@ -75,7 +75,7 @@ export default function ProductShowcase({ items }: { items: ShowcaseItem[] }) {
             ref={(el) => {
               cardRefs.current[i] = el;
             }}
-            className="group relative block h-44 w-32 shrink-0 overflow-hidden bg-line will-change-transform md:h-60 md:w-44"
+            className="group relative block h-44 w-32 shrink-0 overflow-hidden bg-studio will-change-transform md:h-60 md:w-44"
           >
             {item.image ? (
               <Image
@@ -83,7 +83,7 @@ export default function ProductShowcase({ items }: { items: ShowcaseItem[] }) {
                 alt={item.name}
                 fill
                 sizes="176px"
-                className="object-cover transition-transform duration-700 ease-editorial group-hover:scale-105"
+                className="object-contain p-3 transition-transform duration-700 ease-editorial group-hover:scale-105"
               />
             ) : (
               <div className="h-full w-full bg-line" />

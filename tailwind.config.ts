@@ -13,6 +13,7 @@ const config: Config = {
         blood: "#C81E2B",
         navy: "#131B2E",
         line: "#26252A",
+        studio: "#E1DED8", // fond neutre unique pour la photographie produit (catalogue, fiches produit)
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],

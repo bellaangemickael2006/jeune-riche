@@ -16,6 +16,21 @@ export function formatPrice(value: number | string | null | undefined): string {
   }).format(n);
 }
 
+// Teintes réelles mesurées sur les photos produit (pas une convention
+// générique) — sert à afficher un vrai nuancier plutôt qu'un bouton texte.
+const SWATCH_COLORS: Record<string, string> = {
+  Noir: "#0B0B0B",
+  Blanc: "#EFEFEF",
+  Blanche: "#EFEFEF",
+  Taupe: "#958178",
+  Marine: "#26365A",
+  Gris: "#6A6E6D",
+};
+
+export function swatchColor(colorName: string): string {
+  return SWATCH_COLORS[colorName] ?? "#71706C";
+}
+
 export function sanitizePersonalization(input: string, maxLen = 16): string {
   return input
     .replace(/[^a-zA-Z0-9À-ÿ _-]/g, "")

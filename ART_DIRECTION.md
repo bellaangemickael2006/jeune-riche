@@ -4,7 +4,7 @@
 
 ## 1. Identité
 
-Logo : visage-roi tribal gravé (yeux mi-clos, point au front, cercle à la gorge, couronne à 7 pointes), wordmark **JEUNE RICHE** en condensé bold. Deux fichiers fournis : `logo-black-on-white.png` (fond blanc) et `logo-white-on-black.png` (fond noir) — **fonds pleins, non transparents**. À utiliser tels quels sur fond correspondant ; ne pas prétendre à une version détourée tant qu'elle n'existe pas (voir TODO).
+Logo : visage-roi tribal gravé (yeux mi-clos, point au front, cercle à la gorge, couronne à 7 pointes), wordmark **JEUNE RICHE** en condensé bold. Fichiers source fournis avec fond plein, non transparent (vérifié pixel par pixel). ✅ `public/images/logo/logo-transparent.png` — version réellement détourée (luminance → alpha), générée à partir de l'asset réel, utilisée partout dans l'app (header, footer, intro, confirmation). Ne jamais réintroduire les fichiers `logo-*-on-*.png` bruts dans l'UI — fond plein garanti.
 
 Badge circulaire : wordmark JEUNE RICHE répété en cercle autour du visage, versions noir/blanc et blanc/noir (`badge-*.png`). Utilisé pour dos de vêtement, sceau de section, favicon-like motif.
 
@@ -17,16 +17,19 @@ Badge circulaire : wordmark JEUNE RICHE répété en cercle autour du visage, ve
 | `blood` | `#C81E2B` | Rouge signature — CTA, accents, fond mockup produit |
 | `navy` | `#131B2E` | Réservé à la ligne Polo uniquement |
 | `line` | `#26252A` | Hairlines, bordures |
+| `studio` | `#E1DED8` | Fond neutre unique de la photographie produit (catalogue, fiche, défilé accueil) |
 
 Confirmé dans les assets : fond rouge des mockups t-shirt, polo bleu marine profond. Pas de dégradé, pas de couleur additionnelle.
 
+**Fond produit uniformisé** : les mockups source ont chacun un aplat de studio différent (rouge, blanc, marron — vérifié : aplat parfaitement uni aux 4 coins de chaque image). `scripts/neutralize-product-backgrounds.js` détoure le vêtement par chroma-key (distance colorimétrique au fond détecté, pas de segmentation ML nécessaire vu l'aplat uni) et le recompose sur `studio` (#E1DED8), gris clair neutre choisi après test — un fond sombre exposait des faux positifs du chroma-key sur les zones claires des vêtements eux-mêmes (ex. casquette blanche). Résultat : chaque visuel catalogue partage désormais le même fond, quel que soit le mockup source. Tout nouveau mockup à fond plein doit passer par ce script avant publication.
+
 ## 3. Typographie
 
-- **Display / titres** : une condensée bold sans-serif (registre proche du wordmark) — `Archivo Black` / `Anton` en attendant une éventuelle police de marque dédiée.
-- **Éditorial** : serif expressive avec restreinte — `Fraunces`, utilisée pour citations/manifeste uniquement.
-- **UI / corps** : sans-serif neutre lisible — `Inter` en poids réduit, jamais en display.
+- **Display / UI stricte** : condensée bold sans-serif — `Anton` (`font-display`). Réservée au wordmark, à la navigation, aux boutons et labels d'interface. Ne s'utilise plus pour les noms de produits ni les titres de page (correction : une seule police bold condensée partout se lisait comme un site généré, pas comme une marque).
+- **Éditorial** : serif expressive — `Fraunces` (`font-editorial`). Manifeste, mais aussi noms de produits, H1 de fiche produit et de page catalogue, titres de section ("Compléter la tenue"). Graisse régulière, jamais en majuscules forcées — cf. l'exécution "Albany Hooded Jacket Onyx" chez A-COLD-WALL*.
+- **UI / corps** : sans-serif neutre lisible — `Inter`, jamais en display.
 
-Une seule paire à la fois par écran. Le wordmark du logo n'est jamais recomposé en CSS — toujours l'image fournie.
+Deux polices maximum par écran (une display/UI, une éditoriale) — jamais les deux mêmes rôles. Le wordmark du logo n'est jamais recomposé en CSS — toujours l'image fournie.
 
 ## 4. Vêtements réels (inventaire vérifié)
 

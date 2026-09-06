@@ -53,7 +53,7 @@ export default async function CataloguePage({
       <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs uppercase tracking-widest2 text-paper/40">Catalogue</p>
-          <h1 className="mt-2 font-display text-4xl uppercase text-paper md:text-6xl">
+          <h1 className="mt-2 font-editorial text-4xl text-paper md:text-6xl">
             Toute la collection
           </h1>
         </div>
