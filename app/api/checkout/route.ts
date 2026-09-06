@@ -4,11 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 const lineSchema = z.object({
   variantId: z.string(),
-  productName: z.string(),
-  size: z.string(),
-  color: z.string(),
   quantity: z.number().int().positive(),
-  unitPrice: z.number().nonnegative(),
   personalization: z.string().nullable(),
 });
 
@@ -32,22 +28,53 @@ export async function POST(req: NextRequest) {
   }
 
   const { customerName, customerEmail, shippingAddress, lines } = parsed.data;
-  const subtotal = lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
   const shippingCost = 0; // aucune grille tarifaire réelle fournie — à définir en admin
-  const total = subtotal + shippingCost;
   const orderNumber = `JR-${Date.now().toString(36).toUpperCase()}`;
 
   try {
-    // vérification du stock réel avant création
+    // Le prix envoyé par le navigateur n'est jamais fiable : on ne fait
+    // confiance qu'à variantId + quantity, et on relit prix/stock/nom en base.
+    const resolvedLines: {
+      variantId: string;
+      productName: string;
+      size: string;
+      color: string;
+      quantity: number;
+      unitPrice: number;
+      personalization: string | null;
+    }[] = [];
     for (const line of lines) {
-      const variant = await prisma.productVariant.findUnique({ where: { id: line.variantId } });
-      if (!variant || variant.stock < line.quantity) {
+      const variant = await prisma.productVariant.findUnique({
+        where: { id: line.variantId },
+        include: { product: true },
+      });
+
+      if (!variant || !variant.product.published || variant.product.price === null) {
         return NextResponse.json(
-          { error: `Stock insuffisant pour ${line.productName} (${line.size}/${line.color}).` },
+          { error: "Un des articles du panier n'est plus disponible à la commande." },
           { status: 409 }
         );
       }
+      if (variant.stock < line.quantity) {
+        return NextResponse.json(
+          { error: `Stock insuffisant pour ${variant.product.name} (${variant.size}/${variant.color}).` },
+          { status: 409 }
+        );
+      }
+
+      resolvedLines.push({
+        variantId: variant.id,
+        productName: variant.product.name,
+        size: variant.size,
+        color: variant.color,
+        quantity: line.quantity,
+        unitPrice: Number(variant.product.price),
+        personalization: line.personalization,
+      });
     }
+
+    const subtotal = resolvedLines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
+    const total = subtotal + shippingCost;
 
     const order = await prisma.$transaction(async (tx) => {
       const created = await tx.order.create({
@@ -59,21 +86,11 @@ export async function POST(req: NextRequest) {
           subtotal,
           shippingCost,
           total,
-          items: {
-            create: lines.map((l) => ({
-              variantId: l.variantId,
-              productName: l.productName,
-              size: l.size,
-              color: l.color,
-              quantity: l.quantity,
-              unitPrice: l.unitPrice,
-              personalization: l.personalization,
-            })),
-          },
+          items: { create: resolvedLines },
         },
       });
 
-      for (const line of lines) {
+      for (const line of resolvedLines) {
         await tx.productVariant.update({
           where: { id: line.variantId },
           data: { stock: { decrement: line.quantity } },

@@ -48,13 +48,11 @@ export default function CheckoutPage() {
             country: form.country,
             phone: form.phone,
           },
+          // Le prix, le nom, la taille et la couleur sont relus côté serveur
+          // depuis la base — jamais depuis ce qu'envoie le navigateur.
           lines: lines.map((l) => ({
             variantId: l.variantId,
-            productName: l.productName,
-            size: l.size,
-            color: l.color,
             quantity: l.quantity,
-            unitPrice: l.unitPrice,
             personalization: l.personalization,
           })),
         }),
