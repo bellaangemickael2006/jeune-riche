@@ -96,7 +96,7 @@ export default function CheckoutPage() {
                 <span
                   className={cn(
                     "flex h-6 w-6 items-center justify-center rounded-full text-[11px]",
-                    i <= stepIndex ? "bg-blood text-paper" : "border border-line text-paper/40"
+                    i <= stepIndex ? "bg-paper text-ink" : "border border-line text-paper/40"
                   )}
                 >
                   {i + 1}
@@ -118,7 +118,7 @@ export default function CheckoutPage() {
             <button
               onClick={() => setStep("livraison")}
               disabled={!form.customerName || !form.customerEmail}
-              className="mt-4 bg-blood py-4 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90 disabled:opacity-30"
+              className="mt-4 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
             >
               Continuer
             </button>
@@ -142,7 +142,7 @@ export default function CheckoutPage() {
               <button
                 onClick={() => setStep("recapitulatif")}
                 disabled={!form.line1 || !form.city}
-                className="flex-1 bg-blood py-4 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90 disabled:opacity-30"
+                className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
               >
                 Continuer
               </button>
@@ -178,7 +178,7 @@ export default function CheckoutPage() {
               règlement.
             </div>
 
-            {error && <p className="text-xs text-blood">{error}</p>}
+            {error && <p className="text-xs font-medium text-paper">{error}</p>}
 
             <div className="flex gap-3">
               <button onClick={() => setStep("livraison")} className="border border-line px-6 py-4 text-xs uppercase tracking-widest2 text-paper/70">
@@ -187,7 +187,7 @@ export default function CheckoutPage() {
               <button
                 onClick={submitOrder}
                 disabled={submitting}
-                className="flex-1 bg-blood py-4 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
               >
                 {submitting ? "Envoi…" : "Confirmer la commande"}
               </button>
@@ -220,7 +220,7 @@ function Field({
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-blood focus:outline-none"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
       />
     </label>
   );

@@ -71,7 +71,7 @@ export default function PanierPage() {
             <p className="mt-2 text-xs text-paper/40">Frais de livraison calculés à l&apos;étape suivante.</p>
             <Link
               href="/checkout"
-              className="mt-6 block w-full bg-blood py-4 text-center text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90"
+              className="mt-6 block w-full bg-paper py-4 text-center text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90"
             >
               Passer commande
             </Link>

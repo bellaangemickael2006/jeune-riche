@@ -19,7 +19,7 @@ export default function CampaignForm() {
       <p className="text-xs uppercase tracking-widest2 text-paper/50">Envoyer une campagne</p>
 
       {state && "error" in state && (
-        <p className="border border-blood/40 bg-blood/10 px-3 py-2 text-xs text-blood">{state.error}</p>
+        <p className="border border-paper/30 bg-paper/5 px-3 py-2 text-xs text-paper">{state.error}</p>
       )}
       {state && "sent" in state && (
         <p className="border border-paper/20 bg-paper/5 px-3 py-2 text-xs text-paper/70">

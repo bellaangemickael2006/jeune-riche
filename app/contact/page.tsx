@@ -14,7 +14,7 @@ export default function ContactPage() {
           href="https://wa.me/2250777585367"
           target="_blank"
           rel="noopener noreferrer"
-          className="border border-blood px-6 py-3 text-xs uppercase tracking-widest2 text-paper hover:bg-blood"
+          className="border border-paper px-6 py-3 text-xs uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
         >
           Écrire sur WhatsApp
         </a>

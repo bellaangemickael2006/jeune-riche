@@ -20,7 +20,7 @@ export default function WishlistButton({ slug, className }: { slug: string; clas
       aria-label={mounted && has ? "Retirer des favoris" : "Ajouter aux favoris"}
       className={cn(
         "flex items-center gap-2 text-xs uppercase tracking-widest2 transition-colors",
-        mounted && has ? "text-blood" : "text-paper/50 hover:text-paper",
+        mounted && has ? "text-paper" : "text-paper/50 hover:text-paper",
         className
       )}
     >

@@ -64,7 +64,7 @@ export default function Hero() {
           <Magnetic strength={0.4}>
             <Link
               href="/catalogue"
-              className="inline-block bg-blood px-8 py-4 text-xs uppercase tracking-widest2 text-paper transition-transform duration-300 ease-editorial hover:scale-[1.02]"
+              className="inline-block bg-paper px-8 py-4 text-xs uppercase tracking-widest2 text-ink transition-transform duration-300 ease-editorial hover:scale-[1.02]"
             >
               Voir le catalogue
             </Link>

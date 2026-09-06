@@ -77,7 +77,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
             style={{
               background: useTransform(
                 [glowX, glowY],
-                ([gx, gy]) => `radial-gradient(280px circle at ${gx} ${gy}, rgba(200,30,43,0.14), transparent 70%)`
+                ([gx, gy]) => `radial-gradient(280px circle at ${gx} ${gy}, rgba(11,11,12,0.16), transparent 70%)`
               ),
             }}
           />

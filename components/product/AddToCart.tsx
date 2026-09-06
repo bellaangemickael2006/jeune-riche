@@ -122,7 +122,7 @@ export default function AddToCart({
               disabled={!canAdd}
               className={cn(
                 "shrink-0 px-6 py-3 text-xs uppercase tracking-widest2 transition-all",
-                canAdd ? "bg-blood text-paper hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
+                canAdd ? "bg-paper text-ink hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
               )}
             >
               {price === null

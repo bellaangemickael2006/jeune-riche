@@ -68,7 +68,7 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
               onClick={() => setActive(i)}
               className={cn(
                 "relative aspect-square overflow-hidden bg-studio",
-                i === active ? "ring-2 ring-blood" : "opacity-60 hover:opacity-100"
+                i === active ? "ring-2 ring-paper" : "opacity-60 hover:opacity-100"
               )}
               aria-label={`Voir l'image ${i + 1}`}
             >

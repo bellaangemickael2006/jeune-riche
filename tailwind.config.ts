@@ -10,7 +10,6 @@ const config: Config = {
       colors: {
         ink: "#0B0B0C",
         paper: "#F5F4F1",
-        blood: "#C81E2B",
         navy: "#131B2E",
         line: "#26252A",
         studio: "#E1DED8", // fond neutre unique pour la photographie produit (catalogue, fiches produit)

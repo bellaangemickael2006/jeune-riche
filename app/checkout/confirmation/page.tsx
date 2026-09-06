@@ -23,7 +23,7 @@ export default async function ConfirmationPage({
         Un email de confirmation vous sera envoyé. Notre équipe vous recontactera pour finaliser le
         règlement et l&apos;expédition.
       </p>
-      <Link href="/catalogue" className="mt-4 text-xs uppercase tracking-widest2 text-blood underline underline-offset-4 hover:text-paper">
+      <Link href="/catalogue" className="mt-4 text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 hover:text-paper/70">
         Retour au catalogue
       </Link>
     </div>

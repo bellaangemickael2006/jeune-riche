@@ -116,7 +116,7 @@ export function ImageUploadForm({ productId, colors }: { productId: string; colo
       >
         {isPending ? "Envoi…" : "Confirmer l'ajout"}
       </button>
-      {error && <p className="w-full text-xs text-blood">{error}</p>}
+      {error && <p className="w-full text-xs font-medium text-paper">{error}</p>}
     </form>
   );
 }
@@ -201,13 +201,13 @@ export function VideoUploadForm({
             type="button"
             onClick={onRemove}
             disabled={isPending}
-            className="text-xs uppercase tracking-widest2 text-blood/70 hover:text-blood"
+            className="text-xs uppercase tracking-widest2 text-paper/60 underline underline-offset-4 hover:text-paper"
           >
             Retirer la vidéo
           </button>
         )}
       </form>
-      {error && <p className="mt-2 text-xs text-blood">{error}</p>}
+      {error && <p className="mt-2 text-xs font-medium text-paper">{error}</p>}
     </div>
   );
 }

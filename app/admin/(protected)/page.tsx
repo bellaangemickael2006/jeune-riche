@@ -39,7 +39,7 @@ export default async function AdminDashboard() {
       <h1 className="font-display text-2xl uppercase text-paper">Dashboard</h1>
 
       {!stats.available && (
-        <p className="mt-3 border border-blood/40 bg-blood/10 px-4 py-3 text-xs text-blood">
+        <p className="mt-3 border border-paper/30 bg-paper/5 px-4 py-3 text-xs text-paper">
           Base de données indisponible — vérifiez DATABASE_URL. Les chiffres ci-dessous sont à zéro
           par défaut.
         </p>

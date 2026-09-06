@@ -58,22 +58,22 @@ function AdminLoginForm() {
         <p className="mt-1 text-center text-xs text-paper/40">JEUNE RICHE</p>
 
         {erreur === "acces_refuse" && (
-          <p className="mt-4 border border-blood/40 bg-blood/10 px-3 py-2 text-xs text-blood">
+          <p className="mt-4 border border-paper/30 bg-paper/5 px-3 py-2 text-xs text-paper">
             Ce compte n&apos;a pas accès à l&apos;administration.
           </p>
         )}
         {erreur === "base_indisponible" && (
-          <p className="mt-4 border border-blood/40 bg-blood/10 px-3 py-2 text-xs text-blood">
+          <p className="mt-4 border border-paper/30 bg-paper/5 px-3 py-2 text-xs text-paper">
             Base de données indisponible. Vérifiez la configuration Supabase.
           </p>
         )}
         {erreur === "config_manquante" && (
-          <p className="mt-4 border border-blood/40 bg-blood/10 px-3 py-2 text-xs text-blood">
+          <p className="mt-4 border border-paper/30 bg-paper/5 px-3 py-2 text-xs text-paper">
             Supabase n&apos;est pas encore configuré (NEXT_PUBLIC_SUPABASE_URL /
             NEXT_PUBLIC_SUPABASE_ANON_KEY manquants dans .env.local).
           </p>
         )}
-        {error && <p className="mt-4 text-xs text-blood">{error}</p>}
+        {error && <p className="mt-4 text-xs font-medium text-paper">{error}</p>}
 
         <label className="mt-6 block">
           <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Email</span>
@@ -82,7 +82,7 @@ function AdminLoginForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-blood focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
           />
         </label>
         <label className="mt-4 block">
@@ -92,13 +92,13 @@ function AdminLoginForm() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-blood focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
           />
         </label>
         <button
           type="submit"
           disabled={loading}
-          className="mt-6 w-full bg-blood py-3 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90 disabled:opacity-50"
+          className="mt-6 w-full bg-paper py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           {loading ? "Connexion…" : "Se connecter"}
         </button>

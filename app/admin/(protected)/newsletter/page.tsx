@@ -17,7 +17,7 @@ export default async function AdminNewsletterPage() {
       </h1>
 
       {!available && (
-        <p className="mt-4 border border-blood/40 bg-blood/10 px-4 py-3 text-xs text-blood">
+        <p className="mt-4 border border-paper/30 bg-paper/5 px-4 py-3 text-xs text-paper">
           Base de données indisponible.
         </p>
       )}

@@ -18,7 +18,7 @@ export default function CategoryFilters({
         href="/catalogue"
         className={cn(
           "border px-4 py-2 text-xs uppercase tracking-widest2 transition-colors",
-          !active ? "border-blood bg-blood text-paper" : "border-line text-paper/60 hover:text-paper"
+          !active ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
         )}
       >
         Tout
@@ -30,7 +30,7 @@ export default function CategoryFilters({
           className={cn(
             "border px-4 py-2 text-xs uppercase tracking-widest2 transition-colors",
             active === cat.slug
-              ? "border-blood bg-blood text-paper"
+              ? "border-paper bg-paper text-ink"
               : "border-line text-paper/60 hover:text-paper"
           )}
         >

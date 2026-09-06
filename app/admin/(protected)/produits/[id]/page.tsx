@@ -26,7 +26,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       <div className="flex items-center justify-between">
         <h1 className="font-display text-2xl uppercase text-paper">{product.name}</h1>
         <form action={async () => { "use server"; await deleteProduct(product.id); }}>
-          <button className="text-xs uppercase tracking-widest2 text-blood/70 hover:text-blood">
+          <button className="text-xs uppercase tracking-widest2 text-paper/60 underline underline-offset-4 hover:text-paper">
             Supprimer
           </button>
         </form>
@@ -116,7 +116,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 </td>
                 <td className="py-2">
                   <form action={async () => { "use server"; await deleteVariant(v.id, product.id); }}>
-                    <button className="text-xs text-blood/70 hover:text-blood">Retirer</button>
+                    <button className="text-xs text-paper/60 underline underline-offset-4 hover:text-paper">Retirer</button>
                   </form>
                 </td>
               </tr>
@@ -161,7 +161,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 action={async () => { "use server"; await deleteProductImage(img.id, product.id); }}
                 className="absolute bottom-1 right-1"
               >
-                <button className="bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase text-blood">×</button>
+                <button className="bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase text-paper">×</button>
               </form>
             </div>
           ))}

@@ -19,7 +19,7 @@ export default function NotFound() {
       </p>
       <Link
         href="/"
-        className="relative mt-4 text-xs uppercase tracking-widest2 text-blood underline underline-offset-4 hover:text-paper"
+        className="relative mt-4 text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 hover:text-paper/70"
       >
         Retour à l&apos;accueil
       </Link>

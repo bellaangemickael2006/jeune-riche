@@ -64,7 +64,7 @@ function emailShell(bodyHtml: string) {
 
 export function newsletterWelcomeEmail() {
   return emailShell(`
-    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#c81e2b;margin:0 0 16px;">Bienvenue</p>
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Bienvenue</p>
     <p style="margin:0 0 16px;">Vous êtes inscrit à la newsletter JEUNE RICHE.</p>
     <p style="margin:0;color:#9a9a9a;">Vous recevrez ici les prochains drops et nouveautés de la marque.</p>
   `);
@@ -95,7 +95,7 @@ export function orderConfirmationEmail(params: {
     .join("");
 
   return emailShell(`
-    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#c81e2b;margin:0 0 16px;">Commande enregistrée</p>
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Commande enregistrée</p>
     <p style="margin:0 0 8px;">Bonjour ${params.customerName},</p>
     <p style="margin:0 0 20px;color:#9a9a9a;">
       Votre commande <strong style="color:#f5f4f1;">${params.orderNumber}</strong> a bien été enregistrée.

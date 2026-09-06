@@ -15,7 +15,7 @@ export default async function AdminReviewsPage() {
       <h1 className="font-display text-2xl uppercase text-paper">Avis</h1>
 
       {!available && (
-        <p className="mt-4 border border-blood/40 bg-blood/10 px-4 py-3 text-xs text-blood">
+        <p className="mt-4 border border-paper/30 bg-paper/5 px-4 py-3 text-xs text-paper">
           Base de données indisponible.
         </p>
       )}
@@ -45,7 +45,7 @@ export default async function AdminReviewsPage() {
                       </button>
                     </form>
                     <form action={async () => { "use server"; await moderateReview(r.id, "REJECTED"); }}>
-                      <button className="border border-blood/50 px-3 py-1.5 text-[10px] uppercase tracking-widest2 text-blood">
+                      <button className="border border-line px-3 py-1.5 text-[10px] uppercase tracking-widest2 text-paper/60 hover:text-paper">
                         Refuser
                       </button>
                     </form>

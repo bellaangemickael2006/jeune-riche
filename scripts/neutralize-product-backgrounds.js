@@ -143,6 +143,33 @@ async function processOne(relPath) {
     }
   }
 
+  // Un fond très saturé (rouge, sarcelle) laisse une contamination de
+  // teinte sur le vêtement qui déborde largement au-delà d'une mince
+  // frange d'antialiasing : le sous-échantillonnage chroma du JPEG source
+  // étale la couleur du fond sur une zone de largeur irrégulière, plus
+  // large aux recoins concaves (aisselle/manche) qu'ailleurs — une bande
+  // de largeur fixe autour du contour ne suffit donc pas à la couvrir. On
+  // détecte plutôt la contamination par sa TEINTE : un pixel dont l'excès
+  // de couleur (par rapport au gris) pointe dans la même direction que la
+  // couleur du fond est par définition contaminé, où qu'il soit dans
+  // l'image, puisque le vêtement réel ici est achromatique (blanc/noir/
+  // gris). Restreint aux fonds nettement saturés pour ne jamais toucher un
+  // vêtement dont la vraie couleur est saturée (ex. le polo marine sur
+  // fond blanc, dont la teinte ne correspond de toute façon pas à celle
+  // d'un fond neutre).
+  const bgSaturation = Math.max(bg.r, bg.g, bg.b) - Math.min(bg.r, bg.g, bg.b);
+  const desaturateEdges = bgSaturation > 60;
+  const bgMean = (bg.r + bg.g + bg.b) / 3;
+  const bgUnit = desaturateEdges
+    ? (() => {
+        const dr = bg.r - bgMean,
+          dg = bg.g - bgMean,
+          db = bg.b - bgMean;
+        const len = Math.sqrt(dr * dr + dg * dg + db * db) || 1;
+        return { r: dr / len, g: dg / len, b: db / len };
+      })()
+    : null;
+
   const out = Buffer.from(data);
   for (let p = 0; p < w * h; p++) {
     const i = p * 4;
@@ -151,6 +178,44 @@ async function processOne(relPath) {
     else if (dist[p] < FEATHER) alpha = Math.round((1 - dist[p] / FEATHER) * 255);
     else alpha = 0;
     out[i + 3] = alpha;
+
+    // Un pixel fond dans la zone d'adoucissement (alpha partiel) garde par
+    // défaut sa PROPRE couleur source (souvent encore teintée près du vrai
+    // contour, à cause du sous-échantillonnage chroma JPEG) — mélangée à
+    // alpha réduit avec le canevas, elle reste visible en frange colorée.
+    // On la remplace par la couleur cible exacte : à n'importe quel alpha,
+    // "couleur cible" mélangée à "couleur cible" reste "couleur cible",
+    // donc plus aucune frange possible côté fond.
+    if (isBg[p]) {
+      out[i] = TARGET_BG.r;
+      out[i + 1] = TARGET_BG.g;
+      out[i + 2] = TARGET_BG.b;
+    }
+
+    if (desaturateEdges && !isBg[p]) {
+      const r = data[i],
+        g = data[i + 1],
+        b = data[i + 2];
+      const mean = (r + g + b) / 3;
+      const dr = r - mean,
+        dg = g - mean,
+        db = b - mean;
+      const chroma = Math.sqrt(dr * dr + dg * dg + db * db);
+      if (chroma > 4) {
+        // Alignement (cosinus) entre l'excès de couleur de ce pixel et la
+        // direction de teinte du fond : proche de 1 = même teinte que le
+        // fond (contamination), proche de 0 ou négatif = teinte différente
+        // (contenu réel du vêtement, ex. un logo d'une autre couleur) à
+        // préserver tel quel.
+        const alignment = (dr * bgUnit.r + dg * bgUnit.g + db * bgUnit.b) / chroma;
+        if (alignment > 0.6) {
+          const L = Math.round(mean);
+          out[i] = L;
+          out[i + 1] = L;
+          out[i + 2] = L;
+        }
+      }
+    }
   }
 
   const cutout = sharp(out, { raw: { width: w, height: h, channels: 4 } });

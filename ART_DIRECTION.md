@@ -10,16 +10,17 @@ Badge circulaire : wordmark JEUNE RICHE répété en cercle autour du visage, ve
 
 ## 2. Palette
 
+⚠️ **Correction du 06/09** : le rouge (`blood`, `#C81E2B`) a été retiré de toute l'interface sur décision explicite du client — il ne fait pas partie des couleurs de la marque. Il servait de CTA/accent depuis la lecture initiale du fond rouge des mockups t-shirt, mais ce rouge est un choix de studio de mockup, pas une couleur de marque revendiquée. Toutes les occurrences (boutons, focus, liens, badges d'erreur admin, emails transactionnels) sont repassées à `paper`/`ink`. Le token n'existe plus dans `tailwind.config.ts`. Le hero vidéo de la page d'accueil (qui contient du rouge à l'image) sera remplacé par le client ultérieurement.
+
 | Token | Valeur | Usage |
 |---|---|---|
 | `ink` | `#0B0B0C` | Fond sombre, texte sur clair |
-| `paper` | `#F5F4F1` | Fond clair (jamais blanc pur — légèrement cassé) |
-| `blood` | `#C81E2B` | Rouge signature — CTA, accents, fond mockup produit |
+| `paper` | `#F5F4F1` | Fond clair (jamais blanc pur — légèrement cassé) ; sert aussi d'accent (CTA, focus, actif) depuis le retrait du rouge |
 | `navy` | `#131B2E` | Réservé à la ligne Polo uniquement |
 | `line` | `#26252A` | Hairlines, bordures |
 | `studio` | `#E1DED8` | Fond neutre unique de la photographie produit (catalogue, fiche, défilé accueil) |
 
-Confirmé dans les assets : fond rouge des mockups t-shirt, polo bleu marine profond. Pas de dégradé, pas de couleur additionnelle.
+Pas de dégradé, pas de couleur additionnelle. Palette actuelle : noir / blanc uniquement (+ navy pour le polo, seule couleur vêtement réelle qui l'exige).
 
 **Fond produit uniformisé** : les mockups source ont chacun un aplat de studio différent (rouge, blanc, marron — vérifié : aplat parfaitement uni aux 4 coins de chaque image). `scripts/neutralize-product-backgrounds.js` détoure le vêtement par chroma-key (distance colorimétrique au fond détecté, pas de segmentation ML nécessaire vu l'aplat uni) et le recompose sur `studio` (#E1DED8), gris clair neutre choisi après test — un fond sombre exposait des faux positifs du chroma-key sur les zones claires des vêtements eux-mêmes (ex. casquette blanche). Résultat : chaque visuel catalogue partage désormais le même fond, quel que soit le mockup source. Tout nouveau mockup à fond plein doit passer par ce script avant publication.
 

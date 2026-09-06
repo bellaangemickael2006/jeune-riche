@@ -12,7 +12,7 @@ export default function CategoryGrid({ items }: { items: ShowcaseItem[] }) {
             key={i}
             className="font-display flex items-center gap-6 whitespace-nowrap text-sm uppercase tracking-widest2 text-paper/30"
           >
-            Jeune Riche <span className="text-blood">•</span>
+            Jeune Riche <span className="text-paper/50">•</span>
           </span>
         ))}
       </Marquee>

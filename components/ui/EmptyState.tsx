@@ -22,7 +22,7 @@ export default function EmptyState({
       {cta && (
         <Link
           href={cta.href}
-          className="relative text-xs uppercase tracking-widest2 text-blood underline underline-offset-4 hover:text-paper"
+          className="relative text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 hover:text-paper/70"
         >
           {cta.label}
         </Link>
