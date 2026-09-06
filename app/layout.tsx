@@ -5,7 +5,9 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
 import CustomCursor from "@/components/ui/CustomCursor";
+import WhatsappButton from "@/components/ui/WhatsappButton";
 import SmoothScroll from "@/components/providers/SmoothScroll";
+import StoreHydration from "@/components/providers/StoreHydration";
 import GrainOverlay from "@/components/ui/GrainOverlay";
 import { siteUrl } from "@/lib/utils";
 
@@ -52,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${anton.variable} ${fraunces.variable} ${inter.variable}`}>
       <body className="bg-ink font-body text-paper antialiased">
+        <StoreHydration />
         <SmoothScroll />
         <GrainOverlay />
         <CustomCursor />
@@ -59,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <Footer />
         <CartDrawer />
+        <WhatsappButton />
       </body>
     </html>
   );

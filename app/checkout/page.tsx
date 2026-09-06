@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/store/cart";
 import { formatPrice, cn } from "@/lib/utils";
@@ -20,7 +21,7 @@ export default function CheckoutPage() {
     line1: "",
     city: "",
     postalCode: "",
-    country: "France",
+    country: "Côte d'Ivoire",
     phone: "",
   });
 
@@ -72,29 +73,52 @@ export default function CheckoutPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-ink px-5 text-center">
         <p className="text-paper/60">Votre panier est vide.</p>
+        <Link href="/catalogue" className="text-xs uppercase tracking-widest2 text-paper underline underline-offset-4">
+          Voir le catalogue
+        </Link>
       </div>
     );
   }
 
+  const STEP_LABELS: Record<Step, string> = {
+    informations: "Informations",
+    livraison: "Livraison",
+    recapitulatif: "Récapitulatif",
+  };
+
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
       <div className="mx-auto max-w-xl">
-        <div className="mb-10 flex items-center gap-3 text-xs uppercase tracking-widest2 text-paper/40">
+        <div className="mb-10 flex items-center gap-3">
           {steps.map((s, i) => (
-            <span key={s} className={cn(i === stepIndex && "text-paper")}>
-              {i + 1}. {s} {i < steps.length - 1 && <span className="mx-2">/</span>}
-            </span>
+            <div key={s} className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span
+                  className={cn(
+                    "flex h-6 w-6 items-center justify-center rounded-full text-[11px]",
+                    i <= stepIndex ? "bg-blood text-paper" : "border border-line text-paper/40"
+                  )}
+                >
+                  {i + 1}
+                </span>
+                <span className={cn("text-xs uppercase tracking-widest2", i === stepIndex ? "text-paper" : "text-paper/40")}>
+                  {STEP_LABELS[s]}
+                </span>
+              </div>
+              {i < steps.length - 1 && <span className="h-px w-6 bg-line" />}
+            </div>
           ))}
         </div>
 
         {step === "informations" && (
           <div className="flex flex-col gap-4">
+            <h1 className="font-editorial text-2xl text-paper">Vos informations</h1>
             <Field label="Nom complet" value={form.customerName} onChange={(v) => update("customerName", v)} />
             <Field label="Email" type="email" value={form.customerEmail} onChange={(v) => update("customerEmail", v)} />
             <button
               onClick={() => setStep("livraison")}
               disabled={!form.customerName || !form.customerEmail}
-              className="mt-4 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink disabled:opacity-30"
+              className="mt-4 bg-blood py-4 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90 disabled:opacity-30"
             >
               Continuer
             </button>
@@ -103,10 +127,11 @@ export default function CheckoutPage() {
 
         {step === "livraison" && (
           <div className="flex flex-col gap-4">
+            <h1 className="font-editorial text-2xl text-paper">Livraison</h1>
             <Field label="Adresse" value={form.line1} onChange={(v) => update("line1", v)} />
             <div className="grid grid-cols-2 gap-4">
               <Field label="Ville" value={form.city} onChange={(v) => update("city", v)} />
-              <Field label="Code postal" value={form.postalCode} onChange={(v) => update("postalCode", v)} />
+              <Field label="Code postal (optionnel)" value={form.postalCode} onChange={(v) => update("postalCode", v)} required={false} />
             </div>
             <Field label="Pays" value={form.country} onChange={(v) => update("country", v)} />
             <Field label="Téléphone (optionnel)" value={form.phone} onChange={(v) => update("phone", v)} required={false} />
@@ -116,8 +141,8 @@ export default function CheckoutPage() {
               </button>
               <button
                 onClick={() => setStep("recapitulatif")}
-                disabled={!form.line1 || !form.city || !form.postalCode}
-                className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink disabled:opacity-30"
+                disabled={!form.line1 || !form.city}
+                className="flex-1 bg-blood py-4 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90 disabled:opacity-30"
               >
                 Continuer
               </button>
@@ -127,6 +152,7 @@ export default function CheckoutPage() {
 
         {step === "recapitulatif" && (
           <div className="flex flex-col gap-6">
+            <h1 className="font-editorial text-2xl text-paper">Récapitulatif</h1>
             <div>
               <p className="text-xs uppercase tracking-widest2 text-paper/40">Articles</p>
               <ul className="mt-3 divide-y divide-line">
@@ -161,7 +187,7 @@ export default function CheckoutPage() {
               <button
                 onClick={submitOrder}
                 disabled={submitting}
-                className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink disabled:opacity-50"
+                className="flex-1 bg-blood py-4 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90 disabled:opacity-50"
               >
                 {submitting ? "Envoi…" : "Confirmer la commande"}
               </button>
@@ -194,7 +220,7 @@ function Field({
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-blood focus:outline-none"
       />
     </label>
   );

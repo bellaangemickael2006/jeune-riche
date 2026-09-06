@@ -61,6 +61,14 @@ export const useCart = create<CartState>()(
       total: () => get().lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0),
       count: () => get().lines.reduce((sum, l) => sum + l.quantity, 0),
     }),
-    { name: "jeune-riche-cart" }
+    {
+      name: "jeune-riche-cart",
+      // La réhydratation automatique se ferait de façon synchrone dès le
+      // premier rendu client, avant que React n'ait eu le temps de
+      // comparer au HTML serveur (qui, lui, ne connaît jamais le panier
+      // persisté) — d'où une erreur d'hydratation systématique. On la
+      // déclenche manuellement après le montage via StoreHydration.
+      skipHydration: true,
+    }
   )
 );

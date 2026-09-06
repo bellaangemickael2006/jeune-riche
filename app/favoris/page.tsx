@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useWishlist } from "@/store/wishlist";
 import ProductCard from "@/components/catalogue/ProductCard";
+import EmptyState from "@/components/ui/EmptyState";
 import type { ProductCardData } from "@/types";
 
 export default function FavorisPage() {
@@ -29,12 +30,13 @@ export default function FavorisPage() {
 
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
-      <h1 className="font-display text-4xl uppercase text-paper md:text-6xl">Favoris</h1>
+      <h1 className="font-editorial text-4xl text-paper md:text-6xl">Favoris</h1>
 
       {!loading && products.length === 0 && (
-        <div className="mt-16 flex min-h-[30vh] flex-col items-center justify-center gap-2 border border-line text-center">
-          <p className="text-paper/60">Aucun favori pour le moment.</p>
-        </div>
+        <EmptyState
+          message="Aucun favori pour le moment."
+          cta={{ label: "Voir le catalogue", href: "/catalogue" }}
+        />
       )}
 
       {products.length > 0 && (

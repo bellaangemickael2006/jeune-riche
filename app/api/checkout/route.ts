@@ -15,7 +15,7 @@ const schema = z.object({
   shippingAddress: z.object({
     line1: z.string().min(1),
     city: z.string().min(1),
-    postalCode: z.string().min(1),
+    postalCode: z.string().optional(),
     country: z.string().min(1),
     phone: z.string().optional(),
   }),

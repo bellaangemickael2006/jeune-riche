@@ -21,6 +21,10 @@ export const useWishlist = create<WishlistState>()(
         })),
       has: (slug) => get().slugs.includes(slug),
     }),
-    { name: "jeune-riche-wishlist" }
+    {
+      name: "jeune-riche-wishlist",
+      // Voir le commentaire équivalent dans store/cart.ts.
+      skipHydration: true,
+    }
   )
 );

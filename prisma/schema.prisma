@@ -123,6 +123,7 @@ model ProductImage {
   type      ImageType
   url       String
   alt       String
+  color     String? // rattache l'image à une variante couleur réelle (ex. "Noir") pour le changement de rendu visuel au clic sur un nuancier ; null si le produit n'existe qu'en une seule couleur
   sortOrder Int       @default(0)
   isPrimary Boolean   @default(false)
 

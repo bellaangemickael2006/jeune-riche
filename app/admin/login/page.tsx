@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -46,8 +47,15 @@ function AdminLoginForm() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-ink px-5">
       <form onSubmit={handleSubmit} className="w-full max-w-sm border border-line p-8">
-        <h1 className="font-display text-xl uppercase text-paper">Administration</h1>
-        <p className="mt-1 text-xs text-paper/40">JEUNE RICHE</p>
+        <Image
+          src="/images/logo/logo-transparent.png"
+          alt="JEUNE RICHE"
+          width={100}
+          height={100}
+          className="mx-auto h-10 w-10 object-contain"
+        />
+        <h1 className="mt-4 text-center font-editorial text-2xl text-paper">Administration</h1>
+        <p className="mt-1 text-center text-xs text-paper/40">JEUNE RICHE</p>
 
         {erreur === "acces_refuse" && (
           <p className="mt-4 border border-blood/40 bg-blood/10 px-3 py-2 text-xs text-blood">
@@ -74,7 +82,7 @@ function AdminLoginForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-blood focus:outline-none"
           />
         </label>
         <label className="mt-4 block">
@@ -84,13 +92,13 @@ function AdminLoginForm() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-blood focus:outline-none"
           />
         </label>
         <button
           type="submit"
           disabled={loading}
-          className="mt-6 w-full bg-paper py-3 text-xs uppercase tracking-widest2 text-ink disabled:opacity-50"
+          className="mt-6 w-full bg-blood py-3 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90 disabled:opacity-50"
         >
           {loading ? "Connexion…" : "Se connecter"}
         </button>

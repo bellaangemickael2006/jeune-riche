@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import EmptyState from "@/components/ui/EmptyState";
 
 export const metadata: Metadata = { title: "Drops" };
 
@@ -24,12 +25,13 @@ export default async function DropsPage() {
 
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
-      <h1 className="font-display text-4xl uppercase text-paper md:text-6xl">Drops</h1>
+      <h1 className="font-editorial text-4xl text-paper md:text-6xl">Drops</h1>
 
       {drops.length === 0 ? (
-        <div className="mt-16 flex min-h-[30vh] flex-col items-center justify-center gap-2 border border-line text-center">
-          <p className="text-paper/60">Aucun drop actuellement.</p>
-        </div>
+        <EmptyState
+          message="Aucun drop pour le moment — le prochain sera annoncé ici."
+          cta={{ label: "Voir le catalogue", href: "/catalogue" }}
+        />
       ) : (
         <ul className="mt-12 divide-y divide-line">
           {drops.map((d) => (

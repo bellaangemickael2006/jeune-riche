@@ -8,7 +8,17 @@ export default function ContactPage() {
     <PlaceholderPage
       eyebrow="Contact"
       title="Nous contacter"
-      message="Nos coordonnées officielles seront publiées ici prochainement."
+      message="Le plus rapide pour nous joindre reste WhatsApp — nous répondons directement."
+      action={
+        <a
+          href="https://wa.me/2250777585367"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border border-blood px-6 py-3 text-xs uppercase tracking-widest2 text-paper hover:bg-blood"
+        >
+          Écrire sur WhatsApp
+        </a>
+      }
     />
   );
 }

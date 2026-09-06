@@ -14,6 +14,8 @@ export default function AddToCart({
   variants,
   personalizationEnabled,
   personalizationMaxLen,
+  color: controlledColor,
+  onColorChange,
 }: {
   productSlug: string;
   productName: string;
@@ -22,9 +24,15 @@ export default function AddToCart({
   variants: Variant[];
   personalizationEnabled: boolean;
   personalizationMaxLen: number;
+  /** Couleur pilotée par un parent (ex. pour synchroniser la galerie photo).
+   * Si omis, le composant gère sa propre sélection en interne. */
+  color?: string;
+  onColorChange?: (color: string) => void;
 }) {
   const colors = useMemo(() => Array.from(new Set(variants.map((v) => v.color))), [variants]);
-  const [color, setColor] = useState(colors[0] ?? "");
+  const [internalColor, setInternalColor] = useState(colors[0] ?? "");
+  const color = controlledColor ?? internalColor;
+  const setColor = onColorChange ?? setInternalColor;
   const sizesForColor = useMemo(
     () => variants.filter((v) => v.color === color),
     [variants, color]
