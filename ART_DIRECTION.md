@@ -32,6 +32,21 @@ Pas de dégradé, pas de couleur additionnelle. Palette actuelle : noir / blanc 
 
 Deux polices maximum par écran (une display/UI, une éditoriale) — jamais les deux mêmes rôles. Le wordmark du logo n'est jamais recomposé en CSS — toujours l'image fournie.
 
+### 3bis. Échelle typographique (design system)
+
+Cinq rôles nommés, disponibles comme tailles Tailwind (`text-label`, `text-caption`, `text-body`, `text-heading`, `text-heading-lg`, `text-display`) en plus des tailles Tailwind standard — additif, rien n'est retiré. Un composant reconstruit doit utiliser un de ces rôles plutôt qu'une taille arbitraire ad hoc.
+
+| Rôle | Taille | Police associée | Usage |
+|---|---|---|---|
+| `label` | 11px, majuscules, `tracking-widest2` | `font-body` | Eyebrows, nav, badges, méta |
+| `caption` | 13px | `font-body` | Prix, infos secondaires |
+| `body` | 15px | `font-body` | Paragraphes, descriptions |
+| `heading` | 28px | `font-editorial` | Titres de section |
+| `heading-lg` | 44px | `font-editorial` | H1 de page |
+| `display` | 56px | `font-display` | Wordmark UI, très grands titres UI stricte |
+
+Le hero (titre `Jeune Riche` en `vw`) reste une exception assumée : un display responsive à l'échelle du viewport, pas un rôle de grille de contenu.
+
 ## 4. Vêtements réels (inventaire vérifié)
 
 | Catégorie | Coloris confirmé(s) | Fichiers sources |

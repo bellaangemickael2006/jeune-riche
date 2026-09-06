@@ -19,6 +19,19 @@ const config: Config = {
         body: ["var(--font-body)", "sans-serif"],
         mono: ["var(--font-mono)", "monospace"],
       },
+      // Échelle typographique du design system (voir ART_DIRECTION.md §3bis).
+      // Nommage sémantique par rôle, pas par taille — un "label" reste un
+      // label si l'échelle change un jour. N'écrase aucune taille Tailwind
+      // par défaut (text-xs, text-3xl, etc. restent disponibles) : usage
+      // additif pour les composants reconstruits progressivement.
+      fontSize: {
+        label: ["0.6875rem", { lineHeight: "1", letterSpacing: "0.22em" }],
+        caption: ["0.8125rem", { lineHeight: "1.4" }],
+        body: ["0.9375rem", { lineHeight: "1.65" }],
+        heading: ["1.75rem", { lineHeight: "1.15" }],
+        "heading-lg": ["2.75rem", { lineHeight: "1.05" }],
+        display: ["3.5rem", { lineHeight: "0.95" }],
+      },
       letterSpacing: {
         widest2: "0.22em",
       },

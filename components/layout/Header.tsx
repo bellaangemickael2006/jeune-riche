@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/store/cart";
 import Magnetic from "@/components/ui/Magnetic";
+import { cn } from "@/lib/utils";
 
 const NAV = [
-  { label: "Catalogue", href: "/catalogue" },
+  { label: "Collection", href: "/catalogue" },
   { label: "Manifeste", href: "/manifeste" },
   { label: "Drops", href: "/drops" },
   { label: "À propos", href: "/a-propos" },
@@ -15,68 +17,116 @@ const NAV = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const count = useCart((s) => s.count());
   const openCart = useCart((s) => s.open);
 
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 8);
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!searchOpen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setSearchOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [searchOpen]);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-40 flex items-center justify-between border-b border-line bg-ink px-5 py-4 md:px-10 md:py-5">
-      <Link href="/" className="flex items-center" aria-label="JEUNE RICHE — accueil">
-        <Image
-          src="/images/logo/logo-transparent.png"
-          alt="JEUNE RICHE"
-          width={200}
-          height={200}
-          className="h-16 w-16 object-contain md:h-20 md:w-20"
-          priority
-        />
-      </Link>
-
-      <nav className="hidden items-center gap-9 md:flex">
-        {NAV.map((item) => (
-          <Magnetic key={item.href} strength={0.5}>
-            <Link
-              href={item.href}
-              className="inline-block font-body text-[13px] uppercase tracking-widest2 text-paper/80 transition-colors duration-300 ease-editorial hover:text-paper"
-            >
-              {item.label}
-            </Link>
-          </Magnetic>
-        ))}
-      </nav>
-
-      <div className="flex items-center gap-5">
-        <Link
-          href="/favoris"
-          className="hidden font-body text-[13px] uppercase tracking-widest2 text-paper/80 transition-colors hover:text-paper md:block"
-        >
-          Favoris
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-40 border-b bg-ink transition-[padding,box-shadow] duration-300 ease-editorial",
+        scrolled ? "border-line py-3 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.6)] md:py-3.5" : "border-line py-4 md:py-5"
+      )}
+    >
+      <div className="flex items-center justify-between px-5 md:px-10">
+        <Link href="/" className="flex items-center" aria-label="JEUNE RICHE — accueil">
+          <Image
+            src="/images/logo/logo-transparent.png"
+            alt="JEUNE RICHE"
+            width={200}
+            height={200}
+            className={cn(
+              "object-contain transition-[height,width] duration-300 ease-editorial",
+              scrolled ? "h-12 w-12 md:h-14 md:w-14" : "h-16 w-16 md:h-20 md:w-20"
+            )}
+            priority
+          />
         </Link>
-        <Link
-          href="/compte"
-          className="hidden font-body text-[13px] uppercase tracking-widest2 text-paper/80 transition-colors hover:text-paper md:block"
-        >
-          Compte
-        </Link>
-        <button
-          onClick={openCart}
-          className="font-body text-[13px] uppercase tracking-widest2 text-paper/80 transition-colors hover:text-paper"
-          aria-label={`Panier, ${count} article${count > 1 ? "s" : ""}`}
-        >
-          Panier{count > 0 ? ` (${count})` : ""}
-        </button>
-        <button
-          className="text-paper md:hidden"
-          onClick={() => setMenuOpen((v) => !v)}
-          aria-label="Menu"
-          aria-expanded={menuOpen}
-        >
-          <span className="block h-px w-6 bg-paper" />
-          <span className="mt-1.5 block h-px w-6 bg-paper" />
-        </button>
+
+        <nav className="hidden items-center gap-9 md:flex">
+          {NAV.map((item) => (
+            <Magnetic key={item.href} strength={0.5}>
+              <Link
+                href={item.href}
+                className="inline-block text-label text-paper/80 transition-colors duration-300 ease-editorial hover:text-paper"
+              >
+                {item.label}
+              </Link>
+            </Magnetic>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-5">
+          <button
+            onClick={() => setSearchOpen((v) => !v)}
+            className="hidden text-paper/80 transition-colors hover:text-paper md:block"
+            aria-label="Rechercher"
+            aria-expanded={searchOpen}
+          >
+            <SearchIcon />
+          </button>
+          <Link
+            href="/favoris"
+            className="hidden text-label text-paper/80 transition-colors hover:text-paper md:block"
+          >
+            Favoris
+          </Link>
+          <Link
+            href="/compte"
+            className="hidden text-label text-paper/80 transition-colors hover:text-paper md:block"
+          >
+            Compte
+          </Link>
+          <button
+            onClick={openCart}
+            className="text-label text-paper/80 transition-colors hover:text-paper"
+            aria-label={`Panier, ${count} article${count > 1 ? "s" : ""}`}
+          >
+            Panier{count > 0 ? ` (${count})` : ""}
+          </button>
+          <button
+            onClick={() => setSearchOpen((v) => !v)}
+            className="text-paper md:hidden"
+            aria-label="Rechercher"
+            aria-expanded={searchOpen}
+          >
+            <SearchIcon />
+          </button>
+          <button
+            className="text-paper md:hidden"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label="Menu"
+            aria-expanded={menuOpen}
+          >
+            <span className="block h-px w-6 bg-paper" />
+            <span className="mt-1.5 block h-px w-6 bg-paper" />
+          </button>
+        </div>
       </div>
 
+      {searchOpen && <SearchPanel onClose={() => setSearchOpen(false)} />}
+
       {menuOpen && (
-        <div className="absolute inset-x-0 top-full flex flex-col gap-6 bg-ink px-5 py-8 md:hidden">
+        <div className="absolute inset-x-0 top-full flex flex-col gap-6 border-t border-line bg-ink px-5 py-8 md:hidden">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -87,11 +137,67 @@ export default function Header() {
               {item.label}
             </Link>
           ))}
-          <Link href="/compte" onClick={() => setMenuOpen(false)} className="text-sm uppercase tracking-widest2 text-paper/70">
+          <Link href="/favoris" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
+            Favoris
+          </Link>
+          <Link href="/compte" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
             Compte
           </Link>
         </div>
       )}
     </header>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.3" />
+      <line x1="12.4" y1="12.4" x2="17" y2="17" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function SearchPanel({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
+  const [value, setValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const q = value.trim();
+    if (!q) return;
+    router.push(`/catalogue?q=${encodeURIComponent(q)}`);
+    onClose();
+  }
+
+  return (
+    <div className="border-t border-line bg-ink px-5 py-6 md:px-10 md:py-8">
+      <form onSubmit={handleSubmit} className="mx-auto flex max-w-2xl items-end gap-4">
+        <div className="flex-1">
+          <p className="text-label text-paper/40">Rechercher</p>
+          <input
+            ref={inputRef}
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            placeholder="T-shirt, jogger, casquette…"
+            className="mt-2 w-full border-b border-line bg-transparent py-2 font-editorial text-heading text-paper placeholder:text-paper/25 focus:border-paper focus:outline-none"
+          />
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Fermer la recherche"
+          className="pb-3 text-label text-paper/50 transition-colors hover:text-paper"
+        >
+          Fermer
+        </button>
+      </form>
+    </div>
   );
 }
