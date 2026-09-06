@@ -5,12 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Franc CFA (XOF) — devise réelle de la marque (Afrique de l'Ouest francophone).
 export function formatPrice(value: number | string | null | undefined): string {
   if (value === null || value === undefined) return "Prix à définir";
   const n = typeof value === "string" ? Number(value) : value;
   return new Intl.NumberFormat("fr-FR", {
     style: "currency",
-    currency: "EUR",
+    currency: "XOF",
     maximumFractionDigits: 0,
   }).format(n);
 }
