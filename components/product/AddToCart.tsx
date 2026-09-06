@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useCart } from "@/store/cart";
-import { formatPrice, sanitizePersonalization, swatchColor, cn } from "@/lib/utils";
+import { sanitizePersonalization, swatchColor, cn } from "@/lib/utils";
 
 type Variant = { id: string; size: string; color: string; stock: number };
 
@@ -65,11 +65,9 @@ export default function AddToCart({
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="font-editorial text-2xl text-paper">{formatPrice(price)}</p>
-
       {colors.length > 0 && (
         <div>
-          <p className="mb-2 text-xs uppercase tracking-widest2 text-paper/50">Couleur</p>
+          <p className="mb-2 text-label text-paper/50">Couleur</p>
           <div className="flex flex-wrap gap-4">
             {colors.map((c) => (
               <button
@@ -100,7 +98,7 @@ export default function AddToCart({
 
       {sizesForColor.length > 0 && (
         <div>
-          <label htmlFor="size-select" className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
+          <label htmlFor="size-select" className="mb-2 block text-label text-paper/50">
             Taille
           </label>
           <div className="flex gap-3">
@@ -139,7 +137,7 @@ export default function AddToCart({
 
       {personalizationEnabled && (
         <div>
-          <p className="mb-2 text-xs uppercase tracking-widest2 text-paper/50">
+          <p className="mb-2 text-label text-paper/50">
             Personnalisation (optionnelle)
           </p>
           <input
@@ -159,9 +157,11 @@ export default function AddToCart({
             </span>
           </div>
           {personalization && (
-            <div className="mt-4 border border-line bg-line/30 px-4 py-6 text-center">
-              <p className="text-[10px] uppercase tracking-widest2 text-paper/40">Aperçu</p>
-              <p className="mt-2 font-display text-xl uppercase text-paper">{personalization}</p>
+            <div className="mt-4 flex flex-col items-center gap-3 border border-line bg-line/20 px-6 py-10">
+              <p className="text-label text-paper/30">Aperçu de la broderie</p>
+              <p className="font-display text-display uppercase leading-none text-paper">
+                {personalization}
+              </p>
             </div>
           )}
         </div>

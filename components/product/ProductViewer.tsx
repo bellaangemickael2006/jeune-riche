@@ -6,6 +6,7 @@ import AddToCart from "@/components/product/AddToCart";
 import SizeGuide from "@/components/product/SizeGuide";
 import Reviews from "@/components/product/Reviews";
 import WishlistButton from "@/components/product/WishlistButton";
+import { formatPrice } from "@/lib/utils";
 import type { TechnicalDetail } from "@/lib/data/product-details";
 
 type Img = { url: string; alt: string; type: string; color: string | null };
@@ -57,13 +58,16 @@ export default function ProductViewer({
   const primaryImage = galleryImages[0]?.url ?? "";
 
   return (
-    <div className="grid gap-10 md:grid-cols-2 md:gap-16">
-      <Gallery key={color} images={galleryImages} productName={productName} />
+    <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-start md:gap-16 lg:grid-cols-[1.35fr_1fr]">
+      <div className="md:sticky md:top-32">
+        <Gallery key={color} images={galleryImages} productName={productName} />
+      </div>
 
       <div className="max-w-md">
-        <p className="text-xs uppercase tracking-widest2 text-paper/40">{categoryName}</p>
-        <h1 className="mt-2 font-editorial text-3xl text-paper md:text-4xl">{productName}</h1>
-        {description && <p className="mt-4 text-sm leading-relaxed text-paper/60">{description}</p>}
+        <p className="text-label text-paper/40">{categoryName}</p>
+        <h1 className="mt-3 font-editorial text-heading text-paper md:text-heading-lg">{productName}</h1>
+        <p className="mt-4 font-editorial text-heading text-paper">{formatPrice(price)}</p>
+        {description && <p className="mt-4 text-body leading-relaxed text-paper/60">{description}</p>}
 
         <div className="mt-8">
           <AddToCart
@@ -84,10 +88,10 @@ export default function ProductViewer({
         {sizeGuideRows ? <SizeGuide rows={sizeGuideRows as never} /> : null}
 
         <div className="mt-10 border-t border-line pt-6">
-          <p className="text-xs uppercase tracking-widest2 text-paper/50">Détails</p>
+          <p className="text-label text-paper/50">Détails</p>
           <dl className="mt-4 flex flex-col gap-3">
             {details.map((d) => (
-              <div key={d.label} className="flex justify-between gap-6 text-sm">
+              <div key={d.label} className="flex justify-between gap-6 text-caption">
                 <dt className="text-paper/40">{d.label}</dt>
                 <dd className="text-right text-paper/80">{d.value}</dd>
               </div>

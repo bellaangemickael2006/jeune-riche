@@ -51,11 +51,11 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
           alt={current.alt || productName}
           fill
           priority
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-contain p-8"
+          sizes="(max-width: 768px) 100vw, 55vw"
+          className="object-contain p-6"
         />
         {current.type === "MOCKUP" && (
-          <span className="absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/80">
+          <span className="absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-label text-paper/80">
             Référence de design — photo produit à venir
           </span>
         )}

@@ -71,9 +71,9 @@ export default async function ProductPage({
       />
 
       {crossSell.length > 0 && (
-        <section className="mx-auto mt-24 max-w-6xl">
-          <h2 className="font-editorial text-2xl text-paper md:text-3xl">Compléter la tenue</h2>
-          <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
+        <section className="mx-auto mt-32 max-w-6xl border-t border-line pt-16">
+          <h2 className="font-editorial text-heading text-paper">Compléter la tenue</h2>
+          <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-4">
             {crossSell.map((p, i) => (
               <ProductCard key={p.id} product={p} index={i} />
             ))}
