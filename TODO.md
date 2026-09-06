@@ -2,16 +2,16 @@
 
 ## Bloquant pour un premier déploiement réel
 
-1. **Créer le projet Supabase** (Postgres + Auth) et remplir `.env.local` à partir de `.env.example`.
-2. **Exécuter les migrations** : `npx prisma migrate dev --name init`.
-3. **Exécuter le seed de développement** : `npm run seed` (crée les 6 catégories et les 6 produits réels, non publiés, prix à définir — voir `prisma/seed.ts`).
-4. **Créer un compte admin** : s'inscrire via Supabase Auth (ou `supabase.auth.admin.createUser`), puis en base :
+1. ✅ **Projet Supabase créé** : `jeune-riche-ecommerce` (org `jeuneriche`, région eu-west-1). Un premier projet réutilisé par erreur ("jeuneriche projet") contenait déjà des données réelles d'une tout autre activité (contacts/formations) — abandonné intact, jamais touché, pour ne rien écraser.
+2. ✅ **Migrations appliquées** (`20260906133710_init`) sur la base réelle.
+3. ✅ **Seed de développement exécuté** — 6 catégories et 6 produits réels créés, non publiés, prix à définir.
+4. ✅ **Variables d'environnement configurées** dans `.env.local`/`.env` (local) et sur Vercel (Production) : `DATABASE_URL`, `DIRECT_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `AUTH_SECRET`, `NEXT_PUBLIC_SITE_URL`.
+5. **Créer un compte admin** : s'inscrire via `/compte` sur le site, puis en base :
    ```sql
-   insert into users (id, "supabaseId", email, role)
-   values (gen_random_uuid(), '<uuid Supabase Auth>', '<email>', 'ADMIN');
+   update users set role = 'ADMIN' where email = '<email utilisé à l inscription>';
    ```
-5. **Saisir les vrais prix et stocks** dans `/admin/produits`, puis publier chaque produit.
-6. **Choisir et intégrer un prestataire de paiement** (Stripe ou solution locale) — le tunnel de checkout crée aujourd'hui la commande sans encaisser, ce qui est explicitement indiqué au client. Ne jamais afficher "paiement sécurisé" tant que ce n'est pas branché.
+6. **Saisir les vrais prix et stocks** dans `/admin/produits`, puis publier chaque produit.
+7. **Choisir et intégrer un prestataire de paiement** (Stripe ou solution locale) — le tunnel de checkout crée aujourd'hui la commande sans encaisser, ce qui est explicitement indiqué au client. Ne jamais afficher "paiement sécurisé" tant que ce n'est pas branché.
 
 ## Assets manquants (documenté, non inventé)
 

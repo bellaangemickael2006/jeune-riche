@@ -56,6 +56,13 @@ Dernière mise à jour : 2026-09-04 (session nocturne autonome).
 
 **Étape 12 — QA** — partiellement fait. Build de production vérifié. Navigation testée via navigateur réel (DOM/accessibilité/réseau/console) : homepage, catalogue (état vide), fiche produit (404 propre), manifeste, admin (redirection de sécurité). Voir [TESTS.md](TESTS.md) pour le détail et les limites rencontrées.
 
+## Supabase — provisionné
+
+Projet dédié `jeune-riche-ecommerce` créé (org `jeuneriche`, eu-west-1), migrations appliquées,
+seed exécuté, variables d'environnement configurées en local et sur Vercel (Production). Voir
+TODO.md pour l'historique complet et la création du premier compte admin.
+
 ## Ce qui reste — voir [TODO.md](TODO.md)
 
-Le plus important : provisionner Supabase (DB + Auth), exécuter les migrations, exécuter le seed de développement, créer un premier compte admin, puis saisir de vrais prix/stocks pour publier les 6 produits.
+Le plus important maintenant : créer un premier compte admin (inscription + promotion manuelle en
+base), puis saisir de vrais prix/stocks pour publier les 6 produits.
