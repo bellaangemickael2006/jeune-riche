@@ -3,7 +3,6 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, orderConfirmationEmail } from "@/lib/email";
 import { getStoreSettings } from "@/lib/data/settings";
-import { createClient } from "@/lib/supabase/server";
 
 const lineSchema = z.object({
   variantId: z.string(),
@@ -32,23 +31,6 @@ export async function POST(req: NextRequest) {
 
   const { customerName, customerEmail, shippingAddress, lines } = parsed.data;
   const orderNumber = `JR-${Date.now().toString(36).toUpperCase()}`;
-
-  // Résolu côté serveur depuis le cookie de session — jamais depuis un champ
-  // envoyé par le client — pour rattacher la commande au compte connecté
-  // (historique dans /compte) et mettre à jour son adresse enregistrée.
-  let loggedInUserId: string | null = null;
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-    if (authUser) {
-      const dbUser = await prisma.user.findUnique({ where: { supabaseId: authUser.id } });
-      if (dbUser) loggedInUserId = dbUser.id;
-    }
-  } catch {
-    // pas de session ou Supabase indisponible : commande traitée comme invité
-  }
 
   try {
     // Le prix envoyé par le navigateur n'est jamais fiable : on ne fait
@@ -116,23 +98,9 @@ export async function POST(req: NextRequest) {
           subtotal,
           shippingCost,
           total,
-          userId: loggedInUserId,
           items: { create: resolvedLines },
         },
       });
-
-      if (loggedInUserId) {
-        await tx.user.update({
-          where: { id: loggedInUserId },
-          data: {
-            addressLine1: shippingAddress.line1,
-            addressCity: shippingAddress.city,
-            addressPostalCode: shippingAddress.postalCode || null,
-            addressCountry: shippingAddress.country,
-            addressPhone: shippingAddress.phone || null,
-          },
-        });
-      }
 
       for (const line of resolvedLines) {
         await tx.productVariant.update({

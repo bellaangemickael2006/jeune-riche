@@ -4,13 +4,11 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
-import ImageZoomModal from "@/components/product/ImageZoomModal";
 
 type Img = { url: string; alt: string; type: string };
 
 export default function Gallery({ images, productName }: { images: Img[]; productName: string }) {
   const [active, setActive] = useState(0);
-  const [zoomOpen, setZoomOpen] = useState(false);
   const current = images[active];
   const ref = useRef<HTMLDivElement>(null);
 
@@ -72,16 +70,7 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
             Référence de design — photo produit à venir
           </span>
         )}
-        <button
-          onClick={() => setZoomOpen(true)}
-          aria-label="Zoomer sur la photo"
-          className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center bg-ink/85 text-paper/80 transition-colors hover:text-paper"
-        >
-          <ZoomIcon />
-        </button>
       </motion.div>
-
-      <ImageZoomModal image={current} open={zoomOpen} onClose={() => setZoomOpen(false)} />
       {images.length > 1 && (
         <div className="mt-3 grid grid-cols-5 gap-2">
           {images.map((img, i) => (
@@ -100,16 +89,5 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
         </div>
       )}
     </div>
-  );
-}
-
-function ZoomIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <circle cx="7" cy="7" r="5.2" stroke="currentColor" strokeWidth="1.3" />
-      <line x1="10.8" y1="10.8" x2="15" y2="15" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-      <line x1="7" y1="4.5" x2="7" y2="9.5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
-      <line x1="4.5" y1="7" x2="9.5" y2="7" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" />
-    </svg>
   );
 }

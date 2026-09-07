@@ -4,7 +4,6 @@ import { getProductBySlug, getPublishedProducts } from "@/lib/data/products";
 import { getTechnicalDetails } from "@/lib/data/product-details";
 import ProductViewer from "@/components/product/ProductViewer";
 import ProductCard from "@/components/catalogue/ProductCard";
-import RecentlyViewed from "@/components/product/RecentlyViewed";
 import type { ProductCardData } from "@/types";
 
 export async function generateMetadata({
@@ -81,8 +80,6 @@ export default async function ProductPage({
           </div>
         </section>
       )}
-
-      <RecentlyViewed excludeSlug={product.slug} />
     </div>
   );
 }
