@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Fraunces, Inter } from "next/font/google";
+import { MotionConfig } from "framer-motion";
 import "./globals.css";
 import SiteChrome from "@/components/providers/SiteChrome";
 import StoreHydration from "@/components/providers/StoreHydration";
@@ -49,7 +50,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr" className={`${anton.variable} ${fraunces.variable} ${inter.variable}`}>
       <body className="bg-ink font-body text-paper antialiased">
         <StoreHydration />
-        <SiteChrome>{children}</SiteChrome>
+        <MotionConfig reducedMotion="user">
+          <SiteChrome>{children}</SiteChrome>
+        </MotionConfig>
       </body>
     </html>
   );
