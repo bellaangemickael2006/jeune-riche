@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getPublishedProducts } from "@/lib/data/products";
 import { getTechnicalDetails } from "@/lib/data/product-details";
+import { createClient } from "@/lib/supabase/server";
 import ProductViewer from "@/components/product/ProductViewer";
 import ProductCard from "@/components/catalogue/ProductCard";
 import RecentlyViewed from "@/components/product/RecentlyViewed";
@@ -35,6 +36,17 @@ export default async function ProductPage({
   if (!product) notFound();
   const allProducts = await getPublishedProducts();
 
+  let isLoggedIn = false;
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    isLoggedIn = !!user;
+  } catch {
+    // pas connecté : formulaire d'avis affiche l'invite de connexion
+  }
+
   const images = product.images.map((i) => ({ url: i.url, alt: i.alt, type: i.type, color: i.color }));
   const details = getTechnicalDetails(product.category.slug);
 
@@ -54,6 +66,7 @@ export default async function ProductPage({
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
       <ProductViewer
         images={images}
+        productId={product.id}
         productName={product.name}
         productSlug={product.slug}
         categoryName={product.category.name}
@@ -70,6 +83,7 @@ export default async function ProductPage({
         sizeGuideRows={product.sizeGuide?.rows}
         details={details}
         reviews={product.reviews}
+        isLoggedIn={isLoggedIn}
       />
 
       {crossSell.length > 0 && (

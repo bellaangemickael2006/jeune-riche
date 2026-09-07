@@ -5,6 +5,7 @@ import Gallery from "@/components/product/Gallery";
 import AddToCart from "@/components/product/AddToCart";
 import SizeGuide from "@/components/product/SizeGuide";
 import Reviews from "@/components/product/Reviews";
+import ReviewForm from "@/components/product/ReviewForm";
 import WishlistButton from "@/components/product/WishlistButton";
 import { formatPrice } from "@/lib/utils";
 import { trackProductView } from "@/lib/recentlyViewed";
@@ -16,6 +17,7 @@ type ReviewType = Parameters<typeof Reviews>[0]["reviews"];
 
 export default function ProductViewer({
   images,
+  productId,
   productName,
   productSlug,
   categoryName,
@@ -27,8 +29,10 @@ export default function ProductViewer({
   sizeGuideRows,
   details,
   reviews,
+  isLoggedIn,
 }: {
   images: Img[];
+  productId: string;
   productName: string;
   productSlug: string;
   categoryName: string;
@@ -40,6 +44,7 @@ export default function ProductViewer({
   sizeGuideRows: unknown;
   details: TechnicalDetail[];
   reviews: ReviewType;
+  isLoggedIn: boolean;
 }) {
   const colors = useMemo(() => Array.from(new Set(variants.map((v) => v.color))), [variants]);
   const [color, setColor] = useState(colors[0] ?? "");
@@ -106,6 +111,7 @@ export default function ProductViewer({
         </div>
 
         <Reviews reviews={reviews} />
+        <ReviewForm productId={productId} productSlug={productSlug} isLoggedIn={isLoggedIn} />
       </div>
     </div>
   );
