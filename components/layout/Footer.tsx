@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import FadeIn from "@/components/ui/FadeIn";
 
 // Renseigner ici les URLs réelles dès qu'elles sont communiquées — tant
 // qu'un champ est vide, l'icône correspondante s'affiche sans lien plutôt
@@ -38,43 +38,52 @@ const COLUMNS = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-line bg-ink px-5 py-16 md:px-10 md:py-20">
-      <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-[1.2fr_repeat(3,1fr)]">
-        <div>
-          <Image
-            src="/images/logo/logo-transparent.png"
-            alt="JEUNE RICHE"
-            width={160}
-            height={160}
-            className="h-14 w-14 object-contain"
-          />
-          <p className="font-display mt-3 text-lg uppercase tracking-wide text-paper">Jeune Riche</p>
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-paper/50">
-            Newsletter — soyez informé des prochains drops.
-          </p>
-          <NewsletterForm />
-          <SocialLinks />
-        </div>
-        {COLUMNS.map((col) => (
-          <div key={col.title}>
-            <p className="font-body text-xs uppercase tracking-widest2 text-paper/40">{col.title}</p>
-            <ul className="mt-4 space-y-3">
-              {col.links.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-paper/70 transition-colors hover:text-paper"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+    <footer className="border-t border-line bg-ink">
+      {/* La dernière scène du site : le wordmark, seul, en très grand —
+          avant les liens utiles. Pas de logo graphique ici, le texte porte
+          la marque à lui seul. */}
+      <FadeIn className="overflow-hidden px-5 pt-20 md:px-10 md:pt-28">
+        <Link
+          href="/"
+          aria-label="JEUNE RICHE — accueil"
+          className="block font-display uppercase leading-[0.82] text-paper transition-opacity hover:opacity-80"
+        >
+          <span className="block text-[17vw] md:text-[13vw]">Jeune</span>
+          <span className="block text-[17vw] md:text-[13vw]">Riche</span>
+        </Link>
+      </FadeIn>
+
+      <div className="px-5 pb-16 pt-14 md:px-10 md:pb-20 md:pt-16">
+        <div className="grid gap-12 md:grid-cols-[1.2fr_repeat(3,1fr)]">
+          <div>
+            <p className="text-body max-w-xs text-paper/50">
+              Newsletter — soyez informé des prochains drops.
+            </p>
+            <NewsletterForm />
+            <SocialLinks />
           </div>
-        ))}
-      </div>
-      <div className="mx-auto mt-16 max-w-6xl border-t border-line pt-6 text-xs text-paper/30">
-        © {new Date().getFullYear()} Jeune Riche.
+          {COLUMNS.map((col) => (
+            <div key={col.title}>
+              <p className="text-label text-paper/40">{col.title}</p>
+              <ul className="mt-4 space-y-3">
+                {col.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-caption text-paper/70 transition-colors hover:text-paper"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="mt-16 flex flex-col gap-3 border-t border-line pt-6 text-caption text-paper/30 sm:flex-row sm:items-center sm:justify-between">
+          <span>© {new Date().getFullYear()} Jeune Riche.</span>
+          <span>Côte d&apos;Ivoire — Afrique de l&apos;Ouest</span>
+        </div>
       </div>
     </footer>
   );
@@ -141,11 +150,11 @@ function NewsletterForm() {
         name="email"
         required
         placeholder="Votre email"
-        className="w-full bg-transparent text-sm text-paper placeholder:text-paper/40 focus:outline-none"
+        className="w-full bg-transparent text-body text-paper placeholder:text-paper/40 focus:outline-none"
       />
       <button
         type="submit"
-        className="shrink-0 text-xs uppercase tracking-widest2 text-paper/70 transition-colors hover:text-paper"
+        className="shrink-0 text-label text-paper/70 transition-colors hover:text-paper"
       >
         Envoyer
       </button>
