@@ -7,10 +7,14 @@ import { createClient } from "@/lib/supabase/client";
 
 type Status = "checking" | "ready" | "invalid" | "submitting" | "done";
 
-// Le lien envoyé par resetPasswordForEmail redirige ici avec soit ?code=...
-// (flux PKCE, à échanger explicitement), soit un #access_token dans le hash
-// que le client Supabase détecte tout seul au montage (detectSessionInUrl) —
-// on gère les deux plutôt que de supposer lequel Supabase utilisera.
+// Le lien généré par auth.admin.generateLink redirige ici avec soit
+// ?code=... (flux PKCE, à échanger explicitement), soit #access_token=...
+// dans le FRAGMENT de l'URL (flux implicite — c'est celui que Supabase
+// utilise en pratique pour la récupération de mot de passe). Un premier
+// essai s'appuyait sur detectSessionInUrl pour parser le hash tout seul :
+// en pratique ça n'établissait jamais la session à temps, donc le lien
+// réel envoyé par email atterrissait toujours sur "lien invalide" — on lit
+// et on établit la session nous-mêmes dans les deux cas au lieu d'attendre.
 export default function ResetPasswordPage() {
   const router = useRouter();
   const [status, setStatus] = useState<Status>("checking");
@@ -21,37 +25,32 @@ export default function ResetPasswordPage() {
   useEffect(() => {
     const supabase = createClient();
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") {
-        setStatus("ready");
-      }
-    });
-
-    const code = new URL(window.location.href).searchParams.get("code");
-
     async function init() {
+      const url = new URL(window.location.href);
+      const code = url.searchParams.get("code");
       if (code) {
         const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
         setStatus(exchangeError ? "invalid" : "ready");
         return;
       }
-      const { data } = await supabase.auth.getSession();
-      if (data.session) {
-        setStatus("ready");
+
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      const accessToken = hashParams.get("access_token");
+      const refreshToken = hashParams.get("refresh_token");
+      if (accessToken && refreshToken) {
+        const { error: setSessionError } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        setStatus(setSessionError ? "invalid" : "ready");
         return;
       }
-      // Laisse une courte fenêtre au flux par hash (#access_token) pour
-      // s'établir avant de conclure que le lien est invalide ou expiré.
-      setTimeout(async () => {
-        const { data: retry } = await supabase.auth.getSession();
-        setStatus(retry.session ? "ready" : "invalid");
-      }, 1200);
+
+      const { data } = await supabase.auth.getSession();
+      setStatus(data.session ? "ready" : "invalid");
     }
 
     init();
-    return () => subscription.unsubscribe();
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
