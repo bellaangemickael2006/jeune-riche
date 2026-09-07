@@ -30,13 +30,13 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const [product, allProducts] = await Promise.all([getProductBySlug(slug), getPublishedProducts()]);
   if (!product) notFound();
 
   const images = product.images.map((i) => ({ url: i.url, alt: i.alt, type: i.type, color: i.color }));
   const details = getTechnicalDetails(product.category.slug);
 
-  const otherProducts = (await getPublishedProducts()).filter((p) => p.slug !== product.slug);
+  const otherProducts = allProducts.filter((p) => p.slug !== product.slug);
   const crossSell: ProductCardData[] = otherProducts.slice(0, 4).map((p) => ({
     id: p.id,
     slug: p.slug,
