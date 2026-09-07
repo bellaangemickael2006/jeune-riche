@@ -80,7 +80,10 @@ export default function Header() {
 
         <div className="flex items-center gap-5">
           <button
-            onClick={() => setSearchOpen((v) => !v)}
+            onClick={() => {
+              setSearchOpen((v) => !v);
+              setMenuOpen(false);
+            }}
             className="hidden text-paper/80 transition-colors hover:text-paper md:block"
             aria-label="Rechercher"
             aria-expanded={searchOpen}
@@ -100,14 +103,21 @@ export default function Header() {
             Compte
           </Link>
           <button
-            onClick={openCart}
+            onClick={() => {
+              setSearchOpen(false);
+              setMenuOpen(false);
+              openCart();
+            }}
             className="text-label text-paper/80 transition-colors hover:text-paper"
             aria-label={`Panier, ${count} article${count > 1 ? "s" : ""}`}
           >
             Panier{count > 0 ? ` (${count})` : ""}
           </button>
           <button
-            onClick={() => setSearchOpen((v) => !v)}
+            onClick={() => {
+              setSearchOpen((v) => !v);
+              setMenuOpen(false);
+            }}
             className="text-paper md:hidden"
             aria-label="Rechercher"
             aria-expanded={searchOpen}
@@ -116,7 +126,10 @@ export default function Header() {
           </button>
           <button
             className="text-paper md:hidden"
-            onClick={() => setMenuOpen((v) => !v)}
+            onClick={() => {
+              setMenuOpen((v) => !v);
+              setSearchOpen(false);
+            }}
             aria-label="Menu"
             aria-expanded={menuOpen}
           >
