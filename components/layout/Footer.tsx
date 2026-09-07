@@ -1,5 +1,6 @@
 import Link from "next/link";
 import FadeIn from "@/components/ui/FadeIn";
+import NewsletterForm from "@/components/layout/NewsletterForm";
 
 // Renseigner ici les URLs réelles dès qu'elles sont communiquées — tant
 // qu'un champ est vide, l'icône correspondante s'affiche sans lien plutôt
@@ -144,26 +145,3 @@ function SocialLinks() {
   );
 }
 
-function NewsletterForm() {
-  return (
-    <form
-      action="/api/newsletter"
-      method="POST"
-      className="mt-5 flex max-w-xs items-center border-b border-paper/30 pb-2"
-    >
-      <input
-        type="email"
-        name="email"
-        required
-        placeholder="Votre email"
-        className="w-full bg-transparent text-body text-paper placeholder:text-paper/40 focus:outline-none"
-      />
-      <button
-        type="submit"
-        className="shrink-0 text-label text-paper/70 transition-colors hover:text-paper"
-      >
-        Envoyer
-      </button>
-    </form>
-  );
-}
