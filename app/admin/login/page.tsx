@@ -17,18 +17,32 @@ function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const erreur = searchParams.get("erreur");
+  const [mode, setMode] = useState<"login" | "forgot">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setMessage(null);
 
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       setError("Supabase n'est pas encore configuré.");
+      setLoading(false);
+      return;
+    }
+
+    if (mode === "forgot") {
+      await fetch("/api/account/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setMessage("Si un compte existe avec cet email, un lien de réinitialisation vient d'être envoyé.");
       setLoading(false);
       return;
     }
@@ -54,7 +68,9 @@ function AdminLoginForm() {
           height={100}
           className="mx-auto h-10 w-10 object-contain"
         />
-        <h1 className="mt-4 text-center font-editorial text-2xl text-paper">Administration</h1>
+        <h1 className="mt-4 text-center font-editorial text-2xl text-paper">
+          {mode === "login" ? "Administration" : "Mot de passe oublié"}
+        </h1>
         <p className="mt-1 text-center text-xs text-paper/40">JEUNE RICHE</p>
 
         {erreur === "acces_refuse" && (
@@ -74,6 +90,7 @@ function AdminLoginForm() {
           </p>
         )}
         {error && <p className="mt-4 text-xs font-medium text-paper">{error}</p>}
+        {message && <p className="mt-4 text-xs text-paper/70">{message}</p>}
 
         <label className="mt-6 block">
           <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Email</span>
@@ -85,22 +102,49 @@ function AdminLoginForm() {
             className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
           />
         </label>
-        <label className="mt-4 block">
-          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Mot de passe</span>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
-          />
-        </label>
+        {mode === "login" && (
+          <label className="mt-4 block">
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Mot de passe</span>
+            <input
+              type="password"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+            />
+          </label>
+        )}
+        {mode === "login" ? (
+          <button
+            type="button"
+            onClick={() => {
+              setMode("forgot");
+              setError(null);
+              setMessage(null);
+            }}
+            className="mt-3 text-xs text-paper/40 underline underline-offset-4 hover:text-paper/70"
+          >
+            Mot de passe oublié ?
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              setMode("login");
+              setError(null);
+              setMessage(null);
+            }}
+            className="mt-3 text-xs text-paper/40 underline underline-offset-4 hover:text-paper/70"
+          >
+            ← Retour à la connexion
+          </button>
+        )}
         <button
           type="submit"
           disabled={loading}
           className="mt-6 w-full bg-paper py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
         >
-          {loading ? "Connexion…" : "Se connecter"}
+          {loading ? "…" : mode === "login" ? "Se connecter" : "Envoyer le lien"}
         </button>
       </form>
     </div>
