@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/store/cart";
 import Magnetic from "@/components/ui/Magnetic";
 import { cn } from "@/lib/utils";
@@ -123,28 +124,38 @@ export default function Header() {
         </div>
       </div>
 
-      {searchOpen && <SearchPanel onClose={() => setSearchOpen(false)} />}
+      <AnimatePresence>
+        {searchOpen && <SearchPanel onClose={() => setSearchOpen(false)} />}
+      </AnimatePresence>
 
-      {menuOpen && (
-        <div className="absolute inset-x-0 top-full flex flex-col gap-6 border-t border-line bg-ink px-5 py-8 md:hidden">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMenuOpen(false)}
-              className="font-display text-2xl uppercase text-paper"
-            >
-              {item.label}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-x-0 top-full flex flex-col gap-6 border-t border-line bg-ink px-5 py-8 md:hidden"
+          >
+            {NAV.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className="font-display text-2xl uppercase text-paper"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link href="/favoris" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
+              Favoris
             </Link>
-          ))}
-          <Link href="/favoris" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
-            Favoris
-          </Link>
-          <Link href="/compte" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
-            Compte
-          </Link>
-        </div>
-      )}
+            <Link href="/compte" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
+              Compte
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
@@ -176,7 +187,13 @@ function SearchPanel({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="border-t border-line bg-ink px-5 py-6 md:px-10 md:py-8">
+    <motion.div
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+      className="border-t border-line bg-ink px-5 py-6 md:px-10 md:py-8"
+    >
       <form onSubmit={handleSubmit} className="mx-auto flex max-w-2xl items-end gap-4">
         <div className="flex-1">
           <p className="text-label text-paper/40">Rechercher</p>
@@ -198,6 +215,6 @@ function SearchPanel({ onClose }: { onClose: () => void }) {
           Fermer
         </button>
       </form>
-    </div>
+    </motion.div>
   );
 }

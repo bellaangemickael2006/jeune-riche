@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type Img = { url: string; alt: string; type: string };
@@ -46,14 +46,25 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
         style={{ rotateX, rotateY, transformPerspective: 1000 }}
         className="relative aspect-[4/5] overflow-hidden bg-studio will-change-transform"
       >
-        <Image
-          src={current.url}
-          alt={current.alt || productName}
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, 55vw"
-          className="object-contain p-6"
-        />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current.url}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={current.url}
+              alt={current.alt || productName}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 55vw"
+              className="object-contain p-6"
+            />
+          </motion.div>
+        </AnimatePresence>
         {current.type === "MOCKUP" && (
           <span className="absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-label text-paper/80">
             Référence de design — photo produit à venir
