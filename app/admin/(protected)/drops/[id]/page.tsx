@@ -1,0 +1,151 @@
+import { notFound } from "next/navigation";
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import {
+  updateDrop,
+  deleteDrop,
+  assignProductToDrop,
+  removeProductFromDrop,
+} from "@/lib/actions/drops";
+import type { DropStatus } from "@prisma/client";
+import ConfirmButton from "@/components/admin/ConfirmButton";
+
+const STATUSES: DropStatus[] = ["COMING_SOON", "PRE_ORDER", "AVAILABLE", "SOLD_OUT", "ENDED"];
+
+function toLocalInputValue(date: Date | null) {
+  if (!date) return "";
+  const offset = date.getTimezoneOffset();
+  const local = new Date(date.getTime() - offset * 60000);
+  return local.toISOString().slice(0, 16);
+}
+
+export default async function AdminDropDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const drop = await prisma.drop.findUnique({ where: { id }, include: { products: true } });
+  if (!drop) notFound();
+
+  const availableProducts = await prisma.product.findMany({
+    where: { dropId: null },
+    orderBy: { name: "asc" },
+  });
+
+  return (
+    <div className="max-w-2xl">
+      <Link href="/admin/drops" className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
+        ← Drops
+      </Link>
+      <h1 className="mt-3 font-display text-2xl uppercase text-paper">{drop.name}</h1>
+
+      <form action={updateDrop.bind(null, drop.id)} className="mt-8 flex flex-col gap-4">
+        <label className="block">
+          <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">Nom</span>
+          <input
+            name="name"
+            defaultValue={drop.name}
+            required
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper"
+          />
+        </label>
+        <div className="grid grid-cols-2 gap-4">
+          <label className="block">
+            <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">Début</span>
+            <input
+              name="startsAt"
+              type="datetime-local"
+              defaultValue={toLocalInputValue(drop.startsAt)}
+              required
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper"
+            />
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">
+              Fin (optionnelle)
+            </span>
+            <input
+              name="endsAt"
+              type="datetime-local"
+              defaultValue={toLocalInputValue(drop.endsAt)}
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper"
+            />
+          </label>
+        </div>
+        <label className="block">
+          <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">Description</span>
+          <textarea
+            name="description"
+            rows={3}
+            defaultValue={drop.description ?? ""}
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper"
+          />
+        </label>
+        <label className="block">
+          <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">Statut</span>
+          <select
+            name="status"
+            defaultValue={drop.status}
+            className="w-full border border-line bg-ink px-4 py-3 text-sm text-paper"
+          >
+            {STATUSES.map((s) => (
+              <option key={s} value={s} className="bg-ink">
+                {s}
+              </option>
+            ))}
+          </select>
+        </label>
+        <button className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">
+          Enregistrer
+        </button>
+      </form>
+
+      <div className="mt-10 border-t border-line pt-8">
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Produits du drop</h2>
+        {drop.products.length === 0 ? (
+          <p className="mt-3 text-sm text-paper/40">Aucun produit assigné.</p>
+        ) : (
+          <ul className="mt-3 divide-y divide-line">
+            {drop.products.map((p) => (
+              <li key={p.id} className="flex items-center justify-between py-3 text-sm">
+                <Link href={`/admin/produits/${p.id}`} className="text-paper hover:underline">
+                  {p.name}
+                </Link>
+                <form action={removeProductFromDrop.bind(null, drop.id, p.id)}>
+                  <button className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper">
+                    Retirer
+                  </button>
+                </form>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {availableProducts.length > 0 && (
+          <form action={assignProductToDrop.bind(null, drop.id)} className="mt-5 flex gap-3">
+            <select name="productId" required className="flex-1 border border-line bg-ink px-4 py-2 text-sm text-paper">
+              <option value="" className="bg-ink">
+                Ajouter un produit…
+              </option>
+              {availableProducts.map((p) => (
+                <option key={p.id} value={p.id} className="bg-ink">
+                  {p.name}
+                </option>
+              ))}
+            </select>
+            <button className="border border-line px-4 py-2 text-xs uppercase tracking-widest2 text-paper/70 hover:border-paper hover:text-paper">
+              Ajouter
+            </button>
+          </form>
+        )}
+      </div>
+
+      <form action={deleteDrop.bind(null, drop.id)} className="mt-10 border-t border-line pt-6">
+        <ConfirmButton
+          confirmMessage={`Supprimer le drop "${drop.name}" ? Les produits associés seront détachés, pas supprimés.`}
+          className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper"
+        >
+          Supprimer ce drop
+        </ConfirmButton>
+        <p className="mt-1 text-[11px] text-paper/30">Les produits associés ne sont pas supprimés, seulement détachés.</p>
+      </form>
+    </div>
+  );
+}

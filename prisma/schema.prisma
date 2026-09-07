@@ -200,6 +200,9 @@ model Order {
   shippingCost    Decimal     @db.Decimal(10, 2) @default(0)
   total           Decimal     @db.Decimal(10, 2)
 
+  trackingNumber  String? // saisi en admin une fois l'envoi effectué
+  notes           String? // notes internes équipe, jamais montrées au client
+
   items           OrderItem[]
 
   createdAt       DateTime    @default(now())
@@ -286,4 +289,18 @@ model NewsletterSubscriber {
   createdAt DateTime @default(now())
 
   @@map("newsletter_subscribers")
+}
+
+// Réglages globaux de la boutique — une seule ligne (singleton), lue/écrite
+// depuis l'admin. Remplace les valeurs actuellement codées en dur (ex.
+// shippingCost = 0 dans /api/checkout).
+model StoreSettings {
+  id                    String   @id @default("default")
+  shippingCost          Decimal  @db.Decimal(10, 2) @default(0)
+  freeShippingThreshold Decimal? @db.Decimal(10, 2) // commande gratuite au-delà de ce montant, si renseigné
+  contactEmail          String?
+  contactPhone          String?
+  updatedAt             DateTime @updatedAt
+
+  @@map("store_settings")
 }

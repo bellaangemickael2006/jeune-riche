@@ -1,14 +1,29 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
 
+const STATUS_LABEL: Record<string, string> = {
+  NOUVELLE: "Nouvelle",
+  CONFIRMEE: "Confirmée",
+  PREPARATION: "Préparation",
+  EXPEDIEE: "Expédiée",
+  LIVREE: "Livrée",
+  ANNULEE: "Annulée",
+};
+
 async function getStats() {
   try {
-    const [orderCount, productCount, customerCount, lowStock, revenue] = await Promise.all([
+    const [orderCount, productCount, customerCount, lowStock, revenue, recentOrders] = await Promise.all([
       prisma.order.count(),
       prisma.product.count({ where: { published: true } }),
       prisma.user.count({ where: { role: "CLIENT" } }),
       prisma.productVariant.count({ where: { stock: { lte: 3, gt: 0 } } }),
       prisma.order.aggregate({ _sum: { total: true }, where: { status: { not: "ANNULEE" } } }),
+      prisma.order.findMany({
+        orderBy: { createdAt: "desc" },
+        take: 5,
+        include: { items: true },
+      }),
     ]);
     return {
       orderCount,
@@ -16,10 +31,19 @@ async function getStats() {
       customerCount,
       lowStock,
       revenue: revenue._sum.total ? Number(revenue._sum.total) : 0,
+      recentOrders,
       available: true,
     };
   } catch {
-    return { orderCount: 0, productCount: 0, customerCount: 0, lowStock: 0, revenue: 0, available: false };
+    return {
+      orderCount: 0,
+      productCount: 0,
+      customerCount: 0,
+      lowStock: 0,
+      revenue: 0,
+      recentOrders: [] as Awaited<ReturnType<typeof prisma.order.findMany>>,
+      available: false,
+    };
   }
 }
 
@@ -27,11 +51,11 @@ export default async function AdminDashboard() {
   const stats = await getStats();
 
   const cards = [
-    { label: "Chiffre d'affaires", value: formatPrice(stats.revenue) },
-    { label: "Commandes", value: stats.orderCount },
-    { label: "Produits publiés", value: stats.productCount },
-    { label: "Clients", value: stats.customerCount },
-    { label: "Stock faible (≤3)", value: stats.lowStock },
+    { label: "Chiffre d'affaires", value: formatPrice(stats.revenue), href: "/admin/commandes" },
+    { label: "Commandes", value: stats.orderCount, href: "/admin/commandes" },
+    { label: "Produits publiés", value: stats.productCount, href: "/admin/produits" },
+    { label: "Clients", value: stats.customerCount, href: "/admin/clients" },
+    { label: "Stock faible (≤3)", value: stats.lowStock, href: "/admin/produits?stock=faible" },
   ];
 
   return (
@@ -47,11 +71,42 @@ export default async function AdminDashboard() {
 
       <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-5">
         {cards.map((card) => (
-          <div key={card.label} className="border border-line p-5">
+          <Link
+            key={card.label}
+            href={card.href}
+            className="border border-line p-5 transition-colors hover:border-paper/40"
+          >
             <p className="text-[10px] uppercase tracking-widest2 text-paper/40">{card.label}</p>
             <p className="mt-2 font-display text-2xl text-paper">{card.value}</p>
-          </div>
+          </Link>
         ))}
+      </div>
+
+      <div className="mt-10">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Commandes récentes</h2>
+          <Link href="/admin/commandes" className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper">
+            Tout voir
+          </Link>
+        </div>
+        {stats.recentOrders.length === 0 ? (
+          <p className="mt-3 text-sm text-paper/40">Aucune commande pour le moment.</p>
+        ) : (
+          <ul className="mt-3 divide-y divide-line border-y border-line">
+            {stats.recentOrders.map((o) => (
+              <li key={o.id} className="flex items-center justify-between py-3 text-sm">
+                <Link href={`/admin/commandes/${o.id}`} className="text-paper hover:underline">
+                  {o.orderNumber}
+                </Link>
+                <span className="text-paper/50">{o.customerName}</span>
+                <span className="text-paper/60">{formatPrice(Number(o.total))}</span>
+                <span className="border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
+                  {STATUS_LABEL[o.status] ?? o.status}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

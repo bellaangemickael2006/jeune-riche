@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, orderConfirmationEmail } from "@/lib/email";
+import { getStoreSettings } from "@/lib/data/settings";
 
 const lineSchema = z.object({
   variantId: z.string(),
@@ -29,7 +30,6 @@ export async function POST(req: NextRequest) {
   }
 
   const { customerName, customerEmail, shippingAddress, lines } = parsed.data;
-  const shippingCost = 0; // aucune grille tarifaire réelle fournie — à définir en admin
   const orderNumber = `JR-${Date.now().toString(36).toUpperCase()}`;
 
   try {
@@ -75,6 +75,17 @@ export async function POST(req: NextRequest) {
     }
 
     const subtotal = resolvedLines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
+
+    // Toujours calculés côté serveur depuis les réglages admin — jamais
+    // acceptés depuis le client, même logique de confiance que le prix.
+    const settings = await getStoreSettings();
+    const freeThreshold =
+      settings?.freeShippingThreshold !== null && settings?.freeShippingThreshold !== undefined
+        ? Number(settings.freeShippingThreshold)
+        : null;
+    const shippingCost =
+      freeThreshold !== null && subtotal >= freeThreshold ? 0 : Number(settings?.shippingCost ?? 0);
+
     const total = subtotal + shippingCost;
 
     const order = await prisma.$transaction(async (tx) => {

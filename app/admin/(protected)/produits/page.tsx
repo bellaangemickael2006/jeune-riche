@@ -1,15 +1,31 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, cn } from "@/lib/utils";
 
-export default async function AdminProductsPage() {
+export default async function AdminProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; stock?: string }>;
+}) {
+  const { q, stock } = await searchParams;
   let products: Awaited<ReturnType<typeof loadProducts>> = [];
   let available = true;
   try {
-    products = await loadProducts();
+    products = await loadProducts(q);
   } catch {
     available = false;
+  }
+
+  const filtered =
+    stock === "faible" ? products.filter((p) => p.variants.reduce((sum, v) => sum + v.stock, 0) <= 3) : products;
+
+  function filterHref(nextStock?: string) {
+    const qs = new URLSearchParams();
+    if (q) qs.set("q", q);
+    if (nextStock) qs.set("stock", nextStock);
+    const s = qs.toString();
+    return s ? `/admin/produits?${s}` : "/admin/produits";
   }
 
   return (
@@ -21,18 +37,50 @@ export default async function AdminProductsPage() {
         </Link>
       </div>
 
+      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <form className="max-w-xs flex-1">
+          {stock && <input type="hidden" name="stock" value={stock} />}
+          <input
+            name="q"
+            defaultValue={q ?? ""}
+            placeholder="Rechercher un produit…"
+            className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/30"
+          />
+        </form>
+        <div className="flex gap-2">
+          <Link
+            href={filterHref(undefined)}
+            className={cn(
+              "border px-3 py-1.5 text-[10px] uppercase tracking-widest2",
+              !stock ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
+            )}
+          >
+            Tous
+          </Link>
+          <Link
+            href={filterHref("faible")}
+            className={cn(
+              "border px-3 py-1.5 text-[10px] uppercase tracking-widest2",
+              stock === "faible" ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
+            )}
+          >
+            Stock faible
+          </Link>
+        </div>
+      </div>
+
       {!available && (
         <p className="mt-4 border border-paper/30 bg-paper/5 px-4 py-3 text-xs text-paper">
           Base de données indisponible.
         </p>
       )}
 
-      {available && products.length === 0 ? (
-        <p className="mt-8 text-sm text-paper/40">Aucun produit. Créez-en un pour commencer.</p>
+      {available && filtered.length === 0 ? (
+        <p className="mt-8 text-sm text-paper/40">Aucun produit trouvé.</p>
       ) : (
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {products.map((p) => {
-            const stock = p.variants.reduce((sum, v) => sum + v.stock, 0);
+          {filtered.map((p) => {
+            const stockTotal = p.variants.reduce((sum, v) => sum + v.stock, 0);
             const cover = p.images[0];
             return (
               <Link
@@ -74,7 +122,7 @@ export default async function AdminProductsPage() {
                   <p className="mt-0.5 text-[11px] text-paper/40">{p.category.name}</p>
                   <div className="mt-1.5 flex items-center justify-between text-[11px] text-paper/60">
                     <span>{formatPrice(p.price ? Number(p.price) : null)}</span>
-                    <span>{stock} en stock</span>
+                    <span className={stockTotal <= 3 ? "text-paper" : undefined}>{stockTotal} en stock</span>
                   </div>
                 </div>
               </Link>
@@ -86,8 +134,9 @@ export default async function AdminProductsPage() {
   );
 }
 
-function loadProducts() {
+function loadProducts(q?: string) {
   return prisma.product.findMany({
+    where: q ? { name: { contains: q, mode: "insensitive" } } : undefined,
     include: { category: true, variants: true, images: { orderBy: { sortOrder: "asc" }, take: 1 } },
     orderBy: { createdAt: "desc" },
   });

@@ -9,13 +9,17 @@ import {
   deleteProduct,
 } from "@/lib/actions/products";
 import { ImageUploadForm, VideoUploadForm } from "@/components/admin/MediaUploadForm";
+import ConfirmButton from "@/components/admin/ConfirmButton";
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: { variants: true, images: { orderBy: { sortOrder: "asc" } }, category: true },
-  });
+  const [product, categories] = await Promise.all([
+    prisma.product.findUnique({
+      where: { id },
+      include: { variants: true, images: { orderBy: { sortOrder: "asc" } }, category: true },
+    }),
+    prisma.category.findMany({ orderBy: { sortOrder: "asc" } }),
+  ]);
   if (!product) notFound();
 
   const updateProductWithId = updateProduct.bind(null, product.id);
@@ -26,9 +30,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       <div className="flex items-center justify-between">
         <h1 className="font-display text-2xl uppercase text-paper">{product.name}</h1>
         <form action={async () => { "use server"; await deleteProduct(product.id); }}>
-          <button className="text-xs uppercase tracking-widest2 text-paper/60 underline underline-offset-4 hover:text-paper">
+          <ConfirmButton
+            confirmMessage={`Supprimer définitivement "${product.name}" ? Cette action est irréversible.`}
+            className="text-xs uppercase tracking-widest2 text-paper/60 underline underline-offset-4 hover:text-paper"
+          >
             Supprimer
-          </button>
+          </ConfirmButton>
         </form>
       </div>
       <p className="mt-1 text-xs text-paper/40">{product.category.name} · /{product.slug}</p>
@@ -41,6 +48,20 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
             defaultValue={product.name}
             className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
           />
+          <label className="block">
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Catégorie</span>
+            <select
+              name="categoryId"
+              defaultValue={product.categoryId}
+              className="w-full border border-line bg-ink px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+            >
+              {categories.map((c) => (
+                <option key={c.id} value={c.id} className="bg-ink">
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </label>
           <input
             name="price"
             type="number"
@@ -116,7 +137,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 </td>
                 <td className="py-2">
                   <form action={async () => { "use server"; await deleteVariant(v.id, product.id); }}>
-                    <button className="text-xs text-paper/60 underline underline-offset-4 hover:text-paper">Retirer</button>
+                    <ConfirmButton
+                      confirmMessage={`Retirer la variante ${v.color}/${v.size} ?`}
+                      className="text-xs text-paper/60 underline underline-offset-4 hover:text-paper"
+                    >
+                      Retirer
+                    </ConfirmButton>
                   </form>
                 </td>
               </tr>
@@ -161,7 +187,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 action={async () => { "use server"; await deleteProductImage(img.id, product.id); }}
                 className="absolute bottom-1 right-1"
               >
-                <button className="bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase text-paper">×</button>
+                <ConfirmButton
+                  confirmMessage="Supprimer cette image ?"
+                  className="bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase text-paper"
+                >
+                  ×
+                </ConfirmButton>
               </form>
             </div>
           ))}

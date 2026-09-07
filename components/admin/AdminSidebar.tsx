@@ -9,11 +9,13 @@ import { useRouter } from "next/navigation";
 const LINKS = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/produits", label: "Produits" },
+  { href: "/admin/categories", label: "Catégories" },
   { href: "/admin/commandes", label: "Commandes" },
   { href: "/admin/clients", label: "Clients" },
   { href: "/admin/avis", label: "Avis" },
   { href: "/admin/drops", label: "Drops" },
   { href: "/admin/newsletter", label: "Newsletter" },
+  { href: "/admin/parametres", label: "Paramètres" },
 ];
 
 export default function AdminSidebar() {

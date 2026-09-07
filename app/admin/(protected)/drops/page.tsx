@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { createDrop } from "@/lib/actions/drops";
 
@@ -25,12 +26,12 @@ export default async function AdminDropsPage() {
           {drops.length === 0 && <p className="py-4 text-sm text-paper/40">Aucun drop actuellement.</p>}
           {drops.map((d) => (
             <li key={d.id} className="flex items-center justify-between py-4">
-              <div>
-                <p className="text-sm text-paper">{d.name}</p>
+              <Link href={`/admin/drops/${d.id}`} className="group">
+                <p className="text-sm text-paper group-hover:underline">{d.name}</p>
                 <p className="text-xs text-paper/40">
                   {d.startsAt.toLocaleDateString("fr-FR")} · {d.products.length} produit(s)
                 </p>
-              </div>
+              </Link>
               <span className="border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
                 {d.status}
               </span>

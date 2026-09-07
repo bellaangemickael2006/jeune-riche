@@ -68,6 +68,7 @@ export async function updateProduct(productId: string, formData: FormData) {
   await requireAdmin();
 
   const name = String(formData.get("name") ?? "").trim();
+  const categoryId = String(formData.get("categoryId") ?? "").trim();
   const priceRaw = String(formData.get("price") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const personalizationEnabled = formData.get("personalizationEnabled") === "on";
@@ -78,6 +79,7 @@ export async function updateProduct(productId: string, formData: FormData) {
     where: { id: productId },
     data: {
       name,
+      ...(categoryId ? { categoryId } : {}),
       price: priceRaw ? Number(priceRaw) : null,
       description: description || null,
       personalizationEnabled,
@@ -95,7 +97,13 @@ export async function updateProduct(productId: string, formData: FormData) {
 
 export async function deleteProduct(productId: string) {
   await requireAdmin();
-  await prisma.product.delete({ where: { id: productId } });
+  try {
+    await prisma.product.delete({ where: { id: productId } });
+  } catch {
+    throw new Error(
+      "Impossible de supprimer : ce produit apparaît dans au moins une commande existante. Dépubliez-le plutôt que de le supprimer."
+    );
+  }
   revalidateTag("products");
   revalidatePath("/admin/produits");
   redirect("/admin/produits");

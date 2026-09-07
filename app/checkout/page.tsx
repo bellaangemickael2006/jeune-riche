@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/store/cart";
@@ -14,6 +14,21 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<Step>("informations");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [shipping, setShipping] = useState({ shippingCost: 0, freeShippingThreshold: null as number | null });
+
+  useEffect(() => {
+    fetch("/api/shipping")
+      .then((r) => r.json())
+      .then(setShipping)
+      .catch(() => {});
+  }, []);
+
+  const subtotal = total();
+  const shippingCost =
+    shipping.freeShippingThreshold !== null && subtotal >= shipping.freeShippingThreshold
+      ? 0
+      : shipping.shippingCost;
+  const grandTotal = subtotal + shippingCost;
 
   const [form, setForm] = useState({
     customerName: "",
@@ -166,9 +181,19 @@ export default function CheckoutPage() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-3 flex justify-between border-t border-line pt-3 text-sm text-paper">
-                <span className="uppercase tracking-widest2 text-paper/50">Total</span>
-                <span>{formatPrice(total())}</span>
+              <div className="mt-3 flex flex-col gap-2 border-t border-line pt-3 text-sm text-paper">
+                <div className="flex justify-between text-paper/60">
+                  <span className="uppercase tracking-widest2">Sous-total</span>
+                  <span>{formatPrice(subtotal)}</span>
+                </div>
+                <div className="flex justify-between text-paper/60">
+                  <span className="uppercase tracking-widest2">Livraison</span>
+                  <span>{shippingCost === 0 ? "Offerte" : formatPrice(shippingCost)}</span>
+                </div>
+                <div className="flex justify-between border-t border-line pt-2">
+                  <span className="uppercase tracking-widest2 text-paper/50">Total</span>
+                  <span>{formatPrice(grandTotal)}</span>
+                </div>
               </div>
             </div>
 
