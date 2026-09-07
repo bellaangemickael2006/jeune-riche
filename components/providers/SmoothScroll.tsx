@@ -18,6 +18,11 @@ export default function SmoothScroll() {
       smoothWheel: true,
     });
     lenisRef.current = lenis;
+    // Exposé globalement pour que les panneaux (panier, recherche, zoom...)
+    // puissent mettre le défilement en pause pendant qu'ils sont ouverts —
+    // voir lib/scrollLock.ts. Pas de contexte React ici pour rester simple :
+    // un seul Lenis existe pour tout le site.
+    window.__lenis = lenis;
 
     const { gsap, ScrollTrigger } = getGsap();
 

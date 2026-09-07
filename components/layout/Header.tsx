@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/store/cart";
 import Magnetic from "@/components/ui/Magnetic";
 import { cn } from "@/lib/utils";
+import { useScrollLock } from "@/lib/scrollLock";
 
 const NAV = [
   { label: "Collection", href: "/catalogue" },
@@ -22,6 +23,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const count = useCart((s) => s.count());
   const openCart = useCart((s) => s.open);
+  useScrollLock(menuOpen || searchOpen);
 
   useEffect(() => {
     function onScroll() {

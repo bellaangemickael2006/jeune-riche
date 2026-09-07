@@ -5,9 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/store/cart";
 import { formatPrice } from "@/lib/utils";
+import { useScrollLock } from "@/lib/scrollLock";
 
 export default function CartDrawer() {
   const { lines, isOpen, close, removeLine, setQuantity, total } = useCart();
+  useScrollLock(isOpen);
 
   return (
     <AnimatePresence>
