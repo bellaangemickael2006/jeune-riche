@@ -45,6 +45,13 @@ export default async function ComptePage() {
             total: Number(o.total),
             createdAt: o.createdAt.toISOString(),
           }))}
+          address={{
+            addressLine1: user.addressLine1,
+            addressCity: user.addressCity,
+            addressPostalCode: user.addressPostalCode,
+            addressCountry: user.addressCountry,
+            addressPhone: user.addressPhone,
+          }}
         />
       ) : (
         <AuthForms />

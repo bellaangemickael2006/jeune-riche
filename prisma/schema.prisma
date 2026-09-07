@@ -66,6 +66,15 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
+  // Adresse enregistrée sur le compte — préremplit le formulaire de
+  // livraison au prochain achat. Mise à jour automatiquement après chaque
+  // commande passée connecté, modifiable aussi directement depuis /compte.
+  addressLine1      String?
+  addressCity       String?
+  addressPostalCode String?
+  addressCountry    String?
+  addressPhone      String?
+
   orders        Order[]
   reviews       Review[]
   wishlist      WishlistItem[]
