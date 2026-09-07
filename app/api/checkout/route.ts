@@ -5,6 +5,18 @@ import { sendEmail, orderConfirmationEmail } from "@/lib/email";
 import { getStoreSettings } from "@/lib/data/settings";
 import { createClient } from "@/lib/supabase/server";
 
+// Le stock est revérifié à l'écriture, pas seulement à la lecture plus haut :
+// entre la vérification initiale et la transaction, une autre commande
+// concurrente a pu épuiser le stock (deux clients sur le dernier exemplaire
+// d'un drop limité, par exemple) — sans ce garde-fou, decrement() peut passer
+// le stock en négatif.
+class InsufficientStockError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "InsufficientStockError";
+  }
+}
+
 const lineSchema = z.object({
   variantId: z.string(),
   quantity: z.number().int().positive(),
@@ -135,10 +147,15 @@ export async function POST(req: NextRequest) {
       }
 
       for (const line of resolvedLines) {
-        await tx.productVariant.update({
-          where: { id: line.variantId },
+        const result = await tx.productVariant.updateMany({
+          where: { id: line.variantId, stock: { gte: line.quantity } },
           data: { stock: { decrement: line.quantity } },
         });
+        if (result.count === 0) {
+          throw new InsufficientStockError(
+            `Stock insuffisant pour ${line.productName} (${line.size}/${line.color}).`
+          );
+        }
       }
 
       return created;
@@ -158,6 +175,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true, orderNumber: order.orderNumber });
   } catch (error) {
+    if (error instanceof InsufficientStockError) {
+      return NextResponse.json({ error: error.message }, { status: 409 });
+    }
     console.error("[api/checkout]", error);
     return NextResponse.json({ error: "Impossible de créer la commande." }, { status: 500 });
   }
