@@ -24,6 +24,7 @@ export default function Header() {
   const count = useCart((s) => s.count());
   const openCart = useCart((s) => s.open);
   const pathname = usePathname();
+  const headerRef = useRef<HTMLElement>(null);
   useScrollLock(menuOpen || searchOpen);
 
   // Une navigation (lien nav desktop, logo, retour navigateur...) doit
@@ -55,8 +56,23 @@ export default function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, [searchOpen, menuOpen]);
 
+  // Un clic en dehors du header (sur la page derrière un panneau ouvert)
+  // doit aussi refermer — comme le reste du header, le panier ou le zoom.
+  useEffect(() => {
+    if (!searchOpen && !menuOpen) return;
+    function onPointerDown(e: PointerEvent) {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setSearchOpen(false);
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [searchOpen, menuOpen]);
+
   return (
     <header
+      ref={headerRef}
       className={cn(
         "fixed inset-x-0 top-0 z-40 border-b bg-ink transition-[padding,box-shadow] duration-300 ease-editorial",
         scrolled ? "border-line py-3 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.6)] md:py-3.5" : "border-line py-4 md:py-5"
