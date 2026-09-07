@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Gallery from "@/components/product/Gallery";
 import AddToCart from "@/components/product/AddToCart";
 import SizeGuide from "@/components/product/SizeGuide";
 import Reviews from "@/components/product/Reviews";
 import WishlistButton from "@/components/product/WishlistButton";
 import { formatPrice } from "@/lib/utils";
+import { trackProductView } from "@/lib/recentlyViewed";
 import type { TechnicalDetail } from "@/lib/data/product-details";
 
 type Img = { url: string; alt: string; type: string; color: string | null };
@@ -56,6 +57,11 @@ export default function ProductViewer({
     type: i.type,
   }));
   const primaryImage = galleryImages[0]?.url ?? "";
+
+  useEffect(() => {
+    trackProductView({ slug: productSlug, name: productName, image: primaryImage || null, price });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- une seule fois par visite de la fiche, pas à chaque changement de couleur
+  }, [productSlug]);
 
   return (
     <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-start md:gap-16 lg:grid-cols-[1.35fr_1fr]">

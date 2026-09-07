@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/store/cart";
+import { createClient } from "@/lib/supabase/client";
 import { formatPrice, cn } from "@/lib/utils";
 
 type Step = "informations" | "livraison" | "recapitulatif";
@@ -21,6 +22,43 @@ export default function CheckoutPage() {
       .then((r) => r.json())
       .then(setShipping)
       .catch(() => {});
+  }, []);
+
+  // Préremplit à partir du compte connecté (nom/email + dernière adresse
+  // enregistrée) pour éviter de tout retaper à chaque commande — n'écrase
+  // jamais un champ que le client a déjà rempli lui-même.
+  useEffect(() => {
+    async function prefill() {
+      const supabase = createClient();
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
+      if (!authUser) return;
+
+      setForm((f) => ({
+        ...f,
+        customerName: f.customerName || (authUser.user_metadata?.name as string) || "",
+        customerEmail: f.customerEmail || authUser.email || "",
+      }));
+
+      try {
+        const res = await fetch("/api/account/address");
+        if (!res.ok) return;
+        const address = await res.json();
+        if (!address.addressLine1) return;
+        setForm((f) => ({
+          ...f,
+          line1: f.line1 || address.addressLine1 || "",
+          city: f.city || address.addressCity || "",
+          postalCode: f.postalCode || address.addressPostalCode || "",
+          country: address.addressCountry || f.country,
+          phone: f.phone || address.addressPhone || "",
+        }));
+      } catch {
+        // pas grave : le client remplit simplement le formulaire lui-même
+      }
+    }
+    prefill();
   }, []);
 
   const subtotal = total();
