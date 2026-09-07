@@ -92,6 +92,22 @@ export function passwordResetEmail(actionLink: string) {
   `);
 }
 
+export function restockEmail(params: { productName: string; size: string; color: string; productSlug: string }) {
+  const productUrl = `${siteUrl()}/catalogue/${params.productSlug}`;
+  return emailShell(`
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">De retour en stock</p>
+    <p style="margin:0 0 16px;">
+      <strong style="color:#f5f4f1;">${params.productName}</strong> (${params.color} · ${params.size}) est de nouveau disponible.
+    </p>
+    <p style="margin:0 0 28px;color:#9a9a9a;">
+      Les stocks sont limités — commandez avant qu'il ne s'épuise à nouveau.
+    </p>
+    <a href="${productUrl}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+      Voir le produit
+    </a>
+  `);
+}
+
 export function orderConfirmationEmail(params: {
   orderNumber: string;
   customerName: string;

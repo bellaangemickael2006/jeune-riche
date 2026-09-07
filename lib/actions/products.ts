@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { sendEmail, restockEmail } from "@/lib/email";
 
 const MEDIA_BUCKET = "product-media";
 const MAX_MEDIA_BYTES = 25 * 1024 * 1024; // 25 Mo, suffisant pour photo/courte vidéo produit
@@ -127,7 +128,40 @@ export async function addVariant(productId: string, formData: FormData) {
 
 export async function updateVariantStock(variantId: string, productId: string, stock: number) {
   await requireAdmin();
+  const previous = await prisma.productVariant.findUnique({
+    where: { id: variantId },
+    select: { stock: true },
+  });
   await prisma.productVariant.update({ where: { id: variantId }, data: { stock } });
+
+  // "Nous vous préviendrons dès le retour en stock" (voir NotifyMe dans
+  // AddToCart.tsx) — une promesse au client qui n'était jamais tenue : rien
+  // ne déclenchait l'email, même une fois le stock reconstitué en admin.
+  if (previous && previous.stock <= 0 && stock > 0) {
+    const pending = await prisma.restockRequest.findMany({
+      where: { variantId, notified: false },
+      include: { variant: { include: { product: true } } },
+    });
+    for (const request of pending) {
+      await sendEmail({
+        to: request.email,
+        subject: `De retour en stock — JEUNE RICHE`,
+        html: restockEmail({
+          productName: request.variant.product.name,
+          size: request.variant.size,
+          color: request.variant.color,
+          productSlug: request.variant.product.slug,
+        }),
+      });
+    }
+    if (pending.length > 0) {
+      await prisma.restockRequest.updateMany({
+        where: { id: { in: pending.map((p) => p.id) } },
+        data: { notified: true },
+      });
+    }
+  }
+
   revalidatePath(`/admin/produits/${productId}`);
 }
 
