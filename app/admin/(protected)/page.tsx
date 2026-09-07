@@ -13,18 +13,22 @@ const STATUS_LABEL: Record<string, string> = {
 
 async function getStats() {
   try {
-    const [orderCount, productCount, customerCount, lowStock, revenue, recentOrders] = await Promise.all([
-      prisma.order.count(),
-      prisma.product.count({ where: { published: true } }),
-      prisma.user.count({ where: { role: "CLIENT" } }),
-      prisma.productVariant.count({ where: { stock: { lte: 3, gt: 0 } } }),
-      prisma.order.aggregate({ _sum: { total: true }, where: { status: { not: "ANNULEE" } } }),
-      prisma.order.findMany({
-        orderBy: { createdAt: "desc" },
-        take: 5,
-        include: { items: true },
-      }),
-    ]);
+    // Séquentiel plutôt que Promise.all : avec un pooler à capacité limitée
+    // (voir lib/prisma.ts), plusieurs requêtes lancées en parallèle depuis la
+    // même instance peuvent se retrouver à attendre une connexion libre.
+    const orderCount = await prisma.order.count();
+    const productCount = await prisma.product.count({ where: { published: true } });
+    const customerCount = await prisma.user.count({ where: { role: "CLIENT" } });
+    const lowStock = await prisma.productVariant.count({ where: { stock: { lte: 3, gt: 0 } } });
+    const revenue = await prisma.order.aggregate({
+      _sum: { total: true },
+      where: { status: { not: "ANNULEE" } },
+    });
+    const recentOrders = await prisma.order.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      include: { items: true },
+    });
     return {
       orderCount,
       productCount,

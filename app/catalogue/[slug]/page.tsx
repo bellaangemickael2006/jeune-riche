@@ -30,8 +30,9 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [product, allProducts] = await Promise.all([getProductBySlug(slug), getPublishedProducts()]);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
+  const allProducts = await getPublishedProducts();
 
   const images = product.images.map((i) => ({ url: i.url, alt: i.alt, type: i.type, color: i.color }));
   const details = getTechnicalDetails(product.category.slug);

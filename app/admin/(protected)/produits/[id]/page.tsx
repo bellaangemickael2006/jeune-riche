@@ -13,13 +13,11 @@ import ConfirmButton from "@/components/admin/ConfirmButton";
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [product, categories] = await Promise.all([
-    prisma.product.findUnique({
-      where: { id },
-      include: { variants: true, images: { orderBy: { sortOrder: "asc" } }, category: true },
-    }),
-    prisma.category.findMany({ orderBy: { sortOrder: "asc" } }),
-  ]);
+  const product = await prisma.product.findUnique({
+    where: { id },
+    include: { variants: true, images: { orderBy: { sortOrder: "asc" } }, category: true },
+  });
+  const categories = await prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
   if (!product) notFound();
 
   const updateProductWithId = updateProduct.bind(null, product.id);

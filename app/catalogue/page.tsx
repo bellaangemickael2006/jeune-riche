@@ -35,10 +35,10 @@ export default async function CataloguePage({
   const activeCategory = params.categorie;
   const activeSort = params.tri ?? "";
 
-  const [categories, products] = await Promise.all([
-    getCategories(),
-    activeCategory ? getProductsByCategory(activeCategory) : getPublishedProducts(),
-  ]);
+  const categories = await getCategories();
+  const products = activeCategory
+    ? await getProductsByCategory(activeCategory)
+    : await getPublishedProducts();
 
   const filtered = params.q
     ? products.filter((p) => p.name.toLowerCase().includes(params.q!.toLowerCase()))
