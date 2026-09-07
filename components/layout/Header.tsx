@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/store/cart";
 import Magnetic from "@/components/ui/Magnetic";
@@ -23,7 +23,16 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const count = useCart((s) => s.count());
   const openCart = useCart((s) => s.open);
+  const pathname = usePathname();
   useScrollLock(menuOpen || searchOpen);
+
+  // Une navigation (lien nav desktop, logo, retour navigateur...) doit
+  // toujours refermer les panneaux ouverts, pas seulement les clics gérés
+  // manuellement sur chaque lien.
+  useEffect(() => {
+    setMenuOpen(false);
+    setSearchOpen(false);
+  }, [pathname]);
 
   useEffect(() => {
     function onScroll() {
@@ -35,13 +44,16 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (!searchOpen) return;
+    if (!searchOpen && !menuOpen) return;
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setSearchOpen(false);
+      if (e.key === "Escape") {
+        setSearchOpen(false);
+        setMenuOpen(false);
+      }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [searchOpen]);
+  }, [searchOpen, menuOpen]);
 
   return (
     <header
