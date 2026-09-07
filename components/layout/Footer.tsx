@@ -5,9 +5,10 @@ import FadeIn from "@/components/ui/FadeIn";
 // qu'un champ est vide, l'icône correspondante s'affiche sans lien plutôt
 // que de pointer vers une URL inventée.
 const SOCIAL_LINKS = {
-  instagram: "",
-  tiktok: "",
-  facebook: "",
+  instagram: "https://www.instagram.com/jeune._.riche/",
+  tiktok: "https://www.tiktok.com/@jeune._.riche1",
+  facebook: "https://www.facebook.com/profile.php?id=61592911476140",
+  snapchat: "https://www.snapchat.com/add/jeune_riche01?share_id=bmUySqcSYr8&locale=fr-FR",
 };
 
 const COLUMNS = [
@@ -105,6 +106,11 @@ function SocialLinks() {
       key: "facebook",
       label: "Facebook",
       path: "M13.5 22v-8.5H16l.4-3H13.5V8.5c0-.87.24-1.46 1.5-1.46H16.5V4.36C16.24 4.32 15.36 4.25 14.33 4.25c-2.14 0-3.6 1.31-3.6 3.7V10.5H8.25v3H10.73V22h2.77Z",
+    },
+    {
+      key: "snapchat",
+      label: "Snapchat",
+      path: "M12 2.4c2.6 0 4.24 2.06 4.24 4.2 0 .58-.03 1.32-.08 1.98a.6.6 0 0 0 .3.03c.35-.07.66-.24.98-.24.5 0 1 .3 1 .8 0 .5-.5.8-1.1.98-.1.03-.25.1-.28.24-.05.24.1.55.35 1.05.6 1.2 1.7 1.9 2.9 2.15.2.05.35.2.32.42-.06.5-1 .85-1.75 1-.16.03-.28.15-.3.3-.04.2-.05.42-.1.62-.05.2-.2.3-.42.28-.5-.05-1-.15-1.5-.1-.55.05-1 .35-1.5.72-.7.5-1.5 1.06-2.96 1.06s-2.26-.56-2.96-1.06c-.5-.37-.95-.67-1.5-.72-.5-.05-1 .05-1.5.1-.22.02-.37-.08-.42-.28-.05-.2-.06-.42-.1-.62-.02-.15-.14-.27-.3-.3-.75-.15-1.69-.5-1.75-1-.03-.22.12-.37.32-.42 1.2-.25 2.3-.95 2.9-2.15.25-.5.4-.81.35-1.05-.03-.14-.18-.21-.28-.24-.6-.18-1.1-.48-1.1-.98 0-.5.5-.8 1-.8.32 0 .63.17.98.24.1.02.2.02.3-.03-.05-.66-.08-1.4-.08-1.98 0-2.14 1.64-4.2 4.24-4.2Z",
     },
   ];
 
