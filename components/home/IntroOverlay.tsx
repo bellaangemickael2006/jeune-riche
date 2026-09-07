@@ -4,15 +4,25 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const SESSION_KEY = "jr-intro-seen";
+const STORAGE_KEY = "jr-intro-seen-at";
+// Le fait de se baser sur sessionStorage posait un piège spécifique à Safari
+// iOS : contrairement à Chrome desktop, iOS restaure très souvent l'onglet
+// (et donc sessionStorage) après un simple relancement de l'app, si bien que
+// l'intro ne se rejouait plus jamais sur un même téléphone après la toute
+// première visite — donnant l'impression que l'animation avait disparu. On
+// utilise à la place localStorage avec une expiration explicite qu'on
+// contrôle nous-mêmes, indépendamment du comportement de stockage du navigateur.
+const REPLAY_INTERVAL_MS = 12 * 60 * 60 * 1000;
 
 export default function IntroOverlay() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const seen = sessionStorage.getItem(SESSION_KEY);
-    if (seen || reduced) return;
+    if (reduced) return;
+
+    const lastSeenAt = Number(localStorage.getItem(STORAGE_KEY) ?? 0);
+    if (Date.now() - lastSeenAt < REPLAY_INTERVAL_MS) return;
 
     setVisible(true);
     const timer = setTimeout(() => dismiss(), 3200);
@@ -20,7 +30,7 @@ export default function IntroOverlay() {
   }, []);
 
   function dismiss() {
-    sessionStorage.setItem(SESSION_KEY, "1");
+    localStorage.setItem(STORAGE_KEY, String(Date.now()));
     setVisible(false);
   }
 
@@ -28,8 +38,9 @@ export default function IntroOverlay() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          exit={{ clipPath: "circle(0% at 50% 50%)" }}
           initial={{ clipPath: "circle(150% at 50% 50%)" }}
+          animate={{ clipPath: "circle(150% at 50% 50%)" }}
+          exit={{ clipPath: "circle(0% at 50% 50%)" }}
           transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
           className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-ink"
         >
