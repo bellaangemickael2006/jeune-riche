@@ -34,10 +34,14 @@ export default function AuthForms() {
     const supabase = createClient();
 
     if (mode === "forgot") {
-      // Toujours le même message, que l'email existe ou non : ne jamais
-      // laisser deviner si une adresse est inscrite ou pas.
-      await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/compte/reinitialiser`,
+      // Passe par notre API (lib/email.ts) pour envoyer un email au design
+      // JEUNE RICHE plutôt que le template Supabase par défaut. Message
+      // toujours identique, que l'email existe ou non : ne jamais laisser
+      // deviner si une adresse est inscrite ou pas.
+      await fetch("/api/account/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
       setMessage("Si un compte existe avec cet email, un lien de réinitialisation vient d'être envoyé.");
       setLoading(false);

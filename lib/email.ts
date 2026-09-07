@@ -78,6 +78,20 @@ export function newsletterWelcomeEmail() {
   `);
 }
 
+export function passwordResetEmail(actionLink: string) {
+  return emailShell(`
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Réinitialisation</p>
+    <p style="margin:0 0 16px;">Une demande de réinitialisation de mot de passe a été effectuée pour ce compte.</p>
+    <p style="margin:0 0 28px;color:#9a9a9a;">
+      Si vous êtes à l'origine de cette demande, cliquez ci-dessous pour choisir un nouveau mot de passe.
+      Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet email.
+    </p>
+    <a href="${actionLink}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+      Réinitialiser mon mot de passe
+    </a>
+  `);
+}
+
 export function orderConfirmationEmail(params: {
   orderNumber: string;
   customerName: string;

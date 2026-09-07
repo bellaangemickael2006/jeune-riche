@@ -1,0 +1,42 @@
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { sendEmail, passwordResetEmail } from "@/lib/email";
+
+const schema = z.object({ email: z.string().email() });
+
+// Génère le lien de récupération via l'API admin Supabase mais l'envoie
+// nous-mêmes via lib/email.ts (même Gmail SMTP que la newsletter et les
+// confirmations de commande) plutôt que de laisser Supabase envoyer son
+// propre email par défaut, non brandé JEUNE RICHE.
+export async function POST(req: NextRequest) {
+  const body = await req.json().catch(() => null);
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Email invalide." }, { status: 400 });
+  }
+
+  try {
+    const admin = createAdminClient();
+    const { data, error } = await admin.auth.admin.generateLink({
+      type: "recovery",
+      email: parsed.data.email,
+      options: { redirectTo: `${req.nextUrl.origin}/compte/reinitialiser` },
+    });
+
+    // Ne jamais laisser deviner si l'email existe : on envoie seulement si
+    // le compte existe réellement, mais la réponse HTTP est identique dans
+    // les deux cas.
+    if (!error && data.properties?.action_link) {
+      await sendEmail({
+        to: parsed.data.email,
+        subject: "Réinitialisez votre mot de passe — JEUNE RICHE",
+        html: passwordResetEmail(data.properties.action_link),
+      });
+    }
+  } catch (err) {
+    console.error("[api/account/forgot-password]", err);
+  }
+
+  return NextResponse.json({ ok: true });
+}
