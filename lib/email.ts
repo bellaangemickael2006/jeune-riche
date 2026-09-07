@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { siteUrl } from "@/lib/utils";
 
 function getTransport() {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) return null;
@@ -63,10 +64,17 @@ function emailShell(bodyHtml: string) {
 }
 
 export function newsletterWelcomeEmail() {
+  const catalogueUrl = `${siteUrl()}/catalogue`;
   return emailShell(`
     <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Bienvenue</p>
     <p style="margin:0 0 16px;">Vous êtes inscrit à la newsletter JEUNE RICHE.</p>
-    <p style="margin:0;color:#9a9a9a;">Vous recevrez ici les prochains drops et nouveautés de la marque.</p>
+    <p style="margin:0 0 28px;color:#9a9a9a;">
+      Vous serez prévenu en premier des prochains drops, des nouvelles pièces et des annonces de la marque —
+      rien d'autre, pas de spam.
+    </p>
+    <a href="${catalogueUrl}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+      Voir la collection
+    </a>
   `);
 }
 
