@@ -22,15 +22,23 @@ export type PersonalizationOverlay = {
   maxWidthPct: number;
 };
 
+const TSHIRT_BLANC_FRONT: PersonalizationOverlay = {
+  xPct: 33.4,
+  yPct: 33.4,
+  aspectRatio: 1600 / 1280,
+  fontSizePct: 4.3,
+  color: "#16161c",
+  maxWidthPct: 16,
+};
+
 export const PERSONALIZATION_OVERLAY_BY_IMAGE: Record<string, PersonalizationOverlay> = {
-  "/images/products/tshirt-blanc/front-1.jpg": {
-    xPct: 33.4,
-    yPct: 33.4,
-    aspectRatio: 1600 / 1280,
-    fontSizePct: 4.3,
-    color: "#16161c",
-    maxWidthPct: 16,
-  },
+  // La base de données réelle (admin) référence "front-1-neutral.jpg" pour ce
+  // produit — pas "front-1.jpg" comme dans prisma/seed.ts. Les deux fichiers
+  // sont pixel-identiques hors fond (vérifié), donc même calibrage pour les
+  // deux clés : selon l'environnement (seed local vs données admin), l'une
+  // ou l'autre est utilisée.
+  "/images/products/tshirt-blanc/front-1.jpg": TSHIRT_BLANC_FRONT,
+  "/images/products/tshirt-blanc/front-1-neutral.jpg": TSHIRT_BLANC_FRONT,
   "/images/products/tshirt-taupe/front-1.jpg": {
     xPct: 40.7,
     yPct: 36.6,
