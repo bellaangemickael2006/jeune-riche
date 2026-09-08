@@ -67,8 +67,9 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
             />
           </motion.div>
         </AnimatePresence>
+        {/* Phrase explicative, pas un label : elle reste en sans neutre. */}
         {current.type === "MOCKUP" && (
-          <span className="absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-label text-paper/80">
+          <span className="absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-caption text-paper/80">
             Référence de design — photo produit à venir
           </span>
         )}

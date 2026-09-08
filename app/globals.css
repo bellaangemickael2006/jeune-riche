@@ -50,6 +50,15 @@ body {
   font-family: var(--font-editorial);
 }
 
+/* Le rôle `label` est un rôle d'interface — eyebrows, navigation, boutons,
+   méta, en-têtes de champ. Il porte donc la display condensée (Anton), jamais
+   le sans neutre : Inter est réservé aux descriptions, à l'aide et aux
+   mentions légales (ART_DIRECTION.md §3). Réglé ici en un seul endroit plutôt
+   qu'en ajoutant `font-display` sur trente-trois classes. */
+.text-label {
+  font-family: var(--font-display);
+}
+
 /* focus visible states — accessibilité clavier */
 a:focus-visible,
 button:focus-visible,

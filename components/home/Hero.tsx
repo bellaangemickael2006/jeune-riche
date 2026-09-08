@@ -34,8 +34,12 @@ export default function Hero() {
       {/* Corps — affirmation calée en bas à gauche, toute la droite laissée
           vide. L'axe est le bord gauche de la page, jamais le centre. */}
       <div className="flex flex-1 items-end py-16 md:py-24">
-        <div className="w-full md:w-7/12 lg:w-6/12">
-          <h1 className="reveal reveal-1 font-editorial text-[2.5rem] leading-[1.05] text-paper md:text-[4.5rem] lg:text-[5.5rem]">
+        <div className="w-full md:w-8/12 xl:w-7/12">
+          {/* Le passage à la ligne après la virgule est voulu : c'est la
+              respiration de la phrase. Les paliers de taille sont calés pour
+              que « un visage gravé. » tienne sur une seule ligne à chaque
+              largeur — sinon le retour forcé produit un drapeau bancal. */}
+          <h1 className="reveal reveal-1 font-editorial text-[2.5rem] leading-[1.05] text-paper md:text-[3.75rem] lg:text-[5rem] xl:text-[5.5rem]">
             Six pièces,
             <br />
             un visage gravé.

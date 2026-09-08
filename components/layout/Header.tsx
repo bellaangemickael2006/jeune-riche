@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/store/cart";
-import Magnetic from "@/components/ui/Magnetic";
 import { cn } from "@/lib/utils";
 import { useScrollLock } from "@/lib/scrollLock";
 
@@ -93,16 +92,19 @@ export default function Header() {
           />
         </Link>
 
+        {/* Les liens de navigation ne sont plus magnétiques : un lien qui fuit
+            le curseur est un effet de démonstration, il gêne le pointage et il
+            ajoutait une idée d'interaction de plus à un écran qui en avait
+            déjà trop. La navigation se contente d'un changement de valeur. */}
         <nav className="hidden items-center gap-9 md:flex">
           {NAV.map((item) => (
-            <Magnetic key={item.href} strength={0.5}>
-              <Link
-                href={item.href}
-                className="inline-block text-label text-paper/80 transition-colors duration-300 ease-editorial hover:text-paper"
-              >
-                {item.label}
-              </Link>
-            </Magnetic>
+            <Link
+              key={item.href}
+              href={item.href}
+              className="inline-block text-label text-paper/80 transition-colors duration-300 ease-editorial hover:text-paper"
+            >
+              {item.label}
+            </Link>
           ))}
         </nav>
 
