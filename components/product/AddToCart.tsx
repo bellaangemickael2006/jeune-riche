@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useCart } from "@/store/cart";
-import { sanitizePersonalization, swatchColor, cn } from "@/lib/utils";
+import { sanitizePersonalization, swatchColor, cn, siteUrl, whatsappProductLink } from "@/lib/utils";
 
 type Variant = { id: string; size: string; color: string; stock: number };
 
@@ -135,6 +135,25 @@ export default function AddToCart({
         </div>
       )}
 
+      {/* Canal de vente assisté : le message WhatsApp arrive déjà rempli avec
+          le produit, la couleur et la taille sélectionnées — le client n'a
+          rien à retaper. En Côte d'Ivoire, WhatsApp convertit souvent mieux
+          qu'un tunnel de paiement web classique, d'où ce lien en plus (pas à
+          la place) du panier. */}
+      <a
+        href={whatsappProductLink(productName, {
+          color: color || undefined,
+          size: size || undefined,
+          url: `${siteUrl()}/catalogue/${productSlug}`,
+        })}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center gap-2 border border-line px-6 py-3 text-xs uppercase tracking-widest2 text-paper/70 transition-colors hover:border-paper hover:text-paper"
+      >
+        <WhatsAppIcon />
+        Demander sur WhatsApp
+      </a>
+
       {personalizationEnabled && (
         <div>
           <p className="mb-2 text-label text-paper/50">
@@ -169,6 +188,14 @@ export default function AddToCart({
 
       {!inStock && selectedVariant && <NotifyMe variantId={selectedVariant.id} />}
     </div>
+  );
+}
+
+function WhatsAppIcon() {
+  return (
+    <svg viewBox="0 0 32 32" className="h-4 w-4 shrink-0 text-[#25D366]" fill="currentColor" aria-hidden="true">
+      <path d="M16.004 3C9.377 3 4 8.373 4 15c0 2.34.678 4.52 1.85 6.36L4 29l7.84-1.81A11.94 11.94 0 0 0 16.004 27C22.63 27 28 21.627 28 15S22.63 3 16.004 3Zm0 21.75a9.7 9.7 0 0 1-4.95-1.36l-.355-.21-4.653 1.074 1.09-4.53-.232-.372A9.68 9.68 0 0 1 5.25 15c0-5.93 4.824-10.75 10.754-10.75S26.758 9.07 26.758 15 21.934 24.75 16.004 24.75Zm5.68-7.77c-.31-.156-1.837-.907-2.122-1.01-.285-.104-.492-.156-.699.156-.207.312-.802 1.01-.984 1.217-.181.208-.362.234-.673.078-.31-.156-1.31-.483-2.495-1.54-.923-.823-1.546-1.84-1.727-2.152-.181-.312-.02-.481.136-.636.14-.14.31-.364.466-.546.155-.182.207-.312.31-.52.104-.208.052-.39-.026-.546-.078-.156-.699-1.685-.958-2.308-.252-.605-.508-.523-.699-.533l-.595-.01c-.207 0-.543.078-.828.39-.285.312-1.086 1.06-1.086 2.588 0 1.528 1.112 3.005 1.267 3.213.155.208 2.19 3.343 5.307 4.688.741.32 1.32.512 1.771.655.744.237 1.421.204 1.957.124.597-.089 1.837-.75 2.096-1.474.259-.723.259-1.343.181-1.474-.078-.13-.285-.208-.596-.364Z" />
+    </svg>
   );
 }
 

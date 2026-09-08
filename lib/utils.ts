@@ -42,3 +42,24 @@ export function sanitizePersonalization(input: string, maxLen = 16): string {
 export function siteUrl(): string {
   return process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 }
+
+// Même numéro que le bouton WhatsApp flottant (components/ui/WhatsappButton.tsx).
+export const WHATSAPP_NUMBER = "2250777585367";
+
+// Construit un lien WhatsApp pré-rempli pour un produit précis — la couleur et
+// la taille sélectionnées sont incluses dans le message quand elles sont
+// connues, pour que le client n'ait rien à retaper à l'ouverture de la
+// conversation. En Côte d'Ivoire, WhatsApp convertit souvent mieux qu'un
+// tunnel de paiement web classique : ce lien sert de canal de vente assisté,
+// pas seulement de contact générique.
+export function whatsappProductLink(
+  productName: string,
+  options?: { color?: string; size?: string; url?: string }
+): string {
+  const lines = [`Bonjour, je suis intéressé·e par le produit "${productName}"`];
+  if (options?.color) lines.push(`Couleur : ${options.color}`);
+  if (options?.size) lines.push(`Taille : ${options.size}`);
+  if (options?.url) lines.push(options.url);
+  const message = lines.join("\n");
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
