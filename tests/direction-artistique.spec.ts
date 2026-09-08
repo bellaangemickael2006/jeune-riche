@@ -12,7 +12,27 @@ test.beforeEach(async ({ page }) => {
 // exécution des tests, sur les pages réelles, plutôt que de compter sur la
 // discipline. Un dégradé réintroduit par mégarde fait échouer la suite.
 
-const PAGES = ["/", "/catalogue", "/catalogue/t-shirt-jeune-riche", "/panier", "/manifeste"];
+// Toutes les pages publiques, pas seulement les cinq principales : le langage
+// visuel ne tient que s'il tient partout, y compris sur les pages qu'on
+// regarde rarement (404, mentions légales, confirmation de commande).
+const PAGES = [
+  "/",
+  "/catalogue",
+  "/catalogue/t-shirt-jeune-riche",
+  "/panier",
+  "/manifeste",
+  "/favoris",
+  "/drops",
+  "/compte",
+  "/a-propos",
+  "/contact",
+  "/livraison",
+  "/retours",
+  "/conditions",
+  "/confidentialite",
+  "/checkout/confirmation",
+  "/page-qui-nexiste-pas",
+];
 
 const PALETTE = new Set([
   "rgb(11, 11, 12)", // ink

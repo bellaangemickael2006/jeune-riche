@@ -20,7 +20,7 @@ export default function ReviewForm({
 
   if (!isLoggedIn) {
     return (
-      <p className="mt-6 border-t border-line pt-6 text-sm text-paper/50">
+      <p className="mt-6 border-t border-line pt-6 text-body text-paper/50">
         <Link href="/compte" className="underline underline-offset-4 hover:text-paper">
           Connectez-vous
         </Link>{" "}
@@ -30,7 +30,7 @@ export default function ReviewForm({
   }
 
   if (state?.ok) {
-    return <p className="mt-6 border-t border-line pt-6 text-sm text-paper/70">{state.message}</p>;
+    return <p className="mt-6 border-t border-line pt-6 text-body text-paper/70">{state.message}</p>;
   }
 
   return (
@@ -57,13 +57,13 @@ export default function ReviewForm({
         minLength={5}
         rows={3}
         placeholder="Votre avis sur ce produit..."
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+        className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
       />
-      {state && !state.ok && <p className="text-xs text-paper/60">{state.message}</p>}
+      {state && !state.ok && <p className="text-caption text-paper/60">{state.message}</p>}
       <button
         type="submit"
         disabled={pending}
-        className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
+        className="w-fit bg-paper px-6 py-3 text-label text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
       >
         {pending ? "Envoi..." : "Publier l'avis"}
       </button>

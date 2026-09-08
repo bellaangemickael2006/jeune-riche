@@ -89,10 +89,10 @@ export default function AuthForms() {
         height={120}
         className="mx-auto h-12 w-12 object-contain"
       />
-      <h1 className="mt-4 text-center font-editorial text-2xl text-paper">
+      <h1 className="mt-4 text-center font-editorial text-heading text-paper">
         {mode === "login" ? "Bon retour" : mode === "signup" ? "Rejoindre JEUNE RICHE" : "Mot de passe oublié"}
       </h1>
-      <p className="mt-1 text-center text-xs text-paper/40">
+      <p className="mt-1 text-center text-caption text-paper/40">
         {mode === "login"
           ? "Accédez à votre compte et vos commandes."
           : mode === "signup"
@@ -107,12 +107,12 @@ export default function AuthForms() {
             setError(null);
             setMessage(null);
           }}
-          className="mt-8 text-xs uppercase tracking-widest2 text-paper/50 underline underline-offset-4 hover:text-paper"
+          className="mt-8 text-label text-paper/50 underline underline-offset-4 hover:text-paper"
         >
           ← Retour à la connexion
         </button>
       ) : (
-        <div className="mt-8 flex gap-6 border-b border-line text-xs uppercase tracking-widest2">
+        <div className="mt-8 flex gap-6 border-b border-line text-label">
           <button
             onClick={() => setMode("login")}
             className={cn("pb-3 transition-colors", mode === "login" ? "border-b border-paper text-paper" : "text-paper/40 hover:text-paper/70")}
@@ -129,46 +129,46 @@ export default function AuthForms() {
       )}
 
       {CONFIG_MISSING && (
-        <p className="mb-4 mt-4 border border-paper/30 bg-paper/5 px-3 py-2 text-xs text-paper">
+        <p className="mb-4 mt-4 border border-paper/30 bg-paper/5 px-3 py-2 text-caption text-paper">
           Supabase n&apos;est pas encore configuré — la connexion sera disponible une fois
           NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY renseignés.
         </p>
       )}
-      {error && <p className="mb-4 mt-4 text-xs font-medium text-paper">{error}</p>}
-      {message && <p className="mb-4 mt-4 text-xs text-paper/70">{message}</p>}
+      {error && <p className="mb-4 mt-4 text-caption font-medium text-paper">{error}</p>}
+      {message && <p className="mb-4 mt-4 text-caption text-paper/70">{message}</p>}
 
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
         {mode === "signup" && (
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Nom</span>
+            <span className="mb-2 block text-label text-paper/50">Nom</span>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper focus:border-paper focus:outline-none"
             />
           </label>
         )}
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Email</span>
+          <span className="mb-2 block text-label text-paper/50">Email</span>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper focus:border-paper focus:outline-none"
           />
         </label>
         {mode !== "forgot" && (
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Mot de passe</span>
+            <span className="mb-2 block text-label text-paper/50">Mot de passe</span>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={8}
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper focus:border-paper focus:outline-none"
             />
           </label>
         )}
@@ -180,7 +180,7 @@ export default function AuthForms() {
               setError(null);
               setMessage(null);
             }}
-            className="-mt-2 w-fit text-xs text-paper/40 underline underline-offset-4 hover:text-paper/70"
+            className="-mt-2 w-fit text-caption text-paper/40 underline underline-offset-4 hover:text-paper/70"
           >
             Mot de passe oublié ?
           </button>
@@ -188,7 +188,7 @@ export default function AuthForms() {
         <button
           type="submit"
           disabled={loading}
-          className="mt-2 bg-paper py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
+          className="mt-2 bg-paper py-3 text-label text-ink transition-colors duration-300 ease-editorial hover:bg-studio disabled:opacity-50"
         >
           {loading
             ? "…"

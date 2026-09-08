@@ -126,7 +126,7 @@ export default function CheckoutPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-ink px-5 text-center">
         <p className="text-paper/60">Votre panier est vide.</p>
-        <Link href="/catalogue" className="text-xs uppercase tracking-widest2 text-paper underline underline-offset-4">
+        <Link href="/catalogue" className="text-label text-paper underline underline-offset-4">
           Voir le catalogue
         </Link>
       </div>
@@ -142,36 +142,34 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
       <div className="mx-auto max-w-xl">
-        <div className="mb-10 flex items-center gap-3">
+        {/* Les pastilles rondes numérotées sont retirées (`rounded-full` est
+            interdit) au profit du même rail numéroté que le reste du site :
+            « 01 — Informations ». L'étape courante se lit au filet et à la
+            valeur du texte, pas à un jeton coloré. */}
+        <ol className="mb-14 flex flex-wrap gap-x-8 gap-y-2 border-b border-line pb-4">
           {steps.map((s, i) => (
-            <div key={s} className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <span
-                  className={cn(
-                    "flex h-6 w-6 items-center justify-center rounded-full text-[11px]",
-                    i <= stepIndex ? "bg-paper text-ink" : "border border-line text-paper/40"
-                  )}
-                >
-                  {i + 1}
-                </span>
-                <span className={cn("text-xs uppercase tracking-widest2", i === stepIndex ? "text-paper" : "text-paper/40")}>
-                  {STEP_LABELS[s]}
-                </span>
-              </div>
-              {i < steps.length - 1 && <span className="h-px w-6 bg-line" />}
-            </div>
+            <li
+              key={s}
+              aria-current={i === stepIndex ? "step" : undefined}
+              className={cn(
+                "text-label transition-colors duration-300 ease-editorial",
+                i === stepIndex ? "text-paper" : i < stepIndex ? "text-paper/50" : "text-paper/25"
+              )}
+            >
+              {String(i + 1).padStart(2, "0")} — {STEP_LABELS[s]}
+            </li>
           ))}
-        </div>
+        </ol>
 
         {step === "informations" && (
           <div className="flex flex-col gap-4">
-            <h1 className="font-editorial text-2xl text-paper">Vos informations</h1>
+            <h1 className="font-editorial text-heading text-paper">Vos informations</h1>
             <Field label="Nom complet" value={form.customerName} onChange={(v) => update("customerName", v)} />
             <Field label="Email" type="email" value={form.customerEmail} onChange={(v) => update("customerEmail", v)} />
             <button
               onClick={() => setStep("livraison")}
               disabled={!form.customerName || !form.customerEmail}
-              className="mt-4 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
+              className="mt-4 bg-paper py-4 text-label text-ink transition-colors duration-300 ease-editorial hover:bg-studio disabled:opacity-30"
             >
               Continuer
             </button>
@@ -180,7 +178,7 @@ export default function CheckoutPage() {
 
         {step === "livraison" && (
           <div className="flex flex-col gap-4">
-            <h1 className="font-editorial text-2xl text-paper">Livraison</h1>
+            <h1 className="font-editorial text-heading text-paper">Livraison</h1>
             <Field label="Adresse" value={form.line1} onChange={(v) => update("line1", v)} />
             <div className="grid grid-cols-2 gap-4">
               <Field label="Ville" value={form.city} onChange={(v) => update("city", v)} />
@@ -189,13 +187,13 @@ export default function CheckoutPage() {
             <Field label="Pays" value={form.country} onChange={(v) => update("country", v)} />
             <Field label="Téléphone (optionnel)" value={form.phone} onChange={(v) => update("phone", v)} required={false} />
             <div className="mt-4 flex gap-3">
-              <button onClick={() => setStep("informations")} className="border border-line px-6 py-4 text-xs uppercase tracking-widest2 text-paper/70">
+              <button onClick={() => setStep("informations")} className="border border-line px-6 py-4 text-label text-paper/70">
                 Retour
               </button>
               <button
                 onClick={() => setStep("recapitulatif")}
                 disabled={!form.line1 || !form.city}
-                className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
+                className="flex-1 bg-paper py-4 text-label text-ink transition-colors duration-300 ease-editorial hover:bg-studio disabled:opacity-30"
               >
                 Continuer
               </button>
@@ -205,12 +203,12 @@ export default function CheckoutPage() {
 
         {step === "recapitulatif" && (
           <div className="flex flex-col gap-6">
-            <h1 className="font-editorial text-2xl text-paper">Récapitulatif</h1>
+            <h1 className="font-editorial text-heading text-paper">Récapitulatif</h1>
             <div>
-              <p className="text-xs uppercase tracking-widest2 text-paper/40">Articles</p>
+              <p className="text-label text-paper/40">Articles</p>
               <ul className="mt-3 divide-y divide-line">
                 {lines.map((l) => (
-                  <li key={`${l.variantId}-${l.personalization ?? ""}`} className="flex justify-between py-3 text-sm text-paper">
+                  <li key={`${l.variantId}-${l.personalization ?? ""}`} className="flex justify-between py-3 text-body text-paper">
                     <span>
                       {l.productName} — {l.color}/{l.size} × {l.quantity}
                       {l.personalization && ` — "${l.personalization}"`}
@@ -219,38 +217,38 @@ export default function CheckoutPage() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-3 flex flex-col gap-2 border-t border-line pt-3 text-sm text-paper">
+              <div className="mt-3 flex flex-col gap-2 border-t border-line pt-3 text-body text-paper">
                 <div className="flex justify-between text-paper/60">
-                  <span className="uppercase tracking-widest2">Sous-total</span>
+                  <span className="text-label">Sous-total</span>
                   <span>{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-paper/60">
-                  <span className="uppercase tracking-widest2">Livraison</span>
+                  <span className="text-label">Livraison</span>
                   <span>{shippingCost === 0 ? "Offerte" : formatPrice(shippingCost)}</span>
                 </div>
                 <div className="flex justify-between border-t border-line pt-2">
-                  <span className="uppercase tracking-widest2 text-paper/50">Total</span>
+                  <span className="text-label text-paper/50">Total</span>
                   <span>{formatPrice(grandTotal)}</span>
                 </div>
               </div>
             </div>
 
-            <div className="border border-line bg-line/20 px-4 py-4 text-xs text-paper/60">
+            <div className="border border-line bg-line/20 px-4 py-4 text-caption text-paper/60">
               Aucun prestataire de paiement en ligne n&apos;est encore connecté à ce site. Votre
               commande sera enregistrée et notre équipe vous contactera par email pour finaliser le
               règlement.
             </div>
 
-            {error && <p className="text-xs font-medium text-paper">{error}</p>}
+            {error && <p className="text-caption font-medium text-paper">{error}</p>}
 
             <div className="flex gap-3">
-              <button onClick={() => setStep("livraison")} className="border border-line px-6 py-4 text-xs uppercase tracking-widest2 text-paper/70">
+              <button onClick={() => setStep("livraison")} className="border border-line px-6 py-4 text-label text-paper/70">
                 Retour
               </button>
               <button
                 onClick={submitOrder}
                 disabled={submitting}
-                className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="flex-1 bg-paper py-4 text-label text-ink transition-colors duration-300 ease-editorial hover:bg-studio disabled:opacity-50"
               >
                 {submitting ? "Envoi…" : "Confirmer la commande"}
               </button>
@@ -277,13 +275,13 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{label}</span>
+      <span className="mb-2 block text-label text-paper/50">{label}</span>
       <input
         type={type}
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+        className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper focus:border-paper focus:outline-none"
       />
     </label>
   );

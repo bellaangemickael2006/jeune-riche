@@ -25,7 +25,7 @@ export default async function DropsPage() {
 
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
-      <h1 className="font-editorial text-4xl text-paper md:text-6xl">Drops</h1>
+      <h1 className="font-editorial text-heading-lg leading-[1.05] text-paper md:text-[4rem]">Drops</h1>
 
       {drops.length === 0 ? (
         <EmptyState
@@ -38,11 +38,11 @@ export default async function DropsPage() {
             <li key={d.id} className="flex flex-col gap-1 py-6 md:flex-row md:items-center md:justify-between">
               <div>
                 <p className="font-display text-xl uppercase text-paper">{d.name}</p>
-                {d.description && <p className="mt-1 max-w-md text-sm text-paper/50">{d.description}</p>}
+                {d.description && <p className="mt-1 max-w-md text-body text-paper/50">{d.description}</p>}
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-xs text-paper/40">{d.startsAt.toLocaleDateString("fr-FR")}</span>
-                <span className="border border-line px-3 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
+                <span className="text-caption text-paper/40">{d.startsAt.toLocaleDateString("fr-FR")}</span>
+                <span className="border border-line px-3 py-1 text-label text-paper/70">
                   {STATUS_LABEL[d.status]}
                 </span>
               </div>

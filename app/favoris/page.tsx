@@ -30,7 +30,7 @@ export default function FavorisPage() {
 
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
-      <h1 className="font-editorial text-4xl text-paper md:text-6xl">Favoris</h1>
+      <h1 className="font-editorial text-heading-lg leading-[1.05] text-paper md:text-[4rem]">Favoris</h1>
 
       {!loading && products.length === 0 && (
         <EmptyState
