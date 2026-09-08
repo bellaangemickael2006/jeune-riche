@@ -2,23 +2,21 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import ImageZoomModal from "@/components/product/ImageZoomModal";
 
 type Img = { url: string; alt: string; type: string };
 
-// Le tilt 3D au survol de la photo a été retiré : la fiche produit doit donner
-// son poids à la photographie, pas à un effet de carte qui la fait bouger. Le
-// seul mouvement conservé est le fondu entre deux vues, qui sert la lecture.
+// Les vues sont empilées, pas réduites à une grande image surmontant une
+// rangée de miniatures minuscules — c'est la présentation demandée par la
+// direction artistique, et c'est aussi ce qui donne enfin son poids à la
+// photographie : le tilt 3D au survol a été retiré, la colonne de gauche vaut
+// désormais par la surface qu'occupe le vêtement.
 //
-// Cadre en 5/4 : les 27 visuels produit disponibles sont tous en paysage
-// (1600×1280 pour la plupart). Dans un cadre portrait 4/5, le vêtement était
-// systématiquement réduit et perdu au centre.
+// Cadres en 5/4 : les 27 visuels produit disponibles sont tous en paysage
+// (1600×1280 pour la plupart). Dans un cadre portrait, le vêtement était
+// systématiquement réduit et perdu au centre d'un aplat de studio.
 export default function Gallery({ images, productName }: { images: Img[]; productName: string }) {
-  const [active, setActive] = useState(0);
-  const [zoomOpen, setZoomOpen] = useState(false);
-  const current = images[active];
+  const [zoom, setZoom] = useState<Img | null>(null);
 
   if (images.length === 0) {
     return (
@@ -29,66 +27,39 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
   }
 
   return (
-    <div>
-      <div className="relative aspect-[5/4] overflow-hidden bg-studio">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={current.url}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={current.url}
-              alt={current.alt || productName}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 55vw"
-              className="object-contain p-6"
-            />
-          </motion.div>
-        </AnimatePresence>
-        {/* Phrase explicative, pas un label : elle reste en sans neutre. */}
-        {current.type === "MOCKUP" && (
-          <span className="absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-caption text-paper/80">
-            Référence de design — photo produit à venir
-          </span>
-        )}
+    <div className="flex flex-col gap-3">
+      {images.map((img, i) => (
         <button
-          onClick={() => setZoomOpen(true)}
-          aria-label="Zoomer sur la photo"
-          className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center bg-ink/85 text-paper/80 transition-colors hover:text-paper"
+          key={img.url}
+          type="button"
+          onClick={() => setZoom(img)}
+          aria-label={`Agrandir la vue ${i + 1} sur ${images.length}`}
+          className="group relative aspect-[5/4] w-full cursor-zoom-in overflow-hidden bg-studio"
         >
-          <ZoomIcon />
+          <Image
+            src={img.url}
+            alt={img.alt || productName}
+            fill
+            priority={i === 0}
+            sizes="(max-width: 768px) 100vw, 55vw"
+            className="object-contain"
+          />
+          {img.type === "MOCKUP" && (
+            // Phrase explicative, pas un label : elle reste en sans neutre.
+            <span className="absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-caption text-paper/80">
+              Référence de design — photo produit à venir
+            </span>
+          )}
+          <span
+            aria-hidden
+            className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center bg-ink/85 text-paper/70 transition-colors duration-300 ease-editorial group-hover:text-paper"
+          >
+            <ZoomIcon />
+          </span>
         </button>
-      </div>
+      ))}
 
-      <ImageZoomModal image={current} open={zoomOpen} onClose={() => setZoomOpen(false)} />
-      {images.length > 1 && (
-        // Vignettes au même format que la photo principale, et pas en carré :
-        // un carré recadrait mentalement des visuels qui n'en sont pas.
-        // Sélection marquée par un filet, pas par un anneau de 2px.
-        <div className="mt-3 grid grid-cols-4 gap-3 md:grid-cols-5">
-          {images.map((img, i) => (
-            <button
-              key={img.url}
-              onClick={() => setActive(i)}
-              aria-current={i === active ? "true" : undefined}
-              className={cn(
-                "relative aspect-[5/4] overflow-hidden bg-studio transition-opacity duration-300 ease-editorial",
-                i === active
-                  ? "outline outline-1 outline-offset-2 outline-paper"
-                  : "opacity-50 hover:opacity-100"
-              )}
-              aria-label={`Voir l'image ${i + 1}`}
-            >
-              <Image src={img.url} alt={img.alt || productName} fill sizes="120px" className="object-contain" />
-            </button>
-          ))}
-        </div>
-      )}
+      <ImageZoomModal image={zoom} open={zoom !== null} onClose={() => setZoom(null)} />
     </div>
   );
 }

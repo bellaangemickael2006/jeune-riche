@@ -75,11 +75,14 @@ export default function ProductViewer({
           colonne — ils n'ont rien à faire au milieu du parcours d'achat — et
           passent en pleine largeur sous la fiche. */}
       <div className="grid gap-12 md:grid-cols-[1.4fr_1fr] md:items-start md:gap-16 lg:gap-24">
-        <div className="md:sticky md:top-32">
+        <div>
           <Gallery key={color} images={galleryImages} productName={productName} />
         </div>
 
-        <div className="max-w-md">
+        {/* C'est le panneau d'achat qui reste à l'écran, pas la photographie :
+            les vues sont désormais empilées, donc c'est la colonne de gauche
+            qui défile. */}
+        <div className="max-w-md md:sticky md:top-32">
           <p className="text-label text-paper/40">{categoryName}</p>
           <h1 className="mt-4 font-editorial text-heading leading-[1.1] text-paper md:text-heading-lg">
             {productName}
