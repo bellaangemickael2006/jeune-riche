@@ -12,7 +12,16 @@ const SOCIAL_LINKS = {
   snapchat: "https://www.snapchat.com/add/jeune_riche01?share_id=bmUySqcSYr8&locale=fr-FR",
 };
 
-const COLUMNS = [
+// Le bouton WhatsApp flottant (bulle verte, rounded-full, ombre portée) a été
+// retiré : couleur hors palette, forme et ombre interdites, et gadget présent
+// sur toutes les pages. Le canal reste disponible — au même endroit que les
+// autres moyens de contact, là où la question se pose réellement.
+const WHATSAPP_URL = "https://wa.me/2250777585367";
+
+const COLUMNS: {
+  title: string;
+  links: { label: string; href: string; external?: boolean }[];
+}[] = [
   {
     title: "Marque",
     links: [
@@ -27,6 +36,7 @@ const COLUMNS = [
       { label: "Livraison", href: "/livraison" },
       { label: "Retours", href: "/retours" },
       { label: "Contact", href: "/contact" },
+      { label: "WhatsApp", href: WHATSAPP_URL, external: true },
     ],
   },
   {
@@ -70,12 +80,23 @@ export default function Footer() {
               <ul className="mt-4 space-y-3">
                 {col.links.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-caption text-paper/70 transition-colors hover:text-paper"
-                    >
-                      {link.label}
-                    </Link>
+                    {link.external ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-caption text-paper/70 transition-colors hover:text-paper"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-caption text-paper/70 transition-colors hover:text-paper"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>

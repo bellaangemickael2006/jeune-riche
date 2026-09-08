@@ -9,6 +9,7 @@ export default async function HomePage() {
   const showcaseItems = products.map((p) => ({
     name: p.name,
     slug: p.slug,
+    categoryName: p.category.name,
     image: p.images[0]?.url ?? null,
   }));
 

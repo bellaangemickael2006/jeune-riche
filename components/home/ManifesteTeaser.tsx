@@ -1,38 +1,36 @@
-import Image from "next/image";
 import Link from "next/link";
-import FadeIn from "@/components/ui/FadeIn";
-import Magnetic from "@/components/ui/Magnetic";
-import Spotlight from "@/components/ui/Spotlight";
 
+// 03 — LE MANIFESTE.
+//
+// Le Spotlight (dégradé radial suivant le curseur), le bouton magnétique et le
+// badge en filigrane à 4% d'opacité ont été retirés : un dégradé est interdit,
+// le filigrane n'était pas lisible — donc pas une information, juste du bruit —
+// et l'écran cumulait trois effets pour une seule phrase.
+//
+// La composition n'est plus centrée : le bloc est décalé vers la droite,
+// exactement là où le hero et la gamme laissaient le vide. L'axe se déplace,
+// c'est ce déplacement qui fait respirer la page.
 export default function ManifesteTeaser() {
   return (
-    <Spotlight
-      as="section"
-      size={700}
-      className="flex min-h-[70vh] items-center justify-center overflow-hidden bg-ink px-5 py-24 text-center md:px-10"
-    >
-      <Image
-        src="/images/badge/badge-black-on-white.png"
-        alt=""
-        aria-hidden
-        width={600}
-        height={600}
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[140vw] w-[140vw] max-w-none -translate-x-1/2 -translate-y-1/2 opacity-[0.04] md:h-[60vw] md:w-[60vw]"
-      />
-      <FadeIn className="relative z-10 flex max-w-2xl flex-col items-center gap-8" y={20}>
-        <p className="text-xs uppercase tracking-widest2 text-paper/50">Le manifeste</p>
-        <p className="font-editorial text-2xl italic leading-snug text-paper md:text-4xl">
-          Une couronne gravée, un visage tribal — le luxe qui ne s&apos;excuse pas d&apos;où il vient.
-        </p>
-        <Magnetic strength={0.3}>
+    <section className="px-5 pb-32 md:px-10 md:pb-48">
+      <div className="reveal flex items-baseline justify-between border-b border-line pb-4">
+        <p className="text-label text-paper/40">03 — Le manifeste</p>
+      </div>
+
+      <div className="md:grid md:grid-cols-12">
+        <div className="reveal reveal-1 mt-16 md:col-span-7 md:col-start-6 md:mt-28">
+          <p className="font-editorial text-heading leading-[1.25] text-paper md:text-[2.75rem] md:leading-[1.2]">
+            Une couronne gravée, un visage tribal — le luxe qui ne s&apos;excuse pas d&apos;où il
+            vient.
+          </p>
           <Link
             href="/manifeste"
-            className="inline-block text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 transition-opacity hover:opacity-70"
+            className="mt-10 inline-block border-b border-line pb-1 text-label text-paper/60 transition-colors duration-300 ease-editorial hover:border-paper hover:text-paper md:mt-14"
           >
-            Entrer dans l&apos;univers
+            Lire le manifeste
           </Link>
-        </Magnetic>
-      </FadeIn>
-    </Spotlight>
+        </div>
+      </div>
+    </section>
   );
 }

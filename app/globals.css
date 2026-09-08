@@ -89,6 +89,34 @@ select:focus-visible {
   }
 }
 
+/* Apparition éditoriale — opacité + 10px, une seule fois (règle des trois
+   vitesses : « scroll »). En CSS plutôt qu'en JS parce que l'information ne
+   doit jamais dépendre d'une animation : si le JS ne s'exécute pas, le texte
+   reste visible ; et sous prefers-reduced-motion la règle globale plus haut
+   ramène la durée à 0,01ms, ce qui fige directement l'état final. */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.reveal {
+  animation: reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.reveal-1 {
+  animation-delay: 0.08s;
+}
+.reveal-2 {
+  animation-delay: 0.16s;
+}
+.reveal-3 {
+  animation-delay: 0.24s;
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
