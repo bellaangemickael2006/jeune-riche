@@ -33,7 +33,9 @@ export default async function ComptePage() {
   const user = await getSessionUser();
 
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center px-5 pt-24">
+    // Plus de centrage vertical : la page suit l'axe gauche du reste du site,
+    // avec les mêmes marges que le catalogue et la fiche produit.
+    <div className="min-h-screen bg-ink px-5 pb-32 pt-32 md:px-10 md:pt-40">
       {user ? (
         <AccountDashboard
           name={user.name}

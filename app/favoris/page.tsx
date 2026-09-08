@@ -30,17 +30,24 @@ export default function FavorisPage() {
 
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
-      <h1 className="font-editorial text-heading-lg leading-[1.05] text-paper md:text-[4rem]">Favoris</h1>
+      <div className="border-b border-line pb-4">
+        <p className="text-label text-paper/40">Favoris</p>
+      </div>
+      <h1 className="mt-16 font-editorial text-heading-lg leading-[1.05] text-paper md:mt-20 md:text-[4rem]">
+        Vos pièces retenues
+      </h1>
 
       {!loading && products.length === 0 && (
         <EmptyState
           message="Aucun favori pour le moment."
-          cta={{ label: "Voir le catalogue", href: "/catalogue" }}
+          cta={{ label: "Voir la collection", href: "/catalogue" }}
         />
       )}
 
+      {/* Même grille que le catalogue : une colonne sous 640px, les visuels
+          produit étant des paires face+dos en paysage. */}
       {products.length > 0 && (
-        <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 md:gap-x-6">
+        <div className="mt-14 grid grid-cols-1 gap-x-6 gap-y-14 sm:grid-cols-2 md:grid-cols-3 md:gap-x-8 md:gap-y-20 xl:grid-cols-4">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -80,25 +79,32 @@ export default function AuthForms() {
     router.refresh();
   }
 
+  // La carte bordée centrée au milieu de la page a été retirée : c'est
+  // exactement le composant que la direction artistique interdit, et le crest
+  // posé au-dessus du titre transformait le blason en vignette d'écran de
+  // connexion. Même composition que le reste du site : rail en haut, axe à
+  // gauche, mesure étroite, vide tenu à droite.
   return (
-    <div className="mx-auto w-full max-w-sm border border-line px-8 py-10">
-      <Image
-        src="/images/logo/logo-transparent.png"
-        alt="JEUNE RICHE"
-        width={120}
-        height={120}
-        className="mx-auto h-12 w-12 object-contain"
-      />
-      <h1 className="mt-4 text-center font-editorial text-heading text-paper">
-        {mode === "login" ? "Bon retour" : mode === "signup" ? "Rejoindre JEUNE RICHE" : "Mot de passe oublié"}
-      </h1>
-      <p className="mt-1 text-center text-caption text-paper/40">
-        {mode === "login"
-          ? "Accédez à votre compte et vos commandes."
-          : mode === "signup"
-            ? "Créez votre compte en une minute."
-            : "Recevez un lien pour en choisir un nouveau."}
-      </p>
+    <div className="w-full">
+      <div className="border-b border-line pb-4">
+        <p className="text-label text-paper/40">Compte</p>
+      </div>
+
+      <div className="max-w-sm pt-16 md:pt-20">
+        <h1 className="font-editorial text-heading-lg leading-[1.05] text-paper">
+          {mode === "login"
+            ? "Bon retour"
+            : mode === "signup"
+              ? "Créer un compte"
+              : "Mot de passe oublié"}
+        </h1>
+        <p className="mt-4 text-body text-paper/45">
+          {mode === "login"
+            ? "Accédez à votre compte et à vos commandes."
+            : mode === "signup"
+              ? "Vos commandes et vos adresses, conservées."
+              : "Recevez un lien pour en choisir un nouveau."}
+        </p>
 
       {mode === "forgot" ? (
         <button
@@ -198,7 +204,8 @@ export default function AuthForms() {
                 ? "Créer mon compte"
                 : "Envoyer le lien"}
         </button>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
