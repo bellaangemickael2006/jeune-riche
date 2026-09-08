@@ -6,6 +6,12 @@ import { defineConfig, devices } from "@playwright/test";
 // faisaient échouer des tests parfaitement valides. On laisse de la marge au
 // premier passage plutôt que de déclarer en échec ce qui n'est qu'une
 // compilation lente.
+// `E2E_BASE_URL=https://jeune-riche.vercel.app npx playwright test` exécute la
+// même suite contre la production réelle, sans démarrer de serveur local. C'est
+// la vérification qui compte : le déploiement, pas la machine de développement.
+const baseURL = process.env.E2E_BASE_URL || "http://localhost:3000";
+const contreLaProduction = Boolean(process.env.E2E_BASE_URL);
+
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
@@ -14,16 +20,18 @@ export default defineConfig({
   expect: { timeout: 15_000 },
   reporter: "list",
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL,
     trace: "on-first-retry",
     actionTimeout: 20_000,
     navigationTimeout: 60_000,
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
-  webServer: {
-    command: "npm run dev",
-    url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
-    timeout: 180_000,
-  },
+  webServer: contreLaProduction
+    ? undefined
+    : {
+        command: "npm run dev",
+        url: "http://localhost:3000",
+        reuseExistingServer: !process.env.CI,
+        timeout: 180_000,
+      },
 });
