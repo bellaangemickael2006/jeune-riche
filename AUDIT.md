@@ -179,6 +179,32 @@ de tout élément interactif. Sur du texte, il l'inverse localement.
 
 ---
 
+## 3bis. Avancement (mis à jour le 08/09)
+
+| # | Problème | État |
+|---|---|---|
+| A1 | Hero rouge | ✅ vidéo retirée, premier écran typographique |
+| A2 | Wordmark superposé au wordmark de la vidéo | ✅ résolu par A1 |
+| A3 | 20,8 Mo en `preload="auto"` | ✅ plus aucune vidéo sur l'accueil |
+| A4 | Bulle WhatsApp verte | ✅ retirée, lien en filet dans le footer |
+| B1 | Empilement d'effets | ✅ marquee, spotlight, magnétiques, tilt, glow, scramble, word-pull-up retirés |
+| B2 | Dégradés | ✅ zéro dégradé dans le `main` (vérifié en production) |
+| B3 | Titre en surimpression sur l'image | ✅ nom et catégorie sous l'image, alignés à gauche |
+| B4 | Tuile vedette accidentelle | ✅ colonnes inégales alternées, plus de « vedette » arbitraire |
+| B5 | Vêtements clairs invisibles | ✅ cause réelle trouvée : cadres portrait sur assets paysage — voir ART_DIRECTION §4bis |
+| B6 | Information dépendante d'une animation | ✅ WordPullUp retiré des titres, apparitions en CSS, aucune sur les grilles produit |
+| B7 | Filtres en chips | ✅ texte et filet |
+| B8 | `<select>` de taille | ✅ boutons S/M/L/XL, quatre états |
+| B9 | Deux CTA dans le hero | ✅ un seul |
+| B10 | Footer en 4 colonnes égales | ⏳ PHASE 11 |
+| C1 | GSAP chargé pour rien | ⏳ PHASE 16 |
+| C2 | three.js inutilisé | ⏳ PHASE 16 |
+| C3 | Trois polices en compétition | ✅ deux rôles par zone après le passage de `label` en Anton |
+| C4 | Rôles typographiques non appliqués | ✅ sur la carte produit et la fiche ; reste à balayer les pages annexes |
+| C5 | Badge « Épuisé » sur la photo | ✅ ligne « Indisponible » sous le nom |
+| C6 | Intro non conforme au §21 | ⏳ à trancher |
+| C7 | Curseur personnalisé en `mix-blend-mode` | ⏳ PHASE 14 |
+
 ## 4. Plan d'exécution
 
 Ordre imposé par le brief (§57). Chaque phase est livrée, testée en production réelle à

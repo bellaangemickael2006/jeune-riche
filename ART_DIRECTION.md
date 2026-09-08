@@ -36,9 +36,11 @@ Deux polices maximum par écran (une display/UI, une éditoriale) — jamais les
 
 Cinq rôles nommés, disponibles comme tailles Tailwind (`text-label`, `text-caption`, `text-body`, `text-heading`, `text-heading-lg`, `text-display`) en plus des tailles Tailwind standard — additif, rien n'est retiré. Un composant reconstruit doit utiliser un de ces rôles plutôt qu'une taille arbitraire ad hoc.
 
+⚠️ **Correction du 08/09** : le rôle `label` porte désormais la display condensée (Anton), plus le sans neutre. Eyebrows, navigation, boutons, en-têtes de champ et méta sont des éléments d'interface : Inter y était contraire à la règle « le sans neutre jamais en titre, en navigation principale ni en CTA », et donnait à toute l'interface la texture d'un tableau de bord. Réglé en un seul endroit (`.text-label` dans `app/globals.css`) plutôt qu'en ajoutant `font-display` sur trente-trois classes. Exception : une phrase explicative n'est pas un label et reste en `text-caption` (ex. l'étiquette « Référence de design — photo produit à venir » de la galerie).
+
 | Rôle | Taille | Police associée | Usage |
 |---|---|---|---|
-| `label` | 11px, majuscules, `tracking-widest2` | `font-body` | Eyebrows, nav, badges, méta |
+| `label` | 11px, majuscules, `tracking-widest2` | `font-display` | Eyebrows, nav, boutons, en-têtes de champ, méta |
 | `caption` | 13px | `font-body` | Prix, infos secondaires |
 | `body` | 15px | `font-body` | Paragraphes, descriptions |
 | `heading` | 28px | `font-editorial` | Titres de section |
@@ -62,9 +64,19 @@ Aucune photo mannequin réelle (personne portant le vêtement) n'est disponible 
 
 Personnalisation : les mockups portent des exemples baked-in (« BAISACHTE », « BELLA_K », « LIONEL_k »). Ce sont des exemples visuels — le champ de personnalisation réel démarre toujours vide.
 
+### 4bis. Format des cadres image (mesuré le 08/09)
+
+Les 27 visuels produit du dépôt sont **tous en paysage** : ratio 1,250 (1600×1280) pour vingt d'entre eux, ~1,40 (≈631×446) pour les sept mockups du t-shirt noir. **Aucun n'est en portrait.**
+
+Conséquence : tout cadre produit est en `aspect-[5/4]` avec `object-contain`, jamais en 4/5. Les cadres portrait utilisés jusqu'au 08/09 (carte catalogue, galerie de fiche produit, tuiles d'accueil) réduisaient systématiquement le vêtement à une vignette perdue au centre d'un aplat de studio — la casquette blanche disparaissait entièrement. Le léger letterbox du 5/4 est invisible puisque le fond de l'image est déjà `studio`.
+
+`object-cover` est exclu sur ces visuels : un recadrage couperait les cols et les ourlets.
+
+Corollaire : le catalogue passe à **une seule colonne sous 640px**. En deux colonnes à 390px, une paire face+dos tombe sous 80px de large par vêtement. Deux colonnes redeviendront justes le jour où des plans face seule existeront.
+
 ## 5. Vidéos
 
-- `hero-production.mp4` (20 MB) : travelling showroom 3D, plein écran, page d'accueil uniquement, autoplay/muted/loop/playsInline.
+- ⚠️ `hero-production.mp4` (20 MB) : **retirée de la page d'accueil le 08/09.** Trois raisons cumulées — elle est saturée du rouge retiré de la marque (§2) et occupait 100% du premier écran mobile ; elle contient déjà le wordmark « JEUNE RICHE » gravé en très grand, qui entrait en collision avec le H1 posé par-dessus (vérifié à 390px : aucun des deux n'était lisible) ; elle coûtait 20,8 Mo en `preload="auto"` avant le premier texte affiché. Le fichier reste dans le dépôt en attendant l'asset de remplacement annoncé par le client. Le premier écran est aujourd'hui typographique — aucun mockup produit n'a été mis à sa place, afficher un mockup en plein cadre reviendrait à simuler une photographie de campagne qui n'existe pas.
 - `manifeste-motif.mp4` (11 MB) : motif mosaïque noir/blanc incliné avec badge, en fond de `/manifeste` uniquement.
 
 Servies depuis `public/video/` (asset statique Next.js/Vercel, pas de fonction serverless). Poster image à générer plus tard pour le fallback (non disponible aujourd'hui — voir TODO).
@@ -80,7 +92,18 @@ Performance avant effet : pas de 3D lourde par défaut sur mobile, animations r�
 
 ## 7. Structure homepage
 
-Écran 1 (vidéo hero + logo + nav + CTA) → preuve de marque (badge + wordmark en mouvement) → catégories réelles (grille éditoriale) → manifeste teaser → footer sobre.
+Narration numérotée, chaque section ouverte par un rail (index à gauche, méta à droite, filet `line`) :
+
+- **01 — La marque** : premier écran typographique, plein cadre, affirmation en Fraunces calée en bas à gauche, vide tenu sur toute la droite, CTA unique « Voir la collection », index des six catégories en rail bas.
+- **02 — La gamme** : titre éditorial puis six tuiles en colonnes inégales dont l'axe bascule à chaque rangée (7/5 → 5/7 → 7/5). Nom et catégorie **sous** l'image, alignés à gauche, jamais en surimpression sur un voile.
+- **03 — Le manifeste** : bloc décalé vers la droite, là où les deux sections précédentes laissaient le vide. Un seul lien.
+- Footer.
+
+Retirés le 08/09 : marquee de marque en défilement infini, spotlight suivant le curseur, boutons magnétiques, badge en filigrane à 4%, et tous les dégradés de lisibilité posés sur les images.
+
+## 7bis. Ce qui est interdit dans l'interface
+
+Aucun dégradé (vérifié en production : zéro élément à `background-image: gradient` dans le `main`). Aucun `rounded-full`. Aucune ombre portée douce. Aucune couleur hors des cinq tokens. Aucun badge promotionnel, prix barré ou pourcentage. Une seule idée d'interaction dominante par zone — jamais de tilt + glow + scale empilés.
 
 ## 8. Catalogue / fiche produit
 
