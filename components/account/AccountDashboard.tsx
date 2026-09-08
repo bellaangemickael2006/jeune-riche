@@ -40,20 +40,26 @@ export default function AccountDashboard({
     router.refresh();
   }
 
+  // Même composition que la page de connexion et que le reste du site : rail
+  // en haut, axe à gauche, plus de bloc centré.
   return (
-    <div className="mx-auto w-full max-w-lg">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-label text-paper/40">Compte</p>
-          <p className="mt-1 font-display text-2xl uppercase text-paper">{name || email}</p>
-        </div>
-        <button onClick={logout} className="text-label text-paper/40 hover:text-paper">
+    <div className="w-full">
+      <div className="flex items-baseline justify-between border-b border-line pb-4">
+        <p className="text-label text-paper/40">Compte</p>
+        <button
+          onClick={logout}
+          className="text-label text-paper/40 transition-colors duration-300 ease-editorial hover:text-paper"
+        >
           Déconnexion
         </button>
       </div>
 
-      <div className="mt-10">
-        <p className="text-label text-paper/50">Mes commandes</p>
+      <h1 className="mt-16 max-w-2xl font-editorial text-heading-lg leading-[1.05] text-paper md:mt-20">
+        {name || email}
+      </h1>
+
+      <div className="mt-16 max-w-2xl md:mt-20">
+        <p className="text-label text-paper/40">Mes commandes</p>
         {orders.length === 0 ? (
           <p className="mt-3 text-body text-paper/40">Aucune commande pour le moment.</p>
         ) : (
@@ -74,7 +80,9 @@ export default function AccountDashboard({
         )}
       </div>
 
-      <AddressBook address={address} />
+      <div className="max-w-2xl">
+        <AddressBook address={address} />
+      </div>
     </div>
   );
 }
