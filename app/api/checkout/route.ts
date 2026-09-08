@@ -161,6 +161,12 @@ export async function POST(req: NextRequest) {
       return created;
     });
 
+    // Empêche la relance panier abandonné de cibler une commande déjà
+    // passée — ne doit jamais faire échouer la commande si ça rate.
+    prisma.abandonedCart
+      .updateMany({ where: { email: customerEmail, convertedAt: null }, data: { convertedAt: new Date() } })
+      .catch((error) => console.error("[api/checkout] abandonedCart.updateMany:", error));
+
     // L'email ne doit jamais faire échouer la commande si l'envoi rate.
     sendEmail({
       to: customerEmail,

@@ -169,7 +169,28 @@ export default function CheckoutPage() {
             <Field label="Nom complet" value={form.customerName} onChange={(v) => update("customerName", v)} />
             <Field label="Email" type="email" value={form.customerEmail} onChange={(v) => update("customerEmail", v)} />
             <button
-              onClick={() => setStep("livraison")}
+              onClick={() => {
+                setStep("livraison");
+                // Snapshot pour la relance panier abandonné — best-effort,
+                // ne doit jamais bloquer ni perturber le passage à l'étape
+                // suivante si l'appel échoue.
+                fetch("/api/cart/snapshot", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    email: form.customerEmail,
+                    items: lines.map((l) => ({
+                      productName: l.productName,
+                      size: l.size,
+                      color: l.color,
+                      quantity: l.quantity,
+                      unitPrice: l.unitPrice,
+                      personalization: l.personalization,
+                    })),
+                    total: subtotal,
+                  }),
+                }).catch(() => {});
+              }}
               disabled={!form.customerName || !form.customerEmail}
               className="mt-4 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
             >

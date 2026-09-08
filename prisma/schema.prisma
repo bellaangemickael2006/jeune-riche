@@ -291,6 +291,23 @@ model Drop {
   @@map("drops")
 }
 
+// Capturé quand un client renseigne son email au checkout (étape
+// "informations") sans jamais finaliser sa commande — sert de base à la
+// relance automatique (voir app/api/cron/abandoned-cart). Une ligne par
+// email : un nouvel abandon écrase l'ancien panier et réarme la relance.
+model AbandonedCart {
+  id          String    @id @default(cuid())
+  email       String    @unique
+  items       Json // snapshot des lignes du panier au moment de l'abandon
+  total       Decimal   @db.Decimal(10, 2)
+  remindedAt  DateTime?
+  convertedAt DateTime? // rempli si une commande a fini par être passée avec cet email
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("abandoned_carts")
+}
+
 model NewsletterSubscriber {
   id        String   @id @default(cuid())
   email     String   @unique

@@ -21,6 +21,7 @@
     "@react-three/drei": "10.7.6",
     "@react-three/fiber": "9.3.0",
     "@react-three/postprocessing": "3.0.4",
+    "@sentry/nextjs": "^10.73.0",
     "@supabase/ssr": "0.7.0",
     "@supabase/supabase-js": "2.58.0",
     "clsx": "2.1.1",
@@ -60,6 +61,7 @@
     "sharp@0.34.5": true,
     "unrs-resolver@1.12.2": true,
     "@prisma/engines@6.16.3": true,
-    "@prisma/client@6.16.3": true
+    "@prisma/client@6.16.3": true,
+    "@sentry/cli@2.58.6": true
   }
 }

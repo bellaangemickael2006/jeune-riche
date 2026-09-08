@@ -149,6 +149,40 @@ export function orderConfirmationEmail(params: {
   `);
 }
 
+export function abandonedCartEmail(params: {
+  items: { productName: string; size: string; color: string; quantity: number }[];
+  total: number;
+}) {
+  const formatXof = (n: number) =>
+    new Intl.NumberFormat("fr-FR", { style: "currency", currency: "XOF", maximumFractionDigits: 0 }).format(n);
+
+  const rows = params.items
+    .map(
+      (i) => `
+      <tr>
+        <td style="padding:8px 0;border-bottom:1px solid #262626;">
+          ${i.productName} — ${i.color} / ${i.size} × ${i.quantity}
+        </td>
+      </tr>`
+    )
+    .join("");
+
+  return emailShell(`
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Vous avez oublié quelque chose</p>
+    <p style="margin:0 0 16px;">Votre sélection vous attend toujours :</p>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin:0 0 20px;">
+      ${rows}
+    </table>
+    <p style="margin:0 0 28px;color:#9a9a9a;">
+      Total estimé : <strong style="color:#f5f4f1;">${formatXof(params.total)}</strong> (hors livraison).
+      Les stocks sont limités — votre taille pourrait ne plus être disponible demain.
+    </p>
+    <a href="${siteUrl()}/panier" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+      Reprendre ma commande
+    </a>
+  `);
+}
+
 export function campaignEmail(bodyText: string) {
   const paragraphs = bodyText
     .split("\n")
