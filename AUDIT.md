@@ -250,7 +250,34 @@ la seule source de vérité (§01, §44).
 
 ---
 
-## 5. Refus assumés (§60) — première série
+## 4bis. Validation finale — 14 contrôles
+
+Vérifiés sur la **production réelle** (https://jeune-riche.vercel.app), pas en local.
+La suite Playwright peut être rejouée contre elle :
+`E2E_BASE_URL=https://jeune-riche.vercel.app npx playwright test` — 43 passent, 1 ignoré.
+
+| # | Contrôle | Résultat |
+|---|---|---|
+| 1 | Logo caché | ✅ rails numérotés, colonnes inégales à axe basculant, Fraunces sur ink, vide tenu — la composition n'est pas interchangeable |
+| 2 | 390px | ✅ automatisé : aucun débordement horizontal, CTA au-dessus de la ligne de flottaison |
+| 3 | Navigation | ✅ automatisé : nav principale, index de la gamme, recherche (Entrée **et** bouton) |
+| 4 | Catalogue | ✅ automatisé : six catégories, filtres texte, filtrage, état vide de recherche |
+| 5 | Fiche produit | ✅ automatisé : tailles en boutons, aucun `<select>`, action unique, personnalisation |
+| 6 | Panier | ✅ automatisé : ajout, ouverture du tiroir, quantité ±, suppression, page dédiée |
+| 7 | États | ✅ loading (géométrie réelle), empty, indisponible, sélectionné, désactivé |
+| 8 | Reduced motion | ✅ automatisé : pas d'intro, contenu lisible |
+| 9 | Fonctionnalités existantes | ✅ automatisé : favoris, compte, admin, 404 |
+| 10 | Performance | ✅ 31 Mo de vidéo retirés du chemin critique ; /catalogue 166 → 119 kB, /favoris 168 → 121 kB, /manifeste 158 → 111 kB ; 7 dépendances mortes retirées |
+| 11 | Cohérence typographique | ✅ deux rôles visibles par zone ; `label` en Anton partout |
+| 12 | Cohérence des couleurs | ✅ automatisé sur 5 pages : aucune couleur hors des 5 tokens (exception documentée : nuanciers `data-swatch`) |
+| 13 | Absence de composants inutiles | ✅ 8 composants d'effet et 7 dépendances supprimés |
+| 14 | Absence de contenu inventé | ✅ aucun avis, chiffre, collaboration ou récompense ajouté ; « Composition & entretien : non communiqués » conservé ; étiquette « référence de design » conservée |
+
+Contrôle supplémentaire non demandé : **le contenu essentiel reste lisible avec
+JavaScript désactivé** — c'est la traduction la plus stricte de « aucune
+information ne doit dépendre d'une animation ».
+
+## 5. Refus assumés (§60)
 
 ```
 REFUS : Garder la vidéo hero rouge.
@@ -307,4 +334,56 @@ ALTERNATIVE : Pièce vedette choisie explicitement, et traitement du contraste p
 REFUS : Un titre de section qui n'existe que si une animation se déclenche.
 RAISON : §40 — aucune information ne doit dépendre d'une animation.
 ALTERNATIVE : Reveal en opacité + 8–12px depuis un état déjà lisible.
+```
+```
+REFUS :
+Remplacer la vidéo hero par un mockup produit en plein cadre.
+
+RAISON :
+Cela reviendrait à faire passer un rendu de studio pour une photographie de
+campagne. La marque n'a aucune photo mannequin — l'inventer visuellement est
+un mensonge de mise en page.
+
+ALTERNATIVE :
+Premier écran typographique, vide tenu, en attendant de vrais visuels.
+```
+```
+REFUS :
+Un projet Lovable pour explorer des compositions.
+
+RAISON :
+Espace de travail vérifié : zéro projet, zéro design system, zéro template.
+Il n'y avait rien à en extraire, et générer un site parallèle pour en recopier
+des décisions aurait coûté plus que de composer directement d'après les
+contraintes réelles — les vrais assets, la vraie palette, les vraies données.
+
+ALTERNATIVE :
+Le vrai site comme seule source de vérité, mesures réelles à l'appui
+(ratios d'images, poids des bundles, rendus en production).
+```
+```
+REFUS :
+Le catalogue en deux colonnes sur mobile, comme le demandait la spécification.
+
+RAISON :
+Les 27 visuels sont des paires face+dos en paysage. À 390px en deux colonnes,
+chaque vêtement tombe sous 80px de large : ce n'est plus un catalogue.
+La lisibilité passe avant la règle de grille.
+
+ALTERNATIVE :
+Une colonne sous 640px, et la règle redevient applicable dès que des plans
+face seule existeront. Documenté dans TODO.md.
+```
+```
+REFUS :
+Supprimer l'intro comme le permettait la direction artistique.
+
+RAISON :
+Elle avait été explicitement demandée, et la règle ne l'interdit pas — elle
+pose quatre conditions. Trois n'étaient pas remplies ; il fallait les remplir,
+pas trancher à la place du client sur un élément qu'il avait voulu.
+
+ALTERNATIVE :
+1,3 s au lieu de 3,2 s, sortie sur toute la surface, Échap, filet de
+progression. Reste supprimable en une ligne si le choix change.
 ```

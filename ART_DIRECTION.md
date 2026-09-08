@@ -105,6 +105,22 @@ Retirés le 08/09 : marquee de marque en défilement infini, spotlight suivant l
 
 Aucun dégradé (vérifié en production : zéro élément à `background-image: gradient` dans le `main`). Aucun `rounded-full`. Aucune ombre portée douce. Aucune couleur hors des cinq tokens. Aucun badge promotionnel, prix barré ou pourcentage. Une seule idée d'interaction dominante par zone — jamais de tilt + glow + scale empilés.
 
+## 7ter. Notes de direction, écran par écran
+
+**Accueil — 01 La marque.** Fraunces pour l'affirmation, Anton pour les rails et le CTA ; jamais Inter à l'écran. Douze colonnes, texte sur sept à huit, rien à droite. L'axe est le bord gauche de la page, jamais le centre. Une seule interaction : le CTA. Le vide occupe tout le quart supérieur et toute la moitié droite — il est tenu, pas subi.
+
+**Accueil — 02 La gamme.** Fraunces pour le titre et les noms, Anton pour le rail et les catégories. Colonnes inégales dont l'axe bascule à chaque rangée (7/5 → 5/7 → 7/5). Une seule interaction : le survol met l'image à l'échelle 1,02. Le vide est le décrochage entre les deux colonnes de chaque rangée.
+
+**Accueil — 03 Le manifeste.** Fraunces seul, sur une mesure étroite. Bloc décalé en colonnes 6 à 12 — exactement là où les deux sections précédentes laissaient le vide. Aucune interaction sauf le lien. Toute la gauche reste vide.
+
+**Catalogue.** Fraunces pour le H1 et les noms, Anton pour les filtres et les catégories, Inter pour le prix. Une colonne sous 640px, jusqu'à quatre en xl, gouttières de 32px et 80px de gouttière verticale. Filtres en texte et filet, jamais en chips. Une seule interaction : le passage face → dos. Le vide est la gouttière verticale, volontairement large.
+
+**Fiche produit.** Fraunces pour le nom, Anton pour les labels et le CTA, Inter pour la description et les détails. Galerie sur 1,4fr, panneau d'achat sur 1fr et collant. La photographie défile, l'achat reste. Une seule action principale : « Ajouter », pleine largeur. Le vide est la marge autour du vêtement, donnée par le fond studio.
+
+**Panier.** Anton pour les labels, Fraunces pour les noms de pièces, Inter pour les variantes. Tiroir sur `ink`, filets `line`, vignettes en 5/4. Une seule action : « Commander ». Le vide est l'interligne entre les lignes d'articles.
+
+**Footer.** Anton pour le wordmark et les titres de colonne, Inter pour les liens. Deux colonnes inégales : le wordmark occupe la moitié gauche seul. Aucune interaction. Le vide est toute la hauteur à droite du wordmark.
+
 ## 8. Catalogue / fiche produit
 
 Grille éditoriale 3–4 colonnes desktop, beaucoup d'espace. Fiche produit : galerie (mockups disponibles, slots FRONT/BACK/DETAIL/LIFESTYLE prêts pour vraies photos), personnalisation avec aperçu live, tailles, stock réel (0 par défaut tant que non saisi en admin).
