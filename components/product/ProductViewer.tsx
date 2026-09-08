@@ -69,50 +69,73 @@ export default function ProductViewer({
   }, [productSlug]);
 
   return (
-    <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-start md:gap-16 lg:grid-cols-[1.35fr_1fr]">
-      <div className="md:sticky md:top-32">
-        <Gallery key={color} images={galleryImages} productName={productName} />
-      </div>
-
-      <div className="max-w-md">
-        <p className="text-label text-paper/40">{categoryName}</p>
-        <h1 className="mt-3 font-editorial text-heading text-paper md:text-heading-lg">{productName}</h1>
-        <p className="mt-4 font-editorial text-heading text-paper">{formatPrice(price)}</p>
-        {description && <p className="mt-4 text-body leading-relaxed text-paper/60">{description}</p>}
-
-        <div className="mt-8">
-          <AddToCart
-            productSlug={productSlug}
-            productName={productName}
-            price={price}
-            image={primaryImage}
-            variants={variants}
-            personalizationEnabled={personalizationEnabled}
-            personalizationMaxLen={personalizationMaxLen}
-            color={color}
-            onColorChange={setColor}
-          />
+    <>
+      {/* La photographie pèse plus que l'interface : la galerie prend une fois
+          et demie la largeur du panneau d'achat. Les avis sortent de cette
+          colonne — ils n'ont rien à faire au milieu du parcours d'achat — et
+          passent en pleine largeur sous la fiche. */}
+      <div className="grid gap-12 md:grid-cols-[1.4fr_1fr] md:items-start md:gap-16 lg:gap-24">
+        <div className="md:sticky md:top-32">
+          <Gallery key={color} images={galleryImages} productName={productName} />
         </div>
 
-        <WishlistButton slug={productSlug} className="mt-4" />
+        <div className="max-w-md">
+          <p className="text-label text-paper/40">{categoryName}</p>
+          <h1 className="mt-4 font-editorial text-heading leading-[1.1] text-paper md:text-heading-lg">
+            {productName}
+          </h1>
+          {/* Le prix ne s'affiche qu'une fois sur la page, sans prix barré ni
+              pourcentage : la valeur est annoncée, elle n'est pas négociée. */}
+          <p className="mt-5 text-body text-paper/80">{formatPrice(price)}</p>
+          {description && (
+            <p className="mt-6 max-w-sm text-body leading-relaxed text-paper/55">{description}</p>
+          )}
 
-        {sizeGuideRows ? <SizeGuide rows={sizeGuideRows as never} /> : null}
+          <div className="mt-10">
+            <AddToCart
+              productSlug={productSlug}
+              productName={productName}
+              price={price}
+              image={primaryImage}
+              variants={variants}
+              personalizationEnabled={personalizationEnabled}
+              personalizationMaxLen={personalizationMaxLen}
+              color={color}
+              onColorChange={setColor}
+            />
+          </div>
 
-        <div className="mt-10 border-t border-line pt-6">
-          <p className="text-label text-paper/50">Détails</p>
-          <dl className="mt-4 flex flex-col gap-3">
-            {details.map((d) => (
-              <div key={d.label} className="flex justify-between gap-6 text-caption">
-                <dt className="text-paper/40">{d.label}</dt>
-                <dd className="text-right text-paper/80">{d.value}</dd>
-              </div>
-            ))}
-          </dl>
+          {/* Actions secondaires — nettement plus discrètes que « Ajouter ». */}
+          <div className="mt-8">
+            <WishlistButton slug={productSlug} />
+          </div>
+          {sizeGuideRows ? (
+            <div className="mt-6">
+              <SizeGuide rows={sizeGuideRows as never} />
+            </div>
+          ) : null}
+
+          <div className="mt-12 border-t border-line pt-6">
+            <p className="text-label text-paper/40">Détails</p>
+            <dl className="mt-5 flex flex-col gap-4">
+              {details.map((d) => (
+                <div key={d.label} className="flex justify-between gap-8 text-caption">
+                  <dt className="shrink-0 text-paper/40">{d.label}</dt>
+                  <dd className="text-right text-paper/80">{d.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
-
-        <Reviews reviews={reviews} />
-        <ReviewForm productId={productId} productSlug={productSlug} isLoggedIn={isLoggedIn} />
       </div>
-    </div>
+
+      <section className="mt-28 border-t border-line pt-12 md:mt-40">
+        <p className="text-label text-paper/40">Avis</p>
+        <div className="mt-8 grid gap-12 md:grid-cols-2 md:gap-20">
+          <Reviews reviews={reviews} />
+          <ReviewForm productId={productId} productSlug={productSlug} isLoggedIn={isLoggedIn} />
+        </div>
+      </section>
+    </>
   );
 }

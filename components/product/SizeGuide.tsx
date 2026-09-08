@@ -10,36 +10,40 @@ export default function SizeGuide({ rows }: { rows: Row[] }) {
   const columns = Object.keys(rows[0]);
 
   return (
-    <div className="mt-8 border-t border-line pt-6">
+    <div>
       <button
+        type="button"
         onClick={() => setOpen((v) => !v)}
-        className="text-xs uppercase tracking-widest2 text-paper/60 underline underline-offset-4 hover:text-paper"
+        aria-expanded={open}
+        className="border-b border-transparent pb-1 text-label text-paper/45 transition-colors duration-300 ease-editorial hover:border-paper/40 hover:text-paper"
       >
-        Guide des tailles {open ? "−" : "+"}
+        Guide des tailles
       </button>
       {open && (
-        <table className="mt-4 w-full text-left text-xs text-paper/70">
-          <thead>
-            <tr>
-              {columns.map((c) => (
-                <th key={c} className="border-b border-line py-2 pr-4 uppercase tracking-widest2">
-                  {c}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row, i) => (
-              <tr key={i}>
+        <div className="mt-6 overflow-x-auto">
+          <table className="w-full min-w-[20rem] text-left text-caption text-paper/70">
+            <thead>
+              <tr>
                 {columns.map((c) => (
-                  <td key={c} className="border-b border-line/50 py-2 pr-4">
-                    {row[c]}
-                  </td>
+                  <th key={c} className="border-b border-line py-2 pr-6 text-label text-paper/40">
+                    {c}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((row, i) => (
+                <tr key={i}>
+                  {columns.map((c) => (
+                    <td key={c} className="border-b border-line/50 py-2.5 pr-6">
+                      {row[c]}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
