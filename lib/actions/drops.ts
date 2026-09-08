@@ -44,7 +44,11 @@ export async function createDrop(formData: FormData) {
     },
   });
 
+  // La page publique /drops n'appelle aucune API dynamique : Next.js la sert
+  // en statique depuis le build. Sans cette ligne, un drop créé après coup
+  // n'apparaît jamais tant qu'aucun autre déclencheur ne revalide la page.
   revalidatePath("/admin/drops");
+  revalidatePath("/drops");
 }
 
 export async function updateDrop(dropId: string, formData: FormData) {
@@ -73,8 +77,14 @@ export async function updateDrop(dropId: string, formData: FormData) {
     },
   });
 
+  // Le statut/les dates du drop sont aussi embarqués dans les requêtes
+  // produits (include: { drop: true }, utilisées pour le compte à rebours
+  // sur le catalogue et les fiches produit) — sans revalidateTag, ces pages
+  // garderaient d'anciennes dates jusqu'à expiration naturelle du cache.
   revalidatePath("/admin/drops");
   revalidatePath(`/admin/drops/${dropId}`);
+  revalidatePath("/drops");
+  revalidateTag("products");
 }
 
 export async function deleteDrop(dropId: string) {
@@ -84,6 +94,8 @@ export async function deleteDrop(dropId: string) {
   await prisma.product.updateMany({ where: { dropId }, data: { dropId: null } });
   await prisma.drop.delete({ where: { id: dropId } });
   revalidatePath("/admin/drops");
+  revalidatePath("/drops");
+  revalidateTag("products");
   redirect("/admin/drops");
 }
 
