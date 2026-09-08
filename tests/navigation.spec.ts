@@ -92,19 +92,17 @@ test("une route totalement inconnue renvoie un vrai 404", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Page introuvable" })).toBeVisible();
 });
 
-// Soft-404 connu et non résolu — voir TODO.md.
-//
-// `/catalogue/<slug-inexistant>` affiche bien la page « introuvable », mais
-// avec un statut HTTP 200 au lieu de 404, en local comme en production. La
-// route dynamique est rendue en streaming : l'en-tête part avant que
-// `notFound()` ne s'exécute. Trois pistes ont été testées et écartées —
-// supprimer la frontière `loading.tsx` du segment, appeler `notFound()` depuis
-// `generateMetadata`, et vérifier le middleware (une route non appariée renvoie
-// bien 404, donc il n'est pas en cause). Le test reste ici, ignoré, pour que le
-// problème ne disparaisse pas du radar.
-test.skip("une fiche produit inexistante devrait renvoyer un statut 404", async ({ page }) => {
+// Ce test garde le soft-404 fermé. Il a longtemps échoué : une frontière
+// Suspense (`loading.tsx`) faisait partir la réponse en streaming, l'en-tête
+// HTTP partait avant l'exécution du composant, et `notFound()` ne pouvait plus
+// fixer le statut. Le coupable n'était pas le `loading.tsx` du segment mais
+// celui du segment **parent** `/catalogue`, qui englobait aussi `[slug]` — d'où
+// une première tentative de correction sans effet. La liste vit désormais dans
+// le groupe de routes `(liste)`.
+test("une fiche produit inexistante renvoie un vrai 404", async ({ page }) => {
   const response = await page.goto("/catalogue/produit-inexistant");
   expect(response?.status()).toBe(404);
+  await expect(page.getByRole("heading", { name: "Page introuvable" })).toBeVisible();
 });
 
 test("le manifeste affiche le titre et ses quatre temps", async ({ page }) => {

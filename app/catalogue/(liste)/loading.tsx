@@ -1,3 +1,9 @@
+// Ce squelette vit dans le groupe de routes `(liste)` et non directement sous
+// `app/catalogue/` : à cet emplacement, sa frontière Suspense engloberait aussi
+// `[slug]`, ferait partir la réponse des fiches produit en streaming, et
+// empêcherait `notFound()` d'y renvoyer un vrai 404. Voir le commentaire en
+// tête de `app/catalogue/[slug]/page.tsx`.
+//
 // Même géométrie que la grille réelle du catalogue : cadres en 5/4, une
 // colonne sous 640px, jusqu'à quatre en xl. Un squelette qui ne correspond pas
 // à la page fait sauter le contenu au moment où il arrive.

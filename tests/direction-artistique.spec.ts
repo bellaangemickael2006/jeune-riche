@@ -168,7 +168,10 @@ test("aucun contenu essentiel ne dépend d'une animation quand le JS est désact
 }) => {
   const context = await browser.newContext({ javaScriptEnabled: false });
   const page = await context.newPage();
-  await page.goto("/");
+  // `domcontentloaded` et non `load` : sans JavaScript, le chargement paresseux
+  // des images ne se déclenche jamais et l'événement `load` peut attendre très
+  // longtemps. Ce qu'on vérifie ici est le HTML servi, pas les images.
+  await page.goto("/", { waitUntil: "domcontentloaded" });
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(page.getByText("02 — La gamme")).toBeVisible();

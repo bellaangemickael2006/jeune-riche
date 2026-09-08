@@ -218,7 +218,7 @@ suite de tests, pas en lisant le code.
 | Deux boutons portaient le nom accessible « Rechercher » | ✅ l'icône devient « Ouvrir la recherche » |
 | Une action faite avant la réhydratation des stores était silencieusement écrasée | ✅ drapeau `touched` + `merge` |
 | Squelettes de chargement à la géométrie de l'ancienne mise en page | ✅ alignés (le contenu ne saute plus à l'arrivée) |
-| Soft-404 sur les fiches produit (statut 200) | ⚠️ non résolu — voir TESTS.md et TODO.md |
+| Soft-404 sur les fiches produit (statut 200) | ✅ corrigé — la frontière `loading.tsx` du segment **parent** faisait partir la réponse en streaming avant `notFound()`. La liste vit désormais dans le groupe de routes `(liste)`. Six builds pour l'isoler, détail dans TESTS.md |
 
 ## 4. Plan d'exécution
 
