@@ -3,8 +3,13 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
-import { getGsap } from "@/lib/gsap";
 
+// GSAP et son plugin ScrollTrigger étaient importés ici uniquement pour
+// piloter la boucle `raf` de Lenis et appeler `ScrollTrigger.update()`. Or
+// aucune animation ScrollTrigger n'existait nulle part dans le projet
+// (vérifié : zéro occurrence hors du module d'initialisation), et Lenis a sa
+// propre boucle. Deux bibliothèques d'animation chargées pour un
+// requestAnimationFrame — retirées, avec `lib/gsap.ts`.
 export default function SmoothScroll() {
   const lenisRef = useRef<Lenis | null>(null);
   const pathname = usePathname();
@@ -24,19 +29,17 @@ export default function SmoothScroll() {
     // un seul Lenis existe pour tout le site.
     window.__lenis = lenis;
 
-    const { gsap, ScrollTrigger } = getGsap();
-
-    lenis.on("scroll", ScrollTrigger.update);
-
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
+    let rafId = 0;
+    function frame(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(frame);
+    }
+    rafId = requestAnimationFrame(frame);
 
     return () => {
+      cancelAnimationFrame(rafId);
       lenis.destroy();
       lenisRef.current = null;
-      gsap.ticker.remove(lenis.raf);
     };
   }, []);
 

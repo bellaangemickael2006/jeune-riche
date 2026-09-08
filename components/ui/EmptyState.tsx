@@ -1,6 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 
+// État vide éditorial : une phrase et une sortie. Le crest en filigrane à 4%
+// d'opacité qui remplissait le cadre est retiré — invisible, donc pas une
+// information, et le crest n'a pas à servir de motif de remplissage. Le bloc
+// n'est plus une boîte centrée : il suit l'axe gauche du reste du site.
 export default function EmptyState({
   message,
   cta,
@@ -9,20 +12,12 @@ export default function EmptyState({
   cta?: { label: string; href: string };
 }) {
   return (
-    <div className="relative mt-16 flex min-h-[40vh] flex-col items-center justify-center gap-5 overflow-hidden border border-line px-5 text-center">
-      <Image
-        src="/images/logo/logo-transparent.png"
-        alt=""
-        aria-hidden
-        width={280}
-        height={280}
-        className="pointer-events-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.04]"
-      />
-      <p className="relative font-editorial text-xl text-paper/70">{message}</p>
+    <div className="mt-16 border-t border-line py-20 md:py-28">
+      <p className="max-w-md font-editorial text-heading text-paper/70">{message}</p>
       {cta && (
         <Link
           href={cta.href}
-          className="relative text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 hover:text-paper/70"
+          className="mt-8 inline-block border-b border-line pb-1 text-label text-paper/60 transition-colors duration-300 ease-editorial hover:border-paper hover:text-paper"
         >
           {cta.label}
         </Link>
