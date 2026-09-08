@@ -7,9 +7,11 @@ import SizeGuide from "@/components/product/SizeGuide";
 import Reviews from "@/components/product/Reviews";
 import ReviewForm from "@/components/product/ReviewForm";
 import WishlistButton from "@/components/product/WishlistButton";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getDropCountdown } from "@/lib/utils";
 import { trackProductView } from "@/lib/recentlyViewed";
 import type { TechnicalDetail } from "@/lib/data/product-details";
+import CountdownTimer from "@/components/ui/CountdownTimer";
+import type { DropSummary } from "@/types";
 
 type Img = { url: string; alt: string; type: string; color: string | null };
 type Variant = { id: string; size: string; color: string; stock: number };
@@ -30,6 +32,7 @@ export default function ProductViewer({
   details,
   reviews,
   isLoggedIn,
+  drop,
 }: {
   images: Img[];
   productId: string;
@@ -45,9 +48,12 @@ export default function ProductViewer({
   details: TechnicalDetail[];
   reviews: ReviewType;
   isLoggedIn: boolean;
+  drop?: DropSummary | null;
 }) {
+  const countdown = getDropCountdown(drop);
   const colors = useMemo(() => Array.from(new Set(variants.map((v) => v.color))), [variants]);
   const [color, setColor] = useState(colors[0] ?? "");
+  const [personalization, setPersonalization] = useState("");
 
   // Ne filtrer que si au moins une image porte réellement une couleur : la
   // plupart des produits n'ont qu'un seul coloris et leurs images ne sont
@@ -71,7 +77,12 @@ export default function ProductViewer({
   return (
     <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-start md:gap-16 lg:grid-cols-[1.35fr_1fr]">
       <div className="md:sticky md:top-32">
-        <Gallery key={color} images={galleryImages} productName={productName} />
+        <Gallery
+          key={color}
+          images={galleryImages}
+          productName={productName}
+          personalization={personalization}
+        />
       </div>
 
       <div className="max-w-md">
@@ -79,6 +90,12 @@ export default function ProductViewer({
         <h1 className="mt-3 font-editorial text-heading text-paper md:text-heading-lg">{productName}</h1>
         <p className="mt-4 font-editorial text-heading text-paper">{formatPrice(price)}</p>
         {description && <p className="mt-4 text-body leading-relaxed text-paper/60">{description}</p>}
+
+        {countdown && (
+          <div className="mt-6">
+            <CountdownTimer target={countdown.target} label={countdown.label} />
+          </div>
+        )}
 
         <div className="mt-8">
           <AddToCart
@@ -91,6 +108,8 @@ export default function ProductViewer({
             personalizationMaxLen={personalizationMaxLen}
             color={color}
             onColorChange={setColor}
+            personalization={personalization}
+            onPersonalizationChange={setPersonalization}
           />
         </div>
 

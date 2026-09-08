@@ -1,17 +1,32 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 import ImageZoomModal from "@/components/product/ImageZoomModal";
+import {
+  PERSONALIZATION_OVERLAY_BY_IMAGE,
+  type PersonalizationOverlay,
+} from "@/lib/data/personalizationOverlay";
 
 type Img = { url: string; alt: string; type: string };
 
-export default function Gallery({ images, productName }: { images: Img[]; productName: string }) {
+export default function Gallery({
+  images,
+  productName,
+  personalization,
+}: {
+  images: Img[];
+  productName: string;
+  /** Nom/pseudo tapé dans AddToCart — superposé sur la photo quand une
+   * position réelle a été calibrée pour l'image affichée. */
+  personalization?: string;
+}) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
   const current = images[active];
+  const overlay = PERSONALIZATION_OVERLAY_BY_IMAGE[current.url];
   const ref = useRef<HTMLDivElement>(null);
 
   const mouseX = useMotionValue(0.5);
@@ -57,14 +72,35 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
             className="absolute inset-0"
           >
-            <Image
-              src={current.url}
-              alt={current.alt || productName}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 55vw"
-              className="object-contain p-6"
-            />
+            {overlay ? (
+              <div className="flex h-full w-full items-center justify-center p-6">
+                <div
+                  className="relative w-full"
+                  style={{ aspectRatio: overlay.aspectRatio, containerType: "size" }}
+                >
+                  <Image
+                    src={current.url}
+                    alt={current.alt || productName}
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 100vw, 55vw"
+                    className="object-contain"
+                  />
+                  {personalization && (
+                    <PersonalizationText overlay={overlay} text={personalization} />
+                  )}
+                </div>
+              </div>
+            ) : (
+              <Image
+                src={current.url}
+                alt={current.alt || productName}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 55vw"
+                className="object-contain p-6"
+              />
+            )}
           </motion.div>
         </AnimatePresence>
         {current.type === "MOCKUP" && (
@@ -100,6 +136,51 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
         </div>
       )}
     </div>
+  );
+}
+
+// Réduit le texte (sans jamais l'agrandir au-delà de la taille calibrée)
+// pour qu'un pseudo long ne chevauche jamais le logo déjà présent sur la
+// photo — mesure la largeur réellement rendue plutôt que de deviner d'après
+// le nombre de caractères, pour rester correct quelle que soit la police.
+function PersonalizationText({ overlay, text }: { overlay: PersonalizationOverlay; text: string }) {
+  const spanRef = useRef<HTMLSpanElement>(null);
+  const wrapperRef = useRef<HTMLSpanElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useLayoutEffect(() => {
+    const span = spanRef.current;
+    const wrapper = wrapperRef.current;
+    if (!span || !wrapper) return;
+    // `offsetWidth` ignore le `scale()` posé sur le wrapper parent (les
+    // transforms ne changent pas le layout) : on mesure donc toujours la
+    // largeur naturelle du texte à la taille de police calibrée, jamais une
+    // valeur déjà réduite par un rendu précédent.
+    const containerWidth = wrapper.parentElement?.clientWidth ?? 0;
+    const naturalWidth = span.offsetWidth;
+    if (!containerWidth || !naturalWidth) return;
+    const maxWidth = (overlay.maxWidthPct / 100) * containerWidth;
+    setScale(naturalWidth > maxWidth ? maxWidth / naturalWidth : 1);
+  }, [text, overlay]);
+
+  return (
+    <span
+      ref={wrapperRef}
+      className="pointer-events-none absolute"
+      style={{
+        left: `${overlay.xPct}%`,
+        top: `${overlay.yPct}%`,
+        transform: `translate(-50%, -50%) scale(${scale})`,
+      }}
+    >
+      <span
+        ref={spanRef}
+        className="whitespace-nowrap font-display uppercase leading-none"
+        style={{ fontSize: `${overlay.fontSizePct}cqh`, color: overlay.color }}
+      >
+        {text}
+      </span>
+    </span>
   );
 }
 

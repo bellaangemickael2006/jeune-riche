@@ -63,3 +63,30 @@ export function whatsappProductLink(
   const message = lines.join("\n");
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
+
+export type DropCountdownInfo = { target: string; label: string } | null;
+
+// Décide si un drop justifie un compte à rebours visible, et vers quelle
+// date. Basé sur les VRAIES dates (startsAt/endsAt), pas sur le statut
+// choisi à la main par un admin : un drop resté sur COMING_SOON après sa
+// date de lancement (statut non mis à jour) doit quand même basculer sur le
+// compte à rebours de fin s'il en a une, plutôt que de rester silencieux
+// jusqu'à ce qu'un admin pense à changer le statut. SOLD_OUT/ENDED restent
+// un override explicite qui masque toujours le compte à rebours.
+export function getDropCountdown(
+  drop: { status: string; startsAt: Date | string; endsAt: Date | string | null } | null | undefined
+): DropCountdownInfo {
+  if (!drop) return null;
+  if (drop.status === "SOLD_OUT" || drop.status === "ENDED") return null;
+
+  const now = Date.now();
+  const startsAt = new Date(drop.startsAt);
+  if (startsAt.getTime() > now) return { target: startsAt.toISOString(), label: "Disponible dans" };
+
+  if (drop.endsAt) {
+    const endsAt = new Date(drop.endsAt);
+    if (endsAt.getTime() > now) return { target: endsAt.toISOString(), label: "Se termine dans" };
+  }
+
+  return null;
+}

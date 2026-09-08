@@ -4,9 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, getDropCountdown } from "@/lib/utils";
 import type { ProductCardData } from "@/types";
 import FadeIn from "@/components/ui/FadeIn";
+import CountdownTimer from "@/components/ui/CountdownTimer";
 
 export default function ProductCard({ product, index }: { product: ProductCardData; index: number }) {
   const [hovered, setHovered] = useState(false);
@@ -35,6 +36,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
   const primary = product.images[0];
   const secondary = product.images[1] ?? primary;
   const totalStock = product.variants.reduce((sum, v) => sum + v.stock, 0);
+  const countdown = getDropCountdown(product.drop);
 
   return (
     <FadeIn delay={index * 0.05} y={16}>
@@ -91,6 +93,11 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
             <span className="absolute left-3 top-3 bg-ink px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper">
               Épuisé
             </span>
+          )}
+          {countdown && (
+            <div className="absolute right-3 top-3">
+              <CountdownTimer target={countdown.target} variant="badge" />
+            </div>
           )}
         </motion.div>
         <div className="mt-3 flex items-start justify-between gap-3">

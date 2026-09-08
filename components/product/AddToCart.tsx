@@ -16,6 +16,8 @@ export default function AddToCart({
   personalizationMaxLen,
   color: controlledColor,
   onColorChange,
+  personalization: controlledPersonalization,
+  onPersonalizationChange,
 }: {
   productSlug: string;
   productName: string;
@@ -28,6 +30,9 @@ export default function AddToCart({
    * Si omis, le composant gère sa propre sélection en interne. */
   color?: string;
   onColorChange?: (color: string) => void;
+  /** Idem pour la personnalisation, pour l'afficher en direct sur la galerie. */
+  personalization?: string;
+  onPersonalizationChange?: (value: string) => void;
 }) {
   const colors = useMemo(() => Array.from(new Set(variants.map((v) => v.color))), [variants]);
   const [internalColor, setInternalColor] = useState(colors[0] ?? "");
@@ -38,7 +43,9 @@ export default function AddToCart({
     [variants, color]
   );
   const [size, setSize] = useState(sizesForColor[0]?.size ?? "");
-  const [personalization, setPersonalization] = useState("");
+  const [internalPersonalization, setInternalPersonalization] = useState("");
+  const personalization = controlledPersonalization ?? internalPersonalization;
+  const setPersonalization = onPersonalizationChange ?? setInternalPersonalization;
   const [added, setAdded] = useState(false);
   const addLine = useCart((s) => s.addLine);
 

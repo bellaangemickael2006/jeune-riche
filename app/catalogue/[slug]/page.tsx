@@ -60,6 +60,7 @@ export default async function ProductPage({
     images: p.images.map((i) => ({ url: i.url, alt: i.alt, type: i.type })),
     category: { name: p.category.name, slug: p.category.slug },
     variants: p.variants.map((v) => ({ id: v.id, color: v.color, size: v.size, stock: v.stock })),
+    drop: p.drop,
   }));
 
   return (
@@ -84,6 +85,7 @@ export default async function ProductPage({
         details={details}
         reviews={product.reviews}
         isLoggedIn={isLoggedIn}
+        drop={product.drop}
       />
 
       {crossSell.length > 0 && (

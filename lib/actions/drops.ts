@@ -18,17 +18,29 @@ function slugify(input: string) {
 export async function createDrop(formData: FormData) {
   await requireAdmin();
   const name = String(formData.get("name") ?? "").trim();
-  const startsAt = String(formData.get("startsAt") ?? "");
+  const startsAtRaw = String(formData.get("startsAt") ?? "");
+  const endsAtRaw = String(formData.get("endsAt") ?? "");
   const description = String(formData.get("description") ?? "").trim();
-  if (!name || !startsAt) throw new Error("Nom et date requis.");
+  if (!name || !startsAtRaw) throw new Error("Nom et date requis.");
+
+  const startsAt = new Date(startsAtRaw);
+  const endsAt = endsAtRaw ? new Date(endsAtRaw) : null;
+  if (endsAt && endsAt.getTime() <= startsAt.getTime()) {
+    throw new Error("La date de fin doit être après la date de début.");
+  }
 
   await prisma.drop.create({
     data: {
       name,
       slug: slugify(name),
       description: description || null,
-      startsAt: new Date(startsAt),
-      status: "COMING_SOON",
+      startsAt,
+      endsAt,
+      // Un drop créé avec une date de début déjà passée est immédiatement
+      // disponible — le laisser sur COMING_SOON afficherait "Bientôt" pour
+      // un produit déjà en vente. Reste un point de départ : l'admin garde
+      // la main pour le corriger (ex. PRE_ORDER) depuis la fiche du drop.
+      status: startsAt.getTime() <= Date.now() ? "AVAILABLE" : "COMING_SOON",
     },
   });
 
@@ -38,18 +50,24 @@ export async function createDrop(formData: FormData) {
 export async function updateDrop(dropId: string, formData: FormData) {
   await requireAdmin();
   const name = String(formData.get("name") ?? "").trim();
-  const startsAt = String(formData.get("startsAt") ?? "");
-  const endsAt = String(formData.get("endsAt") ?? "");
+  const startsAtRaw = String(formData.get("startsAt") ?? "");
+  const endsAtRaw = String(formData.get("endsAt") ?? "");
   const description = String(formData.get("description") ?? "").trim();
   const status = String(formData.get("status") ?? "") as DropStatus;
-  if (!name || !startsAt) throw new Error("Nom et date requis.");
+  if (!name || !startsAtRaw) throw new Error("Nom et date requis.");
+
+  const startsAt = new Date(startsAtRaw);
+  const endsAt = endsAtRaw ? new Date(endsAtRaw) : null;
+  if (endsAt && endsAt.getTime() <= startsAt.getTime()) {
+    throw new Error("La date de fin doit être après la date de début.");
+  }
 
   await prisma.drop.update({
     where: { id: dropId },
     data: {
       name,
-      startsAt: new Date(startsAt),
-      endsAt: endsAt ? new Date(endsAt) : null,
+      startsAt,
+      endsAt,
       description: description || null,
       status,
     },

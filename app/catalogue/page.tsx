@@ -59,6 +59,7 @@ export default async function CataloguePage({
     images: p.images.map((i) => ({ url: i.url, alt: i.alt, type: i.type })),
     category: { name: p.category.name, slug: p.category.slug },
     variants: p.variants.map((v) => ({ id: v.id, color: v.color, size: v.size, stock: v.stock })),
+    drop: p.drop,
   }));
 
   const displayCategories = categories.length > 0 ? categories : FALLBACK_CATEGORIES;
