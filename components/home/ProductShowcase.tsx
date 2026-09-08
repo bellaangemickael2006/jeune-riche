@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
 export type ShowcaseItem = {
   name: string;
@@ -25,7 +24,7 @@ export default function ProductShowcase({ items }: { items: ShowcaseItem[] }) {
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-12 md:gap-y-20">
       {items.map((item, i) => (
-        <article key={item.slug} className={cn("reveal", SPANS[i % SPANS.length])}>
+        <article key={item.slug} className={SPANS[i % SPANS.length]}>
           <Link href={`/catalogue/${item.slug}`} className="group block">
             {/* 5/4 ≈ le ratio réel des mockups (~1,25) : en object-contain le
                 vêtement remplit le cadre au lieu de flotter au centre, et le

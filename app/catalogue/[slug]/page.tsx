@@ -90,8 +90,8 @@ export default async function ProductPage({
         <section className="mx-auto mt-32 max-w-6xl border-t border-line pt-16">
           <h2 className="font-editorial text-heading text-paper">Compléter la tenue</h2>
           <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-4">
-            {crossSell.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i} />
+            {crossSell.map((p) => (
+              <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </section>

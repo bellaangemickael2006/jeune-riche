@@ -113,9 +113,14 @@ export default async function CataloguePage({
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-x-5 gap-y-16 sm:grid-cols-2 md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">
-          {cardData.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} />
+        // Une seule colonne sous 640px, contrairement aux deux colonnes
+        // habituelles : les visuels produit réels sont des paires face+dos en
+        // paysage (1600×1280). En deux colonnes à 390px, chaque vêtement
+        // tomberait sous 80px de large — illisible. Deux colonnes redeviennent
+        // justes dès que les visuels seront des plans face seule.
+        <div className="grid grid-cols-1 gap-x-6 gap-y-14 sm:grid-cols-2 md:grid-cols-3 md:gap-x-8 md:gap-y-20 xl:grid-cols-4">
+          {cardData.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       )}

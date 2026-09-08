@@ -1,39 +1,28 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import ImageZoomModal from "@/components/product/ImageZoomModal";
 
 type Img = { url: string; alt: string; type: string };
 
+// Le tilt 3D au survol de la photo a été retiré : la fiche produit doit donner
+// son poids à la photographie, pas à un effet de carte qui la fait bouger. Le
+// seul mouvement conservé est le fondu entre deux vues, qui sert la lecture.
+//
+// Cadre en 5/4 : les 27 visuels produit disponibles sont tous en paysage
+// (1600×1280 pour la plupart). Dans un cadre portrait 4/5, le vêtement était
+// systématiquement réduit et perdu au centre.
 export default function Gallery({ images, productName }: { images: Img[]; productName: string }) {
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
   const current = images[active];
-  const ref = useRef<HTMLDivElement>(null);
-
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-  const rotateX = useSpring(useTransform(mouseY, [0, 1], [4, -4]), { stiffness: 150, damping: 20 });
-  const rotateY = useSpring(useTransform(mouseX, [0, 1], [-4, 4]), { stiffness: 150, damping: 20 });
-
-  function handleMouseMove(e: React.MouseEvent) {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    mouseX.set((e.clientX - rect.left) / rect.width);
-    mouseY.set((e.clientY - rect.top) / rect.height);
-  }
-
-  function handleLeave() {
-    mouseX.set(0.5);
-    mouseY.set(0.5);
-  }
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-[4/5] items-center justify-center bg-studio text-sm text-ink/40">
+      <div className="flex aspect-[5/4] items-center justify-center bg-studio text-caption text-ink/40">
         Aucune image disponible
       </div>
     );
@@ -41,13 +30,7 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
 
   return (
     <div>
-      <motion.div
-        ref={ref}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleLeave}
-        style={{ rotateX, rotateY, transformPerspective: 1000 }}
-        className="relative aspect-[4/5] overflow-hidden bg-studio will-change-transform"
-      >
+      <div className="relative aspect-[5/4] overflow-hidden bg-studio">
         <AnimatePresence mode="wait">
           <motion.div
             key={current.url}
@@ -80,22 +63,28 @@ export default function Gallery({ images, productName }: { images: Img[]; produc
         >
           <ZoomIcon />
         </button>
-      </motion.div>
+      </div>
 
       <ImageZoomModal image={current} open={zoomOpen} onClose={() => setZoomOpen(false)} />
       {images.length > 1 && (
-        <div className="mt-3 grid grid-cols-5 gap-2">
+        // Vignettes au même format que la photo principale, et pas en carré :
+        // un carré recadrait mentalement des visuels qui n'en sont pas.
+        // Sélection marquée par un filet, pas par un anneau de 2px.
+        <div className="mt-3 grid grid-cols-4 gap-3 md:grid-cols-5">
           {images.map((img, i) => (
             <button
               key={img.url}
               onClick={() => setActive(i)}
+              aria-current={i === active ? "true" : undefined}
               className={cn(
-                "relative aspect-square overflow-hidden bg-studio",
-                i === active ? "ring-2 ring-paper" : "opacity-60 hover:opacity-100"
+                "relative aspect-[5/4] overflow-hidden bg-studio transition-opacity duration-300 ease-editorial",
+                i === active
+                  ? "outline outline-1 outline-offset-2 outline-paper"
+                  : "opacity-50 hover:opacity-100"
               )}
               aria-label={`Voir l'image ${i + 1}`}
             >
-              <Image src={img.url} alt={img.alt || productName} fill sizes="80px" className="object-contain p-1.5" />
+              <Image src={img.url} alt={img.alt || productName} fill sizes="120px" className="object-contain" />
             </button>
           ))}
         </div>

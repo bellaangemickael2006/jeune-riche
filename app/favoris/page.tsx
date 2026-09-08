@@ -41,8 +41,8 @@ export default function FavorisPage() {
 
       {products.length > 0 && (
         <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 md:gap-x-6">
-          {products.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} />
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       )}
