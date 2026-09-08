@@ -102,6 +102,7 @@ export default function AddToCart({
                     fond ink, et non par une bordure au ras du nuancier : sur le
                     coloris Blanc, une bordure `paper` était invisible. */}
                 <span
+                  data-swatch
                   style={{ backgroundColor: swatchColor(c) }}
                   className={cn(
                     "h-8 w-8 border border-line transition-all duration-300 ease-editorial",

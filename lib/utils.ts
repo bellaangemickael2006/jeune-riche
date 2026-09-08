@@ -18,12 +18,19 @@ export function formatPrice(value: number | string | null | undefined): string {
 
 // Teintes réelles mesurées sur les photos produit (pas une convention
 // générique) — sert à afficher un vrai nuancier plutôt qu'un bouton texte.
+//
+// Ces valeurs sont volontairement les seules couleurs du site en dehors de la
+// palette : elles décrivent le tissu, ce sont donc des informations produit et
+// non de la décoration. Deux d'entre elles sont ramenées sur les tokens de
+// marque, parce qu'il s'agit littéralement des mêmes couleurs : le noir de la
+// marque (`ink`) et le marine de la ligne Polo (`navy`). Le blanc, le taupe et
+// le gris restent des teintes de vêtement mesurées, distinctes de `paper`.
 const SWATCH_COLORS: Record<string, string> = {
-  Noir: "#0B0B0B",
+  Noir: "#0B0B0C",
   Blanc: "#EFEFEF",
   Blanche: "#EFEFEF",
   Taupe: "#958178",
-  Marine: "#26365A",
+  Marine: "#131B2E",
   Gris: "#6A6E6D",
 };
 

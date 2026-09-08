@@ -14,6 +14,13 @@
 7. **Choisir et intégrer un prestataire de paiement** (Stripe ou solution locale) — le tunnel de checkout crée aujourd'hui la commande sans encaisser, ce qui est explicitement indiqué au client. Ne jamais afficher "paiement sécurisé" tant que ce n'est pas branché.
 8. **Ajouter les variables SMTP sur Vercel (Production)** : `SMTP_USER=bellaangemickael2006@gmail.com`, `SMTP_PASSWORD` (mot de passe d'application Gmail 16 caractères), `SMTP_FROM_NAME=Jeune Riche` — bloqué en attente d'une reconnexion du client à Vercel dans le navigateur (session expirée ; jamais saisi d'identifiants à sa place).
 
+## Trouvé pendant la refonte visuelle du 08/09 — à traiter
+
+1. **Soft-404 sur les fiches produit.** `/catalogue/<slug-inexistant>` renvoie un statut **200** avec le contenu « Page introuvable », en local comme en production. Les moteurs de recherche peuvent donc indexer un nombre illimité d'URL bidons. Trois pistes testées et écartées (voir TESTS.md) ; il reste à trancher entre `generateStaticParams` + `dynamicParams: false` — écarté pour l'instant car un produit créé en admin ne serait plus accessible avant un redéploiement — et une vérification d'existence en amont du rendu.
+2. **Photographies produit face seule.** C'est aujourd'hui la principale limite du site. Les 27 visuels sont des paires face+dos en paysage (1600×1280). Conséquences visibles : le catalogue est en **une seule colonne sous 640px** (deux colonnes mettraient chaque vêtement sous 80px de large), et aucun cadre portrait n'est utilisable nulle part. Des plans face seule débloqueraient la grille mobile à deux colonnes et des compositions verticales.
+3. **Vidéo de remplacement pour le premier écran.** `hero-production.mp4` est retirée de l'accueil (rouge hors marque, wordmark en collision, 20,8 Mo). `manifeste-motif.mp4` est retirée du manifeste (10,8 Mo, motif du badge répété). Les deux fichiers restent dans le dépôt.
+4. **Photo dos du t-shirt taupe** — toujours manquante (voir ci-dessous).
+
 ## Assets manquants (documenté, non inventé)
 
 - **Aucune photo mannequin réelle.** Tous les produits utilisent des mockups (TSHIRT1-6, photos WhatsApp) comme référence de design. L'architecture `ProductImage.type` (FRONT/BACK/DETAIL/LIFESTYLE/MOCKUP) est prête à recevoir de vraies photos de campagne depuis `/admin/produits/[id]` sans changement de code.

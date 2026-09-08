@@ -115,7 +115,7 @@ export default function Header() {
               setMenuOpen(false);
             }}
             className="hidden text-paper/80 transition-colors hover:text-paper md:block"
-            aria-label="Rechercher"
+            aria-label="Ouvrir la recherche"
             aria-expanded={searchOpen}
           >
             <SearchIcon />
@@ -149,7 +149,7 @@ export default function Header() {
               setMenuOpen(false);
             }}
             className="text-paper md:hidden"
-            aria-label="Rechercher"
+            aria-label="Ouvrir la recherche"
             aria-expanded={searchOpen}
           >
             <SearchIcon />
@@ -223,12 +223,16 @@ function SearchPanel({ onClose }: { onClose: () => void }) {
     inputRef.current?.focus();
   }, []);
 
+  // `onClose()` était appelé juste après `router.push` : le panneau se
+  // démontait dans le même gestionnaire, et la navigation était perdue —
+  // taper une recherche puis valider ne faisait rien du tout. Le panneau est
+  // de toute façon refermé par l'effet sur `pathname` du header dès que la
+  // route change ; l'appel était donc à la fois redondant et nuisible.
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const q = value.trim();
     if (!q) return;
     router.push(`/catalogue?q=${encodeURIComponent(q)}`);
-    onClose();
   }
 
   return (
@@ -251,11 +255,19 @@ function SearchPanel({ onClose }: { onClose: () => void }) {
             className="mt-2 w-full border-b border-line bg-transparent py-2 font-editorial text-heading text-paper placeholder:text-paper/25 focus:border-paper focus:outline-none"
           />
         </div>
+        {/* Un bouton de validation visible : la touche Entrée restait le seul
+            moyen de lancer une recherche, ce qui n'est évident pour personne. */}
+        <button
+          type="submit"
+          className="pb-3 text-label text-paper/70 transition-colors hover:text-paper"
+        >
+          Rechercher
+        </button>
         <button
           type="button"
           onClick={onClose}
           aria-label="Fermer la recherche"
-          className="pb-3 text-label text-paper/50 transition-colors hover:text-paper"
+          className="pb-3 text-label text-paper/40 transition-colors hover:text-paper"
         >
           Fermer
         </button>

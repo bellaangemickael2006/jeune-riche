@@ -7,6 +7,8 @@ import type { CartLine } from "@/types";
 type CartState = {
   lines: CartLine[];
   isOpen: boolean;
+  /** Vrai dès que l'utilisateur a modifié le panier lui-même. Voir `merge`. */
+  touched: boolean;
   open: () => void;
   close: () => void;
   addLine: (line: CartLine) => void;
@@ -26,6 +28,7 @@ export const useCart = create<CartState>()(
     (set, get) => ({
       lines: [],
       isOpen: false,
+      touched: false,
       open: () => set({ isOpen: true }),
       close: () => set({ isOpen: false }),
       addLine: (line) =>
@@ -41,13 +44,15 @@ export const useCart = create<CartState>()(
                   : l
               ),
               isOpen: true,
+              touched: true,
             };
           }
-          return { lines: [...state.lines, line], isOpen: true };
+          return { lines: [...state.lines, line], isOpen: true, touched: true };
         }),
       removeLine: (variantId, personalization) =>
         set((state) => ({
           lines: state.lines.filter((l) => !sameLine(l, variantId, personalization)),
+          touched: true,
         })),
       setQuantity: (variantId, personalization, quantity) =>
         set((state) => ({
@@ -56,8 +61,9 @@ export const useCart = create<CartState>()(
               sameLine(l, variantId, personalization) ? { ...l, quantity } : l
             )
             .filter((l) => l.quantity > 0),
+          touched: true,
         })),
-      clear: () => set({ lines: [] }),
+      clear: () => set({ lines: [], touched: true }),
       total: () => get().lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0),
       count: () => get().lines.reduce((sum, l) => sum + l.quantity, 0),
     }),
@@ -69,6 +75,19 @@ export const useCart = create<CartState>()(
       // persisté) — d'où une erreur d'hydratation systématique. On la
       // déclenche manuellement après le montage via StoreHydration.
       skipHydration: true,
+      // `touched` ne doit jamais être écrit sur le disque : c'est un état de
+      // session, pas une donnée de panier.
+      partialize: (state) => ({ lines: state.lines }),
+      // Entre l'instant où React rend le bouton « Ajouter » interactif et
+      // l'instant où StoreHydration relit localStorage, il existe une fenêtre
+      // de quelques millisecondes. Un ajout fait dans cette fenêtre était
+      // silencieusement écrasé par la réhydratation (constaté par les tests :
+      // un favori posé immédiatement après le chargement disparaissait). Si
+      // l'utilisateur a déjà agi, sa décision prime sur le contenu du disque.
+      merge: (persisted, current) => {
+        if (current.touched) return current;
+        return { ...current, ...(persisted as Partial<CartState>) };
+      },
     }
   )
 );

@@ -196,14 +196,29 @@ de tout élément interactif. Sur du texte, il l'inverse localement.
 | B7 | Filtres en chips | ✅ texte et filet |
 | B8 | `<select>` de taille | ✅ boutons S/M/L/XL, quatre états |
 | B9 | Deux CTA dans le hero | ✅ un seul |
-| B10 | Footer en 4 colonnes égales | ⏳ PHASE 11 |
-| C1 | GSAP chargé pour rien | ⏳ PHASE 16 |
-| C2 | three.js inutilisé | ⏳ PHASE 16 |
+| B10 | Footer en 4 colonnes égales | ✅ deux colonnes inégales, icônes sociales remplacées par les noms |
+| C1 | GSAP chargé pour rien | ✅ retiré avec `lib/gsap.ts` — Lenis a sa propre boucle raf |
+| C2 | three.js inutilisé | ✅ quatre paquets retirés |
 | C3 | Trois polices en compétition | ✅ deux rôles par zone après le passage de `label` en Anton |
-| C4 | Rôles typographiques non appliqués | ✅ sur la carte produit et la fiche ; reste à balayer les pages annexes |
+| C4 | Rôles typographiques non appliqués | ✅ carte produit, fiche, panier, footer, états |
 | C5 | Badge « Épuisé » sur la photo | ✅ ligne « Indisponible » sous le nom |
-| C6 | Intro non conforme au §21 | ⏳ à trancher |
-| C7 | Curseur personnalisé en `mix-blend-mode` | ⏳ PHASE 14 |
+| C6 | Intro non conforme au §21 | ✅ 1,3 s, sortie sur toute la surface, Échap, filet de progression |
+| C7 | Curseur personnalisé en `mix-blend-mode` | ✅ retiré, avec le grain plein écran |
+
+**Les 22 problèmes de l'audit sont traités.**
+
+### Défauts fonctionnels découverts pendant l'exécution
+
+Ils ne figuraient pas dans l'audit initial — ils ont été trouvés en écrivant la
+suite de tests, pas en lisant le code.
+
+| Défaut | État |
+|---|---|
+| La recherche du header ne faisait rien : `onClose()` démontait le panneau dans le même gestionnaire que `router.push` | ✅ corrigé, plus un bouton « Rechercher » visible |
+| Deux boutons portaient le nom accessible « Rechercher » | ✅ l'icône devient « Ouvrir la recherche » |
+| Une action faite avant la réhydratation des stores était silencieusement écrasée | ✅ drapeau `touched` + `merge` |
+| Squelettes de chargement à la géométrie de l'ancienne mise en page | ✅ alignés (le contenu ne saute plus à l'arrivée) |
+| Soft-404 sur les fiches produit (statut 200) | ⚠️ non résolu — voir TESTS.md et TODO.md |
 
 ## 4. Plan d'exécution
 
