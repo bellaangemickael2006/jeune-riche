@@ -1,86 +1,88 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import WordPullUp from "@/components/ui/WordPullUp";
+import FadeIn from "@/components/ui/FadeIn";
+import Magnetic from "@/components/ui/Magnetic";
 
-// Expérience éditoriale en plusieurs temps plutôt qu'un bloc « titre + trois
-// paragraphes » : chaque section respire seule, la composition alterne
+// Expérience éditoriale en plusieurs temps plutôt qu'un bloc "titre + 3
+// paragraphes" : chaque section respire seule, la composition alterne
 // asymétriquement, et les seuls visuels utilisés sont des assets réels de la
-// marque — aucune photographie de campagne n'existe encore, donc aucune n'est
-// simulée ici.
-//
-// WordPullUp et les boutons magnétiques ont été retirés : le premier plaçait
-// le texte hors d'un masque tant que l'animation ne partait pas (une phrase de
-// manifeste qui peut ne jamais apparaître n'est pas acceptable), le second est
-// un effet de démonstration. Le cadre image passe en 5/4, format réel des
-// visuels produit.
+// marque (badge, photo produit) — aucune photographie de campagne n'existe
+// encore, donc aucune n'est simulée ici.
+
 export default function ManifesteBody() {
   return (
     <div className="bg-ink">
       {/* Temps 1 — affirmation, plein cadre, asymétrique à gauche */}
-      <section className="border-t border-line px-5 py-28 md:px-10 md:py-40">
-        <p className="text-label text-paper/35">01</p>
-        <h2 className="reveal mt-10 max-w-4xl font-editorial text-heading leading-[1.15] text-paper md:text-[4rem] md:leading-[1.08]">
-          Une couronne gravée sur un visage tribal.
-        </h2>
+      <section className="px-5 py-28 md:px-10 md:py-40">
+        <WordPullUp
+          text="Une couronne gravée sur un visage tribal."
+          as="h2"
+          className="max-w-4xl font-editorial text-heading text-paper md:text-[4.5rem] md:leading-[1.05]"
+        />
       </section>
 
       {/* Temps 2 — texte / image, colonnes inégales */}
-      <section className="grid gap-12 border-t border-line px-5 py-24 md:grid-cols-[1fr_1.2fr] md:gap-20 md:px-10 md:py-32">
-        <div className="flex flex-col justify-center">
-          <p className="text-label text-paper/35">02</p>
-          <p className="mt-8 font-editorial text-heading leading-[1.25] text-paper">
+      <section className="grid gap-10 border-t border-line px-5 py-20 md:grid-cols-[1fr_1.1fr] md:gap-16 md:px-10 md:py-28">
+        <FadeIn className="flex flex-col justify-center">
+          <p className="font-editorial text-heading text-paper">
             Le noir qui affirme, le blanc qui respire — rien d&apos;autre.
           </p>
-          <p className="mt-8 max-w-sm text-body leading-relaxed text-paper/50">
+          <p className="mt-6 max-w-sm text-body leading-relaxed text-paper/50">
             Pas de dégradé, pas de couleur de studio confondue avec une couleur de marque. Une
             palette resserrée, tenue.
           </p>
-        </div>
-        <div className="relative aspect-[5/4] overflow-hidden bg-studio">
+        </FadeIn>
+        <FadeIn delay={0.1} x={24} className="relative aspect-[4/5] overflow-hidden bg-studio">
           <Image
             src="/images/products/tshirt-noir/mockup-1-neutral.jpg"
             alt="Visage-roi tribal brodé sur t-shirt noir JEUNE RICHE"
             fill
-            sizes="(max-width: 768px) 100vw, 55vw"
-            className="object-contain"
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-contain p-10"
           />
-        </div>
+        </FadeIn>
       </section>
 
-      {/* Temps 3 — le symbole en grand, l'axe bascule à droite */}
-      <section className="grid gap-12 border-t border-line px-5 py-24 md:grid-cols-2 md:gap-20 md:px-10 md:py-32">
-        <div className="relative order-2 aspect-square overflow-hidden bg-ink md:order-1">
+      {/* Temps 3 — le symbole en grand, asymétrique à droite */}
+      <section className="grid gap-10 border-t border-line px-5 py-20 md:grid-cols-[1fr_1fr] md:gap-16 md:px-10 md:py-28">
+        <FadeIn x={-24} className="relative order-2 aspect-square overflow-hidden bg-ink md:order-1">
           <Image
             src="/images/badge/badge-white-on-black.png"
             alt="Badge JEUNE RICHE"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-contain"
+            className="object-contain p-6 opacity-90"
           />
-        </div>
-        <div className="order-1 flex flex-col justify-center md:order-2">
-          <p className="text-label text-paper/35">03</p>
-          <p className="mt-8 max-w-md font-editorial text-heading leading-[1.25] text-paper">
+        </FadeIn>
+        <FadeIn className="order-1 flex flex-col justify-center md:order-2">
+          <p className="text-label text-paper/40">La tension</p>
+          <p className="mt-4 max-w-md font-editorial text-heading text-paper">
             JEUNE RICHE assume la tension entre le luxe et la rue, entre la discipline du
             minimalisme et la puissance d&apos;un symbole gravé.
           </p>
-        </div>
+        </FadeIn>
       </section>
 
-      {/* Temps 4 — clôture. Mesure étroite, vide tenu à droite. */}
-      <section className="border-t border-line px-5 py-28 md:px-10 md:py-40">
-        <p className="text-label text-paper/35">04</p>
-        <h2 className="reveal mt-10 max-w-2xl font-editorial text-heading leading-[1.15] text-paper md:text-[3rem] md:leading-[1.12]">
-          Un langage visuel qui se répète, se grave, se porte.
-        </h2>
-        <Link
-          href="/catalogue"
-          className="mt-14 inline-flex items-center gap-5 bg-paper px-8 py-4 text-label text-ink transition-colors duration-300 ease-editorial hover:bg-studio md:mt-20"
-        >
-          Voir la collection
-          <svg width="26" height="8" viewBox="0 0 26 8" fill="none" aria-hidden>
-            <path d="M0 4h24M21 1l3.5 3L21 7" stroke="currentColor" strokeWidth="1.2" />
-          </svg>
-        </Link>
+      {/* Temps 4 — clôture, retour au plein cadre */}
+      <section className="border-t border-line px-5 py-28 text-center md:px-10 md:py-40">
+        <WordPullUp
+          text="Un langage visuel qui se répète, se grave, se porte."
+          as="h2"
+          className="mx-auto max-w-3xl font-editorial text-heading text-paper md:text-[3.5rem] md:leading-[1.1]"
+        />
+        <FadeIn delay={0.3} className="mt-12">
+          <Magnetic strength={0.4} className="inline-block">
+            <Link
+              href="/catalogue"
+              className="inline-block bg-paper px-8 py-4 text-label text-ink transition-transform duration-300 ease-editorial hover:scale-[1.02]"
+            >
+              Voir la collection
+            </Link>
+          </Magnetic>
+        </FadeIn>
       </section>
     </div>
   );

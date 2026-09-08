@@ -17,13 +17,13 @@ export default async function ConfirmationPage({
         height={100}
         className="h-16 w-16 object-contain"
       />
-      <h1 className="font-editorial text-heading-lg leading-[1.05] text-paper md:text-[4rem]">Commande enregistrée</h1>
-      {numero && <p className="text-body text-paper/60">Référence : {numero}</p>}
-      <p className="max-w-sm text-body text-paper/50">
+      <h1 className="font-editorial text-3xl text-paper md:text-4xl">Commande enregistrée</h1>
+      {numero && <p className="text-sm text-paper/60">Référence : {numero}</p>}
+      <p className="max-w-sm text-sm text-paper/50">
         Un email de confirmation vous sera envoyé. Notre équipe vous recontactera pour finaliser le
         règlement et l&apos;expédition.
       </p>
-      <Link href="/catalogue" className="mt-4 text-label text-paper underline underline-offset-4 hover:text-paper/70">
+      <Link href="/catalogue" className="mt-4 text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 hover:text-paper/70">
         Retour au catalogue
       </Link>
     </div>

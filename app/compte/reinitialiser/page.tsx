@@ -88,20 +88,20 @@ export default function ResetPasswordPage() {
           height={120}
           className="mx-auto h-12 w-12 object-contain"
         />
-        <h1 className="mt-4 text-center font-editorial text-heading text-paper">Nouveau mot de passe</h1>
+        <h1 className="mt-4 text-center font-editorial text-2xl text-paper">Nouveau mot de passe</h1>
 
         {status === "checking" && (
-          <p className="mt-8 text-center text-body text-paper/50">Vérification du lien...</p>
+          <p className="mt-8 text-center text-sm text-paper/50">Vérification du lien...</p>
         )}
 
         {status === "invalid" && (
           <div className="mt-8 text-center">
-            <p className="text-body text-paper/70">
+            <p className="text-sm text-paper/70">
               Ce lien est invalide ou a expiré. Redemandez-en un depuis la page de connexion.
             </p>
             <a
               href="/compte"
-              className="mt-4 inline-block text-label text-paper underline underline-offset-4"
+              className="mt-4 inline-block text-xs uppercase tracking-widest2 text-paper underline underline-offset-4"
             >
               Retour à la connexion
             </a>
@@ -109,7 +109,7 @@ export default function ResetPasswordPage() {
         )}
 
         {status === "done" && (
-          <p className="mt-8 text-center text-body text-paper/70">
+          <p className="mt-8 text-center text-sm text-paper/70">
             Mot de passe mis à jour. Redirection vers votre compte...
           </p>
         )}
@@ -117,7 +117,7 @@ export default function ResetPasswordPage() {
         {(status === "ready" || status === "submitting") && (
           <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
             <label className="block">
-              <span className="mb-2 block text-label text-paper/50">
+              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
                 Nouveau mot de passe
               </span>
               <input
@@ -126,11 +126,11 @@ export default function ResetPasswordPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper focus:border-paper focus:outline-none"
+                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
               />
             </label>
             <label className="block">
-              <span className="mb-2 block text-label text-paper/50">
+              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
                 Confirmer le mot de passe
               </span>
               <input
@@ -139,14 +139,14 @@ export default function ResetPasswordPage() {
                 onChange={(e) => setConfirm(e.target.value)}
                 required
                 minLength={8}
-                className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper focus:border-paper focus:outline-none"
+                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
               />
             </label>
-            {error && <p className="text-caption font-medium text-paper">{error}</p>}
+            {error && <p className="text-xs font-medium text-paper">{error}</p>}
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="mt-2 bg-paper py-3 text-label text-ink transition-colors duration-300 ease-editorial hover:bg-studio disabled:opacity-50"
+              className="mt-2 bg-paper py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
             >
               {status === "submitting" ? "…" : "Mettre à jour"}
             </button>

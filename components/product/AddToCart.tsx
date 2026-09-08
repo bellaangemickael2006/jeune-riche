@@ -6,20 +6,6 @@ import { sanitizePersonalization, swatchColor, cn } from "@/lib/utils";
 
 type Variant = { id: string; size: string; color: string; stock: number };
 
-// Ordre de lecture d'un tableau de tailles. Toute taille non listée (une
-// pointure de casquette, un format inattendu saisi en admin) est conservée et
-// affichée après, jamais masquée.
-const SIZE_ORDER = ["XS", "S", "M", "L", "XL", "XXL", "3XL", "UNIQUE", "TU"];
-
-function sortSizes(a: string, b: string) {
-  const ia = SIZE_ORDER.indexOf(a.toUpperCase());
-  const ib = SIZE_ORDER.indexOf(b.toUpperCase());
-  if (ia === -1 && ib === -1) return a.localeCompare(b);
-  if (ia === -1) return 1;
-  if (ib === -1) return -1;
-  return ia - ib;
-}
-
 export default function AddToCart({
   productSlug,
   productName,
@@ -47,9 +33,8 @@ export default function AddToCart({
   const [internalColor, setInternalColor] = useState(colors[0] ?? "");
   const color = controlledColor ?? internalColor;
   const setColor = onColorChange ?? setInternalColor;
-
   const sizesForColor = useMemo(
-    () => variants.filter((v) => v.color === color).sort((a, b) => sortSizes(a.size, b.size)),
+    () => variants.filter((v) => v.color === color),
     [variants, color]
   );
   const [size, setSize] = useState(sizesForColor[0]?.size ?? "");
@@ -79,44 +64,30 @@ export default function AddToCart({
   }
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       {colors.length > 0 && (
         <div>
-          <p className="mb-3 text-label text-paper/40">Couleur</p>
-          <div className="flex flex-wrap gap-5">
+          <p className="mb-2 text-label text-paper/50">Couleur</p>
+          <div className="flex flex-wrap gap-4">
             {colors.map((c) => (
               <button
                 key={c}
-                type="button"
                 onClick={() => {
                   setColor(c);
-                  const first = variants
-                    .filter((v) => v.color === c)
-                    .sort((a, b) => sortSizes(a.size, b.size))[0];
+                  const first = variants.find((v) => v.color === c);
                   setSize(first?.size ?? "");
                 }}
                 aria-pressed={color === c}
-                className="flex flex-col items-start gap-2"
+                className="flex flex-col items-center gap-1.5"
               >
-                {/* La sélection est marquée par un filet décalé, posé sur le
-                    fond ink, et non par une bordure au ras du nuancier : sur le
-                    coloris Blanc, une bordure `paper` était invisible. */}
                 <span
-                  data-swatch
                   style={{ backgroundColor: swatchColor(c) }}
                   className={cn(
-                    "h-8 w-8 border border-line transition-all duration-300 ease-editorial",
-                    color === c
-                      ? "outline outline-1 outline-offset-[3px] outline-paper"
-                      : "opacity-70 hover:opacity-100"
+                    "h-7 w-7 border transition-all",
+                    color === c ? "border-paper ring-1 ring-offset-2 ring-offset-ink ring-paper" : "border-line/60"
                   )}
                 />
-                <span
-                  className={cn(
-                    "text-label transition-colors duration-300 ease-editorial",
-                    color === c ? "text-paper" : "text-paper/35"
-                  )}
-                >
+                <span className={cn("text-[10px] uppercase tracking-wide", color === c ? "text-paper" : "text-paper/40")}>
                   {c}
                 </span>
               </button>
@@ -125,48 +96,50 @@ export default function AddToCart({
         </div>
       )}
 
-      {/* Tailles en boutons rectangulaires avec quatre états explicites —
-          défaut, survol, sélectionné, désactivé. Un <select> masquait la
-          disponibilité derrière un clic et réduisait le bouton d'ajout à la
-          moitié droite d'une ligne de formulaire. */}
       {sizesForColor.length > 0 && (
         <div>
-          <p className="mb-3 text-label text-paper/40" id="taille-label">
+          <label htmlFor="size-select" className="mb-2 block text-label text-paper/50">
             Taille
-          </p>
-          <div className="flex flex-wrap gap-2" role="group" aria-labelledby="taille-label">
-            {sizesForColor.map((v) => {
-              const isSelected = v.size === size;
-              const isOut = v.stock === 0;
-              return (
-                <button
-                  key={v.id}
-                  type="button"
-                  onClick={() => setSize(v.size)}
-                  disabled={isOut}
-                  aria-pressed={isSelected}
-                  className={cn(
-                    "min-w-[3.5rem] border px-4 py-3 text-label transition-colors duration-300 ease-editorial",
-                    isOut
-                      ? "cursor-not-allowed border-line text-paper/20 line-through"
-                      : isSelected
-                        ? "border-paper bg-paper text-ink"
-                        : "border-line text-paper/70 hover:border-paper hover:text-paper"
-                  )}
-                >
+          </label>
+          <div className="flex gap-3">
+            <select
+              id="size-select"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+              className="flex-1 border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper focus:border-paper focus:outline-none"
+            >
+              {sizesForColor.map((v) => (
+                <option key={v.id} value={v.size} disabled={v.stock === 0} className="bg-ink">
                   {v.size}
-                </button>
-              );
-            })}
+                  {v.stock === 0 ? " — épuisé" : ""}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={handleAdd}
+              disabled={!canAdd}
+              className={cn(
+                "shrink-0 px-6 py-3 text-xs uppercase tracking-widest2 transition-all",
+                canAdd ? "bg-paper text-ink hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
+              )}
+            >
+              {price === null
+                ? "Prix à définir"
+                : !selectedVariant || !inStock
+                  ? "Indisponible"
+                  : added
+                    ? "Ajouté ✓"
+                    : "Ajouter au panier"}
+            </button>
           </div>
         </div>
       )}
 
-      {/* L'atelier : le champ, puis l'aperçu du marquage. Sobre, sur fond ink,
-          dans la typographie réellement utilisée sur le vêtement. */}
       {personalizationEnabled && (
         <div>
-          <p className="mb-3 text-label text-paper/40">Personnalisation</p>
+          <p className="mb-2 text-label text-paper/50">
+            Personnalisation (optionnelle)
+          </p>
           <input
             type="text"
             value={personalization}
@@ -175,19 +148,18 @@ export default function AddToCart({
             }
             maxLength={personalizationMaxLen}
             placeholder="Votre nom ou pseudo"
-            aria-describedby="perso-aide"
-            className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper placeholder:text-paper/25 focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
           />
-          <div id="perso-aide" className="mt-2 flex items-center justify-between text-caption text-paper/35">
-            <span>Lettres, chiffres, espaces, - et _ uniquement. Optionnel.</span>
+          <div className="mt-2 flex items-center justify-between text-[11px] text-paper/40">
+            <span>Lettres, chiffres, espaces, - et _ uniquement.</span>
             <span>
               {personalization.length}/{personalizationMaxLen}
             </span>
           </div>
           {personalization && (
-            <div className="mt-5 border border-line px-6 py-10">
-              <p className="text-label text-paper/30">Aperçu du marquage</p>
-              <p className="mt-5 break-all font-display text-[2rem] uppercase leading-none text-paper">
+            <div className="mt-4 flex flex-col items-center gap-3 border border-line bg-line/20 px-6 py-10">
+              <p className="text-label text-paper/30">Aperçu de la broderie</p>
+              <p className="font-display text-display uppercase leading-none text-paper">
                 {personalization}
               </p>
             </div>
@@ -195,33 +167,7 @@ export default function AddToCart({
         </div>
       )}
 
-      {/* Une seule action principale, pleine largeur. Rien ne la concurrence. */}
-      <div>
-        <button
-          type="button"
-          onClick={handleAdd}
-          disabled={!canAdd}
-          className={cn(
-            "w-full px-6 py-4 text-label transition-colors duration-300 ease-editorial",
-            canAdd ? "bg-paper text-ink hover:bg-studio" : "cursor-not-allowed bg-line text-paper/35"
-          )}
-        >
-          {price === null
-            ? "Prix à définir"
-            : !selectedVariant || !inStock
-              ? "Indisponible"
-              : added
-                ? "Ajouté au panier"
-                : "Ajouter"}
-        </button>
-
-        {selectedVariant && !inStock && (
-          <div className="mt-5 border-t border-line pt-5">
-            <p className="text-body text-paper/60">Indisponible.</p>
-            <NotifyMe variantId={selectedVariant.id} />
-          </div>
-        )}
-      </div>
+      {!inStock && selectedVariant && <NotifyMe variantId={selectedVariant.id} />}
     </div>
   );
 }
@@ -229,48 +175,31 @@ export default function AddToCart({
 function NotifyMe({ variantId }: { variantId: string }) {
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
-  const [pending, setPending] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setPending(true);
-    try {
-      await fetch("/api/restock", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ variantId, email }),
-      });
-      setSent(true);
-    } finally {
-      setPending(false);
-    }
+    await fetch("/api/restock", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ variantId, email }),
+    });
+    setSent(true);
   }
 
-  if (sent) {
-    return (
-      <p className="mt-3 text-caption text-paper/60">
-        Nous vous préviendrons dès le retour en stock.
-      </p>
-    );
-  }
+  if (sent) return <p className="text-xs text-paper/60">Nous vous préviendrons dès le retour en stock.</p>;
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+    <form onSubmit={handleSubmit} className="flex gap-2">
       <input
         type="email"
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Votre email"
-        aria-label="Votre email pour être prévenu du retour en stock"
-        className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper placeholder:text-paper/25 focus:border-paper focus:outline-none"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
       />
-      <button
-        type="submit"
-        disabled={pending}
-        className="shrink-0 border border-paper px-5 text-label text-paper transition-colors duration-300 ease-editorial hover:bg-paper hover:text-ink disabled:opacity-50"
-      >
-        Prévenez-moi
+      <button className="shrink-0 border border-paper px-4 text-xs uppercase tracking-widest2 text-paper">
+        Me prévenir
       </button>
     </form>
   );

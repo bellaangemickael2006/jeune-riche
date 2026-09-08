@@ -1,9 +1,6 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 
-// Même langage que le reste du site : rail en haut, axe à gauche, mesure
-// étroite, vide tenu à droite. Le crest en filigrane à 3,5% d'opacité qui
-// remplissait le cadre est retiré — invisible, donc pas une information, et le
-// crest n'a pas à servir de motif de remplissage.
 export default function PlaceholderPage({
   eyebrow,
   title,
@@ -16,17 +13,19 @@ export default function PlaceholderPage({
   action?: ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-ink px-5 pb-32 pt-32 md:px-10 md:pt-40">
-      <div className="border-b border-line pb-4">
-        <p className="text-label text-paper/40">{eyebrow}</p>
-      </div>
-      <div className="max-w-2xl pt-20 md:pt-28">
-        <h1 className="font-editorial text-heading-lg leading-[1.05] text-paper md:text-[4rem]">
-          {title}
-        </h1>
-        <p className="mt-8 max-w-md text-body leading-relaxed text-paper/50">{message}</p>
-        {action && <div className="mt-12">{action}</div>}
-      </div>
+    <div className="relative flex min-h-[70vh] flex-col items-center justify-center gap-4 overflow-hidden px-5 pt-24 text-center">
+      <Image
+        src="/images/logo/logo-transparent.png"
+        alt=""
+        aria-hidden
+        width={360}
+        height={360}
+        className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.035]"
+      />
+      <p className="relative text-xs uppercase tracking-widest2 text-paper/40">{eyebrow}</p>
+      <h1 className="relative font-editorial text-4xl text-paper md:text-5xl">{title}</h1>
+      <p className="relative max-w-md text-sm leading-relaxed text-paper/50">{message}</p>
+      {action && <div className="relative mt-2">{action}</div>}
     </div>
   );
 }

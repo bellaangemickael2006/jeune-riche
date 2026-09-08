@@ -8,19 +8,6 @@ import ProductCard from "@/components/catalogue/ProductCard";
 import RecentlyViewed from "@/components/product/RecentlyViewed";
 import type { ProductCardData } from "@/types";
 
-// ⚠️ Ne pas ajouter de `loading.tsx` dans ce segment, ni dans un segment parent
-// qui l'engloberait.
-//
-// Une frontière Suspense fait partir la réponse en streaming : l'en-tête HTTP
-// est envoyé avant que le composant ne s'exécute, et le `notFound()` ci-dessous
-// ne peut plus fixer le statut. On obtenait alors un soft-404 — la page
-// « introuvable » affichée avec un statut 200, que les moteurs de recherche
-// indexent, ce qui ouvre la porte à un nombre illimité d'URL produit bidons.
-//
-// C'est pour cette raison que la liste du catalogue vit dans le groupe de
-// routes `(liste)` : son squelette de chargement n'englobe ainsi que la liste,
-// pas les fiches produit. Vérifié : fiche inexistante 404, fiche réelle 200,
-// catalogue et filtres 200.
 export async function generateMetadata({
   params,
 }: {
@@ -103,8 +90,8 @@ export default async function ProductPage({
         <section className="mx-auto mt-32 max-w-6xl border-t border-line pt-16">
           <h2 className="font-editorial text-heading text-paper">Compléter la tenue</h2>
           <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-4">
-            {crossSell.map((p) => (
-              <ProductCard key={p.id} product={p} />
+            {crossSell.map((p, i) => (
+              <ProductCard key={p.id} product={p} index={i} />
             ))}
           </div>
         </section>

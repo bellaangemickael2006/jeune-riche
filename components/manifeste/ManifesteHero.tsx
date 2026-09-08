@@ -1,26 +1,43 @@
-// La vidéo `manifeste-motif.mp4` a été retirée du fond de cette page, pour les
-// mêmes raisons que la vidéo de l'accueil : 10,8 Mo chargés en `preload="auto"`
-// avant le premier mot lisible, et un contenu qui n'est pas une photographie
-// mais une mosaïque du badge répété — c'est-à-dire le crest transformé en
-// papier peint. Le voile `bg-ink/50` qui la recouvrait pour rendre le titre
-// lisible disparaît avec elle : quand il faut assombrir une image de moitié
-// pour pouvoir lire par-dessus, l'image ne sert pas la page.
-//
-// Le fichier reste dans le dépôt. Il redeviendra utilisable le jour où il
-// servira une séquence courte et voulue, pas un fond permanent.
-export default function ManifesteHero() {
-  return (
-    <section className="flex min-h-[78svh] flex-col bg-ink px-5 pb-10 pt-28 md:px-10 md:pt-36">
-      <div className="flex items-baseline justify-between border-b border-line pb-4">
-        <p className="text-label text-paper/40">Manifeste</p>
-        <p className="text-label text-paper/25">Côte d&apos;Ivoire</p>
-      </div>
+"use client";
 
-      <div className="flex flex-1 items-end pt-24">
-        <h1 className="reveal font-display text-[22vw] uppercase leading-[0.82] text-paper md:text-[13vw]">
-          Manifeste
-        </h1>
-      </div>
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import WordPullUp from "@/components/ui/WordPullUp";
+
+export default function ManifesteHero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    videoRef.current?.play().catch(() => {});
+  }, []);
+
+  return (
+    <section className="relative flex h-[100svh] items-center justify-center overflow-hidden">
+      {!failed ? (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/images/badge/badge-black-on-white.png"
+          onError={() => setFailed(true)}
+        >
+          <source src="/video/manifeste-motif.mp4" type="video/mp4" />
+        </video>
+      ) : (
+        <Image src="/images/badge/badge-black-on-white.png" alt="JEUNE RICHE" fill className="object-cover" />
+      )}
+      <div className="absolute inset-0 bg-ink/50" />
+      <WordPullUp
+        text="Manifeste"
+        as="h1"
+        immediate
+        className="relative z-10 px-5 text-center font-display text-[16vw] uppercase leading-none text-paper md:text-[9vw]"
+      />
     </section>
   );
 }

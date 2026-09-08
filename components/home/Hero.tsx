@@ -1,87 +1,87 @@
-import Link from "next/link";
+"use client";
 
-// Premier écran — 01 ENTRÉE.
-//
-// La vidéo `hero-production.mp4` a été retirée : elle est saturée du rouge
-// retiré de la marque (ART_DIRECTION.md §2), elle contient déjà le wordmark
-// « JEUNE RICHE » gravé en très grand — qui entrait en collision avec le H1
-// posé par-dessus — et elle coûtait 20,8 Mo au premier écran mobile.
-//
-// Elle n'est remplacée par aucun autre asset : les seuls visuels disponibles
-// sont des mockups produit sur fond de studio, et les présenter en plein cadre
-// reviendrait à simuler une photographie de campagne qui n'existe pas. Le
-// premier écran est donc typographique et volontairement vide — le vide est
-// tenu, pas subi (§16). Deux rôles typographiques seulement : Fraunces porte
-// l'affirmation, Inter tient les rails. Anton reste au wordmark du header.
-const RANGE = [
-  { label: "T-shirt", slug: "t-shirt" },
-  { label: "Polo", slug: "polo" },
-  { label: "Chemise", slug: "chemise" },
-  { label: "Débardeur", slug: "debardeur" },
-  { label: "Jogger", slug: "jogger" },
-  { label: "Casquette", slug: "casquette" },
-];
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import WordPullUp from "@/components/ui/WordPullUp";
+import TextScramble from "@/components/ui/TextScramble";
+import Magnetic from "@/components/ui/Magnetic";
+import FadeIn from "@/components/ui/FadeIn";
 
 export default function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoFailed, setVideoFailed] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.play().catch(() => {
+      // autoplay bloqué par le navigateur — le poster statique reste affiché
+    });
+  }, []);
+
   return (
-    <section className="flex min-h-[100svh] flex-col bg-ink px-5 pb-8 pt-28 md:px-10 md:pb-10 md:pt-36">
-      {/* Rail haut — situe la section dans la narration et ancre la marque. */}
-      <div className="reveal flex items-baseline justify-between border-b border-line pb-4">
-        <p className="text-label text-paper/40">01 — La marque</p>
-        <p className="text-label text-paper/25">Côte d&apos;Ivoire</p>
-      </div>
+    <section className="relative flex h-[100svh] w-full items-end overflow-hidden bg-ink">
+      {!videoFailed ? (
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-cover"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster="/images/badge/badge-white-on-black.png"
+          onError={() => setVideoFailed(true)}
+        >
+          <source src="/video/hero-production.mp4" type="video/mp4" />
+        </video>
+      ) : (
+        <Image
+          src="/images/badge/badge-white-on-black.png"
+          alt="JEUNE RICHE"
+          fill
+          priority
+          className="object-cover"
+        />
+      )}
 
-      {/* Corps — affirmation calée en bas à gauche, toute la droite laissée
-          vide. L'axe est le bord gauche de la page, jamais le centre. */}
-      <div className="flex flex-1 items-end py-16 md:py-24">
-        <div className="w-full md:w-8/12 xl:w-7/12">
-          {/* Le passage à la ligne après la virgule est voulu : c'est la
-              respiration de la phrase. Les paliers de taille sont calés pour
-              que « un visage gravé. » tienne sur une seule ligne à chaque
-              largeur — sinon le retour forcé produit un drapeau bancal. */}
-          <h1 className="reveal reveal-1 font-editorial text-[2.5rem] leading-[1.05] text-paper md:text-[3.75rem] lg:text-[5rem] xl:text-[5.5rem]">
-            Six pièces,
-            <br />
-            un visage gravé.
-          </h1>
+      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-ink/40" />
 
-          <div className="reveal reveal-2 mt-10 md:mt-12">
+      <div className="relative z-10 flex w-full flex-col gap-8 px-5 pb-14 md:px-10 md:pb-20">
+        <TextScramble
+          text="LUXE STREETWEAR — IDENTITÉ TRIBALE"
+          immediate
+          className="font-body text-xs uppercase tracking-widest2 text-paper/70"
+        />
+        <WordPullUp
+          text="Jeune Riche"
+          as="h1"
+          immediate
+          className="font-display max-w-3xl text-[13vw] uppercase leading-[0.92] text-paper md:text-[7vw]"
+        />
+        <FadeIn delay={0.5} immediate className="flex flex-wrap items-center gap-6">
+          <Magnetic strength={0.4}>
             <Link
               href="/catalogue"
-              className="group inline-flex items-center gap-5 bg-paper px-8 py-4 text-label text-ink transition-colors duration-300 ease-editorial hover:bg-studio"
+              className="inline-block bg-paper px-8 py-4 text-xs uppercase tracking-widest2 text-ink transition-transform duration-300 ease-editorial hover:scale-[1.02]"
             >
-              Voir la collection
-              <svg
-                width="26"
-                height="8"
-                viewBox="0 0 26 8"
-                fill="none"
-                aria-hidden
-                className="transition-transform duration-300 ease-editorial group-hover:translate-x-1"
-              >
-                <path d="M0 4h24M21 1l3.5 3L21 7" stroke="currentColor" strokeWidth="1.2" />
-              </svg>
+              Voir le catalogue
             </Link>
-          </div>
-        </div>
+          </Magnetic>
+          <Link
+            href="/manifeste"
+            className="text-xs uppercase tracking-widest2 text-paper/80 underline underline-offset-4 transition-colors hover:text-paper"
+          >
+            Le manifeste
+          </Link>
+        </FadeIn>
       </div>
 
-      {/* Rail bas — la gamme réelle, typographiée comme un index. C'est de la
-          navigation, pas de la décoration : six entrées, rien de plus. */}
-      <nav
-        aria-label="La gamme"
-        className="reveal reveal-3 flex flex-wrap gap-x-6 gap-y-3 border-t border-line pt-4 md:gap-x-10"
-      >
-        {RANGE.map((item) => (
-          <Link
-            key={item.slug}
-            href={`/catalogue?categorie=${item.slug}`}
-            className="text-label text-paper/40 transition-colors duration-300 ease-editorial hover:text-paper"
-          >
-            {item.label}
-          </Link>
-        ))}
-      </nav>
+      <div className="absolute bottom-6 right-6 hidden flex-col items-center gap-2 text-paper/50 md:flex">
+        <span className="text-[10px] uppercase tracking-widest2 [writing-mode:vertical-rl]">Scroll</span>
+        <span className="h-10 w-px animate-pulse bg-paper/40" />
+      </div>
     </section>
   );
 }

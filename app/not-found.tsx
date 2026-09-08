@@ -1,36 +1,28 @@
 import Link from "next/link";
+import Image from "next/image";
 
-// Une erreur se dit à plat, sans dramatisation ni motif de remplissage : le
-// crest en filigrane à 3,5% d'opacité est retiré, la composition suit l'axe
-// gauche du reste du site.
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-ink px-5 pb-32 pt-32 md:px-10 md:pt-40">
-      <div className="border-b border-line pb-4">
-        <p className="text-label text-paper/40">404</p>
-      </div>
-      <div className="max-w-2xl pt-20 md:pt-28">
-        <h1 className="font-editorial text-heading-lg leading-[1.05] text-paper md:text-[4rem]">
-          Page introuvable
-        </h1>
-        <p className="mt-8 max-w-md text-body leading-relaxed text-paper/50">
-          Cette page n&apos;existe pas ou n&apos;est plus disponible.
-        </p>
-        <div className="mt-12 flex flex-wrap gap-x-10 gap-y-4">
-          <Link
-            href="/"
-            className="border-b border-line pb-1 text-label text-paper/60 transition-colors duration-300 ease-editorial hover:border-paper hover:text-paper"
-          >
-            Retour à l&apos;accueil
-          </Link>
-          <Link
-            href="/catalogue"
-            className="border-b border-line pb-1 text-label text-paper/60 transition-colors duration-300 ease-editorial hover:border-paper hover:text-paper"
-          >
-            Voir la collection
-          </Link>
-        </div>
-      </div>
+    <div className="relative flex min-h-[70vh] flex-col items-center justify-center gap-4 overflow-hidden px-5 text-center">
+      <Image
+        src="/images/logo/logo-transparent.png"
+        alt=""
+        aria-hidden
+        width={360}
+        height={360}
+        className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.035]"
+      />
+      <p className="relative text-xs uppercase tracking-widest2 text-paper/40">404</p>
+      <h1 className="relative font-editorial text-4xl text-paper md:text-5xl">Page introuvable</h1>
+      <p className="relative max-w-sm text-sm text-paper/50">
+        Cette page n&apos;existe pas ou n&apos;est plus disponible.
+      </p>
+      <Link
+        href="/"
+        className="relative mt-4 text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 hover:text-paper/70"
+      >
+        Retour à l&apos;accueil
+      </Link>
     </div>
   );
 }

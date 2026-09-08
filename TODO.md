@@ -14,13 +14,6 @@
 7. **Choisir et intégrer un prestataire de paiement** (Stripe ou solution locale) — le tunnel de checkout crée aujourd'hui la commande sans encaisser, ce qui est explicitement indiqué au client. Ne jamais afficher "paiement sécurisé" tant que ce n'est pas branché.
 8. **Ajouter les variables SMTP sur Vercel (Production)** : `SMTP_USER=bellaangemickael2006@gmail.com`, `SMTP_PASSWORD` (mot de passe d'application Gmail 16 caractères), `SMTP_FROM_NAME=Jeune Riche` — bloqué en attente d'une reconnexion du client à Vercel dans le navigateur (session expirée ; jamais saisi d'identifiants à sa place).
 
-## Trouvé pendant la refonte visuelle du 08/09 — à traiter
-
-1. ✅ **Soft-404 sur les fiches produit — corrigé.** `/catalogue/<slug-inexistant>` renvoie désormais un vrai 404. La cause était une frontière Suspense : le `loading.tsx` du segment **parent** `/catalogue` englobait aussi `[slug]` et faisait partir la réponse en streaming avant que `notFound()` ne puisse fixer le statut. La liste vit maintenant dans le groupe de routes `(liste)`. Ne pas réintroduire de `loading.tsx` dans `app/catalogue/` ni dans `app/catalogue/[slug]/` — voir TESTS.md.
-2. **Photographies produit face seule.** C'est aujourd'hui la principale limite du site. Les 27 visuels sont des paires face+dos en paysage (1600×1280). Conséquences visibles : le catalogue est en **une seule colonne sous 640px** (deux colonnes mettraient chaque vêtement sous 80px de large), et aucun cadre portrait n'est utilisable nulle part. Des plans face seule débloqueraient la grille mobile à deux colonnes et des compositions verticales.
-3. **Vidéo de remplacement pour le premier écran.** `hero-production.mp4` est retirée de l'accueil (rouge hors marque, wordmark en collision, 20,8 Mo). `manifeste-motif.mp4` est retirée du manifeste (10,8 Mo, motif du badge répété). Les deux fichiers restent dans le dépôt.
-4. **Photo dos du t-shirt taupe** — toujours manquante (voir ci-dessous).
-
 ## Assets manquants (documenté, non inventé)
 
 - **Aucune photo mannequin réelle.** Tous les produits utilisent des mockups (TSHIRT1-6, photos WhatsApp) comme référence de design. L'architecture `ProductImage.type` (FRONT/BACK/DETAIL/LIFESTYLE/MOCKUP) est prête à recevoir de vraies photos de campagne depuis `/admin/produits/[id]` sans changement de code.
@@ -48,11 +41,11 @@
 - Multilingue FR/EN (architecture non démarrée).
 - Multi-devise (architecture non démarrée).
 - Carte cadeau (hors scope tant que non demandé explicitement).
-- Scène 3D — ❌ abandonnée. `three`, `@react-three/fiber`, `@react-three/drei` et `@react-three/postprocessing` étaient installés et importés nulle part ; les quatre paquets ont été retirés le 08/09. La direction artistique tranche d'ailleurs en faveur de la photographie contre la 3D.
-- ✅ Lenis (smooth scroll) branché globalement. GSAP et ScrollTrigger ont été retirés le 08/09 : ils n'étaient importés que pour piloter la boucle `raf` de Lenis — qui a la sienne — et aucune animation ScrollTrigger n'existait dans le projet.
-- ❌ Marquee, spotlight, grain, curseur personnalisé, boutons magnétiques, tilt 3D, word-pull-up, text-scramble — tous **retirés** le 08/09. Dix idées d'interaction empilées sur un même écran, c'est la signature d'un site de démonstration, pas d'une marque. Une zone = une interaction dominante.
-- Sticky stacking — non implémenté, et à ne pas ajouter par défaut : ce serait un effet de plus sans contenu à servir.
-- Bloom/post-processing 3D — ❌ abandonné avec la scène 3D.
+- Scène 3D (three.js/R3F installé mais non utilisé) — à réserver à un usage ciblé (ex. logo hero) une fois la base fonctionnelle validée, jamais au détriment de la performance.
+- ✅ Lenis (smooth scroll) + GSAP (ScrollTrigger enregistré, prêt pour du scroll complexe) branchés globalement.
+- ✅ Marquee, spotlight (curseur), grain cinématique, curseur magnétique, tilt 3D sur les cartes produit, word-pull-up, text-scramble, masque circulaire à l'intro — tous implémentés (`components/ui/*`).
+- Sticky stacking — non implémenté (pas encore de contenu réel type "pièce phare/drop" pour le justifier ; à faire quand un drop existera).
+- Bloom/post-processing 3D (`@react-three/postprocessing`) — non ajouté, réservé à un usage ciblé futur (voir scène 3D ci-dessus).
 - Tests automatisés : scaffold Playwright ajouté (`playwright.config.ts`, `tests/navigation.spec.ts`) couvrant les parcours vérifiables sans base de données (navigation, états vides, 404, redirection admin). À étendre avec des parcours commerce réels (`tests/commerce.spec.ts`) maintenant que Supabase est provisionné, une fois un produit publié.
 
 ## Dette technique connue

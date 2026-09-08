@@ -50,15 +50,6 @@ body {
   font-family: var(--font-editorial);
 }
 
-/* Le rôle `label` est un rôle d'interface — eyebrows, navigation, boutons,
-   méta, en-têtes de champ. Il porte donc la display condensée (Anton), jamais
-   le sans neutre : Inter est réservé aux descriptions, à l'aide et aux
-   mentions légales (ART_DIRECTION.md §3). Réglé ici en un seul endroit plutôt
-   qu'en ajoutant `font-display` sur trente-trois classes. */
-.text-label {
-  font-family: var(--font-display);
-}
-
 /* focus visible states — accessibilité clavier */
 a:focus-visible,
 button:focus-visible,
@@ -69,36 +60,33 @@ select:focus-visible {
   outline-offset: 3px;
 }
 
-/* Le curseur personnalisé (.cursor-dot en mix-blend-mode: exclusion) et le
-   marquee en défilement infini ont été retirés du site — voir SiteChrome.tsx
-   et ART_DIRECTION.md §7. Leurs règles disparaissent avec eux. */
+/* custom cursor — desktop uniquement, fallback natif sur touch */
+@media (hover: hover) and (pointer: fine) {
+  .cursor-dot {
+    mix-blend-mode: exclusion;
+  }
+}
 
-/* Apparition éditoriale — opacité + 10px, une seule fois (règle des trois
-   vitesses : « scroll »). En CSS plutôt qu'en JS parce que l'information ne
-   doit jamais dépendre d'une animation : si le JS ne s'exécute pas, le texte
-   reste visible ; et sous prefers-reduced-motion la règle globale plus haut
-   ramène la durée à 0,01ms, ce qui fige directement l'état final. */
-@keyframes reveal {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+/* marquee — deux rangées défilant en sens opposés (catalogue, accueil) */
+@keyframes marquee-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+.animate-marquee-left {
+  animation: marquee-left 32s linear infinite;
+}
+.animate-marquee-right {
+  animation: marquee-right 32s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-left,
+  .animate-marquee-right {
+    animation: none;
   }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-.reveal {
-  animation: reveal 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.reveal-1 {
-  animation-delay: 0.08s;
-}
-.reveal-2 {
-  animation-delay: 0.16s;
-}
-.reveal-3 {
-  animation-delay: 0.24s;
 }
 
 .no-scrollbar::-webkit-scrollbar {

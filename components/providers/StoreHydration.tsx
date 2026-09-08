@@ -11,13 +11,6 @@ export default function StoreHydration() {
   useEffect(() => {
     useCart.persist.rehydrate();
     useWishlist.persist.rehydrate();
-    // Marqueur explicite de fin d'hydratation des stores persistés. Avant ce
-    // point, les boutons « Ajouter » et « Ajouter aux favoris » sont bien
-    // affichés (rendus côté serveur) mais leurs gestionnaires ne sont pas
-    // encore attachés : un clic n'a aucun effet. Ce marqueur permet de le
-    // constater — en test comme en débogage — au lieu de conclure à tort que
-    // le panier ou les favoris sont cassés.
-    document.documentElement.dataset.storesHydrated = "true";
   }, []);
 
   return null;

@@ -40,39 +40,33 @@ export default function AccountDashboard({
     router.refresh();
   }
 
-  // Même composition que la page de connexion et que le reste du site : rail
-  // en haut, axe à gauche, plus de bloc centré.
   return (
-    <div className="w-full">
-      <div className="flex items-baseline justify-between border-b border-line pb-4">
-        <p className="text-label text-paper/40">Compte</p>
-        <button
-          onClick={logout}
-          className="text-label text-paper/40 transition-colors duration-300 ease-editorial hover:text-paper"
-        >
+    <div className="mx-auto w-full max-w-lg">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-widest2 text-paper/40">Compte</p>
+          <p className="mt-1 font-display text-2xl uppercase text-paper">{name || email}</p>
+        </div>
+        <button onClick={logout} className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
           Déconnexion
         </button>
       </div>
 
-      <h1 className="mt-16 max-w-2xl font-editorial text-heading-lg leading-[1.05] text-paper md:mt-20">
-        {name || email}
-      </h1>
-
-      <div className="mt-16 max-w-2xl md:mt-20">
-        <p className="text-label text-paper/40">Mes commandes</p>
+      <div className="mt-10">
+        <p className="text-xs uppercase tracking-widest2 text-paper/50">Mes commandes</p>
         {orders.length === 0 ? (
-          <p className="mt-3 text-body text-paper/40">Aucune commande pour le moment.</p>
+          <p className="mt-3 text-sm text-paper/40">Aucune commande pour le moment.</p>
         ) : (
           <ul className="mt-4 divide-y divide-line">
             {orders.map((o) => (
-              <li key={o.id} className="flex items-center justify-between py-3 text-body">
+              <li key={o.id} className="flex items-center justify-between py-3 text-sm">
                 <div>
                   <p className="text-paper">{o.orderNumber}</p>
-                  <p className="text-caption text-paper/40">{new Date(o.createdAt).toLocaleDateString("fr-FR")}</p>
+                  <p className="text-xs text-paper/40">{new Date(o.createdAt).toLocaleDateString("fr-FR")}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-paper/70">{formatPrice(o.total)}</p>
-                  <p className="text-caption text-paper/40">{o.status}</p>
+                  <p className="text-xs text-paper/40">{o.status}</p>
                 </div>
               </li>
             ))}
@@ -80,9 +74,7 @@ export default function AccountDashboard({
         )}
       </div>
 
-      <div className="max-w-2xl">
-        <AddressBook address={address} />
-      </div>
+      <AddressBook address={address} />
     </div>
   );
 }
@@ -125,8 +117,8 @@ function AddressBook({ address }: { address: Address }) {
 
   return (
     <div className="mt-10 border-t border-line pt-8">
-      <p className="text-label text-paper/50">Adresse de livraison</p>
-      <p className="mt-1 text-caption text-paper/30">
+      <p className="text-xs uppercase tracking-widest2 text-paper/50">Adresse de livraison</p>
+      <p className="mt-1 text-xs text-paper/30">
         Enregistrée automatiquement à chaque commande — modifiable ici pour la prochaine fois.
       </p>
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3">
@@ -134,39 +126,39 @@ function AddressBook({ address }: { address: Address }) {
           value={form.addressLine1}
           onChange={(e) => update("addressLine1", e.target.value)}
           placeholder="Adresse"
-          className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
         />
         <div className="grid grid-cols-2 gap-3">
           <input
             value={form.addressCity}
             onChange={(e) => update("addressCity", e.target.value)}
             placeholder="Ville"
-            className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
           />
           <input
             value={form.addressPostalCode}
             onChange={(e) => update("addressPostalCode", e.target.value)}
             placeholder="Code postal (optionnel)"
-            className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
           />
         </div>
         <input
           value={form.addressCountry}
           onChange={(e) => update("addressCountry", e.target.value)}
           placeholder="Pays"
-          className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
         />
         <input
           value={form.addressPhone}
           onChange={(e) => update("addressPhone", e.target.value)}
           placeholder="Téléphone (optionnel)"
-          className="w-full border border-line bg-transparent px-4 py-3 text-body text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
         />
-        {error && <p className="text-caption text-paper">{error}</p>}
+        {error && <p className="text-xs text-paper">{error}</p>}
         <button
           type="submit"
           disabled={saving || !form.addressLine1 || !form.addressCity || !form.addressCountry}
-          className="w-fit border border-paper px-6 py-3 text-label text-paper transition-opacity hover:opacity-80 disabled:opacity-30"
+          className="w-fit border border-paper px-6 py-3 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-80 disabled:opacity-30"
         >
           {saving ? "Enregistrement…" : saved ? "Enregistré ✓" : "Enregistrer l'adresse"}
         </button>
