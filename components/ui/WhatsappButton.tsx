@@ -1,8 +1,7 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-
-const WHATSAPP_NUMBER = "2250777585367";
+import { WHATSAPP_NUMBER } from "@/lib/utils";
 
 export default function WhatsappButton() {
   const { t } = useTranslation();

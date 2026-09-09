@@ -73,7 +73,7 @@ export function siteUrl(): string {
 }
 
 // Même numéro que le bouton WhatsApp flottant (components/ui/WhatsappButton.tsx).
-export const WHATSAPP_NUMBER = "2250777585367";
+export const WHATSAPP_NUMBER = "2250700590504";
 
 // Construit un lien WhatsApp pré-rempli pour un produit précis — la couleur et
 // la taille sélectionnées sont incluses dans le message quand elles sont
@@ -152,11 +152,11 @@ const STATUS_MESSAGES: Partial<Record<string, (orderNumber: string, trackingNumb
 };
 
 // Numéro client au format international sans "+" ni espaces, tel qu'exigé
-// par wa.me — tolère les formats courants saisis au checkout (+225 07 77...,
-// 07 77..., 2250777...). Le indicatif "225" est suivi du numéro à 10 chiffres
+// par wa.me — tolère les formats courants saisis au checkout (+225 07 00...,
+// 07 00..., 2250700...). Le indicatif "225" est suivi du numéro à 10 chiffres
 // SANS retirer le 0 initial : c'est le format déjà utilisé et vérifié
-// fonctionnel par WHATSAPP_NUMBER ci-dessus (+225 07 77 58 53 67 ->
-// 2250777585367), pas la convention internationale habituelle.
+// fonctionnel par WHATSAPP_NUMBER ci-dessus (+225 07 00 59 05 04 ->
+// 2250700590504), pas la convention internationale habituelle.
 function sanitizePhoneForWhatsapp(phone: string): string | null {
   const digits = phone.replace(/[^\d]/g, "");
   if (!digits) return null;

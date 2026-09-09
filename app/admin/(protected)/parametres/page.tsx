@@ -71,7 +71,7 @@ export default async function AdminSettingsPage() {
               <input
                 name="contactPhone"
                 defaultValue={settings.contactPhone ?? ""}
-                placeholder="+225 07 77 58 53 67"
+                placeholder="+225 07 00 59 05 04"
                 className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30"
               />
             </label>
