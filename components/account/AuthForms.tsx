@@ -51,22 +51,19 @@ export default function AuthForms() {
     }
 
     if (mode === "signup") {
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { name } },
+      // Passe par notre API (lib/email.ts + admin.generateLink) pour garder
+      // la main sur l'email de confirmation — sinon supabase.auth.signUp()
+      // déclenche l'envoi automatique par Supabase lui-même (branding générique).
+      const res = await fetch("/api/account/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, name }),
       });
-      if (signUpError) {
-        setError(signUpError.message);
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(body.error || t("account.supabaseNotConfigured"));
         setLoading(false);
         return;
-      }
-      if (data.user) {
-        await fetch("/api/account", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ supabaseId: data.user.id, email, name }),
-        });
       }
       setMessage(t("account.signupSuccess"));
       setLoading(false);

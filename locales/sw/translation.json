@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase bado haijasanidiwa — kuingia kutapatikana mara tu NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY zitakapowekwa.",
     "forgotEmailSent": "Iwapo akaunti ipo kwa barua pepe hii, kiungo cha kuweka upya kimetumwa.",
     "signupSuccess": "Akaunti imefunguliwa. Angalia barua pepe yako kuthibitisha usajili wako ikiwa inahitajika.",
-    "invalidCredentials": "Taarifa za kuingia si sahihi."
+    "invalidCredentials": "Taarifa za kuingia si sahihi.",
+    "confirmationTitle": "Usajili umethibitishwa",
+    "confirmationSuccess": "Akaunti yako imewashwa. Karibu JEUNE RICHE.",
+    "confirmationInvalid": "Kiungo hiki cha uthibitisho si sahihi au kimeisha muda wake.",
+    "confirmationCta": "Nenda kwenye akaunti yangu"
   },
   "wishlist": {
     "title": "Unavyopenda",

@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "لم يتم إعداد Supabase بعد — سيتوفر تسجيل الدخول بمجرد ضبط NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.",
     "forgotEmailSent": "إذا كان هناك حساب بهذا البريد الإلكتروني، فقد تم للتو إرسال رابط لإعادة التعيين.",
     "signupSuccess": "تم إنشاء الحساب. تحقق من بريدك الإلكتروني لتأكيد تسجيلك إذا لزم الأمر.",
-    "invalidCredentials": "بيانات الاعتماد غير صحيحة."
+    "invalidCredentials": "بيانات الاعتماد غير صحيحة.",
+    "confirmationTitle": "تم تأكيد التسجيل",
+    "confirmationSuccess": "تم تفعيل حسابك. مرحبًا بك في JEUNE RICHE.",
+    "confirmationInvalid": "رابط التأكيد هذا غير صالح أو منتهي الصلاحية.",
+    "confirmationCta": "الذهاب إلى حسابي"
   },
   "wishlist": {
     "title": "المفضلة",

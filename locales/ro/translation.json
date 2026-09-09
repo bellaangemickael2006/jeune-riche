@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase nu este încă configurat — conectarea va fi disponibilă odată ce NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY sunt setate.",
     "forgotEmailSent": "Dacă există un cont cu acest email, un link de resetare tocmai a fost trimis.",
     "signupSuccess": "Cont creat. Verifică-ți emailul pentru a confirma înregistrarea dacă este necesar.",
-    "invalidCredentials": "Date de conectare invalide."
+    "invalidCredentials": "Date de conectare invalide.",
+    "confirmationTitle": "Înregistrare confirmată",
+    "confirmationSuccess": "Contul tău este activat. Bine ai venit la JEUNE RICHE.",
+    "confirmationInvalid": "Acest link de confirmare este invalid sau a expirat.",
+    "confirmationCta": "Accesează contul meu"
   },
   "wishlist": {
     "title": "Favorite",

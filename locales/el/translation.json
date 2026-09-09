@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Το Supabase δεν έχει διαμορφωθεί ακόμη — η σύνδεση θα είναι διαθέσιμη μόλις οριστούν τα NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.",
     "forgotEmailSent": "Εάν υπάρχει λογαριασμός με αυτό το email, μόλις στάλθηκε ένας σύνδεσμος επαναφοράς.",
     "signupSuccess": "Ο λογαριασμός δημιουργήθηκε. Ελέγξτε το email σας για να επιβεβαιώσετε την εγγραφή σας αν χρειάζεται.",
-    "invalidCredentials": "Μη έγκυρα διαπιστευτήρια."
+    "invalidCredentials": "Μη έγκυρα διαπιστευτήρια.",
+    "confirmationTitle": "Η εγγραφή επιβεβαιώθηκε",
+    "confirmationSuccess": "Ο λογαριασμός σας είναι ενεργός. Καλώς ήρθατε στη JEUNE RICHE.",
+    "confirmationInvalid": "Αυτός ο σύνδεσμος επιβεβαίωσης δεν είναι έγκυρος ή έχει λήξει.",
+    "confirmationCta": "Μετάβαση στον λογαριασμό μου"
   },
   "wishlist": {
     "title": "Αγαπημένα",

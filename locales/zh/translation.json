@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase 尚未配置 — 设置 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY 后即可登录。",
     "forgotEmailSent": "如果该邮箱已注册账户，我们刚刚已发送重置链接。",
     "signupSuccess": "账户已创建。如有需要，请查收邮箱以确认注册。",
-    "invalidCredentials": "登录信息无效。"
+    "invalidCredentials": "登录信息无效。",
+    "confirmationTitle": "注册已确认",
+    "confirmationSuccess": "您的账户已激活。欢迎加入 JEUNE RICHE。",
+    "confirmationInvalid": "此确认链接无效或已过期。",
+    "confirmationCta": "前往我的账户"
   },
   "wishlist": {
     "title": "收藏",

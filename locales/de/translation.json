@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase ist noch nicht konfiguriert — die Anmeldung ist verfügbar, sobald NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY gesetzt sind.",
     "forgotEmailSent": "Falls ein Konto mit dieser E-Mail existiert, wurde soeben ein Link zum Zurücksetzen gesendet.",
     "signupSuccess": "Konto erstellt. Bestätigen Sie bei Bedarf Ihre Registrierung per E-Mail.",
-    "invalidCredentials": "Ungültige Anmeldedaten."
+    "invalidCredentials": "Ungültige Anmeldedaten.",
+    "confirmationTitle": "Registrierung bestätigt",
+    "confirmationSuccess": "Ihr Konto ist jetzt aktiv. Willkommen bei JEUNE RICHE.",
+    "confirmationInvalid": "Dieser Bestätigungslink ist ungültig oder abgelaufen.",
+    "confirmationCta": "Zu meinem Konto"
   },
   "wishlist": {
     "title": "Favoriten",

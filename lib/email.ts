@@ -92,6 +92,24 @@ export function passwordResetEmail(actionLink: string) {
   `);
 }
 
+export function signupConfirmationEmail(actionLink: string, name?: string) {
+  const greeting = name ? `Bienvenue ${name},` : "Bienvenue,";
+  return emailShell(`
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Confirmation d'inscription</p>
+    <p style="margin:0 0 16px;">${greeting}</p>
+    <p style="margin:0 0 28px;color:#9a9a9a;">
+      Merci de vous être inscrit sur JEUNE RICHE. Confirmez votre adresse email pour activer votre compte
+      et accéder à vos commandes, votre liste d'envies et nos offres exclusives.
+    </p>
+    <a href="${actionLink}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+      Confirmer mon compte
+    </a>
+    <p style="margin:28px 0 0;color:#6a6a6a;font-size:12px;">
+      Si vous n'êtes pas à l'origine de cette inscription, ignorez simplement cet email.
+    </p>
+  `);
+}
+
 export function restockEmail(params: { productName: string; size: string; color: string; productSlug: string }) {
   const productUrl = `${siteUrl()}/catalogue/${params.productSlug}`;
   return emailShell(`

@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "ยังไม่ได้กำหนดค่า Supabase — การเข้าสู่ระบบจะพร้อมใช้งานเมื่อตั้งค่า NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY แล้ว",
     "forgotEmailSent": "หากมีบัญชีที่ใช้อีเมลนี้อยู่ ลิงก์รีเซ็ตเพิ่งถูกส่งไปแล้ว",
     "signupSuccess": "สร้างบัญชีเรียบร้อยแล้ว โปรดตรวจสอบอีเมลของคุณเพื่อยืนยันการลงทะเบียนหากจำเป็น",
-    "invalidCredentials": "ข้อมูลรับรองไม่ถูกต้อง"
+    "invalidCredentials": "ข้อมูลรับรองไม่ถูกต้อง",
+    "confirmationTitle": "ยืนยันการสมัครแล้ว",
+    "confirmationSuccess": "บัญชีของคุณเปิดใช้งานแล้ว ยินดีต้อนรับสู่ JEUNE RICHE",
+    "confirmationInvalid": "ลิงก์ยืนยันนี้ไม่ถูกต้องหรือหมดอายุแล้ว",
+    "confirmationCta": "ไปที่บัญชีของฉัน"
   },
   "wishlist": {
     "title": "รายการโปรด",

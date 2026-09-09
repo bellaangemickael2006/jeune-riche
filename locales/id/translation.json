@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase belum dikonfigurasi — masuk akan tersedia setelah NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY diatur.",
     "forgotEmailSent": "Jika akun dengan email ini ada, tautan reset baru saja dikirimkan.",
     "signupSuccess": "Akun dibuat. Periksa email Anda untuk mengonfirmasi pendaftaran jika diperlukan.",
-    "invalidCredentials": "Kredensial tidak valid."
+    "invalidCredentials": "Kredensial tidak valid.",
+    "confirmationTitle": "Pendaftaran dikonfirmasi",
+    "confirmationSuccess": "Akun Anda telah diaktifkan. Selamat datang di JEUNE RICHE.",
+    "confirmationInvalid": "Tautan konfirmasi ini tidak valid atau sudah kedaluwarsa.",
+    "confirmationCta": "Buka akun saya"
   },
   "wishlist": {
     "title": "Favorit",

@@ -1,0 +1,91 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useTranslation } from "react-i18next";
+import { createClient } from "@/lib/supabase/client";
+
+type Status = "checking" | "confirmed" | "invalid";
+
+// Le lien généré par auth.admin.generateLink({type:"signup"}) redirige ici
+// avec soit ?code=... (flux PKCE), soit #access_token=... dans le FRAGMENT
+// de l'URL (flux implicite) — jamais transmis au serveur, donc établi côté
+// client au montage. Même logique que app/compte/reinitialiser/page.tsx.
+export default function SignupConfirmationPage() {
+  const { t } = useTranslation();
+  const [status, setStatus] = useState<Status>("checking");
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    async function init() {
+      const url = new URL(window.location.href);
+      const code = url.searchParams.get("code");
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        setStatus(error ? "invalid" : "confirmed");
+        return;
+      }
+
+      const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      const accessToken = hashParams.get("access_token");
+      const refreshToken = hashParams.get("refresh_token");
+      if (accessToken && refreshToken) {
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        setStatus(error ? "invalid" : "confirmed");
+        return;
+      }
+
+      const { data } = await supabase.auth.getSession();
+      setStatus(data.session ? "confirmed" : "invalid");
+    }
+
+    init();
+  }, []);
+
+  return (
+    <div className="flex min-h-[70vh] flex-col items-center justify-center px-5 pt-24">
+      <div className="mx-auto w-full max-w-sm border border-line px-8 py-10 text-center">
+        <Image
+          src="/images/logo/logo-transparent.png"
+          alt="JEUNE RICHE"
+          width={120}
+          height={120}
+          className="jr-logo mx-auto h-12 w-12 object-contain"
+        />
+        <h1 className="mt-4 font-editorial text-2xl text-paper">{t("account.confirmationTitle")}</h1>
+
+        {status === "checking" && (
+          <p className="mt-8 text-sm text-paper/50">{t("account.checkingLink")}</p>
+        )}
+
+        {status === "confirmed" && (
+          <div className="mt-8">
+            <p className="text-sm text-paper/70">{t("account.confirmationSuccess")}</p>
+            <a
+              href="/compte"
+              className="mt-6 inline-block bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90"
+            >
+              {t("account.confirmationCta")}
+            </a>
+          </div>
+        )}
+
+        {status === "invalid" && (
+          <div className="mt-8">
+            <p className="text-sm text-paper/70">{t("account.confirmationInvalid")}</p>
+            <a
+              href="/compte"
+              className="mt-6 inline-block text-xs uppercase tracking-widest2 text-paper underline underline-offset-4"
+            >
+              {t("account.backToLogin")}
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

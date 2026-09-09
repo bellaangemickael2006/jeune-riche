@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabaseはまだ設定されていません — NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY を設定するとログインが利用可能になります。",
     "forgotEmailSent": "このメールアドレスのアカウントが存在する場合、リセットリンクを送信しました。",
     "signupSuccess": "アカウントを作成しました。必要に応じてメールで登録を確認してください。",
-    "invalidCredentials": "認証情報が正しくありません。"
+    "invalidCredentials": "認証情報が正しくありません。",
+    "confirmationTitle": "登録が確認されました",
+    "confirmationSuccess": "アカウントが有効になりました。JEUNE RICHEへようこそ。",
+    "confirmationInvalid": "この確認リンクは無効か、有効期限が切れています。",
+    "confirmationCta": "マイアカウントへ"
   },
   "wishlist": {
     "title": "お気に入り",

@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "O Supabase ainda não está configurado — o início de sessão estará disponível assim que NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY forem definidos.",
     "forgotEmailSent": "Se existir uma conta com este email, um link de reposição acabou de ser enviado.",
     "signupSuccess": "Conta criada. Verifique o seu email para confirmar o registo, se necessário.",
-    "invalidCredentials": "Credenciais inválidas."
+    "invalidCredentials": "Credenciais inválidas.",
+    "confirmationTitle": "Inscrição confirmada",
+    "confirmationSuccess": "Sua conta está ativada. Bem-vindo à JEUNE RICHE.",
+    "confirmationInvalid": "Este link de confirmação é inválido ou expirou.",
+    "confirmationCta": "Acessar minha conta"
   },
   "wishlist": {
     "title": "Favoritos",

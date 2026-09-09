@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "A Supabase még nincs konfigurálva — a bejelentkezés elérhető lesz, ha a NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY be van állítva.",
     "forgotEmailSent": "Ha létezik fiók ezzel az email címmel, egy visszaállító linket most küldtünk.",
     "signupSuccess": "Fiók létrehozva. Szükség esetén ellenőrizze emailjét a regisztráció megerősítéséhez.",
-    "invalidCredentials": "Érvénytelen bejelentkezési adatok."
+    "invalidCredentials": "Érvénytelen bejelentkezési adatok.",
+    "confirmationTitle": "Regisztráció megerősítve",
+    "confirmationSuccess": "A fiókod aktiválva lett. Üdvözlünk a JEUNE RICHE-nél.",
+    "confirmationInvalid": "Ez a megerősítő link érvénytelen vagy lejárt.",
+    "confirmationCta": "Ugrás a fiókomhoz"
   },
   "wishlist": {
     "title": "Kedvencek",

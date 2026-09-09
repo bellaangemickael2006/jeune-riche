@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase chưa được cấu hình — đăng nhập sẽ khả dụng sau khi thiết lập NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.",
     "forgotEmailSent": "Nếu tồn tại tài khoản với email này, một liên kết đặt lại vừa được gửi.",
     "signupSuccess": "Tài khoản đã được tạo. Vui lòng kiểm tra email để xác nhận đăng ký nếu cần.",
-    "invalidCredentials": "Thông tin đăng nhập không hợp lệ."
+    "invalidCredentials": "Thông tin đăng nhập không hợp lệ.",
+    "confirmationTitle": "Đăng ký đã được xác nhận",
+    "confirmationSuccess": "Tài khoản của bạn đã được kích hoạt. Chào mừng đến với JEUNE RICHE.",
+    "confirmationInvalid": "Liên kết xác nhận này không hợp lệ hoặc đã hết hạn.",
+    "confirmationCta": "Đến tài khoản của tôi"
   },
   "wishlist": {
     "title": "Yêu thích",

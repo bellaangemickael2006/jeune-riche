@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase nie jest jeszcze skonfigurowane — logowanie będzie dostępne po ustawieniu NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.",
     "forgotEmailSent": "Jeśli konto z tym adresem email istnieje, właśnie wysłano link resetujący.",
     "signupSuccess": "Konto utworzone. Sprawdź email, aby w razie potrzeby potwierdzić rejestrację.",
-    "invalidCredentials": "Nieprawidłowe dane logowania."
+    "invalidCredentials": "Nieprawidłowe dane logowania.",
+    "confirmationTitle": "Rejestracja potwierdzona",
+    "confirmationSuccess": "Twoje konto zostało aktywowane. Witamy w JEUNE RICHE.",
+    "confirmationInvalid": "Ten link potwierdzający jest nieprawidłowy lub wygasł.",
+    "confirmationCta": "Przejdź do mojego konta"
   },
   "wishlist": {
     "title": "Ulubione",

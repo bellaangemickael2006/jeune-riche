@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase er ikke konfigurert ennå — innlogging blir tilgjengelig når NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY er satt.",
     "forgotEmailSent": "Hvis det finnes en konto med denne e-posten, er en tilbakestillingslenke nettopp sendt.",
     "signupSuccess": "Konto opprettet. Sjekk e-posten din for å bekrefte registreringen om nødvendig.",
-    "invalidCredentials": "Ugyldig påloggingsinformasjon."
+    "invalidCredentials": "Ugyldig påloggingsinformasjon.",
+    "confirmationTitle": "Registrering bekreftet",
+    "confirmationSuccess": "Kontoen din er aktivert. Velkommen til JEUNE RICHE.",
+    "confirmationInvalid": "Denne bekreftelseslenken er ugyldig eller har utløpt.",
+    "confirmationCta": "Gå til kontoen min"
   },
   "wishlist": {
     "title": "Favoritter",

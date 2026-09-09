@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase aún no está configurado — el inicio de sesión estará disponible una vez configurados NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.",
     "forgotEmailSent": "Si existe una cuenta con este email, se acaba de enviar un enlace de restablecimiento.",
     "signupSuccess": "Cuenta creada. Revisa tu email para confirmar tu registro si es necesario.",
-    "invalidCredentials": "Credenciales inválidas."
+    "invalidCredentials": "Credenciales inválidas.",
+    "confirmationTitle": "Inscripción confirmada",
+    "confirmationSuccess": "Tu cuenta está activada. Bienvenido a JEUNE RICHE.",
+    "confirmationInvalid": "Este enlace de confirmación no es válido o ha caducado.",
+    "confirmationCta": "Ir a mi cuenta"
   },
   "wishlist": {
     "title": "Favoritos",

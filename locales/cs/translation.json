@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase zatím není nakonfigurován — přihlášení bude dostupné po nastavení NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.",
     "forgotEmailSent": "Pokud s tímto emailem existuje účet, byl právě odeslán odkaz pro obnovení.",
     "signupSuccess": "Účet byl vytvořen. V případě potřeby zkontrolujte email a potvrďte registraci.",
-    "invalidCredentials": "Neplatné přihlašovací údaje."
+    "invalidCredentials": "Neplatné přihlašovací údaje.",
+    "confirmationTitle": "Registrace potvrzena",
+    "confirmationSuccess": "Váš účet byl aktivován. Vítejte v JEUNE RICHE.",
+    "confirmationInvalid": "Tento potvrzovací odkaz je neplatný nebo vypršel.",
+    "confirmationCta": "Přejít na můj účet"
   },
   "wishlist": {
     "title": "Oblíbené",

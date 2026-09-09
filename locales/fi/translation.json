@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabasea ei ole vielä määritetty — kirjautuminen on käytettävissä, kun NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY on asetettu.",
     "forgotEmailSent": "Jos tällä sähköpostilla on tili, palautuslinkki on juuri lähetetty.",
     "signupSuccess": "Tili luotu. Tarkista sähköpostisi vahvistaaksesi rekisteröitymisesi tarvittaessa.",
-    "invalidCredentials": "Virheelliset kirjautumistiedot."
+    "invalidCredentials": "Virheelliset kirjautumistiedot.",
+    "confirmationTitle": "Rekisteröinti vahvistettu",
+    "confirmationSuccess": "Tilisi on nyt aktivoitu. Tervetuloa JEUNE RICHEen.",
+    "confirmationInvalid": "Tämä vahvistuslinkki on virheellinen tai vanhentunut.",
+    "confirmationCta": "Siirry tililleni"
   },
   "wishlist": {
     "title": "Suosikit",

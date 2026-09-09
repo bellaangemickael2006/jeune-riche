@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase עדיין לא הוגדר — ההתחברות תהיה זמינה לאחר הגדרת NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.",
     "forgotEmailSent": "אם קיים חשבון עם אימייל זה, קישור לאיפוס סיסמה נשלח כעת.",
     "signupSuccess": "החשבון נוצר. בדקו את האימייל שלכם לאישור ההרשמה במידת הצורך.",
-    "invalidCredentials": "פרטי התחברות שגויים."
+    "invalidCredentials": "פרטי התחברות שגויים.",
+    "confirmationTitle": "ההרשמה אושרה",
+    "confirmationSuccess": "החשבון שלך הופעל. ברוכים הבאים ל-JEUNE RICHE.",
+    "confirmationInvalid": "קישור האישור אינו תקף או שפג תוקפו.",
+    "confirmationCta": "מעבר לחשבון שלי"
   },
   "wishlist": {
     "title": "מועדפים",

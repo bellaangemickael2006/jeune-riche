@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase is not configured yet — login will be available once NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY are set.",
     "forgotEmailSent": "If an account exists with this email, a reset link has just been sent.",
     "signupSuccess": "Account created. Check your email to confirm your registration if needed.",
-    "invalidCredentials": "Invalid credentials."
+    "invalidCredentials": "Invalid credentials.",
+    "confirmationTitle": "Registration confirmed",
+    "confirmationSuccess": "Your account is now active. Welcome to JEUNE RICHE.",
+    "confirmationInvalid": "This confirmation link is invalid or has expired.",
+    "confirmationCta": "Go to my account"
   },
   "wishlist": {
     "title": "Favorites",

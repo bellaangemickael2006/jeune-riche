@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase अभी कॉन्फ़िगर नहीं है — NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY सेट होते ही लॉगिन उपलब्ध होगा।",
     "forgotEmailSent": "यदि इस ईमेल से कोई खाता मौजूद है, तो अभी एक रीसेट लिंक भेजा गया है।",
     "signupSuccess": "खाता बन गया। यदि आवश्यक हो तो अपने पंजीकरण की पुष्टि के लिए अपना ईमेल जांचें।",
-    "invalidCredentials": "अमान्य क्रेडेंशियल।"
+    "invalidCredentials": "अमान्य क्रेडेंशियल।",
+    "confirmationTitle": "पंजीकरण की पुष्टि हुई",
+    "confirmationSuccess": "आपका खाता सक्रिय कर दिया गया है। JEUNE RICHE में आपका स्वागत है।",
+    "confirmationInvalid": "यह पुष्टिकरण लिंक अमान्य है या समाप्त हो चुका है।",
+    "confirmationCta": "मेरे खाते पर जाएं"
   },
   "wishlist": {
     "title": "पसंदीदा",

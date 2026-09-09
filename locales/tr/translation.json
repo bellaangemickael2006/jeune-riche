@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase henüz yapılandırılmadı — NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY ayarlandığında giriş kullanılabilir olacaktır.",
     "forgotEmailSent": "Bu e-posta ile bir hesap varsa, az önce bir sıfırlama bağlantısı gönderildi.",
     "signupSuccess": "Hesap oluşturuldu. Gerekirse kaydınızı onaylamak için e-postanızı kontrol edin.",
-    "invalidCredentials": "Geçersiz kimlik bilgileri."
+    "invalidCredentials": "Geçersiz kimlik bilgileri.",
+    "confirmationTitle": "Kayıt onaylandı",
+    "confirmationSuccess": "Hesabınız aktif edildi. JEUNE RICHE'e hoş geldiniz.",
+    "confirmationInvalid": "Bu onay bağlantısı geçersiz veya süresi dolmuş.",
+    "confirmationCta": "Hesabıma git"
   },
   "wishlist": {
     "title": "Favoriler",

@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase ще не налаштовано — вхід стане доступним після налаштування NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.",
     "forgotEmailSent": "Якщо акаунт із цією поштою існує, ми щойно надіслали посилання для скидання.",
     "signupSuccess": "Акаунт створено. За потреби перевірте пошту, щоб підтвердити реєстрацію.",
-    "invalidCredentials": "Невірні облікові дані."
+    "invalidCredentials": "Невірні облікові дані.",
+    "confirmationTitle": "Реєстрацію підтверджено",
+    "confirmationSuccess": "Ваш обліковий запис активовано. Ласкаво просимо до JEUNE RICHE.",
+    "confirmationInvalid": "Це посилання для підтвердження недійсне або застаріло.",
+    "confirmationCta": "Перейти до мого акаунту"
   },
   "wishlist": {
     "title": "Обране",

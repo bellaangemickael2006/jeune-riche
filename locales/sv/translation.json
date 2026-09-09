@@ -218,7 +218,11 @@
     "supabaseNotConfiguredHint": "Supabase är inte konfigurerat ännu — inloggning blir tillgänglig när NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY har ställts in.",
     "forgotEmailSent": "Om ett konto med denna e-post finns har en återställningslänk just skickats.",
     "signupSuccess": "Konto skapat. Kontrollera din e-post för att bekräfta registreringen om det behövs.",
-    "invalidCredentials": "Ogiltiga inloggningsuppgifter."
+    "invalidCredentials": "Ogiltiga inloggningsuppgifter.",
+    "confirmationTitle": "Registrering bekräftad",
+    "confirmationSuccess": "Ditt konto är nu aktiverat. Välkommen till JEUNE RICHE.",
+    "confirmationInvalid": "Den här bekräftelselänken är ogiltig eller har gått ut.",
+    "confirmationCta": "Gå till mitt konto"
   },
   "wishlist": {
     "title": "Favoriter",
