@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, abandonedCartEmail } from "@/lib/email";
 
-// Déclenché par Vercel Cron (voir vercel.json). Vercel ajoute automatiquement
-// `Authorization: Bearer $CRON_SECRET` sur ses propres appels — ce contrôle
-// empêche n'importe qui d'appeler cette route pour spammer les paniers
-// abandonnés à volonté.
+// Déclenché une fois par jour par Vercel Cron (voir vercel.json — le plan
+// gratuit "Hobby" n'autorise pas plus d'une exécution/jour, toute fréquence
+// supérieure fait échouer le déploiement entier). Vercel ajoute
+// automatiquement `Authorization: Bearer $CRON_SECRET` sur ses propres
+// appels — ce contrôle empêche n'importe qui d'appeler cette route pour
+// spammer les paniers abandonnés à volonté.
 function isAuthorized(req: NextRequest) {
   const secret = process.env.CRON_SECRET;
   if (!secret) return false;
