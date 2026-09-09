@@ -14,6 +14,10 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [shipping, setShipping] = useState({ shippingCost: 0, freeShippingThreshold: null as number | null });
+  const [promoInput, setPromoInput] = useState("");
+  const [promo, setPromo] = useState<{ code: string; discountAmount: number } | null>(null);
+  const [promoMessage, setPromoMessage] = useState<string | null>(null);
+  const [checkingPromo, setCheckingPromo] = useState(false);
 
   useEffect(() => {
     fetch("/api/shipping")
@@ -64,7 +68,34 @@ export default function CheckoutPage() {
     shipping.freeShippingThreshold !== null && subtotal >= shipping.freeShippingThreshold
       ? 0
       : shipping.shippingCost;
-  const grandTotal = subtotal + shippingCost;
+  const discountAmount = promo?.discountAmount ?? 0;
+  const grandTotal = subtotal - discountAmount + shippingCost;
+
+  async function applyPromoCode() {
+    if (!promoInput.trim()) return;
+    setCheckingPromo(true);
+    setPromoMessage(null);
+    try {
+      const res = await fetch("/api/promo/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: promoInput, subtotal }),
+      });
+      const data = await res.json();
+      if (data.valid) {
+        setPromo({ code: data.code, discountAmount: data.discountAmount });
+        setPromoMessage(null);
+      } else {
+        setPromo(null);
+        setPromoMessage(data.message ?? "Code invalide.");
+      }
+    } catch {
+      setPromo(null);
+      setPromoMessage("Impossible de vérifier ce code pour le moment.");
+    } finally {
+      setCheckingPromo(false);
+    }
+  }
 
   const [form, setForm] = useState({
     customerName: "",
@@ -107,6 +138,7 @@ export default function CheckoutPage() {
             quantity: l.quantity,
             personalization: l.personalization,
           })),
+          promoCode: promo?.code,
         }),
       });
       const data = await res.json();
@@ -259,6 +291,12 @@ export default function CheckoutPage() {
                   <span className="uppercase tracking-widest2">Sous-total</span>
                   <span>{formatPrice(subtotal)}</span>
                 </div>
+                {promo && (
+                  <div className="flex justify-between text-paper/60">
+                    <span className="uppercase tracking-widest2">Code {promo.code}</span>
+                    <span>−{formatPrice(discountAmount)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-paper/60">
                   <span className="uppercase tracking-widest2">Livraison</span>
                   <span>{shippingCost === 0 ? "Offerte" : formatPrice(shippingCost)}</span>
@@ -268,6 +306,44 @@ export default function CheckoutPage() {
                   <span>{formatPrice(grandTotal)}</span>
                 </div>
               </div>
+            </div>
+
+            <div>
+              <p className="mb-2 text-xs uppercase tracking-widest2 text-paper/40">Code promo</p>
+              {promo ? (
+                <div className="flex items-center justify-between border border-line px-4 py-3 text-sm">
+                  <span className="text-paper">
+                    {promo.code} appliqué — −{formatPrice(discountAmount)}
+                  </span>
+                  <button
+                    onClick={() => {
+                      setPromo(null);
+                      setPromoInput("");
+                      setPromoMessage(null);
+                    }}
+                    className="text-[11px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                  >
+                    Retirer
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-3">
+                  <input
+                    value={promoInput}
+                    onChange={(e) => setPromoInput(e.target.value)}
+                    placeholder="Code promo"
+                    className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 placeholder:normal-case focus:border-paper focus:outline-none"
+                  />
+                  <button
+                    onClick={applyPromoCode}
+                    disabled={checkingPromo || !promoInput.trim()}
+                    className="shrink-0 border border-line px-6 py-3 text-xs uppercase tracking-widest2 text-paper/70 transition-colors hover:border-paper hover:text-paper disabled:opacity-30"
+                  >
+                    {checkingPromo ? "…" : "Appliquer"}
+                  </button>
+                </div>
+              )}
+              {promoMessage && <p className="mt-2 text-xs text-paper/50">{promoMessage}</p>}
             </div>
 
             <div className="border border-line bg-line/20 px-4 py-4 text-xs text-paper/60">

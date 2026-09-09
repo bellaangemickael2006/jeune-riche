@@ -108,6 +108,22 @@ export function restockEmail(params: { productName: string; size: string; color:
   `);
 }
 
+export function lowStockAlertEmail(params: {
+  productName: string;
+  color: string;
+  size: string;
+  remaining: number;
+}) {
+  return emailShell(`
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Stock critique</p>
+    <p style="margin:0 0 16px;">
+      <strong style="color:#f5f4f1;">${params.productName}</strong> (${params.color} · ${params.size}) —
+      il ne reste plus que <strong style="color:#f5f4f1;">${params.remaining}</strong> exemplaire${params.remaining > 1 ? "s" : ""}.
+    </p>
+    <p style="margin:0;color:#9a9a9a;">Pensez à réapprovisionner avant rupture totale.</p>
+  `);
+}
+
 export function abandonedCartEmail(params: {
   items: { productName: string; size: string; color: string; quantity: number }[];
   total: number;

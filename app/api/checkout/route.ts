@@ -4,6 +4,12 @@ import { prisma } from "@/lib/prisma";
 import { getStoreSettings } from "@/lib/data/settings";
 import { createClient } from "@/lib/supabase/server";
 import { whatsappOrderLink } from "@/lib/utils";
+import { sendEmail, lowStockAlertEmail } from "@/lib/email";
+import { resolvePromoCode } from "@/lib/data/promoCodes";
+
+// Même seuil que le badge "Stock faible" du dashboard admin — au-delà, pas
+// d'alerte, pour ne pas noyer l'admin de mails à chaque vente normale.
+const LOW_STOCK_THRESHOLD = 3;
 
 // Le stock est revérifié à l'écriture, pas seulement à la lecture plus haut :
 // entre la vérification initiale et la transaction, une autre commande
@@ -37,6 +43,7 @@ const schema = z.object({
     phone: z.string().min(1, "Le numéro de téléphone est requis."),
   }),
   lines: z.array(lineSchema).min(1),
+  promoCode: z.string().optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -45,7 +52,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Requête invalide.", details: parsed.error.flatten() }, { status: 400 });
   }
 
-  const { customerName, customerEmail, shippingAddress, lines } = parsed.data;
+  const { customerName, customerEmail, shippingAddress, lines, promoCode } = parsed.data;
   const orderNumber = `JR-${Date.now().toString(36).toUpperCase()}`;
 
   // Résolu côté serveur depuis le cookie de session — jamais depuis un champ
@@ -76,6 +83,7 @@ export async function POST(req: NextRequest) {
       quantity: number;
       unitPrice: number;
       personalization: string | null;
+      stockBefore: number;
     }[] = [];
     for (const line of lines) {
       const variant = await prisma.productVariant.findUnique({
@@ -104,6 +112,7 @@ export async function POST(req: NextRequest) {
         quantity: line.quantity,
         unitPrice: Number(variant.product.price),
         personalization: line.personalization,
+        stockBefore: variant.stock,
       });
     }
 
@@ -116,12 +125,54 @@ export async function POST(req: NextRequest) {
       settings?.freeShippingThreshold !== null && settings?.freeShippingThreshold !== undefined
         ? Number(settings.freeShippingThreshold)
         : null;
+    // Calculé sur le sous-total AVANT remise : le seuil de livraison offerte
+    // porte sur la taille réelle du panier, pas sur ce qu'il reste à payer.
     const shippingCost =
       freeThreshold !== null && subtotal >= freeThreshold ? 0 : Number(settings?.shippingCost ?? 0);
 
-    const total = subtotal + shippingCost;
+    // Revalidé ici, jamais confiance au montant affiché côté client. Une
+    // erreur promo (invalide, expiré, ou épuisé par une commande concurrente
+    // entre-temps) ne bloque jamais la vente : la remise est simplement
+    // ignorée plutôt que de faire échouer tout le checkout pour un problème
+    // de marketing — contrairement au stock, où une rupture doit bloquer.
+    let discountAmount = 0;
+    let discountCode: string | null = null;
+    let appliedPromoId: string | null = null;
+    if (promoCode) {
+      const promoResult = await resolvePromoCode(promoCode, subtotal);
+      if (promoResult.valid) {
+        discountAmount = promoResult.discountAmount;
+        discountCode = promoResult.code;
+        appliedPromoId = promoResult.promoCodeId;
+      }
+    }
 
     const order = await prisma.$transaction(async (tx) => {
+      if (appliedPromoId) {
+        // Comparer-échanger sur usedCount (relu ici, pas la valeur mise en
+        // cache plus haut) : si une commande concurrente vient de prendre la
+        // dernière place disponible, on le détecte et on abandonne juste la
+        // remise pour CETTE commande plutôt que de la faire échouer.
+        const promo = await tx.promoCode.findUnique({ where: { id: appliedPromoId } });
+        const stillValid =
+          promo && promo.active && (promo.maxUses === null || promo.usedCount < promo.maxUses);
+        if (stillValid) {
+          const promoUpdate = await tx.promoCode.updateMany({
+            where: { id: appliedPromoId, usedCount: promo.usedCount },
+            data: { usedCount: { increment: 1 } },
+          });
+          if (promoUpdate.count === 0) {
+            discountAmount = 0;
+            discountCode = null;
+          }
+        } else {
+          discountAmount = 0;
+          discountCode = null;
+        }
+      }
+
+      const total = subtotal - discountAmount + shippingCost;
+
       const created = await tx.order.create({
         data: {
           orderNumber,
@@ -130,6 +181,8 @@ export async function POST(req: NextRequest) {
           shippingAddress,
           subtotal,
           shippingCost,
+          discountCode,
+          discountAmount,
           total,
           userId: loggedInUserId,
           items: { create: resolvedLines },
@@ -164,6 +217,28 @@ export async function POST(req: NextRequest) {
       return created;
     });
 
+    // Alerte l'admin uniquement au moment où une variante FRANCHIT le seuil
+    // (stock avant > seuil >= stock après) — jamais à chaque vente tant
+    // qu'elle reste déjà basse, pour ne pas spammer. Best-effort : ne doit
+    // jamais faire échouer la commande.
+    if (settings?.contactEmail) {
+      for (const line of resolvedLines) {
+        const stockAfter = line.stockBefore - line.quantity;
+        if (line.stockBefore > LOW_STOCK_THRESHOLD && stockAfter <= LOW_STOCK_THRESHOLD) {
+          sendEmail({
+            to: settings.contactEmail,
+            subject: `Stock critique — ${line.productName} (${line.color}/${line.size})`,
+            html: lowStockAlertEmail({
+              productName: line.productName,
+              color: line.color,
+              size: line.size,
+              remaining: Math.max(stockAfter, 0),
+            }),
+          }).catch((error) => console.error("[api/checkout] low stock alert:", error));
+        }
+      }
+    }
+
     // Empêche la relance panier abandonné de cibler une commande déjà
     // passée — ne doit jamais faire échouer la commande si ça rate. No-op
     // silencieux si customerEmail est vide (rien à retrouver, pas grave).
@@ -183,7 +258,7 @@ export async function POST(req: NextRequest) {
       phone: shippingAddress.phone,
       address: shippingAddress,
       items: resolvedLines,
-      total,
+      total: Number(order.total),
     });
 
     return NextResponse.json({ ok: true, orderNumber: order.orderNumber, whatsappUrl });

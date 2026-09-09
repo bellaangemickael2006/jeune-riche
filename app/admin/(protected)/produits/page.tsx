@@ -107,6 +107,16 @@ export default async function AdminProductsPage({
                       Vidéo
                     </span>
                   )}
+                  {stockTotal <= 3 && (
+                    <span
+                      className={cn(
+                        "absolute bottom-1.5 right-1.5 px-1.5 py-0.5 text-[9px] uppercase tracking-widest2",
+                        stockTotal === 0 ? "bg-paper text-ink" : "bg-ink/80 text-paper"
+                      )}
+                    >
+                      {stockTotal === 0 ? "Rupture" : "Stock faible"}
+                    </span>
+                  )}
                   <span
                     className={
                       p.published

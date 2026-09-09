@@ -49,6 +49,11 @@ enum DropStatus {
   ENDED
 }
 
+enum PromoType {
+  PERCENT
+  FIXED
+}
+
 enum ReviewStatus {
   PENDING
   APPROVED
@@ -207,6 +212,8 @@ model Order {
 
   subtotal        Decimal     @db.Decimal(10, 2)
   shippingCost    Decimal     @db.Decimal(10, 2) @default(0)
+  discountCode    String? // code promo appliqué, snapshot — le PromoCode source peut être désactivé/supprimé ensuite
+  discountAmount  Decimal     @db.Decimal(10, 2) @default(0)
   total           Decimal     @db.Decimal(10, 2)
 
   trackingNumber  String? // saisi en admin une fois l'envoi effectué
@@ -295,6 +302,21 @@ model Drop {
 // "informations") sans jamais finaliser sa commande — sert de base à la
 // relance automatique (voir app/api/cron/abandoned-cart). Une ligne par
 // email : un nouvel abandon écrase l'ancien panier et réarme la relance.
+model PromoCode {
+  id          String    @id @default(cuid())
+  code        String    @unique // toujours comparé en majuscules, jamais la casse telle que tapée
+  type        PromoType
+  value       Decimal   @db.Decimal(10, 2) // % (0-100) si PERCENT, montant XOF si FIXED
+  active      Boolean   @default(true)
+  expiresAt   DateTime?
+  minSubtotal Decimal?  @db.Decimal(10, 2) // sous-total minimum du panier pour être éligible
+  maxUses     Int? // illimité si vide
+  usedCount   Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  @@map("promo_codes")
+}
+
 model AbandonedCart {
   id          String    @id @default(cuid())
   email       String    @unique
