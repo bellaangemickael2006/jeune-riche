@@ -3,13 +3,9 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { getStoreSettings } from "@/lib/data/settings";
 import { createClient } from "@/lib/supabase/server";
-import { whatsappOrderLink } from "@/lib/utils";
+import { whatsappOrderLink, LOW_STOCK_THRESHOLD } from "@/lib/utils";
 import { sendEmail, lowStockAlertEmail } from "@/lib/email";
 import { resolvePromoCode } from "@/lib/data/promoCodes";
-
-// Même seuil que le badge "Stock faible" du dashboard admin — au-delà, pas
-// d'alerte, pour ne pas noyer l'admin de mails à chaque vente normale.
-const LOW_STOCK_THRESHOLD = 3;
 
 // Le stock est revérifié à l'écriture, pas seulement à la lecture plus haut :
 // entre la vérification initiale et la transaction, une autre commande

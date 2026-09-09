@@ -19,6 +19,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Seuil unique partagé entre l'alerte email admin (app/api/checkout) et
+// l'urgence affichée au client (AddToCart) — les deux doivent toujours
+// s'accorder sur ce qui compte comme "stock faible".
+export const LOW_STOCK_THRESHOLD = 3;
+
 // Franc CFA (XOF) — devise réelle de la marque (Afrique de l'Ouest francophone).
 export function formatPrice(value: number | string | null | undefined): string {
   if (value === null || value === undefined) return "Prix à définir";

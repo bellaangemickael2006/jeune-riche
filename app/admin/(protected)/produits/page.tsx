@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
-import { formatPrice, cn } from "@/lib/utils";
+import { formatPrice, cn, LOW_STOCK_THRESHOLD } from "@/lib/utils";
 
 export default async function AdminProductsPage({
   searchParams,
@@ -18,7 +18,9 @@ export default async function AdminProductsPage({
   }
 
   const filtered =
-    stock === "faible" ? products.filter((p) => p.variants.reduce((sum, v) => sum + v.stock, 0) <= 3) : products;
+    stock === "faible"
+      ? products.filter((p) => p.variants.reduce((sum, v) => sum + v.stock, 0) <= LOW_STOCK_THRESHOLD)
+      : products;
 
   function filterHref(nextStock?: string) {
     const qs = new URLSearchParams();
@@ -107,7 +109,7 @@ export default async function AdminProductsPage({
                       Vidéo
                     </span>
                   )}
-                  {stockTotal <= 3 && (
+                  {stockTotal <= LOW_STOCK_THRESHOLD && (
                     <span
                       className={cn(
                         "absolute bottom-1.5 right-1.5 px-1.5 py-0.5 text-[9px] uppercase tracking-widest2",
@@ -132,7 +134,7 @@ export default async function AdminProductsPage({
                   <p className="mt-0.5 text-[11px] text-paper/40">{p.category.name}</p>
                   <div className="mt-1.5 flex items-center justify-between text-[11px] text-paper/60">
                     <span>{formatPrice(p.price ? Number(p.price) : null)}</span>
-                    <span className={stockTotal <= 3 ? "text-paper" : undefined}>{stockTotal} en stock</span>
+                    <span className={stockTotal <= LOW_STOCK_THRESHOLD ? "text-paper" : undefined}>{stockTotal} en stock</span>
                   </div>
                 </div>
               </Link>

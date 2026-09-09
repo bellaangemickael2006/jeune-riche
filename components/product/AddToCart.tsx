@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useCart } from "@/store/cart";
-import { sanitizePersonalization, swatchColor, cn, siteUrl, whatsappProductLink } from "@/lib/utils";
+import { sanitizePersonalization, swatchColor, cn, siteUrl, whatsappProductLink, LOW_STOCK_THRESHOLD } from "@/lib/utils";
 
 type Variant = { id: string; size: string; color: string; stock: number };
 
@@ -139,6 +139,11 @@ export default function AddToCart({
                     : "Ajouter au panier"}
             </button>
           </div>
+          {selectedVariant && inStock && selectedVariant.stock <= LOW_STOCK_THRESHOLD && (
+            <p className="mt-2 text-[11px] uppercase tracking-widest2 text-paper/70">
+              Plus que {selectedVariant.stock} en stock
+            </p>
+          )}
         </div>
       )}
 
