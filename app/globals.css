@@ -116,3 +116,11 @@ select:focus-visible {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Le logo est un PNG blanc uni sur fond transparent (pensé pour le thème
+   sombre par défaut) — en mode clair il devient quasi invisible sur un fond
+   clair. On l'inverse (blanc -> noir) plutôt que de fournir un second
+   fichier, puisque la forme est monochrome. */
+[data-theme="light"] .jr-logo {
+  filter: invert(1);
+}

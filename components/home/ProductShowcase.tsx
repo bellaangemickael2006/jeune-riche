@@ -83,8 +83,10 @@ function Tile({
       ) : (
         <div className="h-full w-full bg-line" />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
-      <p className={cn("absolute bottom-4 left-4 font-editorial text-paper md:bottom-6 md:left-6", textSize)}>
+      {/* Superposé à la photo produit, pas au fond de page : reste toujours
+          sombre pour que le nom en blanc reste lisible en mode clair. */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      <p className={cn("absolute bottom-4 left-4 font-editorial md:bottom-6 md:left-6", textSize, "text-white")}>
         {item.name}
       </p>
     </Link>

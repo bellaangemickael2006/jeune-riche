@@ -87,7 +87,7 @@ export default function Header() {
             width={200}
             height={200}
             className={cn(
-              "object-contain transition-[height,width] duration-300 ease-editorial",
+              "jr-logo object-contain transition-[height,width] duration-300 ease-editorial",
               scrolled ? "h-12 w-12 md:h-14 md:w-14" : "h-16 w-16 md:h-20 md:w-20"
             )}
             priority

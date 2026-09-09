@@ -46,19 +46,23 @@ export default function Hero() {
         />
       )}
 
-      <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/10 to-ink/40" />
+      {/* Superposée à une vidéo/photo réelle, pas au fond de page : reste
+          toujours sombre pour le contraste du texte blanc, quel que soit le
+          thème choisi (bg-ink/text-paper suivraient le thème et casseraient
+          la lisibilité en mode clair). */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/40" />
 
       <div className="relative z-10 flex w-full flex-col gap-8 px-5 pb-14 md:px-10 md:pb-20">
         <TextScramble
           text="LUXE STREETWEAR — IDENTITÉ TRIBALE"
           immediate
-          className="font-body text-xs uppercase tracking-widest2 text-paper/70"
+          className="font-body text-xs uppercase tracking-widest2 text-white/70"
         />
         <WordPullUp
           text="Jeune Riche"
           as="h1"
           immediate
-          className="font-display max-w-3xl text-[13vw] uppercase leading-[0.92] text-paper md:text-[7vw]"
+          className="font-display max-w-3xl text-[13vw] uppercase leading-[0.92] text-white md:text-[7vw]"
         />
         <FadeIn delay={0.5} immediate className="flex flex-wrap items-center gap-6">
           <Magnetic strength={0.4}>
@@ -71,16 +75,16 @@ export default function Hero() {
           </Magnetic>
           <Link
             href="/manifeste"
-            className="text-xs uppercase tracking-widest2 text-paper/80 underline underline-offset-4 transition-colors hover:text-paper"
+            className="text-xs uppercase tracking-widest2 text-white/80 underline underline-offset-4 transition-colors hover:text-white"
           >
             Le manifeste
           </Link>
         </FadeIn>
       </div>
 
-      <div className="absolute bottom-6 right-6 hidden flex-col items-center gap-2 text-paper/50 md:flex">
+      <div className="absolute bottom-6 right-6 hidden flex-col items-center gap-2 text-white/50 md:flex">
         <span className="text-[10px] uppercase tracking-widest2 [writing-mode:vertical-rl]">Scroll</span>
-        <span className="h-10 w-px animate-pulse bg-paper/40" />
+        <span className="h-10 w-px animate-pulse bg-white/40" />
       </div>
     </section>
   );

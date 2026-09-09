@@ -16,7 +16,7 @@ export default function EmptyState({
         aria-hidden
         width={280}
         height={280}
-        className="pointer-events-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.04]"
+        className="jr-logo pointer-events-none absolute left-1/2 top-1/2 h-56 w-56 -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.04]"
       />
       <p className="relative font-editorial text-xl text-paper/70">{message}</p>
       {cta && (
