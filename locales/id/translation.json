@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Katalog lengkap",
     "noProducts": "Belum ada produk yang dipublikasikan.",
     "manifestoQuote": "Mahkota terukir, wajah suku — kemewahan yang tak meminta maaf atas asal-usulnya.",
-    "enterUniverse": "Masuki dunianya"
+    "enterUniverse": "Masuki dunianya",
+    "welcomeToastTitle": "Selamat datang",
+    "welcomeToastMessage": "Akun dikonfirmasi — selamat datang di JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Katalog",

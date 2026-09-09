@@ -51,7 +51,9 @@
     "viewFullCatalogue": "전체 카탈로그",
     "noProducts": "아직 게시된 제품이 없습니다.",
     "manifestoQuote": "새겨진 왕관, 부족의 얼굴 — 자신의 뿌리에 대해 변명하지 않는 럭셔리.",
-    "enterUniverse": "세계관 입장하기"
+    "enterUniverse": "세계관 입장하기",
+    "welcomeToastTitle": "환영합니다",
+    "welcomeToastMessage": "계정이 확인되었습니다 — JEUNE RICHE에 오신 것을 환영합니다."
   },
   "catalogue": {
     "eyebrow": "카탈로그",

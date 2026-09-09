@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Todo o catálogo",
     "noProducts": "Ainda não há produtos publicados.",
     "manifestoQuote": "Uma coroa gravada, um rosto tribal — o luxo que não se desculpa pela sua origem.",
-    "enterUniverse": "Entrar no universo"
+    "enterUniverse": "Entrar no universo",
+    "welcomeToastTitle": "Bem-vindo",
+    "welcomeToastMessage": "Conta confirmada — bem-vindo à JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Catálogo",

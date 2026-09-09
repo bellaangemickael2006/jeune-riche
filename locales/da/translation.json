@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Hele kataloget",
     "noProducts": "Ingen produkter er offentliggjort endnu.",
     "manifestoQuote": "En graveret krone, et stammeansigt — luksus, der ikke undskylder for sin oprindelse.",
-    "enterUniverse": "Træd ind i universet"
+    "enterUniverse": "Træd ind i universet",
+    "welcomeToastTitle": "Velkommen",
+    "welcomeToastMessage": "Konto bekræftet — velkommen til JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Katalog",

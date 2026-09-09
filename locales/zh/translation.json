@@ -51,7 +51,9 @@
     "viewFullCatalogue": "完整目录",
     "noProducts": "尚未发布任何产品。",
     "manifestoQuote": "一顶雕刻的王冠，一张部落面孔——不为自己的出身道歉的奢华。",
-    "enterUniverse": "进入这个世界"
+    "enterUniverse": "进入这个世界",
+    "welcomeToastTitle": "欢迎",
+    "welcomeToastMessage": "账户已确认 — 欢迎加入 JEUNE RICHE。"
   },
   "catalogue": {
     "eyebrow": "目录",

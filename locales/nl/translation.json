@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Volledige catalogus",
     "noProducts": "Nog geen producten gepubliceerd.",
     "manifestoQuote": "Een gegraveerde kroon, een tribaal gezicht — luxe die zich niet verontschuldigt voor haar herkomst.",
-    "enterUniverse": "Betreed het universum"
+    "enterUniverse": "Betreed het universum",
+    "welcomeToastTitle": "Welkom",
+    "welcomeToastMessage": "Account bevestigd — welkom bij JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Catalogus",

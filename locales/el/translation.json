@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Ολόκληρος ο κατάλογος",
     "noProducts": "Δεν έχουν δημοσιευτεί προϊόντα ακόμη.",
     "manifestoQuote": "Ένα χαραγμένο στέμμα, ένα φυλετικό πρόσωπο — πολυτέλεια που δεν ζητά συγγνώμη για την καταγωγή της.",
-    "enterUniverse": "Είσοδος στο σύμπαν"
+    "enterUniverse": "Είσοδος στο σύμπαν",
+    "welcomeToastTitle": "Καλώς ήρθατε",
+    "welcomeToastMessage": "Ο λογαριασμός επιβεβαιώθηκε — καλώς ήρθατε στη JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Κατάλογος",

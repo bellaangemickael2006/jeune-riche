@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Teljes katalógus",
     "noProducts": "Még nincsenek közzétett termékek.",
     "manifestoQuote": "Egy vésett korona, egy törzsi arc — luxus, amely nem kér bocsánatot az eredetéért.",
-    "enterUniverse": "Lépj be a világba"
+    "enterUniverse": "Lépj be a világba",
+    "welcomeToastTitle": "Üdvözlünk",
+    "welcomeToastMessage": "Fiók megerősítve — üdvözlünk a JEUNE RICHE-nél."
   },
   "catalogue": {
     "eyebrow": "Katalógus",

@@ -51,7 +51,9 @@
     "viewFullCatalogue": "全カタログを見る",
     "noProducts": "公開されている商品はまだありません。",
     "manifestoQuote": "刻まれた王冠、部族の顔——出自を恥じないラグジュアリー。",
-    "enterUniverse": "世界観に入る"
+    "enterUniverse": "世界観に入る",
+    "welcomeToastTitle": "ようこそ",
+    "welcomeToastMessage": "アカウントが確認されました。JEUNE RICHEへようこそ。"
   },
   "catalogue": {
     "eyebrow": "カタログ",

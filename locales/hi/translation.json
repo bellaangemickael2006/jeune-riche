@@ -51,7 +51,9 @@
     "viewFullCatalogue": "पूरा कैटलॉग",
     "noProducts": "अभी तक कोई उत्पाद प्रकाशित नहीं हुआ है।",
     "manifestoQuote": "एक उकेरा हुआ ताज, एक आदिवासी चेहरा — ऐसी विलासिता जो अपनी उत्पत्ति के लिए माफ़ी नहीं मांगती।",
-    "enterUniverse": "इस दुनिया में प्रवेश करें"
+    "enterUniverse": "इस दुनिया में प्रवेश करें",
+    "welcomeToastTitle": "स्वागत है",
+    "welcomeToastMessage": "खाता पुष्टि हो गया — JEUNE RICHE में आपका स्वागत है।"
   },
   "catalogue": {
     "eyebrow": "कैटलॉग",

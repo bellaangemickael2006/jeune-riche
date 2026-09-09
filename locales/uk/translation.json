@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Весь каталог",
     "noProducts": "Товарів ще не опубліковано.",
     "manifestoQuote": "Гравійована корона, племінне обличчя — розкіш, яка не вибачається за своє походження.",
-    "enterUniverse": "Увійти у всесвіт"
+    "enterUniverse": "Увійти у всесвіт",
+    "welcomeToastTitle": "Ласкаво просимо",
+    "welcomeToastMessage": "Обліковий запис підтверджено — ласкаво просимо до JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Каталог",

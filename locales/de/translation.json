@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Kompletter Katalog",
     "noProducts": "Noch keine Produkte veröffentlicht.",
     "manifestoQuote": "Eine gravierte Krone, ein tribales Gesicht — Luxus, der sich nicht für seine Herkunft entschuldigt.",
-    "enterUniverse": "Die Welt betreten"
+    "enterUniverse": "Die Welt betreten",
+    "welcomeToastTitle": "Willkommen",
+    "welcomeToastMessage": "Konto bestätigt — willkommen bei JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Katalog",

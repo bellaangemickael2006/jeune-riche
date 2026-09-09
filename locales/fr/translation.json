@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Tout le catalogue",
     "noProducts": "Aucun produit publié pour le moment.",
     "manifestoQuote": "Une couronne gravée, un visage tribal — le luxe qui ne s'excuse pas d'où il vient.",
-    "enterUniverse": "Entrer dans l'univers"
+    "enterUniverse": "Entrer dans l'univers",
+    "welcomeToastTitle": "Bienvenue",
+    "welcomeToastMessage": "Compte confirmé — bienvenue chez JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Catalogue",

@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Full catalogue",
     "noProducts": "No products published yet.",
     "manifestoQuote": "An engraved crown, a tribal face — luxury that doesn't apologize for where it comes from.",
-    "enterUniverse": "Enter the universe"
+    "enterUniverse": "Enter the universe",
+    "welcomeToastTitle": "Welcome",
+    "welcomeToastMessage": "Account confirmed — welcome to JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Catalogue",

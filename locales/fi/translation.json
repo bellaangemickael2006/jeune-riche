@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Koko luettelo",
     "noProducts": "Yhtään tuotetta ei ole vielä julkaistu.",
     "manifestoQuote": "Kaiverrettu kruunu, heimokasvot — ylellisyyttä, joka ei pahoittele alkuperäänsä.",
-    "enterUniverse": "Astu maailmaan"
+    "enterUniverse": "Astu maailmaan",
+    "welcomeToastTitle": "Tervetuloa",
+    "welcomeToastMessage": "Tili vahvistettu — tervetuloa JEUNE RICHEen."
   },
   "catalogue": {
     "eyebrow": "Luettelo",

@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Celý katalog",
     "noProducts": "Zatím nebyly zveřejněny žádné produkty.",
     "manifestoQuote": "Vyrytá koruna, kmenová tvář — luxus, který se neomlouvá za svůj původ.",
-    "enterUniverse": "Vstoupit do vesmíru"
+    "enterUniverse": "Vstoupit do vesmíru",
+    "welcomeToastTitle": "Vítejte",
+    "welcomeToastMessage": "Účet potvrzen — vítejte v JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Katalog",

@@ -51,7 +51,9 @@
     "viewFullCatalogue": "הקטלוג המלא",
     "noProducts": "טרם פורסמו מוצרים.",
     "manifestoQuote": "כתר חקוק, פנים שבטיות — יוקרה שלא מתנצלת על מקורה.",
-    "enterUniverse": "כניסה לעולם"
+    "enterUniverse": "כניסה לעולם",
+    "welcomeToastTitle": "ברוכים הבאים",
+    "welcomeToastMessage": "החשבון אושר — ברוכים הבאים ל-JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "קטלוג",

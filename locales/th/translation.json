@@ -51,7 +51,9 @@
     "viewFullCatalogue": "แคตตาล็อกทั้งหมด",
     "noProducts": "ยังไม่มีสินค้าเผยแพร่",
     "manifestoQuote": "มงกุฎที่แกะสลัก ใบหน้าชนเผ่า — ความหรูหราที่ไม่ขอโทษต่อที่มาของตัวเอง",
-    "enterUniverse": "เข้าสู่โลกนี้"
+    "enterUniverse": "เข้าสู่โลกนี้",
+    "welcomeToastTitle": "ยินดีต้อนรับ",
+    "welcomeToastMessage": "ยืนยันบัญชีแล้ว — ยินดีต้อนรับสู่ JEUNE RICHE"
   },
   "catalogue": {
     "eyebrow": "แคตตาล็อก",

@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Tüm katalog",
     "noProducts": "Henüz yayınlanmış ürün yok.",
     "manifestoQuote": "Kazınmış bir taç, kabile bir yüz — kökeninden özür dilemeyen lüks.",
-    "enterUniverse": "Evrene gir"
+    "enterUniverse": "Evrene gir",
+    "welcomeToastTitle": "Hoş geldiniz",
+    "welcomeToastMessage": "Hesap onaylandı — JEUNE RICHE'e hoş geldiniz."
   },
   "catalogue": {
     "eyebrow": "Katalog",

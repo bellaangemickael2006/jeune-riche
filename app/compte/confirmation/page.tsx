@@ -2,10 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
 
 type Status = "checking" | "confirmed" | "invalid";
+
+// Délai avant redirection auto vers l'accueil après confirmation : assez
+// court pour rester fluide, assez long pour laisser le temps de lire le
+// message "Inscription confirmée" avant que la page ne change.
+const REDIRECT_DELAY_MS = 1800;
 
 // Le lien envoyé par email pointe directement ici avec ?token_hash=...&type=signup
 // (voir app/api/account/signup/route.ts) plutôt que vers l'endpoint /verify de
@@ -18,7 +25,21 @@ type Status = "checking" | "confirmed" | "invalid";
 // logique que app/compte/reinitialiser/page.tsx pour ces deux derniers cas.
 export default function SignupConfirmationPage() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [status, setStatus] = useState<Status>("checking");
+
+  // Une fois le compte confirmé, on ramène directement le client sur le site
+  // (accueil) où une petite animation de bienvenue s'affiche — voir
+  // components/home/WelcomeToast.tsx. Pas besoin de cliquer sur quoi que ce
+  // soit : c'est le comportement attendu, le bouton "Accéder à mon compte"
+  // reste affiché en repli si jamais la redirection auto échoue (JS bloqué…).
+  useEffect(() => {
+    if (status !== "confirmed") return;
+    const timer = setTimeout(() => {
+      router.push("/?welcome=1");
+    }, REDIRECT_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, [status, router]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -82,12 +103,12 @@ export default function SignupConfirmationPage() {
         {status === "confirmed" && (
           <div className="mt-8">
             <p className="text-sm text-paper/70">{t("account.confirmationSuccess")}</p>
-            <a
-              href="/compte"
+            <Link
+              href="/?welcome=1"
               className="mt-6 inline-block bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90"
             >
               {t("account.confirmationCta")}
-            </a>
+            </Link>
           </div>
         )}
 

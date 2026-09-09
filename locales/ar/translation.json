@@ -51,7 +51,9 @@
     "viewFullCatalogue": "الكتالوج كاملاً",
     "noProducts": "لا توجد منتجات منشورة بعد.",
     "manifestoQuote": "تاج محفور، وجه قبلي — فخامة لا تعتذر عن أصلها.",
-    "enterUniverse": "ادخل إلى العالم"
+    "enterUniverse": "ادخل إلى العالم",
+    "welcomeToastTitle": "مرحبًا",
+    "welcomeToastMessage": "تم تأكيد الحساب — مرحبًا بك في JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "الكتالوج",

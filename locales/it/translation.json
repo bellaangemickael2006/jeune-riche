@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Tutto il catalogo",
     "noProducts": "Nessun prodotto ancora pubblicato.",
     "manifestoQuote": "Una corona incisa, un volto tribale — il lusso che non si scusa delle proprie origini.",
-    "enterUniverse": "Entra nell'universo"
+    "enterUniverse": "Entra nell'universo",
+    "welcomeToastTitle": "Benvenuto",
+    "welcomeToastMessage": "Account confermato — benvenuto su JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Catalogo",

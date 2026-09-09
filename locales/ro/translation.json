@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Tot catalogul",
     "noProducts": "Niciun produs publicat încă.",
     "manifestoQuote": "O coroană gravată, un chip tribal — lux care nu se scuză pentru originea sa.",
-    "enterUniverse": "Intră în univers"
+    "enterUniverse": "Intră în univers",
+    "welcomeToastTitle": "Bine ai venit",
+    "welcomeToastMessage": "Cont confirmat — bine ai venit la JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Catalog",

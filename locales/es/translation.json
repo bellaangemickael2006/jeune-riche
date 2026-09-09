@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Todo el catálogo",
     "noProducts": "Aún no hay productos publicados.",
     "manifestoQuote": "Una corona grabada, un rostro tribal — el lujo que no se disculpa por sus orígenes.",
-    "enterUniverse": "Entrar al universo"
+    "enterUniverse": "Entrar al universo",
+    "welcomeToastTitle": "Bienvenido",
+    "welcomeToastMessage": "Cuenta confirmada — bienvenido a JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Catálogo",

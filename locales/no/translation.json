@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Hele katalogen",
     "noProducts": "Ingen produkter publisert ennå.",
     "manifestoQuote": "En gravert krone, et stammeansikt — luksus som ikke unnskylder sin opprinnelse.",
-    "enterUniverse": "Tre inn i universet"
+    "enterUniverse": "Tre inn i universet",
+    "welcomeToastTitle": "Velkommen",
+    "welcomeToastMessage": "Konto bekreftet — velkommen til JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Katalog",

@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Hela katalogen",
     "noProducts": "Inga produkter publicerade ännu.",
     "manifestoQuote": "En graverad krona, ett stamansikte — lyx som inte ber om ursäkt för sitt ursprung.",
-    "enterUniverse": "Kliv in i universum"
+    "enterUniverse": "Kliv in i universum",
+    "welcomeToastTitle": "Välkommen",
+    "welcomeToastMessage": "Konto bekräftat — välkommen till JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Katalog",

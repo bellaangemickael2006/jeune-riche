@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Cały katalog",
     "noProducts": "Nie opublikowano jeszcze żadnych produktów.",
     "manifestoQuote": "Wygrawerowana korona, plemienna twarz — luksus, który nie przeprasza za swoje pochodzenie.",
-    "enterUniverse": "Wejdź do tego świata"
+    "enterUniverse": "Wejdź do tego świata",
+    "welcomeToastTitle": "Witamy",
+    "welcomeToastMessage": "Konto potwierdzone — witamy w JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Katalog",

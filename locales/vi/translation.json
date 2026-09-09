@@ -51,7 +51,9 @@
     "viewFullCatalogue": "Toàn bộ danh mục",
     "noProducts": "Chưa có sản phẩm nào được đăng.",
     "manifestoQuote": "Một chiếc vương miện được khắc, một khuôn mặt bộ lạc — sự sang trọng không xin lỗi vì nguồn gốc của mình.",
-    "enterUniverse": "Bước vào thế giới"
+    "enterUniverse": "Bước vào thế giới",
+    "welcomeToastTitle": "Chào mừng",
+    "welcomeToastMessage": "Tài khoản đã được xác nhận — chào mừng đến với JEUNE RICHE."
   },
   "catalogue": {
     "eyebrow": "Danh mục",
