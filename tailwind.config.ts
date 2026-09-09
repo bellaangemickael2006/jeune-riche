@@ -7,12 +7,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // Chaque couleur lit une variable CSS (triplet RGB, voir globals.css)
+      // qui change selon [data-theme] — le mode clair/sombre s'applique donc
+      // à tout composant utilisant déjà bg-ink/text-paper/border-line sans
+      // toucher un seul fichier de composant. `<alpha-value>` préserve les
+      // modificateurs d'opacité Tailwind (text-paper/60, border-line/50...).
       colors: {
-        ink: "#0B0B0C",
-        paper: "#F5F4F1",
-        navy: "#131B2E",
-        line: "#26252A",
-        studio: "#E1DED8", // fond neutre unique pour la photographie produit (catalogue, fiches produit)
+        ink: "rgb(var(--color-ink) / <alpha-value>)",
+        paper: "rgb(var(--color-paper) / <alpha-value>)",
+        navy: "rgb(var(--color-navy) / <alpha-value>)",
+        line: "rgb(var(--color-line) / <alpha-value>)",
+        studio: "rgb(var(--color-studio) / <alpha-value>)", // fond photo produit — identique dans les deux thèmes
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],

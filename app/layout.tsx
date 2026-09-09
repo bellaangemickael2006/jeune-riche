@@ -45,9 +45,32 @@ export const metadata: Metadata = {
   },
 };
 
+// Doit s'exécuter avant l'hydratation React pour éviter un flash du mauvais
+// thème (le choix de l'utilisateur ne vit que dans localStorage, inconnu du
+// rendu serveur) — voir ThemeToggle.tsx pour la même logique côté clic.
+const THEME_INIT_SCRIPT = `
+  (function () {
+    try {
+      var stored = localStorage.getItem("theme");
+      if (stored === "light") document.documentElement.setAttribute("data-theme", "light");
+    } catch (e) {}
+  })();
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr" className={`${anton.variable} ${fraunces.variable} ${inter.variable}`}>
+    <html
+      lang="fr"
+      className={`${anton.variable} ${fraunces.variable} ${inter.variable}`}
+      // Le script ci-dessous pose data-theme AVANT l'hydratation (lu depuis
+      // localStorage, inconnu du rendu serveur) — un avertissement
+      // d'hydratation sur CET attribut précis est donc attendu, pas un vrai
+      // bug ; suppressHydrationWarning ne masque rien d'autre dans l'arbre.
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body className="bg-ink font-body text-paper antialiased">
         <StoreHydration />
         <MotionConfig reducedMotion="user">

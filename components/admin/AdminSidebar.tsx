@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const LINKS = [
   { href: "/admin", label: "Dashboard" },
@@ -53,9 +54,12 @@ export default function AdminSidebar() {
           })}
         </nav>
       </div>
-      <button onClick={logout} className="text-left text-xs uppercase tracking-widest2 text-paper/30 hover:text-paper">
-        Déconnexion
-      </button>
+      <div className="flex items-center justify-between">
+        <button onClick={logout} className="text-left text-xs uppercase tracking-widest2 text-paper/30 hover:text-paper">
+          Déconnexion
+        </button>
+        <ThemeToggle className="text-paper/40 transition-colors hover:text-paper" />
+      </div>
     </aside>
   );
 }

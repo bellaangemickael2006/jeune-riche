@@ -6,6 +6,25 @@
   --font-display: var(--font-anton);
   --font-body: var(--font-inter);
   --font-editorial: var(--font-fraunces);
+
+  /* Triplets RGB (pas hex) pour permettre les modificateurs d'opacité
+     Tailwind (text-paper/60, border-line/50, ...) via rgb(var(--x) / <a>).
+     Sombre par défaut : c'est l'identité native de la marque (voir
+     ART_DIRECTION.md) — le clair est une option, pas le point de départ. */
+  --color-ink: 11 11 12; /* #0B0B0C */
+  --color-paper: 245 244 241; /* #F5F4F1 */
+  --color-navy: 19 27 46; /* #131B2E */
+  --color-line: 38 37 42; /* #26252A */
+  --color-studio: 225 222 216; /* #E1DED8 — fond photo produit, identique dans les deux thèmes */
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  --color-ink: 245 244 241; /* = ancien --color-paper : vrai miroir, pas une nouvelle teinte */
+  --color-paper: 11 11 12; /* = ancien --color-ink */
+  --color-navy: 19 27 46;
+  --color-line: 214 211 205;
+  color-scheme: light;
 }
 
 * {
@@ -33,14 +52,15 @@ html {
 }
 
 body {
-  background-color: #0b0b0c;
-  color: #f5f4f1;
+  background-color: rgb(var(--color-ink));
+  color: rgb(var(--color-paper));
   font-family: var(--font-body);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
-  background-color: #f5f4f1;
-  color: #0b0b0c;
+  background-color: rgb(var(--color-paper));
+  color: rgb(var(--color-ink));
 }
 
 .font-display {
@@ -56,7 +76,7 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid #f5f4f1;
+  outline: 2px solid rgb(var(--color-paper));
   outline-offset: 3px;
 }
 

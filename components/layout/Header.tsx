@@ -7,6 +7,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/store/cart";
 import Magnetic from "@/components/ui/Magnetic";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
 import { useScrollLock } from "@/lib/scrollLock";
 
@@ -107,6 +108,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-5">
+          <ThemeToggle className="hidden text-paper/80 transition-colors hover:text-paper md:block" />
           <button
             onClick={() => {
               setSearchOpen((v) => !v);
@@ -141,6 +143,7 @@ export default function Header() {
           >
             Panier{count > 0 ? ` (${count})` : ""}
           </button>
+          <ThemeToggle className="text-paper md:hidden" />
           <button
             onClick={() => {
               setSearchOpen((v) => !v);
