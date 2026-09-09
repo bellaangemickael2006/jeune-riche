@@ -122,6 +122,50 @@ export function whatsappOrderLink(params: {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
 
+// Message pré-rédigé pour chaque statut — l'admin garde le contrôle total
+// (rien n'est envoyé automatiquement, WhatsApp n'offrant pas d'envoi
+// serveur-à-serveur gratuit) : ce lien ouvre juste la conversation avec le
+// bon texte déjà prêt, un clic remplace ce qui prenait avant une minute à
+// retaper à la main pour chaque commande.
+const STATUS_MESSAGES: Partial<Record<string, (orderNumber: string, trackingNumber?: string | null) => string>> = {
+  CONFIRMEE: (ref) => `Bonjour, votre commande ${ref} chez JEUNE RICHE est confirmée — on prépare tout ça !`,
+  PREPARATION: (ref) => `Bonjour, votre commande ${ref} chez JEUNE RICHE est en cours de préparation.`,
+  EXPEDIEE: (ref, tracking) =>
+    `Bonjour, votre commande ${ref} chez JEUNE RICHE vient d'être expédiée${tracking ? ` (suivi : ${tracking})` : ""}.`,
+  LIVREE: (ref) => `Bonjour, votre commande ${ref} chez JEUNE RICHE a été livrée. Merci pour votre confiance !`,
+  ANNULEE: (ref) => `Bonjour, votre commande ${ref} chez JEUNE RICHE a été annulée.`,
+};
+
+// Numéro client au format international sans "+" ni espaces, tel qu'exigé
+// par wa.me — tolère les formats courants saisis au checkout (+225 07 77...,
+// 07 77..., 2250777...). Le indicatif "225" est suivi du numéro à 10 chiffres
+// SANS retirer le 0 initial : c'est le format déjà utilisé et vérifié
+// fonctionnel par WHATSAPP_NUMBER ci-dessus (+225 07 77 58 53 67 ->
+// 2250777585367), pas la convention internationale habituelle.
+function sanitizePhoneForWhatsapp(phone: string): string | null {
+  const digits = phone.replace(/[^\d]/g, "");
+  if (!digits) return null;
+  if (digits.startsWith("225")) return digits;
+  if (digits.length === 10 && digits.startsWith("0")) return `225${digits}`;
+  return digits;
+}
+
+// Lien WhatsApp pré-rempli pour prévenir un client d'un changement de statut
+// — null si le statut n'a pas de message dédié (ex. NOUVELLE, déjà su par le
+// client) ou si aucun numéro n'est disponible.
+export function whatsappStatusUpdateLink(
+  status: string,
+  orderNumber: string,
+  phone: string | null | undefined,
+  trackingNumber?: string | null
+): string | null {
+  const buildMessage = STATUS_MESSAGES[status];
+  if (!buildMessage || !phone) return null;
+  const number = sanitizePhoneForWhatsapp(phone);
+  if (!number) return null;
+  return `https://wa.me/${number}?text=${encodeURIComponent(buildMessage(orderNumber, trackingNumber))}`;
+}
+
 export type DropCountdownInfo = { target: string; label: string } | null;
 
 // Décide si un drop justifie un compte à rebours visible, et vers quelle

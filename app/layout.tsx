@@ -57,6 +57,31 @@ const THEME_INIT_SCRIPT = `
   })();
 `;
 
+// Organization + WebSite schema.org sur chaque page — sert de base à la
+// carte de connaissance Google et à la sitelinks search box, sans dépendre
+// d'une page précise pour être présent.
+const ORGANIZATION_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "ClothingStore",
+  name: "JEUNE RICHE",
+  url: siteUrl(),
+  logo: `${siteUrl()}/images/logo/logo-transparent.png`,
+  sameAs: [
+    "https://www.instagram.com/jeune._.riche/",
+    "https://www.tiktok.com/@jeune._.riche1",
+    "https://www.facebook.com/profile.php?id=61592911476140",
+    "https://www.snapchat.com/add/jeune_riche01?share_id=bmUySqcSYr8&locale=fr-FR",
+  ],
+  address: { "@type": "PostalAddress", addressCountry: "CI" },
+};
+
+const WEBSITE_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "JEUNE RICHE",
+  url: siteUrl(),
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
@@ -70,6 +95,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_JSON_LD).replace(/</g, "\\u003c") }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_JSON_LD).replace(/</g, "\\u003c") }}
+        />
       </head>
       <body className="bg-ink font-body text-paper antialiased">
         <StoreHydration />

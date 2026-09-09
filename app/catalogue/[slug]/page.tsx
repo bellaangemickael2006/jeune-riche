@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import ProductViewer from "@/components/product/ProductViewer";
 import ProductCard from "@/components/catalogue/ProductCard";
 import RecentlyViewed from "@/components/product/RecentlyViewed";
+import { siteUrl } from "@/lib/utils";
 import type { ProductCardData } from "@/types";
 
 export async function generateMetadata({
@@ -19,6 +20,7 @@ export async function generateMetadata({
   return {
     title: product.name,
     description: product.description ?? undefined,
+    alternates: { canonical: `/catalogue/${product.slug}` },
     openGraph: {
       title: product.name,
       images: product.images[0] ? [product.images[0].url] : undefined,
@@ -63,8 +65,54 @@ export default async function ProductPage({
     drop: p.drop,
   }));
 
+  const totalStock = product.variants.reduce((sum, v) => sum + v.stock, 0);
+  const canonicalUrl = `${siteUrl()}/catalogue/${product.slug}`;
+
+  // Balisage Product schema.org — permet à Google d'afficher prix, stock et
+  // note directement dans les résultats de recherche (rich snippets), sans
+  // quoi la fiche apparaît comme une page de contenu générique.
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description ?? undefined,
+    // Google exige des URLs absolues pour les images d'un Product schema —
+    // celles en base sont relatives (servies depuis /public ou Supabase).
+    image: images.map((i) => (i.url.startsWith("http") ? i.url : `${siteUrl()}${i.url}`)),
+    sku: product.id,
+    category: product.category.name,
+    url: canonicalUrl,
+    ...(product.price
+      ? {
+          offers: {
+            "@type": "Offer",
+            url: canonicalUrl,
+            priceCurrency: "XOF",
+            price: Number(product.price),
+            availability:
+              totalStock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+          },
+        }
+      : {}),
+    ...(product.reviews.length > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: (
+              product.reviews.reduce((sum, r) => sum + r.rating, 0) / product.reviews.length
+            ).toFixed(1),
+            reviewCount: product.reviews.length,
+          },
+        }
+      : {}),
+  };
+
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd).replace(/</g, "\\u003c") }}
+      />
       <ProductViewer
         images={images}
         productId={product.id}

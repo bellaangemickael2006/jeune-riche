@@ -9,6 +9,10 @@ import type { ProductCardData } from "@/types";
 export const metadata: Metadata = {
   title: "Catalogue",
   description: "Le catalogue JEUNE RICHE — t-shirt, polo, chemise, débardeur, jogger, casquette.",
+  // Les filtres/tri (?categorie=, ?tri=, ?q=) ne doivent pas créer autant de
+  // pages distinctes aux yeux de Google que de combinaisons possibles — tout
+  // pointe vers la même page canonique.
+  alternates: { canonical: "/catalogue" },
 };
 
 const FALLBACK_CATEGORIES = [
