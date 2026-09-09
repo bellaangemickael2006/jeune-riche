@@ -17,6 +17,16 @@ const schema = z.object({
 // (qui ne notifie jamais toute seule), on garde la main sur l'email — envoyé
 // via lib/email.ts avec le template et l'expéditeur JEUNE RICHE, exactement
 // comme la réinitialisation de mot de passe (voir forgot-password/route.ts).
+//
+// On n'utilise PAS data.properties.action_link (lien direct vers l'endpoint
+// /verify de Supabase) : les scanners de sécurité des messageries (Gmail
+// Safe Browsing, Outlook Safe Links, filtres antispam d'entreprise) suivent
+// automatiquement les liens des emails pour les analyser AVANT que le client
+// ne clique, ce qui consomme le token à usage unique — le vrai clic tombe
+// alors sur "lien invalide/expiré" (otp_expired) malgré un premier essai.
+// hashed_token pointe vers NOTRE page (compte/confirmation), qui n'appelle
+// verifyOtp() que côté client au montage : un simple GET par un scanner ne
+// déclenche jamais ce code JS, donc le token reste valable pour le vrai clic.
 export async function POST(req: NextRequest) {
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
@@ -41,7 +51,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (error || !data.user || !data.properties?.action_link) {
+    if (error || !data.user || !data.properties?.hashed_token) {
       const alreadyExists =
         error?.code === "email_exists" ||
         /already registered|already exists/i.test(error?.message ?? "");
@@ -62,10 +72,12 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    const confirmationUrl = `${req.nextUrl.origin}/compte/confirmation?token_hash=${encodeURIComponent(data.properties.hashed_token)}&type=signup`;
+
     await sendEmail({
       to: email,
       subject: "Confirmez votre inscription — JEUNE RICHE",
-      html: signupConfirmationEmail(data.properties.action_link, name),
+      html: signupConfirmationEmail(confirmationUrl, name),
     });
   } catch (err) {
     console.error("[api/account/signup]", err);

@@ -7,10 +7,15 @@ import { createClient } from "@/lib/supabase/client";
 
 type Status = "checking" | "confirmed" | "invalid";
 
-// Le lien généré par auth.admin.generateLink({type:"signup"}) redirige ici
-// avec soit ?code=... (flux PKCE), soit #access_token=... dans le FRAGMENT
-// de l'URL (flux implicite) — jamais transmis au serveur, donc établi côté
-// client au montage. Même logique que app/compte/reinitialiser/page.tsx.
+// Le lien envoyé par email pointe directement ici avec ?token_hash=...&type=signup
+// (voir app/api/account/signup/route.ts) plutôt que vers l'endpoint /verify de
+// Supabase : un scanner de sécurité d'email qui suit le lien automatiquement ne
+// déclenche qu'un GET sur cette page (aucun effet), alors que le token à usage
+// unique ne serait consommé que par ce useEffect, exécuté uniquement dans un
+// vrai navigateur qui charge la page. On garde aussi les cas ?code=... (PKCE)
+// et #access_token=... (fragment, jamais transmis au serveur) en repli, pour
+// rester compatible avec d'anciens liens ou d'autres flux Supabase. Même
+// logique que app/compte/reinitialiser/page.tsx pour ces deux derniers cas.
 export default function SignupConfirmationPage() {
   const { t } = useTranslation();
   const [status, setStatus] = useState<Status>("checking");
@@ -20,6 +25,18 @@ export default function SignupConfirmationPage() {
 
     async function init() {
       const url = new URL(window.location.href);
+
+      const tokenHash = url.searchParams.get("token_hash");
+      const otpType = url.searchParams.get("type");
+      if (tokenHash && otpType) {
+        const { error } = await supabase.auth.verifyOtp({
+          token_hash: tokenHash,
+          type: otpType as "signup" | "email",
+        });
+        setStatus(error ? "invalid" : "confirmed");
+        return;
+      }
+
       const code = url.searchParams.get("code");
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code);
