@@ -29,7 +29,10 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
 
   return (
     <div className="max-w-2xl">
-      <h1 className="font-display text-2xl uppercase text-paper">{order.orderNumber}</h1>
+      <Link href="/admin/commandes" className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
+        ← Commandes
+      </Link>
+      <h1 className="mt-3 font-display text-2xl uppercase text-paper">{order.orderNumber}</h1>
       <p className="mt-1 text-xs text-paper/40">{order.createdAt.toLocaleString("fr-FR")}</p>
 
       <div className="mt-8 grid grid-cols-2 gap-8">

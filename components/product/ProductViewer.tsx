@@ -11,6 +11,7 @@ import { formatPrice, getDropCountdown } from "@/lib/utils";
 import { trackProductView } from "@/lib/recentlyViewed";
 import type { TechnicalDetail } from "@/lib/data/product-details";
 import CountdownTimer from "@/components/ui/CountdownTimer";
+import BackButton from "@/components/ui/BackButton";
 import type { DropSummary } from "@/types";
 
 type Img = { url: string; alt: string; type: string; color: string | null };
@@ -75,62 +76,66 @@ export default function ProductViewer({
   }, [productSlug]);
 
   return (
-    <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-start md:gap-16 lg:grid-cols-[1.35fr_1fr]">
-      <div className="md:sticky md:top-32">
-        <Gallery
-          key={color}
-          images={galleryImages}
-          productName={productName}
-          personalization={personalization}
-        />
-      </div>
+    <div>
+      <BackButton label="Retour" fallbackHref="/catalogue" className="mb-6 inline-block md:mb-8" />
 
-      <div className="max-w-md">
-        <p className="text-label text-paper/40">{categoryName}</p>
-        <h1 className="mt-3 font-editorial text-heading text-paper md:text-heading-lg">{productName}</h1>
-        <p className="mt-4 font-editorial text-heading text-paper">{formatPrice(price)}</p>
-        {description && <p className="mt-4 text-body leading-relaxed text-paper/60">{description}</p>}
-
-        {countdown && (
-          <div className="mt-6">
-            <CountdownTimer target={countdown.target} label={countdown.label} />
-          </div>
-        )}
-
-        <div className="mt-8">
-          <AddToCart
-            productSlug={productSlug}
+      <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-start md:gap-16 lg:grid-cols-[1.35fr_1fr]">
+        <div className="md:sticky md:top-32">
+          <Gallery
+            key={color}
+            images={galleryImages}
             productName={productName}
-            price={price}
-            image={primaryImage}
-            variants={variants}
-            personalizationEnabled={personalizationEnabled}
-            personalizationMaxLen={personalizationMaxLen}
-            color={color}
-            onColorChange={setColor}
             personalization={personalization}
-            onPersonalizationChange={setPersonalization}
           />
         </div>
 
-        <WishlistButton slug={productSlug} className="mt-4" />
+        <div className="max-w-md">
+          <p className="text-label text-paper/40">{categoryName}</p>
+          <h1 className="mt-3 font-editorial text-heading text-paper md:text-heading-lg">{productName}</h1>
+          <p className="mt-4 font-editorial text-heading text-paper">{formatPrice(price)}</p>
+          {description && <p className="mt-4 text-body leading-relaxed text-paper/60">{description}</p>}
 
-        {sizeGuideRows ? <SizeGuide rows={sizeGuideRows as never} /> : null}
+          {countdown && (
+            <div className="mt-6">
+              <CountdownTimer target={countdown.target} label={countdown.label} />
+            </div>
+          )}
 
-        <div className="mt-10 border-t border-line pt-6">
-          <p className="text-label text-paper/50">Détails</p>
-          <dl className="mt-4 flex flex-col gap-3">
-            {details.map((d) => (
-              <div key={d.label} className="flex justify-between gap-6 text-caption">
-                <dt className="text-paper/40">{d.label}</dt>
-                <dd className="text-right text-paper/80">{d.value}</dd>
-              </div>
-            ))}
-          </dl>
+          <div className="mt-8">
+            <AddToCart
+              productSlug={productSlug}
+              productName={productName}
+              price={price}
+              image={primaryImage}
+              variants={variants}
+              personalizationEnabled={personalizationEnabled}
+              personalizationMaxLen={personalizationMaxLen}
+              color={color}
+              onColorChange={setColor}
+              personalization={personalization}
+              onPersonalizationChange={setPersonalization}
+            />
+          </div>
+
+          <WishlistButton slug={productSlug} className="mt-4" />
+
+          {sizeGuideRows ? <SizeGuide rows={sizeGuideRows as never} /> : null}
+
+          <div className="mt-10 border-t border-line pt-6">
+            <p className="text-label text-paper/50">Détails</p>
+            <dl className="mt-4 flex flex-col gap-3">
+              {details.map((d) => (
+                <div key={d.label} className="flex justify-between gap-6 text-caption">
+                  <dt className="text-paper/40">{d.label}</dt>
+                  <dd className="text-right text-paper/80">{d.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <Reviews reviews={reviews} />
+          <ReviewForm productId={productId} productSlug={productSlug} isLoggedIn={isLoggedIn} />
         </div>
-
-        <Reviews reviews={reviews} />
-        <ReviewForm productId={productId} productSlug={productSlug} isLoggedIn={isLoggedIn} />
       </div>
     </div>
   );

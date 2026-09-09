@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCart } from "@/store/cart";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice, cn } from "@/lib/utils";
+import BackButton from "@/components/ui/BackButton";
 
 type Step = "informations" | "livraison" | "recapitulatif";
 
@@ -197,6 +198,7 @@ export default function CheckoutPage() {
 
         {step === "informations" && (
           <div className="flex flex-col gap-4">
+            <BackButton label="Retour" fallbackHref="/catalogue" className="mb-2 inline-block" />
             <h1 className="font-editorial text-2xl text-paper">Vos informations</h1>
             <Field label="Nom complet" value={form.customerName} onChange={(v) => update("customerName", v)} />
             <Field

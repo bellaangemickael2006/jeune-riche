@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import {
@@ -25,7 +26,10 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
   return (
     <div className="max-w-3xl">
-      <div className="flex items-center justify-between">
+      <Link href="/admin/produits" className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
+        ← Produits
+      </Link>
+      <div className="mt-3 flex items-center justify-between">
         <h1 className="font-display text-2xl uppercase text-paper">{product.name}</h1>
         <form action={async () => { "use server"; await deleteProduct(product.id); }}>
           <ConfirmButton
