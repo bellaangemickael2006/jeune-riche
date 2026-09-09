@@ -189,7 +189,22 @@ export async function POST(req: NextRequest) {
           shippingCost,
           total,
           userId: loggedInUserId,
-          items: { create: resolvedLines },
+          // `stockBefore` sert uniquement à l'alerte stock bas plus bas dans
+          // cette fonction — ce n'est pas un champ d'OrderItem. TypeScript ne
+          // signale pas les propriétés en trop sur une variable (seulement
+          // sur un littéral), donc le laisser dans `resolvedLines` ici fait
+          // échouer la requête Prisma à l'exécution ("Unknown argument").
+          items: {
+            create: resolvedLines.map((l) => ({
+              variantId: l.variantId,
+              productName: l.productName,
+              size: l.size,
+              color: l.color,
+              quantity: l.quantity,
+              unitPrice: l.unitPrice,
+              personalization: l.personalization,
+            })),
+          },
         },
       });
 
