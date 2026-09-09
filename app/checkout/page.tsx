@@ -179,23 +179,27 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
       <div className="mx-auto max-w-xl">
-        <div className="mb-10 flex items-center gap-3">
+        <div className="mb-10 flex items-center gap-2 sm:gap-3">
           {steps.map((s, i) => (
-            <div key={s} className="flex items-center gap-3">
+            <div key={s} className="flex items-center gap-2 sm:gap-3">
               <div className="flex items-center gap-2">
                 <span
                   className={cn(
-                    "flex h-6 w-6 items-center justify-center rounded-full text-[11px]",
+                    "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px]",
                     i <= stepIndex ? "bg-paper text-ink" : "border border-line text-paper/40"
                   )}
                 >
                   {i + 1}
                 </span>
-                <span className={cn("text-xs uppercase tracking-widest2", i === stepIndex ? "text-paper" : "text-paper/40")}>
+                {/* Libellés masqués sous sm : 3 étapes en toutes lettres avec cette
+                    largeur de tracking dépassent largement un écran mobile —
+                    les puces numérotées + le titre de section en dessous
+                    (ex. "Vos informations") suffisent à situer l'utilisateur. */}
+                <span className={cn("hidden text-xs uppercase tracking-widest2 sm:inline", i === stepIndex ? "text-paper" : "text-paper/40")}>
                   {STEP_LABELS[s]}
                 </span>
               </div>
-              {i < steps.length - 1 && <span className="h-px w-6 bg-line" />}
+              {i < steps.length - 1 && <span className="h-px w-4 shrink-0 bg-line sm:w-6" />}
             </div>
           ))}
         </div>
@@ -283,12 +287,12 @@ export default function CheckoutPage() {
               <p className="text-xs uppercase tracking-widest2 text-paper/40">{t("checkout.items")}</p>
               <ul className="mt-3 divide-y divide-line">
                 {lines.map((l) => (
-                  <li key={`${l.variantId}-${l.personalization ?? ""}`} className="flex justify-between py-3 text-sm text-paper">
+                  <li key={`${l.variantId}-${l.personalization ?? ""}`} className="flex justify-between gap-3 py-3 text-sm text-paper">
                     <span>
                       {l.productName} — {l.color}/{l.size} × {l.quantity}
                       {l.personalization && ` — "${l.personalization}"`}
                     </span>
-                    <span>{formatPrice(l.unitPrice * l.quantity, locale)}</span>
+                    <span className="shrink-0">{formatPrice(l.unitPrice * l.quantity, locale)}</span>
                   </li>
                 ))}
               </ul>

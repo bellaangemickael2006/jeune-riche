@@ -94,9 +94,9 @@ export default async function CataloguePage({
         <CategoryFilters categories={displayCategories} active={activeCategory} allLabel={t("catalogue.all")} />
       </div>
 
-      <div className="mb-12 flex items-center justify-between border-t border-line pt-4">
+      <div className="mb-12 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line pt-4">
         <p className="text-caption text-paper/40">{t("catalogue.pieceCount", { count: cardData.length })}</p>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <span className="hidden text-caption text-paper/30 sm:inline">{t("catalogue.sort")}</span>
           {SORTS.map((sort) => (
             <Link

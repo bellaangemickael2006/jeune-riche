@@ -67,19 +67,22 @@ export default function CartDrawer() {
                       <div className="relative h-24 w-20 shrink-0 overflow-hidden bg-ink/5">
                         <Image src={line.image} alt={line.productName} fill className="object-cover" sizes="80px" />
                       </div>
-                      <div className="flex flex-1 flex-col justify-between">
-                        <div>
-                          <p className="text-sm font-medium">{line.productName}</p>
-                          <p className="mt-1 text-xs text-ink/50">
-                            {line.color} · {line.size}
-                          </p>
-                          {line.personalization && (
+                      <div className="flex min-w-0 flex-1 flex-col justify-between gap-2">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium">{line.productName}</p>
                             <p className="mt-1 text-xs text-ink/50">
-                              {t("cart.personalization")} : <span className="text-ink">{line.personalization}</span>
+                              {line.color} · {line.size}
                             </p>
-                          )}
+                            {line.personalization && (
+                              <p className="mt-1 text-xs text-ink/50">
+                                {t("cart.personalization")} : <span className="text-ink">{line.personalization}</span>
+                              </p>
+                            )}
+                          </div>
+                          <p className="shrink-0 text-sm">{formatPrice(line.unitPrice * line.quantity, locale)}</p>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-wrap items-center justify-between gap-2">
                           <div className="flex items-center gap-2 text-xs">
                             <button
                               onClick={() =>
@@ -109,7 +112,6 @@ export default function CartDrawer() {
                           </button>
                         </div>
                       </div>
-                      <p className="shrink-0 text-sm">{formatPrice(line.unitPrice * line.quantity, locale)}</p>
                     </li>
                   ))}
                 </ul>

@@ -110,12 +110,19 @@ export default function AddToCart({
           <label htmlFor="size-select" className="mb-2 block text-label text-paper/50">
             {t("product.size")}
           </label>
-          <div className="flex gap-3">
+          {/* Empilé en permanence (jamais côte à côte, même sur grand écran) :
+              ce bloc vit dans la colonne info de la fiche produit, dont la
+              largeur réelle dépend du ratio de la grille (1.2fr/1.35fr) et
+              non du viewport — un breakpoint classique (sm:/md:) la fait
+              passer en ligne pile quand cette colonne devient étroite
+              (grille 2 colonnes en tablette), provoquant un débordement du
+              bouton. Empiler évite le problème quelle que soit la largeur. */}
+          <div className="flex flex-col gap-3">
             <select
               id="size-select"
               value={size}
               onChange={(e) => setSize(e.target.value)}
-              className="flex-1 border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper focus:border-paper focus:outline-none"
+              className="border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper focus:border-paper focus:outline-none"
             >
               {sizesForColor.map((v) => (
                 <option key={v.id} value={v.size} disabled={v.stock === 0} className="bg-ink">
@@ -128,7 +135,7 @@ export default function AddToCart({
               onClick={handleAdd}
               disabled={!canAdd}
               className={cn(
-                "shrink-0 px-6 py-3 text-xs uppercase tracking-widest2 transition-all",
+                "px-6 py-3 text-xs uppercase tracking-widest2 transition-all",
                 canAdd ? "bg-paper text-ink hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
               )}
             >

@@ -82,7 +82,7 @@ export default function Header() {
         scrolled ? "border-line py-3 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.6)] md:py-3.5" : "border-line py-4 md:py-5"
       )}
     >
-      <div className="flex items-center justify-between px-5 md:px-10">
+      <div className="relative z-20 flex items-center justify-between px-5 md:px-10">
         <Link href="/" className="flex items-center" aria-label="JEUNE RICHE — accueil">
           <Image
             src="/images/logo/logo-transparent.png"
@@ -97,7 +97,7 @@ export default function Header() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-9 md:flex">
+        <nav className="hidden items-center gap-9 lg:flex">
           {NAV.map((item) => (
             <Magnetic key={item.href} strength={0.5}>
               <Link
@@ -111,14 +111,14 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-5">
-          <LanguageSwitcher className="hidden md:block" />
-          <ThemeToggle className="hidden text-paper/80 transition-colors hover:text-paper md:block" />
+          <LanguageSwitcher className="hidden lg:block" />
+          <ThemeToggle className="hidden text-paper/80 transition-colors hover:text-paper lg:block" />
           <button
             onClick={() => {
               setSearchOpen((v) => !v);
               setMenuOpen(false);
             }}
-            className="hidden text-paper/80 transition-colors hover:text-paper md:block"
+            className="hidden text-paper/80 transition-colors hover:text-paper lg:block"
             aria-label={t("navigation.search")}
             aria-expanded={searchOpen}
           >
@@ -126,13 +126,13 @@ export default function Header() {
           </button>
           <Link
             href="/favoris"
-            className="hidden text-label text-paper/80 transition-colors hover:text-paper md:block"
+            className="hidden text-label text-paper/80 transition-colors hover:text-paper lg:block"
           >
             {t("navigation.favorites")}
           </Link>
           <Link
             href="/compte"
-            className="hidden text-label text-paper/80 transition-colors hover:text-paper md:block"
+            className="hidden text-label text-paper/80 transition-colors hover:text-paper lg:block"
           >
             {t("navigation.account")}
           </Link>
@@ -147,21 +147,21 @@ export default function Header() {
           >
             {count > 0 ? t("navigation.cartWithCount", { count }) : t("navigation.cart")}
           </button>
-          <ThemeToggle className="text-paper md:hidden" />
-          <LanguageSwitcher className="md:hidden" />
+          <ThemeToggle className="text-paper lg:hidden" />
+          <LanguageSwitcher className="lg:hidden" />
           <button
             onClick={() => {
               setSearchOpen((v) => !v);
               setMenuOpen(false);
             }}
-            className="text-paper md:hidden"
+            className="text-paper lg:hidden"
             aria-label={t("navigation.search")}
             aria-expanded={searchOpen}
           >
             <SearchIcon />
           </button>
           <button
-            className="text-paper md:hidden"
+            className="text-paper lg:hidden"
             onClick={() => {
               setMenuOpen((v) => !v);
               setSearchOpen(false);
@@ -186,7 +186,15 @@ export default function Header() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-x-0 top-full flex flex-col gap-6 border-t border-line bg-ink px-5 py-8 md:hidden"
+            // fixed + inset-0 (pas absolute/top-full) : couvre tout le viewport
+            // sous le bandeau (pt-28 dégage le logo/icônes dans les deux états
+            // scrolled/non-scrolled) au lieu de s'arrêter à la hauteur de son
+            // propre contenu — sinon la page derrière reste visible juste en
+            // dessous du menu, alors que le scroll du body est déjà verrouillé
+            // (useScrollLock) comme si le menu occupait tout l'écran. z-10 (<
+            // z-20 du bandeau ci-dessus) pour que le logo/icônes restent
+            // cliquables par-dessus (fermer via le bouton menu redevenu visible).
+            className="fixed inset-0 z-10 flex flex-col gap-6 overflow-y-auto border-t border-line bg-ink px-5 pb-8 pt-28 lg:hidden"
           >
             {NAV.map((item) => (
               <Link

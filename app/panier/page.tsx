@@ -23,21 +23,24 @@ export default function PanierPage() {
         <div className="mt-12 grid gap-12 md:grid-cols-[1fr_360px]">
           <ul className="divide-y divide-line">
             {lines.map((line) => (
-              <li key={`${line.variantId}-${line.personalization ?? ""}`} className="flex gap-5 py-6">
-                <div className="relative h-32 w-24 shrink-0 overflow-hidden bg-line">
+              <li key={`${line.variantId}-${line.personalization ?? ""}`} className="flex gap-4 py-6 sm:gap-5">
+                <div className="relative h-28 w-20 shrink-0 overflow-hidden bg-line sm:h-32 sm:w-24">
                   <Image src={line.image} alt={line.productName} fill className="object-cover" sizes="96px" />
                 </div>
-                <div className="flex flex-1 flex-col justify-between">
-                  <div>
-                    <p className="text-sm text-paper">{line.productName}</p>
-                    <p className="mt-1 text-xs text-paper/50">{line.color} · {line.size}</p>
-                    {line.personalization && (
-                      <p className="mt-1 text-xs text-paper/50">
-                        {t("cart.personalization")} : <span className="text-paper">{line.personalization}</span>
-                      </p>
-                    )}
+                <div className="flex min-w-0 flex-1 flex-col justify-between gap-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-sm text-paper">{line.productName}</p>
+                      <p className="mt-1 text-xs text-paper/50">{line.color} · {line.size}</p>
+                      {line.personalization && (
+                        <p className="mt-1 text-xs text-paper/50">
+                          {t("cart.personalization")} : <span className="text-paper">{line.personalization}</span>
+                        </p>
+                      )}
+                    </div>
+                    <p className="shrink-0 text-sm text-paper">{formatPrice(line.unitPrice * line.quantity, locale)}</p>
                   </div>
-                  <div className="flex items-center gap-3 text-xs">
+                  <div className="flex flex-wrap items-center gap-3 text-xs">
                     <button
                       onClick={() => setQuantity(line.variantId, line.personalization, line.quantity - 1)}
                       className="h-7 w-7 border border-line text-paper"
@@ -55,13 +58,12 @@ export default function PanierPage() {
                     </button>
                     <button
                       onClick={() => removeLine(line.variantId, line.personalization)}
-                      className="ml-4 text-paper/40 underline underline-offset-4 hover:text-paper"
+                      className="text-paper/40 underline underline-offset-4 hover:text-paper sm:ml-4"
                     >
                       {t("cart.remove")}
                     </button>
                   </div>
                 </div>
-                <p className="text-sm text-paper">{formatPrice(line.unitPrice * line.quantity, locale)}</p>
               </li>
             ))}
           </ul>
