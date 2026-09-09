@@ -12,7 +12,16 @@ export async function resolvePromoCode(rawCode: string, subtotal: number): Promi
   const code = rawCode.trim().toUpperCase();
   if (!code) return { valid: false, message: "Code requis." };
 
-  const promo = await prisma.promoCode.findUnique({ where: { code } });
+  let promo;
+  try {
+    promo = await prisma.promoCode.findUnique({ where: { code } });
+  } catch (error) {
+    // Avale l'erreur plutôt que de la laisser remonter : un souci base de
+    // données ici ne doit jamais faire échouer tout le checkout pour un
+    // client qui n'a même pas de code valide à faire valoir.
+    console.error("[promoCodes] resolvePromoCode:", error);
+    return { valid: false, message: "Code promo invalide." };
+  }
   if (!promo || !promo.active) return { valid: false, message: "Code promo invalide." };
   if (promo.expiresAt && promo.expiresAt.getTime() < Date.now()) {
     return { valid: false, message: "Ce code a expiré." };

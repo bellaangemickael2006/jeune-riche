@@ -178,11 +178,15 @@ export async function POST(req: NextRequest) {
           orderNumber,
           customerName,
           customerEmail,
+          // Order n'a pas encore de colonnes discountCode/discountAmount —
+          // ce champ a été retiré du schéma tant que la migration Prisma
+          // n'est pas appliquée à la vraie base (voir commit history). La
+          // remise reste appliquée à `total` et visible dans le message
+          // WhatsApp ci-dessous ; à réintégrer proprement dans Order une
+          // fois la migration passée.
           shippingAddress,
           subtotal,
           shippingCost,
-          discountCode,
-          discountAmount,
           total,
           userId: loggedInUserId,
           items: { create: resolvedLines },
@@ -259,6 +263,7 @@ export async function POST(req: NextRequest) {
       address: shippingAddress,
       items: resolvedLines,
       total: Number(order.total),
+      discount: discountCode ? { code: discountCode, amount: discountAmount } : null,
     });
 
     return NextResponse.json({ ok: true, orderNumber: order.orderNumber, whatsappUrl });

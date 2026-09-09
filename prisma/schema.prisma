@@ -212,8 +212,6 @@ model Order {
 
   subtotal        Decimal     @db.Decimal(10, 2)
   shippingCost    Decimal     @db.Decimal(10, 2) @default(0)
-  discountCode    String? // code promo appliqué, snapshot — le PromoCode source peut être désactivé/supprimé ensuite
-  discountAmount  Decimal     @db.Decimal(10, 2) @default(0)
   total           Decimal     @db.Decimal(10, 2)
 
   trackingNumber  String? // saisi en admin une fois l'envoi effectué

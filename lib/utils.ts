@@ -84,6 +84,10 @@ export function whatsappOrderLink(params: {
     personalization: string | null;
   }[];
   total: number;
+  /** Code promo appliqué, s'il y en a un — pas encore persisté sur la
+   * commande en base (voir app/api/checkout), donc ce message est pour
+   * l'instant la seule trace lisible du code utilisé. */
+  discount?: { code: string; amount: number } | null;
 }): string {
   const lines = [
     `Bonjour, je viens de confirmer ma commande ${params.orderNumber} sur JEUNE RICHE.`,
@@ -93,6 +97,7 @@ export function whatsappOrderLink(params: {
       const detail = i.personalization ? ` (personnalisation : "${i.personalization}")` : "";
       return `- ${i.productName} — ${i.color}/${i.size} × ${i.quantity}${detail} — ${formatPrice(i.unitPrice * i.quantity)}`;
     }),
+    ...(params.discount ? ["", `Code promo ${params.discount.code} : −${formatPrice(params.discount.amount)}`] : []),
     "",
     `Total : ${formatPrice(params.total)}`,
     "",
