@@ -25,6 +25,18 @@ async function ensureMediaBucket() {
   bucketEnsured = true;
 }
 
+// Extension prise depuis le nom de fichier fourni par le client, jamais fiable
+// telle quelle : un nom sans point (ext = le nom entier) ou contenant "/"
+// pourrait sinon injecter un segment de chemin dans le path Supabase Storage.
+// On ne garde que l'extension si elle correspond à un type réellement permis.
+const ALLOWED_IMAGE_EXT = new Set(["jpg", "jpeg", "png", "webp", "avif", "gif"]);
+const ALLOWED_VIDEO_EXT = new Set(["mp4", "webm", "mov"]);
+
+function safeExtension(filename: string, allowed: Set<string>, fallback: string) {
+  const ext = filename.split(".").pop()?.toLowerCase() ?? "";
+  return allowed.has(ext) ? ext : fallback;
+}
+
 const DIACRITICS_REGEX = new RegExp("[\\u0300-\\u036f]", "g");
 
 function slugify(input: string) {
@@ -195,7 +207,7 @@ export async function addProductImage(productId: string, formData: FormData) {
 
   await ensureMediaBucket();
   const supabase = createAdminClient();
-  const ext = file.name.split(".").pop() || "jpg";
+  const ext = safeExtension(file.name, ALLOWED_IMAGE_EXT, "jpg");
   const path = `${productId}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
   const { error: uploadError } = await supabase.storage
@@ -247,7 +259,7 @@ export async function setProductVideo(productId: string, formData: FormData) {
 
   await ensureMediaBucket();
   const supabase = createAdminClient();
-  const ext = file.name.split(".").pop() || "mp4";
+  const ext = safeExtension(file.name, ALLOWED_VIDEO_EXT, "mp4");
   const path = `${productId}/video-${Date.now()}.${ext}`;
 
   const { error: uploadError } = await supabase.storage

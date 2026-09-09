@@ -2,10 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, newsletterWelcomeEmail } from "@/lib/email";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 
 const schema = z.object({ email: z.string().email() });
 
 export async function POST(req: NextRequest) {
+  if (!rateLimit(`newsletter:${clientIp(req)}`, 10, 15 * 60_000)) {
+    return NextResponse.json({ error: "Trop de tentatives, réessayez plus tard." }, { status: 429 });
+  }
+
   const contentType = req.headers.get("content-type") ?? "";
   const body = contentType.includes("application/json")
     ? await req.json()

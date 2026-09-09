@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 
 const lineSchema = z.object({
   productName: z.string(),
@@ -21,6 +22,10 @@ const schema = z.object({
 // checkout (email connu) — sans bloquer sa progression si cet appel échoue.
 // Une commande passée avec succès annule ce snapshot (voir /api/checkout).
 export async function POST(req: NextRequest) {
+  if (!rateLimit(`cart-snapshot:${clientIp(req)}`, 30, 10 * 60_000)) {
+    return NextResponse.json({ ok: true });
+  }
+
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });

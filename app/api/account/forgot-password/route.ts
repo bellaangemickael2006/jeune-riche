@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail, passwordResetEmail } from "@/lib/email";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 
 const schema = z.object({ email: z.string().email() });
 
@@ -14,6 +15,13 @@ export async function POST(req: NextRequest) {
   const parsed = schema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ error: "Email invalide." }, { status: 400 });
+  }
+
+  // Réponse identique (ok:true) qu'on soit rate-limité ou non : sinon la
+  // différence de comportement deviendrait elle-même un moyen de sonder le
+  // système, à l'opposé de la protection anti-énumération ci-dessous.
+  if (!rateLimit(`forgot-password:${clientIp(req)}`, 5, 15 * 60_000)) {
+    return NextResponse.json({ ok: true });
   }
 
   try {

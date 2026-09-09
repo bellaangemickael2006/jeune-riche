@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { whatsappOrderLink, LOW_STOCK_THRESHOLD } from "@/lib/utils";
 import { sendEmail, lowStockAlertEmail } from "@/lib/email";
 import { resolvePromoCode } from "@/lib/data/promoCodes";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 
 // Le stock est revérifié à l'écriture, pas seulement à la lecture plus haut :
 // entre la vérification initiale et la transaction, une autre commande
@@ -43,6 +44,13 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  // Généreux exprès : ne doit jamais gêner un client qui retente après une
+  // erreur réseau, seulement freiner un script qui viderait le stock en
+  // boucle.
+  if (!rateLimit(`checkout:${clientIp(req)}`, 20, 10 * 60_000)) {
+    return NextResponse.json({ error: "Trop de tentatives, réessayez dans quelques minutes." }, { status: 429 });
+  }
+
   const parsed = schema.safeParse(await req.json());
   if (!parsed.success) {
     return NextResponse.json({ error: "Requête invalide.", details: parsed.error.flatten() }, { status: 400 });
