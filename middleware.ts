@@ -1,12 +1,38 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { isSupportedLanguage, resolveAcceptLanguage } from "@/lib/i18n/languages";
+import { LANGUAGE_COOKIE } from "@/lib/i18n/config";
+
+// Langue à poser sur la réponse si absente — calculée une fois en haut de la
+// fonction, mais appliquée tout en bas (voir la fin de la fonction) : le bloc
+// Supabase ci-dessous réassigne parfois `response` à un NOUVEL objet (sur
+// rafraîchissement de token), ce qui écraserait silencieusement un cookie
+// posé plus tôt sur l'ancien objet.
+function detectLanguageCookie(request: NextRequest): string | null {
+  const existing = request.cookies.get(LANGUAGE_COOKIE)?.value;
+  if (existing && isSupportedLanguage(existing)) return null; // déjà présent, jamais écrasé
+  return resolveAcceptLanguage(request.headers.get("accept-language"));
+}
+
+// Transmis aux Server Components (voir lib/i18n/server.ts) pour que le layout
+// racine sache s'il rend une page admin : l'admin n'a ni traduction ni layout
+// pensé pour le RTL, donc <html lang/dir> doit y rester fr/ltr quel que soit
+// le cookie de langue du visiteur (ex. testé en arabe juste avant).
+const PATHNAME_HEADER = "x-pathname";
 
 // Rafraîchit la session Supabase à chaque requête (nécessaire pour @supabase/ssr).
 // N'agit que si les variables d'environnement Supabase sont présentes.
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({ request });
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set(PATHNAME_HEADER, request.nextUrl.pathname);
+
+  let response = NextResponse.next({ request: { headers: requestHeaders } });
+  const detectedLanguage = detectLanguageCookie(request);
 
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (detectedLanguage) {
+      response.cookies.set(LANGUAGE_COOKIE, detectedLanguage, { path: "/", maxAge: 31536000, sameSite: "lax" });
+    }
     return response;
   }
 
@@ -20,7 +46,7 @@ export async function middleware(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-          response = NextResponse.next({ request });
+          response = NextResponse.next({ request: { headers: requestHeaders } });
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
           );
@@ -30,6 +56,10 @@ export async function middleware(request: NextRequest) {
   );
 
   await supabase.auth.getUser();
+
+  if (detectedLanguage) {
+    response.cookies.set(LANGUAGE_COOKIE, detectedLanguage, { path: "/", maxAge: 31536000, sameSite: "lax" });
+  }
 
   return response;
 }

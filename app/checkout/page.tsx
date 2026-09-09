@@ -2,14 +2,18 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { useCart } from "@/store/cart";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice, cn } from "@/lib/utils";
 import BackButton from "@/components/ui/BackButton";
+import { useLocale } from "@/components/providers/I18nProvider";
 
 type Step = "informations" | "livraison" | "recapitulatif";
 
 export default function CheckoutPage() {
+  const { t } = useTranslation();
+  const { locale } = useLocale();
   const { lines, total, clear } = useCart();
   const [step, setStep] = useState<Step>("informations");
   const [submitting, setSubmitting] = useState(false);
@@ -88,11 +92,11 @@ export default function CheckoutPage() {
         setPromoMessage(null);
       } else {
         setPromo(null);
-        setPromoMessage(data.message ?? "Code invalide.");
+        setPromoMessage(data.message ?? t("checkout.invalidCode"));
       }
     } catch {
       setPromo(null);
-      setPromoMessage("Impossible de vérifier ce code pour le moment.");
+      setPromoMessage(t("checkout.checkPromoError"));
     } finally {
       setCheckingPromo(false);
     }
@@ -143,13 +147,13 @@ export default function CheckoutPage() {
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Erreur inconnue.");
+      if (!res.ok) throw new Error(data.error ?? t("checkout.unknownError"));
       clear();
       // La commande est déjà enregistrée à ce stade — ce lien sert juste à
       // amorcer la conversation, pas à valider la commande.
       window.location.href = data.whatsappUrl;
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Une erreur est survenue.");
+      setError(e instanceof Error ? e.message : t("checkout.genericError"));
     } finally {
       setSubmitting(false);
     }
@@ -158,18 +162,18 @@ export default function CheckoutPage() {
   if (lines.length === 0) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-ink px-5 text-center">
-        <p className="text-paper/60">Votre panier est vide.</p>
+        <p className="text-paper/60">{t("checkout.emptyCart")}</p>
         <Link href="/catalogue" className="text-xs uppercase tracking-widest2 text-paper underline underline-offset-4">
-          Voir le catalogue
+          {t("common.viewCatalogue")}
         </Link>
       </div>
     );
   }
 
   const STEP_LABELS: Record<Step, string> = {
-    informations: "Informations",
-    livraison: "Livraison",
-    recapitulatif: "Récapitulatif",
+    informations: t("checkout.stepInformation"),
+    livraison: t("checkout.stepShipping"),
+    recapitulatif: t("checkout.stepSummary"),
   };
 
   return (
@@ -198,11 +202,11 @@ export default function CheckoutPage() {
 
         {step === "informations" && (
           <div className="flex flex-col gap-4">
-            <BackButton label="Retour" fallbackHref="/catalogue" className="mb-2 inline-block" />
-            <h1 className="font-editorial text-2xl text-paper">Vos informations</h1>
-            <Field label="Nom complet" value={form.customerName} onChange={(v) => update("customerName", v)} />
+            <BackButton label={t("product.back")} fallbackHref="/catalogue" className="mb-2 inline-block" />
+            <h1 className="font-editorial text-2xl text-paper">{t("checkout.yourInformation")}</h1>
+            <Field label={t("checkout.fullName")} value={form.customerName} onChange={(v) => update("customerName", v)} />
             <Field
-              label="Email (optionnel)"
+              label={t("checkout.emailOptional")}
               type="email"
               value={form.customerEmail}
               onChange={(v) => update("customerEmail", v)}
@@ -237,36 +241,36 @@ export default function CheckoutPage() {
               disabled={!form.customerName}
               className="mt-4 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
             >
-              Continuer
+              {t("common.continue")}
             </button>
           </div>
         )}
 
         {step === "livraison" && (
           <div className="flex flex-col gap-4">
-            <h1 className="font-editorial text-2xl text-paper">Livraison</h1>
+            <h1 className="font-editorial text-2xl text-paper">{t("checkout.shipping")}</h1>
             <Field
-              label="Téléphone (WhatsApp — on vous contacte ici)"
+              label={t("checkout.phone")}
               type="tel"
               value={form.phone}
               onChange={(v) => update("phone", v)}
             />
-            <Field label="Adresse" value={form.line1} onChange={(v) => update("line1", v)} />
+            <Field label={t("checkout.address")} value={form.line1} onChange={(v) => update("line1", v)} />
             <div className="grid grid-cols-2 gap-4">
-              <Field label="Ville" value={form.city} onChange={(v) => update("city", v)} />
-              <Field label="Code postal (optionnel)" value={form.postalCode} onChange={(v) => update("postalCode", v)} required={false} />
+              <Field label={t("checkout.city")} value={form.city} onChange={(v) => update("city", v)} />
+              <Field label={t("checkout.postalCode")} value={form.postalCode} onChange={(v) => update("postalCode", v)} required={false} />
             </div>
-            <Field label="Pays" value={form.country} onChange={(v) => update("country", v)} />
+            <Field label={t("checkout.country")} value={form.country} onChange={(v) => update("country", v)} />
             <div className="mt-4 flex gap-3">
               <button onClick={() => setStep("informations")} className="border border-line px-6 py-4 text-xs uppercase tracking-widest2 text-paper/70">
-                Retour
+                {t("common.back")}
               </button>
               <button
                 onClick={() => setStep("recapitulatif")}
                 disabled={!form.line1 || !form.city || !form.phone}
                 className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
               >
-                Continuer
+                {t("common.continue")}
               </button>
             </div>
           </div>
@@ -274,9 +278,9 @@ export default function CheckoutPage() {
 
         {step === "recapitulatif" && (
           <div className="flex flex-col gap-6">
-            <h1 className="font-editorial text-2xl text-paper">Récapitulatif</h1>
+            <h1 className="font-editorial text-2xl text-paper">{t("checkout.summary")}</h1>
             <div>
-              <p className="text-xs uppercase tracking-widest2 text-paper/40">Articles</p>
+              <p className="text-xs uppercase tracking-widest2 text-paper/40">{t("checkout.items")}</p>
               <ul className="mt-3 divide-y divide-line">
                 {lines.map((l) => (
                   <li key={`${l.variantId}-${l.personalization ?? ""}`} className="flex justify-between py-3 text-sm text-paper">
@@ -284,38 +288,38 @@ export default function CheckoutPage() {
                       {l.productName} — {l.color}/{l.size} × {l.quantity}
                       {l.personalization && ` — "${l.personalization}"`}
                     </span>
-                    <span>{formatPrice(l.unitPrice * l.quantity)}</span>
+                    <span>{formatPrice(l.unitPrice * l.quantity, locale)}</span>
                   </li>
                 ))}
               </ul>
               <div className="mt-3 flex flex-col gap-2 border-t border-line pt-3 text-sm text-paper">
                 <div className="flex justify-between text-paper/60">
-                  <span className="uppercase tracking-widest2">Sous-total</span>
-                  <span>{formatPrice(subtotal)}</span>
+                  <span className="uppercase tracking-widest2">{t("cart.subtotal")}</span>
+                  <span>{formatPrice(subtotal, locale)}</span>
                 </div>
                 {promo && (
                   <div className="flex justify-between text-paper/60">
-                    <span className="uppercase tracking-widest2">Code {promo.code}</span>
-                    <span>−{formatPrice(discountAmount)}</span>
+                    <span className="uppercase tracking-widest2">{t("checkout.promoCodeLabel", { code: promo.code })}</span>
+                    <span>−{formatPrice(discountAmount, locale)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-paper/60">
-                  <span className="uppercase tracking-widest2">Livraison</span>
-                  <span>{shippingCost === 0 ? "Offerte" : formatPrice(shippingCost)}</span>
+                  <span className="uppercase tracking-widest2">{t("checkout.shipping")}</span>
+                  <span>{shippingCost === 0 ? t("checkout.freeShipping") : formatPrice(shippingCost, locale)}</span>
                 </div>
                 <div className="flex justify-between border-t border-line pt-2">
-                  <span className="uppercase tracking-widest2 text-paper/50">Total</span>
-                  <span>{formatPrice(grandTotal)}</span>
+                  <span className="uppercase tracking-widest2 text-paper/50">{t("checkout.total")}</span>
+                  <span>{formatPrice(grandTotal, locale)}</span>
                 </div>
               </div>
             </div>
 
             <div>
-              <p className="mb-2 text-xs uppercase tracking-widest2 text-paper/40">Code promo</p>
+              <p className="mb-2 text-xs uppercase tracking-widest2 text-paper/40">{t("checkout.promoCode")}</p>
               {promo ? (
                 <div className="flex items-center justify-between border border-line px-4 py-3 text-sm">
                   <span className="text-paper">
-                    {promo.code} appliqué — −{formatPrice(discountAmount)}
+                    {t("checkout.promoApplied", { code: promo.code, amount: formatPrice(discountAmount, locale) })}
                   </span>
                   <button
                     onClick={() => {
@@ -325,7 +329,7 @@ export default function CheckoutPage() {
                     }}
                     className="text-[11px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
                   >
-                    Retirer
+                    {t("common.remove")}
                   </button>
                 </div>
               ) : (
@@ -333,7 +337,7 @@ export default function CheckoutPage() {
                   <input
                     value={promoInput}
                     onChange={(e) => setPromoInput(e.target.value)}
-                    placeholder="Code promo"
+                    placeholder={t("checkout.promoCodePlaceholder")}
                     className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 placeholder:normal-case focus:border-paper focus:outline-none"
                   />
                   <button
@@ -341,7 +345,7 @@ export default function CheckoutPage() {
                     disabled={checkingPromo || !promoInput.trim()}
                     className="shrink-0 border border-line px-6 py-3 text-xs uppercase tracking-widest2 text-paper/70 transition-colors hover:border-paper hover:text-paper disabled:opacity-30"
                   >
-                    {checkingPromo ? "…" : "Appliquer"}
+                    {checkingPromo ? "…" : t("common.apply")}
                   </button>
                 </div>
               )}
@@ -349,23 +353,21 @@ export default function CheckoutPage() {
             </div>
 
             <div className="border border-line bg-line/20 px-4 py-4 text-xs text-paper/60">
-              Aucun prestataire de paiement en ligne n&apos;est encore connecté à ce site. Votre
-              commande sera enregistrée, puis vous serez redirigé·e vers WhatsApp pour finaliser le
-              règlement et l&apos;expédition avec notre équipe.
+              {t("checkout.noPaymentProvider")}
             </div>
 
             {error && <p className="text-xs font-medium text-paper">{error}</p>}
 
             <div className="flex gap-3">
               <button onClick={() => setStep("livraison")} className="border border-line px-6 py-4 text-xs uppercase tracking-widest2 text-paper/70">
-                Retour
+                {t("common.back")}
               </button>
               <button
                 onClick={submitOrder}
                 disabled={submitting}
                 className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
               >
-                {submitting ? "Envoi…" : "Confirmer et ouvrir WhatsApp"}
+                {submitting ? t("checkout.sending") : t("checkout.confirmAndOpenWhatsapp")}
               </button>
             </div>
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Gallery from "@/components/product/Gallery";
 import AddToCart from "@/components/product/AddToCart";
 import SizeGuide from "@/components/product/SizeGuide";
@@ -12,6 +13,7 @@ import { trackProductView } from "@/lib/recentlyViewed";
 import type { TechnicalDetail } from "@/lib/data/product-details";
 import CountdownTimer from "@/components/ui/CountdownTimer";
 import BackButton from "@/components/ui/BackButton";
+import { useLocale } from "@/components/providers/I18nProvider";
 import type { DropSummary } from "@/types";
 
 type Img = { url: string; alt: string; type: string; color: string | null };
@@ -51,6 +53,8 @@ export default function ProductViewer({
   isLoggedIn: boolean;
   drop?: DropSummary | null;
 }) {
+  const { t } = useTranslation();
+  const { locale } = useLocale();
   const countdown = getDropCountdown(drop);
   const colors = useMemo(() => Array.from(new Set(variants.map((v) => v.color))), [variants]);
   const [color, setColor] = useState(colors[0] ?? "");
@@ -77,7 +81,7 @@ export default function ProductViewer({
 
   return (
     <div>
-      <BackButton label="Retour" fallbackHref="/catalogue" className="mb-6 inline-block md:mb-8" />
+      <BackButton label={t("product.back")} fallbackHref="/catalogue" className="mb-6 inline-block md:mb-8" />
 
       <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-start md:gap-16 lg:grid-cols-[1.35fr_1fr]">
         <div className="md:sticky md:top-32">
@@ -92,12 +96,12 @@ export default function ProductViewer({
         <div className="max-w-md">
           <p className="text-label text-paper/40">{categoryName}</p>
           <h1 className="mt-3 font-editorial text-heading text-paper md:text-heading-lg">{productName}</h1>
-          <p className="mt-4 font-editorial text-heading text-paper">{formatPrice(price)}</p>
+          <p className="mt-4 font-editorial text-heading text-paper">{formatPrice(price, locale, t("product.priceUndefined"))}</p>
           {description && <p className="mt-4 text-body leading-relaxed text-paper/60">{description}</p>}
 
           {countdown && (
             <div className="mt-6">
-              <CountdownTimer target={countdown.target} label={countdown.label} />
+              <CountdownTimer target={countdown.target} labelKey={countdown.labelKey} />
             </div>
           )}
 
@@ -122,7 +126,7 @@ export default function ProductViewer({
           {sizeGuideRows ? <SizeGuide rows={sizeGuideRows as never} /> : null}
 
           <div className="mt-10 border-t border-line pt-6">
-            <p className="text-label text-paper/50">Détails</p>
+            <p className="text-label text-paper/50">{t("product.details")}</p>
             <dl className="mt-4 flex flex-col gap-3">
               {details.map((d) => (
                 <div key={d.label} className="flex justify-between gap-6 text-caption">

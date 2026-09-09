@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // Lit l'attribut déjà posé par le script inline de app/layout.tsx (avant
 // hydratation) plutôt que de recalculer depuis localStorage ici — évite
@@ -11,6 +12,7 @@ function currentTheme(): "dark" | "light" {
 }
 
 export default function ThemeToggle({ className }: { className?: string }) {
+  const { t } = useTranslation();
   // Le rendu serveur ne connaît jamais le thème (choix client uniquement,
   // voir layout.tsx) — un premier rendu neutre évite un mismatch
   // d'hydratation, corrigé au montage juste après.
@@ -41,7 +43,7 @@ export default function ThemeToggle({ className }: { className?: string }) {
   return (
     <button
       onClick={toggle}
-      aria-label={mounted && theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
+      aria-label={mounted && theme === "dark" ? t("common.switchToLightMode") : t("common.switchToDarkMode")}
       className={className ?? "text-paper/80 transition-colors hover:text-paper"}
     >
       {mounted && theme === "light" ? <SunIcon /> : <MoonIcon />}

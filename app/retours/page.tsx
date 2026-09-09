@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
 import PlaceholderPage from "@/components/ui/PlaceholderPage";
+import { getServerTranslation } from "@/lib/i18n/server";
 
-export const metadata: Metadata = { title: "Retours" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getServerTranslation();
+  return { title: t("legal.returns.eyebrow") };
+}
 
-export default function RetoursPage() {
+export default async function RetoursPage() {
+  const { t } = await getServerTranslation();
   return (
     <PlaceholderPage
-      eyebrow="Service"
-      title="Retours"
-      message="Notre politique de retour est en cours de finalisation et sera publiée ici prochainement."
+      eyebrow={t("legal.returns.eyebrow")}
+      title={t("legal.returns.title")}
+      message={t("legal.returns.message")}
     />
   );
 }

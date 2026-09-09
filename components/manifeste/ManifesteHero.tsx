@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 import WordPullUp from "@/components/ui/WordPullUp";
 
 export default function ManifesteHero() {
+  const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
 
@@ -35,7 +37,7 @@ export default function ManifesteHero() {
           sombre pour le titre blanc, quel que soit le thème. */}
       <div className="absolute inset-0 bg-black/50" />
       <WordPullUp
-        text="Manifeste"
+        text={t("navigation.manifesto")}
         as="h1"
         immediate
         className="relative z-10 px-5 text-center font-display text-[16vw] uppercase leading-none text-white md:text-[9vw]"

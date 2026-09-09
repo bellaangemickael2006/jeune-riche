@@ -3,11 +3,15 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { useCart } from "@/store/cart";
 import { formatPrice } from "@/lib/utils";
 import { useScrollLock } from "@/lib/scrollLock";
+import { useLocale } from "@/components/providers/I18nProvider";
 
 export default function CartDrawer() {
+  const { t } = useTranslation();
+  const { locale } = useLocale();
   const { lines, isOpen, close, removeLine, setQuantity, total } = useCart();
   useScrollLock(isOpen);
 
@@ -30,26 +34,26 @@ export default function CartDrawer() {
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
             className="fixed right-0 top-0 z-[95] flex h-full w-full max-w-md flex-col bg-paper text-ink"
             role="dialog"
-            aria-label="Panier"
+            aria-label={t("cart.title")}
           >
             <div className="flex items-center justify-between border-b border-ink/10 px-6 py-5">
               <p className="font-display text-lg uppercase tracking-wide">
-                Panier {lines.length > 0 && `(${lines.length})`}
+                {lines.length > 0 ? t("cart.titleWithCount", { count: lines.length }) : t("cart.title")}
               </p>
-              <button onClick={close} aria-label="Fermer le panier" className="text-sm uppercase tracking-widest2">
-                Fermer
+              <button onClick={close} aria-label={t("common.close")} className="text-sm uppercase tracking-widest2">
+                {t("common.close")}
               </button>
             </div>
 
             {lines.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
-                <p className="text-sm text-ink/60">Votre panier est vide.</p>
+                <p className="text-sm text-ink/60">{t("cart.empty")}</p>
                 <Link
                   href="/catalogue"
                   onClick={close}
                   className="text-xs uppercase tracking-widest2 underline underline-offset-4"
                 >
-                  Voir le catalogue
+                  {t("common.viewCatalogue")}
                 </Link>
               </div>
             ) : (
@@ -71,7 +75,7 @@ export default function CartDrawer() {
                           </p>
                           {line.personalization && (
                             <p className="mt-1 text-xs text-ink/50">
-                              Personnalisation : <span className="text-ink">{line.personalization}</span>
+                              {t("cart.personalization")} : <span className="text-ink">{line.personalization}</span>
                             </p>
                           )}
                         </div>
@@ -82,7 +86,7 @@ export default function CartDrawer() {
                                 setQuantity(line.variantId, line.personalization, line.quantity - 1)
                               }
                               className="h-6 w-6 border border-ink/20"
-                              aria-label="Diminuer la quantité"
+                              aria-label={t("cart.decreaseQuantity")}
                             >
                               −
                             </button>
@@ -92,7 +96,7 @@ export default function CartDrawer() {
                                 setQuantity(line.variantId, line.personalization, line.quantity + 1)
                               }
                               className="h-6 w-6 border border-ink/20"
-                              aria-label="Augmenter la quantité"
+                              aria-label={t("cart.increaseQuantity")}
                             >
                               +
                             </button>
@@ -101,25 +105,25 @@ export default function CartDrawer() {
                             onClick={() => removeLine(line.variantId, line.personalization)}
                             className="text-xs uppercase tracking-widest2 text-ink/40 hover:text-ink"
                           >
-                            Retirer
+                            {t("cart.remove")}
                           </button>
                         </div>
                       </div>
-                      <p className="shrink-0 text-sm">{formatPrice(line.unitPrice * line.quantity)}</p>
+                      <p className="shrink-0 text-sm">{formatPrice(line.unitPrice * line.quantity, locale)}</p>
                     </li>
                   ))}
                 </ul>
                 <div className="border-t border-ink/10 px-6 py-6">
                   <div className="mb-4 flex items-center justify-between text-sm">
-                    <span className="uppercase tracking-widest2 text-ink/50">Sous-total</span>
-                    <span className="font-medium">{formatPrice(total())}</span>
+                    <span className="uppercase tracking-widest2 text-ink/50">{t("cart.subtotal")}</span>
+                    <span className="font-medium">{formatPrice(total(), locale)}</span>
                   </div>
                   <Link
                     href="/checkout"
                     onClick={close}
                     className="block w-full bg-ink py-4 text-center text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90"
                   >
-                    Commander
+                    {t("cart.checkout")}
                   </Link>
                 </div>
               </>

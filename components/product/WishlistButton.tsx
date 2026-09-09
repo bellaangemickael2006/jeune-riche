@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { useWishlist } from "@/store/wishlist";
 import { cn } from "@/lib/utils";
 
 export default function WishlistButton({ slug, className }: { slug: string; className?: string }) {
+  const { t } = useTranslation();
   const toggle = useWishlist((s) => s.toggle);
   const has = useWishlist((s) => s.has(slug));
   const [mounted, setMounted] = useState(false);
@@ -18,7 +20,7 @@ export default function WishlistButton({ slug, className }: { slug: string; clas
       type="button"
       onClick={() => toggle(slug)}
       aria-pressed={mounted && has}
-      aria-label={mounted && has ? "Retirer des favoris" : "Ajouter aux favoris"}
+      aria-label={mounted && has ? t("product.removeFromFavorites") : t("product.addToFavorites")}
       className={cn(
         "flex items-center gap-2 text-label transition-colors",
         mounted && has ? "text-paper" : "text-paper/50 hover:text-paper",
@@ -39,7 +41,7 @@ export default function WishlistButton({ slug, className }: { slug: string; clas
           </motion.span>
         </AnimatePresence>
       </span>
-      {mounted && has ? "Dans vos favoris" : "Ajouter aux favoris"}
+      {mounted && has ? t("product.inFavorites") : t("product.addToFavorites")}
     </button>
   );
 }

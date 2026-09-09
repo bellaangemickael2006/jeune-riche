@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type Row = Record<string, string>;
 
 export default function SizeGuide({ rows }: { rows: Row[] }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   if (!rows || rows.length === 0) return null;
   const columns = Object.keys(rows[0]);
@@ -15,7 +17,7 @@ export default function SizeGuide({ rows }: { rows: Row[] }) {
         onClick={() => setOpen((v) => !v)}
         className="text-xs uppercase tracking-widest2 text-paper/60 underline underline-offset-4 hover:text-paper"
       >
-        Guide des tailles {open ? "−" : "+"}
+        {t("product.sizeGuide")} {open ? "−" : "+"}
       </button>
       {open && (
         <table className="mt-4 w-full text-left text-xs text-paper/70">

@@ -7,6 +7,7 @@ import ProductViewer from "@/components/product/ProductViewer";
 import ProductCard from "@/components/catalogue/ProductCard";
 import RecentlyViewed from "@/components/product/RecentlyViewed";
 import { siteUrl } from "@/lib/utils";
+import { getServerTranslation } from "@/lib/i18n/server";
 import type { ProductCardData } from "@/types";
 
 export async function generateMetadata({
@@ -36,6 +37,7 @@ export default async function ProductPage({
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
+  const { t } = await getServerTranslation();
   const allProducts = await getPublishedProducts();
 
   let isLoggedIn = false;
@@ -138,7 +140,7 @@ export default async function ProductPage({
 
       {crossSell.length > 0 && (
         <section className="mx-auto mt-32 max-w-6xl border-t border-line pt-16">
-          <h2 className="font-editorial text-heading text-paper">Compléter la tenue</h2>
+          <h2 className="font-editorial text-heading text-paper">{t("product.completeTheLook")}</h2>
           <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-4">
             {crossSell.map((p, i) => (
               <ProductCard key={p.id} product={p} index={i} />

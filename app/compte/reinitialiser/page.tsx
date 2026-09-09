@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
 
 type Status = "checking" | "ready" | "invalid" | "submitting" | "done";
@@ -16,6 +17,7 @@ type Status = "checking" | "ready" | "invalid" | "submitting" | "done";
 // réel envoyé par email atterrissait toujours sur "lien invalide" — on lit
 // et on établit la session nous-mêmes dans les deux cas au lieu d'attendre.
 export default function ResetPasswordPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [status, setStatus] = useState<Status>("checking");
   const [password, setPassword] = useState("");
@@ -58,11 +60,11 @@ export default function ResetPasswordPage() {
     setError(null);
 
     if (password.length < 8) {
-      setError("8 caractères minimum.");
+      setError(t("account.passwordMinLength"));
       return;
     }
     if (password !== confirm) {
-      setError("Les mots de passe ne correspondent pas.");
+      setError(t("account.passwordMismatch"));
       return;
     }
 
@@ -70,7 +72,7 @@ export default function ResetPasswordPage() {
     const supabase = createClient();
     const { error: updateError } = await supabase.auth.updateUser({ password });
     if (updateError) {
-      setError("Une erreur est survenue, réessayez.");
+      setError(t("checkout.genericError"));
       setStatus("ready");
       return;
     }
@@ -88,37 +90,33 @@ export default function ResetPasswordPage() {
           height={120}
           className="jr-logo mx-auto h-12 w-12 object-contain"
         />
-        <h1 className="mt-4 text-center font-editorial text-2xl text-paper">Nouveau mot de passe</h1>
+        <h1 className="mt-4 text-center font-editorial text-2xl text-paper">{t("account.resetTitle")}</h1>
 
         {status === "checking" && (
-          <p className="mt-8 text-center text-sm text-paper/50">Vérification du lien...</p>
+          <p className="mt-8 text-center text-sm text-paper/50">{t("account.checkingLink")}</p>
         )}
 
         {status === "invalid" && (
           <div className="mt-8 text-center">
-            <p className="text-sm text-paper/70">
-              Ce lien est invalide ou a expiré. Redemandez-en un depuis la page de connexion.
-            </p>
+            <p className="text-sm text-paper/70">{t("account.invalidLink")}</p>
             <a
               href="/compte"
               className="mt-4 inline-block text-xs uppercase tracking-widest2 text-paper underline underline-offset-4"
             >
-              Retour à la connexion
+              {t("account.backToLogin")}
             </a>
           </div>
         )}
 
         {status === "done" && (
-          <p className="mt-8 text-center text-sm text-paper/70">
-            Mot de passe mis à jour. Redirection vers votre compte...
-          </p>
+          <p className="mt-8 text-center text-sm text-paper/70">{t("account.passwordUpdated")}</p>
         )}
 
         {(status === "ready" || status === "submitting") && (
           <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
             <label className="block">
               <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
-                Nouveau mot de passe
+                {t("account.newPassword")}
               </span>
               <input
                 type="password"
@@ -131,7 +129,7 @@ export default function ResetPasswordPage() {
             </label>
             <label className="block">
               <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
-                Confirmer le mot de passe
+                {t("account.confirmPassword")}
               </span>
               <input
                 type="password"
@@ -148,7 +146,7 @@ export default function ResetPasswordPage() {
               disabled={status === "submitting"}
               className="mt-2 bg-paper py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
             >
-              {status === "submitting" ? "…" : "Mettre à jour"}
+              {status === "submitting" ? "…" : t("common.update")}
             </button>
           </form>
         )}

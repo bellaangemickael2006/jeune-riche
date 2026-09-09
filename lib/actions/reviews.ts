@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { getServerTranslation } from "@/lib/i18n/server";
 
 export async function moderateReview(reviewId: string, status: "APPROVED" | "REJECTED") {
   await requireAdmin();
@@ -22,34 +23,35 @@ export async function createReview(
   _prevState: CreateReviewState,
   formData: FormData
 ): Promise<CreateReviewState> {
+  const { t } = await getServerTranslation();
   const supabase = await createClient();
   const {
     data: { user: authUser },
   } = await supabase.auth.getUser();
   if (!authUser) {
-    return { ok: false, message: "Connectez-vous pour laisser un avis." };
+    return { ok: false, message: t("product.reviewLoginRequired") };
   }
 
   const dbUser = await prisma.user.findUnique({ where: { supabaseId: authUser.id } });
   if (!dbUser) {
-    return { ok: false, message: "Connectez-vous pour laisser un avis." };
+    return { ok: false, message: t("product.reviewLoginRequired") };
   }
 
   const rating = Number(formData.get("rating"));
   const comment = String(formData.get("comment") ?? "").trim();
 
   if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-    return { ok: false, message: "Sélectionnez une note entre 1 et 5 étoiles." };
+    return { ok: false, message: t("product.reviewInvalidRating") };
   }
   if (comment.length < 5) {
-    return { ok: false, message: "Votre avis doit contenir au moins 5 caractères." };
+    return { ok: false, message: t("product.reviewTooShort") };
   }
 
   const existing = await prisma.review.findFirst({
     where: { productId, userId: dbUser.id },
   });
   if (existing) {
-    return { ok: false, message: "Vous avez déjà laissé un avis pour ce produit." };
+    return { ok: false, message: t("product.reviewAlreadyExists") };
   }
 
   const verifiedOrder = Boolean(
@@ -63,5 +65,5 @@ export async function createReview(
   });
 
   revalidatePath(`/catalogue/${productSlug}`);
-  return { ok: true, message: "Merci ! Votre avis a été soumis et sera visible après modération." };
+  return { ok: true, message: t("product.reviewSuccess") };
 }

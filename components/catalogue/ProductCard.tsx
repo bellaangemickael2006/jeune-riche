@@ -4,12 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { formatPrice, getDropCountdown } from "@/lib/utils";
 import type { ProductCardData } from "@/types";
 import FadeIn from "@/components/ui/FadeIn";
 import CountdownTimer from "@/components/ui/CountdownTimer";
+import { useLocale } from "@/components/providers/I18nProvider";
 
 export default function ProductCard({ product, index }: { product: ProductCardData; index: number }) {
+  const { t } = useTranslation();
+  const { locale } = useLocale();
   const [hovered, setHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -91,7 +95,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
           />
           {totalStock === 0 && (
             <span className="absolute left-3 top-3 bg-ink px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper">
-              Épuisé
+              {t("product.soldOut")}
             </span>
           )}
           {countdown && (
@@ -105,7 +109,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
             <p className="text-[11px] uppercase tracking-widest2 text-paper/40">{product.category.name}</p>
             <p className="mt-1 font-editorial text-base text-paper">{product.name}</p>
           </div>
-          <p className="shrink-0 text-sm text-paper/70">{formatPrice(product.price)}</p>
+          <p className="shrink-0 text-sm text-paper/70">{formatPrice(product.price, locale, t("product.priceUndefined"))}</p>
         </div>
       </Link>
     </FadeIn>

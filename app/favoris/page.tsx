@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useWishlist } from "@/store/wishlist";
 import ProductCard from "@/components/catalogue/ProductCard";
 import EmptyState from "@/components/ui/EmptyState";
 import type { ProductCardData } from "@/types";
 
 export default function FavorisPage() {
+  const { t } = useTranslation();
   const slugs = useWishlist((s) => s.slugs);
   const [products, setProducts] = useState<ProductCardData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,13 +32,10 @@ export default function FavorisPage() {
 
   return (
     <div className="min-h-screen bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
-      <h1 className="font-editorial text-4xl text-paper md:text-6xl">Favoris</h1>
+      <h1 className="font-editorial text-4xl text-paper md:text-6xl">{t("wishlist.title")}</h1>
 
       {!loading && products.length === 0 && (
-        <EmptyState
-          message="Aucun favori pour le moment."
-          cta={{ label: "Voir le catalogue", href: "/catalogue" }}
-        />
+        <EmptyState message={t("wishlist.empty")} cta={{ label: t("common.viewCatalogue"), href: "/catalogue" }} />
       )}
 
       {products.length > 0 && (

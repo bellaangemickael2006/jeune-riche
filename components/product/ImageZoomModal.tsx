@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { useScrollLock } from "@/lib/scrollLock";
 
 type Img = { url: string; alt: string };
@@ -19,6 +20,7 @@ export default function ImageZoomModal({
   open: boolean;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const [zoomed, setZoomed] = useState(false);
   const [origin, setOrigin] = useState("50% 50%");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -61,10 +63,10 @@ export default function ImageZoomModal({
         >
           <button
             onClick={onClose}
-            aria-label="Fermer le zoom"
+            aria-label={t("product.closeZoom")}
             className="absolute right-5 top-5 z-10 text-label text-paper/70 hover:text-paper"
           >
-            Fermer ×
+            {t("common.close")} ×
           </button>
           <div
             ref={containerRef}
@@ -89,7 +91,7 @@ export default function ImageZoomModal({
             />
           </div>
           <p className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 text-caption text-paper/40">
-            {zoomed ? "Cliquez pour dézoomer" : "Cliquez pour zoomer"}
+            {zoomed ? t("product.zoomOut") : t("product.zoomIn")}
           </p>
         </motion.div>
       )}

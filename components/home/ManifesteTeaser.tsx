@@ -3,8 +3,11 @@ import Link from "next/link";
 import FadeIn from "@/components/ui/FadeIn";
 import Magnetic from "@/components/ui/Magnetic";
 import Spotlight from "@/components/ui/Spotlight";
+import { getServerTranslation } from "@/lib/i18n/server";
 
-export default function ManifesteTeaser() {
+export default async function ManifesteTeaser() {
+  const { t } = await getServerTranslation();
+
   return (
     <Spotlight
       as="section"
@@ -20,16 +23,16 @@ export default function ManifesteTeaser() {
         className="pointer-events-none absolute left-1/2 top-1/2 h-[140vw] w-[140vw] max-w-none -translate-x-1/2 -translate-y-1/2 opacity-[0.04] md:h-[60vw] md:w-[60vw]"
       />
       <FadeIn className="relative z-10 flex max-w-2xl flex-col items-center gap-8" y={20}>
-        <p className="text-xs uppercase tracking-widest2 text-paper/50">Le manifeste</p>
+        <p className="text-xs uppercase tracking-widest2 text-paper/50">{t("navigation.manifesto")}</p>
         <p className="font-editorial text-2xl italic leading-snug text-paper md:text-4xl">
-          Une couronne gravée, un visage tribal — le luxe qui ne s&apos;excuse pas d&apos;où il vient.
+          {t("home.manifestoQuote")}
         </p>
         <Magnetic strength={0.3}>
           <Link
             href="/manifeste"
             className="inline-block text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 transition-opacity hover:opacity-70"
           >
-            Entrer dans l&apos;univers
+            {t("home.enterUniverse")}
           </Link>
         </Magnetic>
       </FadeIn>

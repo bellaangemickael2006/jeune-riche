@@ -3,13 +3,17 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { getRecentlyViewed, type RecentlyViewedItem } from "@/lib/recentlyViewed";
 import { formatPrice } from "@/lib/utils";
+import { useLocale } from "@/components/providers/I18nProvider";
 
 // Purement client (localStorage) : rendu vide au premier passage serveur,
 // rempli après montage — pas de risque de désynchronisation d'hydratation
 // puisque le serveur ne rend jamais rien ici.
 export default function RecentlyViewed({ excludeSlug }: { excludeSlug?: string }) {
+  const { t } = useTranslation();
+  const { locale } = useLocale();
   const [items, setItems] = useState<RecentlyViewedItem[]>([]);
 
   useEffect(() => {
@@ -20,7 +24,7 @@ export default function RecentlyViewed({ excludeSlug }: { excludeSlug?: string }
 
   return (
     <section className="mx-auto mt-16 max-w-6xl border-t border-line pt-16">
-      <h2 className="font-editorial text-heading text-paper">Récemment consulté</h2>
+      <h2 className="font-editorial text-heading text-paper">{t("product.recentlyViewed")}</h2>
       <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
         {items.map((item) => (
           <Link key={item.slug} href={`/catalogue/${item.slug}`} className="group block">
@@ -36,7 +40,7 @@ export default function RecentlyViewed({ excludeSlug }: { excludeSlug?: string }
               )}
             </div>
             <p className="mt-3 font-editorial text-body text-paper">{item.name}</p>
-            <p className="text-caption text-paper/60">{formatPrice(item.price)}</p>
+            <p className="text-caption text-paper/60">{formatPrice(item.price, locale, t("product.priceUndefined"))}</p>
           </Link>
         ))}
       </div>

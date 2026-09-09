@@ -4,21 +4,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/store/cart";
 import Magnetic from "@/components/ui/Magnetic";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 import { useScrollLock } from "@/lib/scrollLock";
 
-const NAV = [
-  { label: "Collection", href: "/catalogue" },
-  { label: "Manifeste", href: "/manifeste" },
-  { label: "Drops", href: "/drops" },
-  { label: "À propos", href: "/a-propos" },
-];
-
 export default function Header() {
+  const { t } = useTranslation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -27,6 +23,13 @@ export default function Header() {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   useScrollLock(menuOpen || searchOpen);
+
+  const NAV = [
+    { label: t("navigation.collection"), href: "/catalogue" },
+    { label: t("navigation.manifesto"), href: "/manifeste" },
+    { label: t("navigation.drops"), href: "/drops" },
+    { label: t("navigation.about"), href: "/a-propos" },
+  ];
 
   // Une navigation (lien nav desktop, logo, retour navigateur...) doit
   // toujours refermer les panneaux ouverts, pas seulement les clics gérés
@@ -108,6 +111,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-5">
+          <LanguageSwitcher className="hidden md:block" />
           <ThemeToggle className="hidden text-paper/80 transition-colors hover:text-paper md:block" />
           <button
             onClick={() => {
@@ -115,7 +119,7 @@ export default function Header() {
               setMenuOpen(false);
             }}
             className="hidden text-paper/80 transition-colors hover:text-paper md:block"
-            aria-label="Rechercher"
+            aria-label={t("navigation.search")}
             aria-expanded={searchOpen}
           >
             <SearchIcon />
@@ -124,13 +128,13 @@ export default function Header() {
             href="/favoris"
             className="hidden text-label text-paper/80 transition-colors hover:text-paper md:block"
           >
-            Favoris
+            {t("navigation.favorites")}
           </Link>
           <Link
             href="/compte"
             className="hidden text-label text-paper/80 transition-colors hover:text-paper md:block"
           >
-            Compte
+            {t("navigation.account")}
           </Link>
           <button
             onClick={() => {
@@ -139,18 +143,19 @@ export default function Header() {
               openCart();
             }}
             className="text-label text-paper/80 transition-colors hover:text-paper"
-            aria-label={`Panier, ${count} article${count > 1 ? "s" : ""}`}
+            aria-label={t("navigation.cartWithCount", { count })}
           >
-            Panier{count > 0 ? ` (${count})` : ""}
+            {count > 0 ? t("navigation.cartWithCount", { count }) : t("navigation.cart")}
           </button>
           <ThemeToggle className="text-paper md:hidden" />
+          <LanguageSwitcher className="md:hidden" />
           <button
             onClick={() => {
               setSearchOpen((v) => !v);
               setMenuOpen(false);
             }}
             className="text-paper md:hidden"
-            aria-label="Rechercher"
+            aria-label={t("navigation.search")}
             aria-expanded={searchOpen}
           >
             <SearchIcon />
@@ -161,7 +166,7 @@ export default function Header() {
               setMenuOpen((v) => !v);
               setSearchOpen(false);
             }}
-            aria-label="Menu"
+            aria-label={t("navigation.menu")}
             aria-expanded={menuOpen}
           >
             <span className="block h-px w-6 bg-paper" />
@@ -194,10 +199,10 @@ export default function Header() {
               </Link>
             ))}
             <Link href="/favoris" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
-              Favoris
+              {t("navigation.favorites")}
             </Link>
             <Link href="/compte" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
-              Compte
+              {t("navigation.account")}
             </Link>
           </motion.div>
         )}
@@ -216,6 +221,7 @@ function SearchIcon() {
 }
 
 function SearchPanel({ onClose }: { onClose: () => void }) {
+  const { t } = useTranslation();
   const router = useRouter();
   const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
@@ -242,23 +248,23 @@ function SearchPanel({ onClose }: { onClose: () => void }) {
     >
       <form onSubmit={handleSubmit} className="mx-auto flex max-w-2xl items-end gap-4">
         <div className="flex-1">
-          <p className="text-label text-paper/40">Rechercher</p>
+          <p className="text-label text-paper/40">{t("navigation.search")}</p>
           <input
             ref={inputRef}
             type="text"
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            placeholder="T-shirt, jogger, casquette…"
+            placeholder={t("navigation.searchPlaceholder")}
             className="mt-2 w-full border-b border-line bg-transparent py-2 font-editorial text-heading text-paper placeholder:text-paper/25 focus:border-paper focus:outline-none"
           />
         </div>
         <button
           type="button"
           onClick={onClose}
-          aria-label="Fermer la recherche"
+          aria-label={t("navigation.closeSearch")}
           className="pb-3 text-label text-paper/50 transition-colors hover:text-paper"
         >
-          Fermer
+          {t("common.close")}
         </button>
       </form>
     </motion.div>

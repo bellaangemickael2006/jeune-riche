@@ -24,11 +24,21 @@ export function cn(...inputs: ClassValue[]) {
 // s'accorder sur ce qui compte comme "stock faible".
 export const LOW_STOCK_THRESHOLD = 3;
 
-// Franc CFA (XOF) — devise réelle de la marque (Afrique de l'Ouest francophone).
-export function formatPrice(value: number | string | null | undefined): string {
-  if (value === null || value === undefined) return "Prix à définir";
+// Franc CFA (XOF) — devise réelle de la marque (Afrique de l'Ouest
+// francophone), toujours la même quelle que soit la langue d'affichage :
+// seule la convention d'écriture des nombres (séparateurs, position du
+// symbole) change avec `locale`, jamais la devise elle-même. `locale`
+// accepte directement un code ISO 639-1 ("en", "ar"...) — Intl le résout
+// très bien sans région complète. `undefinedLabel` reste optionnel et par
+// défaut en français pour ne pas casser les appels pas encore mis à jour.
+export function formatPrice(
+  value: number | string | null | undefined,
+  locale: string = "fr",
+  undefinedLabel: string = "Prix à définir"
+): string {
+  if (value === null || value === undefined) return undefinedLabel;
   const n = typeof value === "string" ? Number(value) : value;
-  return new Intl.NumberFormat("fr-FR", {
+  return new Intl.NumberFormat(locale, {
     style: "currency",
     currency: "XOF",
     maximumFractionDigits: 0,
@@ -171,7 +181,10 @@ export function whatsappStatusUpdateLink(
   return `https://wa.me/${number}?text=${encodeURIComponent(buildMessage(orderNumber, trackingNumber))}`;
 }
 
-export type DropCountdownInfo = { target: string; label: string } | null;
+// `labelKey` plutôt qu'un libellé déjà en français : ce module n'a pas accès
+// aux traductions (utilitaire pur, pas un composant) — c'est à l'appelant de
+// résoudre `t(\`drops.countdown.${labelKey}\`)`.
+export type DropCountdownInfo = { target: string; labelKey: "availableIn" | "endsIn" } | null;
 
 // Décide si un drop justifie un compte à rebours visible, et vers quelle
 // date. Basé sur les VRAIES dates (startsAt/endsAt), pas sur le statut
@@ -188,11 +201,11 @@ export function getDropCountdown(
 
   const now = Date.now();
   const startsAt = new Date(drop.startsAt);
-  if (startsAt.getTime() > now) return { target: startsAt.toISOString(), label: "Disponible dans" };
+  if (startsAt.getTime() > now) return { target: startsAt.toISOString(), labelKey: "availableIn" };
 
   if (drop.endsAt) {
     const endsAt = new Date(drop.endsAt);
-    if (endsAt.getTime() > now) return { target: endsAt.toISOString(), label: "Se termine dans" };
+    if (endsAt.getTime() > now) return { target: endsAt.toISOString(), labelKey: "endsIn" };
   }
 
   return null;

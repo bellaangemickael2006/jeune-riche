@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +11,7 @@ const CONFIG_MISSING =
   !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export default function AuthForms() {
+  const { t } = useTranslation();
   const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -26,7 +28,7 @@ export default function AuthForms() {
     setMessage(null);
 
     if (CONFIG_MISSING) {
-      setError("Supabase n'est pas encore configuré.");
+      setError(t("account.supabaseNotConfigured"));
       setLoading(false);
       return;
     }
@@ -43,7 +45,7 @@ export default function AuthForms() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      setMessage("Si un compte existe avec cet email, un lien de réinitialisation vient d'être envoyé.");
+      setMessage(t("account.forgotEmailSent"));
       setLoading(false);
       return;
     }
@@ -66,14 +68,14 @@ export default function AuthForms() {
           body: JSON.stringify({ supabaseId: data.user.id, email, name }),
         });
       }
-      setMessage("Compte créé. Vérifiez votre email pour confirmer votre inscription si nécessaire.");
+      setMessage(t("account.signupSuccess"));
       setLoading(false);
       return;
     }
 
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     if (signInError) {
-      setError("Identifiants invalides.");
+      setError(t("account.invalidCredentials"));
       setLoading(false);
       return;
     }
@@ -90,14 +92,14 @@ export default function AuthForms() {
         className="jr-logo mx-auto h-12 w-12 object-contain"
       />
       <h1 className="mt-4 text-center font-editorial text-2xl text-paper">
-        {mode === "login" ? "Bon retour" : mode === "signup" ? "Rejoindre JEUNE RICHE" : "Mot de passe oublié"}
+        {mode === "login" ? t("account.welcomeBack") : mode === "signup" ? t("account.joinTitle") : t("account.forgotTitle")}
       </h1>
       <p className="mt-1 text-center text-xs text-paper/40">
         {mode === "login"
-          ? "Accédez à votre compte et vos commandes."
+          ? t("account.loginSubtitle")
           : mode === "signup"
-            ? "Créez votre compte en une minute."
-            : "Recevez un lien pour en choisir un nouveau."}
+            ? t("account.signupSubtitle")
+            : t("account.forgotSubtitle")}
       </p>
 
       {mode === "forgot" ? (
@@ -109,7 +111,7 @@ export default function AuthForms() {
           }}
           className="mt-8 text-xs uppercase tracking-widest2 text-paper/50 underline underline-offset-4 hover:text-paper"
         >
-          ← Retour à la connexion
+          ← {t("account.backToLogin")}
         </button>
       ) : (
         <div className="mt-8 flex gap-6 border-b border-line text-xs uppercase tracking-widest2">
@@ -117,21 +119,20 @@ export default function AuthForms() {
             onClick={() => setMode("login")}
             className={cn("pb-3 transition-colors", mode === "login" ? "border-b border-paper text-paper" : "text-paper/40 hover:text-paper/70")}
           >
-            Connexion
+            {t("account.login")}
           </button>
           <button
             onClick={() => setMode("signup")}
             className={cn("pb-3 transition-colors", mode === "signup" ? "border-b border-paper text-paper" : "text-paper/40 hover:text-paper/70")}
           >
-            Créer un compte
+            {t("account.signup")}
           </button>
         </div>
       )}
 
       {CONFIG_MISSING && (
         <p className="mb-4 mt-4 border border-paper/30 bg-paper/5 px-3 py-2 text-xs text-paper">
-          Supabase n&apos;est pas encore configuré — la connexion sera disponible une fois
-          NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY renseignés.
+          {t("account.supabaseNotConfiguredHint")}
         </p>
       )}
       {error && <p className="mb-4 mt-4 text-xs font-medium text-paper">{error}</p>}
@@ -140,7 +141,7 @@ export default function AuthForms() {
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
         {mode === "signup" && (
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Nom</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{t("account.name")}</span>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -150,7 +151,7 @@ export default function AuthForms() {
           </label>
         )}
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Email</span>
+          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{t("account.email")}</span>
           <input
             type="email"
             value={email}
@@ -161,7 +162,7 @@ export default function AuthForms() {
         </label>
         {mode !== "forgot" && (
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Mot de passe</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{t("account.password")}</span>
             <input
               type="password"
               value={password}
@@ -182,7 +183,7 @@ export default function AuthForms() {
             }}
             className="-mt-2 w-fit text-xs text-paper/40 underline underline-offset-4 hover:text-paper/70"
           >
-            Mot de passe oublié ?
+            {t("account.forgotPassword")}
           </button>
         )}
         <button
@@ -193,10 +194,10 @@ export default function AuthForms() {
           {loading
             ? "…"
             : mode === "login"
-              ? "Se connecter"
+              ? t("account.signIn")
               : mode === "signup"
-                ? "Créer mon compte"
-                : "Envoyer le lien"}
+                ? t("account.createAccount")
+                : t("account.sendLink")}
         </button>
       </form>
     </div>

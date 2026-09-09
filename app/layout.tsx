@@ -4,6 +4,9 @@ import { MotionConfig } from "framer-motion";
 import "./globals.css";
 import SiteChrome from "@/components/providers/SiteChrome";
 import StoreHydration from "@/components/providers/StoreHydration";
+import I18nProvider from "@/components/providers/I18nProvider";
+import { getLocale, getServerTranslation, loadResource } from "@/lib/i18n/server";
+import { getDirection } from "@/lib/i18n/languages";
 import { siteUrl } from "@/lib/utils";
 
 const anton = Anton({
@@ -27,27 +30,36 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl()),
-  title: {
-    default: "JEUNE RICHE",
-    template: "%s — JEUNE RICHE",
-  },
-  description: "JEUNE RICHE — luxe streetwear, identité tribale.",
-  openGraph: {
-    title: "JEUNE RICHE",
-    description: "JEUNE RICHE — luxe streetwear, identité tribale.",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "JEUNE RICHE",
-  },
-};
+// Titre/description traduits selon la langue résolue (cookie ou
+// Accept-Language) — metadataBase reste fixe, ce n'est pas un contenu
+// linguistique.
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getServerTranslation();
+  const description = t("meta.description");
+  return {
+    metadataBase: new URL(siteUrl()),
+    title: {
+      default: "JEUNE RICHE",
+      template: "%s — JEUNE RICHE",
+    },
+    description,
+    openGraph: {
+      title: "JEUNE RICHE",
+      description,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "JEUNE RICHE",
+    },
+  };
+}
 
 // Doit s'exécuter avant l'hydratation React pour éviter un flash du mauvais
 // thème (le choix de l'utilisateur ne vit que dans localStorage, inconnu du
-// rendu serveur) — voir ThemeToggle.tsx pour la même logique côté clic.
+// rendu serveur) — voir ThemeToggle.tsx pour la même logique côté clic. La
+// langue n'a pas besoin de cet artifice : elle est résolue via cookie donc
+// déjà correcte dès le premier rendu serveur (voir getLocale ci-dessous).
 const THEME_INIT_SCRIPT = `
   (function () {
     try {
@@ -82,10 +94,15 @@ const WEBSITE_JSON_LD = {
   url: siteUrl(),
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getLocale();
+  const dir = getDirection(locale);
+  const initialResource = await loadResource(locale);
+
   return (
     <html
-      lang="fr"
+      lang={locale}
+      dir={dir}
       className={`${anton.variable} ${fraunces.variable} ${inter.variable}`}
       // Le script ci-dessous pose data-theme AVANT l'hydratation (lu depuis
       // localStorage, inconnu du rendu serveur) — un avertissement
@@ -105,10 +122,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-ink font-body text-paper antialiased">
-        <StoreHydration />
-        <MotionConfig reducedMotion="user">
-          <SiteChrome>{children}</SiteChrome>
-        </MotionConfig>
+        <I18nProvider initialLocale={locale} initialResource={initialResource}>
+          <StoreHydration />
+          <MotionConfig reducedMotion="user">
+            <SiteChrome>{children}</SiteChrome>
+          </MotionConfig>
+        </I18nProvider>
       </body>
     </html>
   );

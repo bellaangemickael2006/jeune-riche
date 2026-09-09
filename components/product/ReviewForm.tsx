@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { createReview, type CreateReviewState } from "@/lib/actions/reviews";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +15,7 @@ export default function ReviewForm({
   productSlug: string;
   isLoggedIn: boolean;
 }) {
+  const { t } = useTranslation();
   const boundAction = createReview.bind(null, productId, productSlug);
   const [state, formAction, pending] = useActionState<CreateReviewState, FormData>(boundAction, null);
   const [rating, setRating] = useState(5);
@@ -22,9 +24,9 @@ export default function ReviewForm({
     return (
       <p className="mt-6 border-t border-line pt-6 text-sm text-paper/50">
         <Link href="/compte" className="underline underline-offset-4 hover:text-paper">
-          Connectez-vous
+          {t("product.loginToReview")}
         </Link>{" "}
-        pour laisser un avis sur ce produit.
+        {t("product.loginToReviewSuffix")}
       </p>
     );
   }
@@ -35,14 +37,14 @@ export default function ReviewForm({
 
   return (
     <form action={formAction} className="mt-6 flex flex-col gap-3 border-t border-line pt-6">
-      <p className="text-label text-paper/50">Laisser un avis</p>
+      <p className="text-label text-paper/50">{t("product.leaveReview")}</p>
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((n) => (
           <button
             key={n}
             type="button"
             onClick={() => setRating(n)}
-            aria-label={`${n} étoile${n > 1 ? "s" : ""}`}
+            aria-label={t("product.starRating", { count: n })}
             aria-pressed={n === rating}
             className={cn("text-lg leading-none transition-colors", n <= rating ? "text-paper" : "text-paper/25 hover:text-paper/50")}
           >
@@ -56,7 +58,7 @@ export default function ReviewForm({
         required
         minLength={5}
         rows={3}
-        placeholder="Votre avis sur ce produit..."
+        placeholder={t("product.reviewPlaceholder")}
         className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
       />
       {state && !state.ok && <p className="text-xs text-paper/60">{state.message}</p>}
@@ -65,7 +67,7 @@ export default function ReviewForm({
         disabled={pending}
         className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
       >
-        {pending ? "Envoi..." : "Publier l'avis"}
+        {pending ? t("product.sending") : t("product.publishReview")}
       </button>
     </form>
   );

@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
 import PlaceholderPage from "@/components/ui/PlaceholderPage";
+import { getServerTranslation } from "@/lib/i18n/server";
 
-export const metadata: Metadata = { title: "Conditions générales" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getServerTranslation();
+  return { title: t("legal.terms.eyebrow") };
+}
 
-export default function ConditionsPage() {
+export default async function ConditionsPage() {
+  const { t } = await getServerTranslation();
   return (
     <PlaceholderPage
-      eyebrow="Légal"
-      title="Conditions générales"
-      message="Nos conditions générales de vente sont en cours de rédaction et seront publiées ici avant l'ouverture des ventes."
+      eyebrow={t("legal.terms.eyebrow")}
+      title={t("legal.terms.title")}
+      message={t("legal.terms.message")}
     />
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useCart } from "@/store/cart";
 import { sanitizePersonalization, swatchColor, cn, siteUrl, whatsappProductLink, LOW_STOCK_THRESHOLD } from "@/lib/utils";
 
@@ -34,6 +35,7 @@ export default function AddToCart({
   personalization?: string;
   onPersonalizationChange?: (value: string) => void;
 }) {
+  const { t } = useTranslation();
   const colors = useMemo(() => Array.from(new Set(variants.map((v) => v.color))), [variants]);
   const [internalColor, setInternalColor] = useState(colors[0] ?? "");
   const color = controlledColor ?? internalColor;
@@ -74,7 +76,7 @@ export default function AddToCart({
     <div className="flex flex-col gap-6">
       {colors.length > 0 && (
         <div>
-          <p className="mb-2 text-label text-paper/50">Couleur</p>
+          <p className="mb-2 text-label text-paper/50">{t("product.color")}</p>
           <div className="flex flex-wrap gap-4">
             {colors.map((c) => (
               <button
@@ -106,7 +108,7 @@ export default function AddToCart({
       {sizesForColor.length > 0 && (
         <div>
           <label htmlFor="size-select" className="mb-2 block text-label text-paper/50">
-            Taille
+            {t("product.size")}
           </label>
           <div className="flex gap-3">
             <select
@@ -118,7 +120,7 @@ export default function AddToCart({
               {sizesForColor.map((v) => (
                 <option key={v.id} value={v.size} disabled={v.stock === 0} className="bg-ink">
                   {v.size}
-                  {v.stock === 0 ? " — épuisé" : ""}
+                  {v.stock === 0 ? ` — ${t("product.outOfStock")}` : ""}
                 </option>
               ))}
             </select>
@@ -131,17 +133,17 @@ export default function AddToCart({
               )}
             >
               {price === null
-                ? "Prix à définir"
+                ? t("product.priceUndefined")
                 : !selectedVariant || !inStock
-                  ? "Indisponible"
+                  ? t("product.unavailable")
                   : added
-                    ? "Ajouté ✓"
-                    : "Ajouter au panier"}
+                    ? t("product.added")
+                    : t("product.addToCart")}
             </button>
           </div>
           {selectedVariant && inStock && selectedVariant.stock <= LOW_STOCK_THRESHOLD && (
             <p className="mt-2 text-[11px] uppercase tracking-widest2 text-paper/70">
-              Plus que {selectedVariant.stock} en stock
+              {t("product.lowStock", { count: selectedVariant.stock })}
             </p>
           )}
         </div>
@@ -151,7 +153,9 @@ export default function AddToCart({
           le produit, la couleur et la taille sélectionnées — le client n'a
           rien à retaper. En Côte d'Ivoire, WhatsApp convertit souvent mieux
           qu'un tunnel de paiement web classique, d'où ce lien en plus (pas à
-          la place) du panier. */}
+          la place) du panier. Le message reste toujours en français (voir
+          lib/utils.ts) : c'est un message métier lu par l'équipe côté
+          boutique, pas une chaîne d'interface visiteur. */}
       <a
         href={whatsappProductLink(productName, {
           color: color || undefined,
@@ -163,14 +167,12 @@ export default function AddToCart({
         className="flex items-center justify-center gap-2 border border-line px-6 py-3 text-xs uppercase tracking-widest2 text-paper/70 transition-colors hover:border-paper hover:text-paper"
       >
         <WhatsAppIcon />
-        Demander sur WhatsApp
+        {t("product.askOnWhatsapp")}
       </a>
 
       {personalizationEnabled && (
         <div>
-          <p className="mb-2 text-label text-paper/50">
-            Personnalisation (optionnelle)
-          </p>
+          <p className="mb-2 text-label text-paper/50">{t("product.personalization")}</p>
           <input
             type="text"
             value={personalization}
@@ -178,18 +180,18 @@ export default function AddToCart({
               setPersonalization(sanitizePersonalization(e.target.value, personalizationMaxLen))
             }
             maxLength={personalizationMaxLen}
-            placeholder="Votre nom ou pseudo"
+            placeholder={t("product.personalizationPlaceholder")}
             className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
           />
           <div className="mt-2 flex items-center justify-between text-[11px] text-paper/40">
-            <span>Lettres, chiffres, espaces, - et _ uniquement.</span>
+            <span>{t("product.personalizationHint")}</span>
             <span>
               {personalization.length}/{personalizationMaxLen}
             </span>
           </div>
           {personalization && (
             <div className="mt-4 flex flex-col items-center gap-3 border border-line bg-line/20 px-6 py-10">
-              <p className="text-label text-paper/30">Aperçu de la broderie</p>
+              <p className="text-label text-paper/30">{t("product.personalizationPreview")}</p>
               <p className="font-display text-display uppercase leading-none text-paper">
                 {personalization}
               </p>
@@ -212,6 +214,7 @@ function WhatsAppIcon() {
 }
 
 function NotifyMe({ variantId }: { variantId: string }) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
 
@@ -225,7 +228,7 @@ function NotifyMe({ variantId }: { variantId: string }) {
     setSent(true);
   }
 
-  if (sent) return <p className="text-xs text-paper/60">Nous vous préviendrons dès le retour en stock.</p>;
+  if (sent) return <p className="text-xs text-paper/60">{t("product.notifyMeConfirmation")}</p>;
 
   return (
     <form onSubmit={handleSubmit} className="flex gap-2">
@@ -234,11 +237,11 @@ function NotifyMe({ variantId }: { variantId: string }) {
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Votre email"
+        placeholder={t("product.notifyMePlaceholder")}
         className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
       />
       <button className="shrink-0 border border-paper px-4 text-xs uppercase tracking-widest2 text-paper">
-        Me prévenir
+        {t("product.notifyMeButton")}
       </button>
     </form>
   );

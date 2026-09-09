@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { getServerTranslation } from "@/lib/i18n/server";
 
 export default async function ConfirmationPage({
   searchParams,
@@ -7,6 +8,7 @@ export default async function ConfirmationPage({
   searchParams: Promise<{ numero?: string }>;
 }) {
   const { numero } = await searchParams;
+  const { t } = await getServerTranslation();
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-ink px-5 text-center">
@@ -17,14 +19,11 @@ export default async function ConfirmationPage({
         height={100}
         className="jr-logo h-16 w-16 object-contain"
       />
-      <h1 className="font-editorial text-3xl text-paper md:text-4xl">Commande enregistrée</h1>
-      {numero && <p className="text-sm text-paper/60">Référence : {numero}</p>}
-      <p className="max-w-sm text-sm text-paper/50">
-        Un email de confirmation vous sera envoyé. Notre équipe vous recontactera pour finaliser le
-        règlement et l&apos;expédition.
-      </p>
+      <h1 className="font-editorial text-3xl text-paper md:text-4xl">{t("checkout.confirmation.title")}</h1>
+      {numero && <p className="text-sm text-paper/60">{t("checkout.confirmation.reference", { number: numero })}</p>}
+      <p className="max-w-sm text-sm text-paper/50">{t("checkout.confirmation.message")}</p>
       <Link href="/catalogue" className="mt-4 text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 hover:text-paper/70">
-        Retour au catalogue
+        {t("checkout.confirmation.backToCatalogue")}
       </Link>
     </div>
   );

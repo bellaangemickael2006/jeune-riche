@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import AuthForms from "@/components/account/AuthForms";
 import AccountDashboard from "@/components/account/AccountDashboard";
+import { getServerTranslation } from "@/lib/i18n/server";
 
-export const metadata: Metadata = { title: "Compte" };
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getServerTranslation();
+  return { title: t("navigation.account") };
+}
 export const dynamic = "force-dynamic";
 
 async function getSessionUser() {

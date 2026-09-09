@@ -1,12 +1,17 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
+
 const WHATSAPP_NUMBER = "2250777585367";
 
 export default function WhatsappButton() {
+  const { t } = useTranslation();
   return (
     <a
       href={`https://wa.me/${WHATSAPP_NUMBER}`}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Contactez-nous sur WhatsApp"
+      aria-label={t("common.contactWhatsapp")}
       className="fixed bottom-5 right-5 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-paper shadow-lg shadow-black/40 transition-transform hover:scale-105"
     >
       <svg viewBox="0 0 32 32" className="h-7 w-7" fill="currentColor" aria-hidden="true">

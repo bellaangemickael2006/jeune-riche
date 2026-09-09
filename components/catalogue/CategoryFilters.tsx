@@ -8,9 +8,11 @@ type Cat = { slug: string; name: string };
 export default function CategoryFilters({
   categories,
   active,
+  allLabel,
 }: {
   categories: Cat[];
   active?: string;
+  allLabel: string;
 }) {
   return (
     <div className="flex flex-wrap gap-2">
@@ -21,7 +23,7 @@ export default function CategoryFilters({
           !active ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
         )}
       >
-        Tout
+        {allLabel}
       </Link>
       {categories.map((cat) => (
         <Link

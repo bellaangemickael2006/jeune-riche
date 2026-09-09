@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import ImageZoomModal from "@/components/product/ImageZoomModal";
 import {
@@ -23,6 +24,7 @@ export default function Gallery({
    * position réelle a été calibrée pour l'image affichée. */
   personalization?: string;
 }) {
+  const { t } = useTranslation();
   const [active, setActive] = useState(0);
   const [zoomOpen, setZoomOpen] = useState(false);
   const current = images[active];
@@ -49,7 +51,7 @@ export default function Gallery({
   if (images.length === 0) {
     return (
       <div className="flex aspect-[4/5] items-center justify-center bg-studio text-sm text-ink/40">
-        Aucune image disponible
+        {t("product.noImage")}
       </div>
     );
   }
@@ -105,12 +107,12 @@ export default function Gallery({
         </AnimatePresence>
         {current.type === "MOCKUP" && (
           <span className="absolute bottom-3 left-3 bg-ink/85 px-2 py-1 text-label text-paper/80">
-            Référence de design — photo produit à venir
+            {t("product.mockupBadge")}
           </span>
         )}
         <button
           onClick={() => setZoomOpen(true)}
-          aria-label="Zoomer sur la photo"
+          aria-label={t("product.zoomAlt")}
           className="absolute bottom-3 right-3 flex h-9 w-9 items-center justify-center bg-ink/85 text-paper/80 transition-colors hover:text-paper"
         >
           <ZoomIcon />
@@ -128,7 +130,7 @@ export default function Gallery({
                 "relative aspect-square overflow-hidden bg-studio",
                 i === active ? "ring-2 ring-paper" : "opacity-60 hover:opacity-100"
               )}
-              aria-label={`Voir l'image ${i + 1}`}
+              aria-label={t("product.viewImage", { number: i + 1 })}
             >
               <Image src={img.url} alt={img.alt || productName} fill sizes="80px" className="object-contain p-1.5" />
             </button>

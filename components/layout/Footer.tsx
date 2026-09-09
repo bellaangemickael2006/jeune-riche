@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import FadeIn from "@/components/ui/FadeIn";
 import NewsletterForm from "@/components/layout/NewsletterForm";
 
@@ -12,33 +15,35 @@ const SOCIAL_LINKS = {
   snapchat: "https://www.snapchat.com/add/jeune_riche01?share_id=bmUySqcSYr8&locale=fr-FR",
 };
 
-const COLUMNS = [
-  {
-    title: "Marque",
-    links: [
-      { label: "Catalogue", href: "/catalogue" },
-      { label: "Manifeste", href: "/manifeste" },
-      { label: "Drops", href: "/drops" },
-    ],
-  },
-  {
-    title: "Service",
-    links: [
-      { label: "Livraison", href: "/livraison" },
-      { label: "Retours", href: "/retours" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-  {
-    title: "Légal",
-    links: [
-      { label: "Conditions générales", href: "/conditions" },
-      { label: "Confidentialité", href: "/confidentialite" },
-    ],
-  },
-];
-
 export default function Footer() {
+  const { t } = useTranslation();
+
+  const COLUMNS = [
+    {
+      title: t("footer.columnBrand"),
+      links: [
+        { label: t("navigation.collection"), href: "/catalogue" },
+        { label: t("navigation.manifesto"), href: "/manifeste" },
+        { label: t("navigation.drops"), href: "/drops" },
+      ],
+    },
+    {
+      title: t("footer.columnService"),
+      links: [
+        { label: t("footer.shipping"), href: "/livraison" },
+        { label: t("footer.returns"), href: "/retours" },
+        { label: t("footer.contact"), href: "/contact" },
+      ],
+    },
+    {
+      title: t("footer.columnLegal"),
+      links: [
+        { label: t("footer.terms"), href: "/conditions" },
+        { label: t("footer.privacy"), href: "/confidentialite" },
+      ],
+    },
+  ];
+
   return (
     <footer className="border-t border-line bg-ink">
       {/* La dernière scène du site : le wordmark, seul, en très grand —
@@ -58,9 +63,7 @@ export default function Footer() {
       <div className="px-5 pb-16 pt-14 md:px-10 md:pb-20 md:pt-16">
         <div className="grid gap-12 md:grid-cols-[1.2fr_repeat(3,1fr)]">
           <div>
-            <p className="text-body max-w-xs text-paper/50">
-              Newsletter — soyez informé des prochains drops.
-            </p>
+            <p className="text-body max-w-xs text-paper/50">{t("footer.newsletter")}</p>
             <NewsletterForm />
             <SocialLinks />
           </div>
@@ -83,8 +86,8 @@ export default function Footer() {
           ))}
         </div>
         <div className="mt-16 flex flex-col gap-3 border-t border-line pt-6 text-caption text-paper/30 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} Jeune Riche.</span>
-          <span>Côte d&apos;Ivoire — Afrique de l&apos;Ouest</span>
+          <span>{t("footer.copyright", { year: new Date().getFullYear() })}</span>
+          <span>{t("footer.location")}</span>
         </div>
       </div>
     </footer>
@@ -144,4 +147,3 @@ function SocialLinks() {
     </div>
   );
 }
-
