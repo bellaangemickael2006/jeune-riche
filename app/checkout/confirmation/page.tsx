@@ -15,7 +15,7 @@ export default async function ConfirmationPage({
         alt="JEUNE RICHE"
         width={100}
         height={100}
-        className="h-16 w-16 object-contain"
+        className="jr-logo h-16 w-16 object-contain"
       />
       <h1 className="font-editorial text-3xl text-paper md:text-4xl">Commande enregistrée</h1>
       {numero && <p className="text-sm text-paper/60">Référence : {numero}</p>}

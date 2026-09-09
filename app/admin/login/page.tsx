@@ -66,7 +66,7 @@ function AdminLoginForm() {
           alt="JEUNE RICHE"
           width={100}
           height={100}
-          className="mx-auto h-10 w-10 object-contain"
+          className="jr-logo mx-auto h-10 w-10 object-contain"
         />
         <h1 className="mt-4 text-center font-editorial text-2xl text-paper">
           {mode === "login" ? "Administration" : "Mot de passe oublié"}

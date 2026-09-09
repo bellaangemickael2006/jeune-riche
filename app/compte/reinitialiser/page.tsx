@@ -86,7 +86,7 @@ export default function ResetPasswordPage() {
           alt="JEUNE RICHE"
           width={120}
           height={120}
-          className="mx-auto h-12 w-12 object-contain"
+          className="jr-logo mx-auto h-12 w-12 object-contain"
         />
         <h1 className="mt-4 text-center font-editorial text-2xl text-paper">Nouveau mot de passe</h1>
 
