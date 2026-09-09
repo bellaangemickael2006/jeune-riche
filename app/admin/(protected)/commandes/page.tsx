@@ -84,7 +84,8 @@ export default async function AdminOrdersPage({
       {available && orders.length === 0 ? (
         <p className="mt-8 text-sm text-paper/40">Aucune commande trouvée.</p>
       ) : (
-        <table className="mt-8 w-full text-left text-sm">
+        <div className="mt-8 overflow-x-auto">
+        <table className="w-full min-w-[720px] text-left text-sm">
           <thead>
             <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
               <th className="py-2">Référence</th>
@@ -121,6 +122,7 @@ export default async function AdminOrdersPage({
             })}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

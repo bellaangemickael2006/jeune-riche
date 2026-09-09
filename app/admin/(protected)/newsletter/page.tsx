@@ -25,7 +25,8 @@ export default async function AdminNewsletterPage() {
       {available && subscribers.length === 0 ? (
         <p className="mt-8 text-sm text-paper/40">Aucun abonné pour le moment.</p>
       ) : (
-        <table className="mt-8 w-full text-left text-sm">
+        <div className="mt-8 overflow-x-auto">
+        <table className="w-full min-w-[480px] text-left text-sm">
           <thead>
             <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
               <th className="py-2">Email</th>
@@ -43,6 +44,7 @@ export default async function AdminNewsletterPage() {
             ))}
           </tbody>
         </table>
+        </div>
       )}
 
       {available && subscribers.length > 0 && <CampaignForm />}

@@ -26,8 +26,8 @@ export default async function AdminReviewsPage() {
         <ul className="mt-8 divide-y divide-line">
           {reviews.map((r) => (
             <li key={r.id} className="py-5">
-              <div className="flex items-center justify-between">
-                <div>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="min-w-0">
                   <p className="text-sm text-paper">
                     {r.product.name} — {r.user.name ?? r.user.email}
                   </p>

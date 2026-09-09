@@ -104,11 +104,11 @@ export default async function AdminDropDetailPage({ params }: { params: Promise<
         ) : (
           <ul className="mt-3 divide-y divide-line">
             {drop.products.map((p) => (
-              <li key={p.id} className="flex items-center justify-between py-3 text-sm">
-                <Link href={`/admin/produits/${p.id}`} className="text-paper hover:underline">
+              <li key={p.id} className="flex items-center justify-between gap-3 py-3 text-sm">
+                <Link href={`/admin/produits/${p.id}`} className="min-w-0 text-paper hover:underline">
                   {p.name}
                 </Link>
-                <form action={removeProductFromDrop.bind(null, drop.id, p.id)}>
+                <form action={removeProductFromDrop.bind(null, drop.id, p.id)} className="shrink-0">
                   <button className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper">
                     Retirer
                   </button>

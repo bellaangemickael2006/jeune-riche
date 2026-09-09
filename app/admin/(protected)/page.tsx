@@ -157,7 +157,7 @@ export default async function AdminDashboard() {
           ) : (
             <ul className="mt-3 divide-y divide-line border-y border-line">
               {stats.recentOrders.map((o) => (
-                <li key={o.id} className="flex items-center justify-between py-3 text-sm">
+                <li key={o.id} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 py-3 text-sm">
                   <Link href={`/admin/commandes/${o.id}`} className="text-paper hover:underline">
                     {o.orderNumber}
                   </Link>

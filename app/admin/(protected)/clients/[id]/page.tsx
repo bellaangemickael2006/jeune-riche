@@ -50,8 +50,8 @@ export default async function AdminClientDetailPage({ params }: { params: Promis
         ) : (
           <ul className="mt-3 divide-y divide-line">
             {client.orders.map((o) => (
-              <li key={o.id} className="flex items-center justify-between py-3 text-sm">
-                <div>
+              <li key={o.id} className="flex items-center justify-between gap-3 py-3 text-sm">
+                <div className="min-w-0">
                   <Link href={`/admin/commandes/${o.id}`} className="text-paper hover:underline">
                     {o.orderNumber}
                   </Link>
@@ -59,7 +59,7 @@ export default async function AdminClientDetailPage({ params }: { params: Promis
                     {o.createdAt.toLocaleDateString("fr-FR")} · {o.items.length} article(s)
                   </p>
                 </div>
-                <div className="text-right">
+                <div className="shrink-0 text-right">
                   <p className="text-paper/70">{formatPrice(Number(o.total))}</p>
                   <p className="text-[10px] uppercase tracking-widest2 text-paper/40">{o.status}</p>
                 </div>

@@ -29,8 +29,8 @@ export default async function AdminPromoCodesPage() {
             const expired = c.expiresAt ? c.expiresAt.getTime() < Date.now() : false;
             const exhausted = c.maxUses !== null && c.usedCount >= c.maxUses;
             return (
-              <li key={c.id} className="flex items-center justify-between gap-4 py-4">
-                <div>
+              <li key={c.id} className="flex flex-wrap items-center justify-between gap-4 py-4">
+                <div className="min-w-0">
                   <p className="font-display text-sm uppercase text-paper">{c.code}</p>
                   <p className="text-xs text-paper/40">
                     {c.type === "PERCENT" ? `-${Number(c.value)}%` : `-${formatPrice(Number(c.value))}`}
@@ -39,7 +39,7 @@ export default async function AdminPromoCodesPage() {
                     {c.expiresAt ? ` · expire le ${c.expiresAt.toLocaleDateString("fr-FR")}` : ""}
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <span
                     className={cn(
                       "border px-2 py-1 text-[10px] uppercase tracking-widest2",

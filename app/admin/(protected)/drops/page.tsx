@@ -25,15 +25,15 @@ export default async function AdminDropsPage() {
         <ul className="mt-8 divide-y divide-line">
           {drops.length === 0 && <p className="py-4 text-sm text-paper/40">Aucun drop actuellement.</p>}
           {drops.map((d) => (
-            <li key={d.id} className="flex items-center justify-between py-4">
-              <Link href={`/admin/drops/${d.id}`} className="group">
+            <li key={d.id} className="flex items-center justify-between gap-3 py-4">
+              <Link href={`/admin/drops/${d.id}`} className="group min-w-0">
                 <p className="text-sm text-paper group-hover:underline">{d.name}</p>
                 <p className="text-xs text-paper/40">
                   {d.startsAt.toLocaleDateString("fr-FR")}
                   {d.endsAt ? ` → ${d.endsAt.toLocaleDateString("fr-FR")}` : ""} · {d.products.length} produit(s)
                 </p>
               </Link>
-              <span className="border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
+              <span className="shrink-0 border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
                 {d.status}
               </span>
             </li>

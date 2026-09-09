@@ -35,7 +35,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
       <h1 className="mt-3 font-display text-2xl uppercase text-paper">{order.orderNumber}</h1>
       <p className="mt-1 text-xs text-paper/40">{order.createdAt.toLocaleString("fr-FR")}</p>
 
-      <div className="mt-8 grid grid-cols-2 gap-8">
+      <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
         <div>
           <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Client</h2>
           <p className="mt-2 text-sm text-paper">{order.customerName}</p>
@@ -141,15 +141,15 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
         <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Articles</h2>
         <ul className="mt-3 divide-y divide-line">
           {order.items.map((item) => (
-            <li key={item.id} className="flex justify-between py-3 text-sm">
-              <div>
+            <li key={item.id} className="flex justify-between gap-3 py-3 text-sm">
+              <div className="min-w-0">
                 <p className="text-paper">{item.productName}</p>
                 <p className="text-paper/40">
                   {item.color} / {item.size} × {item.quantity}
                   {item.personalization && ` — "${item.personalization}"`}
                 </p>
               </div>
-              <p className="text-paper/70">{formatPrice(Number(item.unitPrice) * item.quantity)}</p>
+              <p className="shrink-0 text-paper/70">{formatPrice(Number(item.unitPrice) * item.quantity)}</p>
             </li>
           ))}
         </ul>

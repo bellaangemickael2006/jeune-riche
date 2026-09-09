@@ -38,7 +38,8 @@ export default async function AdminClientsPage({
       {available && clients.length === 0 ? (
         <p className="mt-8 text-sm text-paper/40">Aucun client trouvé.</p>
       ) : (
-        <table className="mt-8 w-full text-left text-sm">
+        <div className="mt-8 overflow-x-auto">
+        <table className="w-full min-w-[600px] text-left text-sm">
           <thead>
             <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
               <th className="py-2">Nom</th>
@@ -69,6 +70,7 @@ export default async function AdminClientsPage({
             })}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

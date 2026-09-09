@@ -11,7 +11,7 @@ export default async function ProtectedAdminLayout({ children }: { children: Rea
   return (
     <div className="min-h-screen bg-ink font-body">
       <AdminSidebar />
-      <div className="ml-56 min-h-screen px-10 py-10">{children}</div>
+      <div className="min-h-screen px-5 pb-10 pt-24 lg:ml-56 lg:px-10 lg:py-10">{children}</div>
     </div>
   );
 }

@@ -104,7 +104,14 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
       <section className="mt-12">
         <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Variantes (taille / couleur / stock)</h2>
-        <table className="mt-4 w-full text-left text-sm">
+        {/* overflow-x-auto : cette table (couleur/taille/SKU/stock/action) ne
+            tient pas sur un écran mobile — un SKU généré est long et pousse
+            le stock et le bouton "Mettre à jour" hors champ. Le scroll
+            horizontal garde la table intacte plutôt que de la réécrire en
+            cartes, elle reste un outil interne utilisé occasionnellement
+            depuis un téléphone. */}
+        <div className="mt-4 overflow-x-auto">
+        <table className="w-full min-w-[640px] text-left text-sm">
           <thead>
             <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
               <th className="py-2">Couleur</th>
@@ -151,6 +158,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
             ))}
           </tbody>
         </table>
+        </div>
 
         <form action={addVariantWithId} className="mt-4 flex flex-wrap items-end gap-3">
           <label className="block">
