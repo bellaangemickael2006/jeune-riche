@@ -34,7 +34,8 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
         <div>
           <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Client</h2>
           <p className="mt-2 text-sm text-paper">{order.customerName}</p>
-          <p className="text-sm text-paper/60">{order.customerEmail}</p>
+          {address.phone && <p className="text-sm font-medium text-paper">WhatsApp : {address.phone}</p>}
+          {order.customerEmail && <p className="text-sm text-paper/60">{order.customerEmail}</p>}
           {customer && (
             <Link
               href={`/admin/clients/${customer.id}`}
@@ -49,7 +50,6 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
           <p className="mt-2 text-sm text-paper/70">
             {address.line1}, {address.postalCode} {address.city}, {address.country}
           </p>
-          {address.phone && <p className="text-sm text-paper/50">{address.phone}</p>}
         </div>
       </div>
 

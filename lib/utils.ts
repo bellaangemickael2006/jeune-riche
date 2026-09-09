@@ -64,6 +64,45 @@ export function whatsappProductLink(
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
+// Message envoyé sur WhatsApp juste après la confirmation d'une commande —
+// le client atterrit directement dans la conversation avec tout le détail
+// déjà rédigé, à envoyer en un tap. C'est le canal de contact principal
+// (téléphone obligatoire au checkout) : la commande est déjà enregistrée en
+// base à ce stade, ce message sert à amorcer l'échange pour le règlement et
+// l'expédition, pas à la valider.
+export function whatsappOrderLink(params: {
+  orderNumber: string;
+  customerName: string;
+  phone: string;
+  address: { line1: string; city: string; postalCode?: string | null; country: string };
+  items: {
+    productName: string;
+    color: string;
+    size: string;
+    quantity: number;
+    unitPrice: number;
+    personalization: string | null;
+  }[];
+  total: number;
+}): string {
+  const lines = [
+    `Bonjour, je viens de confirmer ma commande ${params.orderNumber} sur JEUNE RICHE.`,
+    "",
+    "Articles :",
+    ...params.items.map((i) => {
+      const detail = i.personalization ? ` (personnalisation : "${i.personalization}")` : "";
+      return `- ${i.productName} — ${i.color}/${i.size} × ${i.quantity}${detail} — ${formatPrice(i.unitPrice * i.quantity)}`;
+    }),
+    "",
+    `Total : ${formatPrice(params.total)}`,
+    "",
+    `Nom : ${params.customerName}`,
+    `Téléphone : ${params.phone}`,
+    `Adresse : ${params.address.line1}, ${params.address.city}${params.address.postalCode ? " " + params.address.postalCode : ""}, ${params.address.country}`,
+  ];
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
+}
+
 export type DropCountdownInfo = { target: string; label: string } | null;
 
 // Décide si un drop justifie un compte à rebours visible, et vers quelle

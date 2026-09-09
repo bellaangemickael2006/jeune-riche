@@ -108,47 +108,6 @@ export function restockEmail(params: { productName: string; size: string; color:
   `);
 }
 
-export function orderConfirmationEmail(params: {
-  orderNumber: string;
-  customerName: string;
-  items: { productName: string; size: string; color: string; quantity: number; unitPrice: number; personalization: string | null }[];
-  total: number;
-}) {
-  const formatXof = (n: number) =>
-    new Intl.NumberFormat("fr-FR", { style: "currency", currency: "XOF", maximumFractionDigits: 0 }).format(n);
-
-  const rows = params.items
-    .map(
-      (i) => `
-      <tr>
-        <td style="padding:8px 0;border-bottom:1px solid #262626;">
-          ${i.productName} — ${i.color} / ${i.size} × ${i.quantity}
-          ${i.personalization ? `<br/><span style="color:#9a9a9a;">Personnalisation : ${i.personalization}</span>` : ""}
-        </td>
-        <td style="padding:8px 0;border-bottom:1px solid #262626;text-align:right;white-space:nowrap;">
-          ${formatXof(i.unitPrice * i.quantity)}
-        </td>
-      </tr>`
-    )
-    .join("");
-
-  return emailShell(`
-    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Commande enregistrée</p>
-    <p style="margin:0 0 8px;">Bonjour ${params.customerName},</p>
-    <p style="margin:0 0 20px;color:#9a9a9a;">
-      Votre commande <strong style="color:#f5f4f1;">${params.orderNumber}</strong> a bien été enregistrée.
-      Notre équipe vous recontactera pour finaliser le règlement et l'expédition.
-    </p>
-    <table style="width:100%;border-collapse:collapse;font-size:13px;">
-      ${rows}
-      <tr>
-        <td style="padding:12px 0 0;font-weight:700;">Total</td>
-        <td style="padding:12px 0 0;text-align:right;font-weight:700;">${formatXof(params.total)}</td>
-      </tr>
-    </table>
-  `);
-}
-
 export function abandonedCartEmail(params: {
   items: { productName: string; size: string; color: string; quantity: number }[];
   total: number;

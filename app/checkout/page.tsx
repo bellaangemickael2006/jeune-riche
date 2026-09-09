@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useCart } from "@/store/cart";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice, cn } from "@/lib/utils";
@@ -11,7 +10,6 @@ type Step = "informations" | "livraison" | "recapitulatif";
 
 export default function CheckoutPage() {
   const { lines, total, clear } = useCart();
-  const router = useRouter();
   const [step, setStep] = useState<Step>("informations");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -114,7 +112,9 @@ export default function CheckoutPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "Erreur inconnue.");
       clear();
-      router.push(`/checkout/confirmation?numero=${data.orderNumber}`);
+      // La commande est déjà enregistrée à ce stade — ce lien sert juste à
+      // amorcer la conversation, pas à valider la commande.
+      window.location.href = data.whatsappUrl;
     } catch (e) {
       setError(e instanceof Error ? e.message : "Une erreur est survenue.");
     } finally {
@@ -167,31 +167,40 @@ export default function CheckoutPage() {
           <div className="flex flex-col gap-4">
             <h1 className="font-editorial text-2xl text-paper">Vos informations</h1>
             <Field label="Nom complet" value={form.customerName} onChange={(v) => update("customerName", v)} />
-            <Field label="Email" type="email" value={form.customerEmail} onChange={(v) => update("customerEmail", v)} />
+            <Field
+              label="Email (optionnel)"
+              type="email"
+              value={form.customerEmail}
+              onChange={(v) => update("customerEmail", v)}
+              required={false}
+            />
             <button
               onClick={() => {
                 setStep("livraison");
                 // Snapshot pour la relance panier abandonné — best-effort,
                 // ne doit jamais bloquer ni perturber le passage à l'étape
-                // suivante si l'appel échoue.
-                fetch("/api/cart/snapshot", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    email: form.customerEmail,
-                    items: lines.map((l) => ({
-                      productName: l.productName,
-                      size: l.size,
-                      color: l.color,
-                      quantity: l.quantity,
-                      unitPrice: l.unitPrice,
-                      personalization: l.personalization,
-                    })),
-                    total: subtotal,
-                  }),
-                }).catch(() => {});
+                // suivante si l'appel échoue. Sans email, rien à relancer :
+                // inutile d'appeler une route qui rejettera la requête.
+                if (form.customerEmail) {
+                  fetch("/api/cart/snapshot", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      email: form.customerEmail,
+                      items: lines.map((l) => ({
+                        productName: l.productName,
+                        size: l.size,
+                        color: l.color,
+                        quantity: l.quantity,
+                        unitPrice: l.unitPrice,
+                        personalization: l.personalization,
+                      })),
+                      total: subtotal,
+                    }),
+                  }).catch(() => {});
+                }
               }}
-              disabled={!form.customerName || !form.customerEmail}
+              disabled={!form.customerName}
               className="mt-4 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
             >
               Continuer
@@ -202,20 +211,25 @@ export default function CheckoutPage() {
         {step === "livraison" && (
           <div className="flex flex-col gap-4">
             <h1 className="font-editorial text-2xl text-paper">Livraison</h1>
+            <Field
+              label="Téléphone (WhatsApp — on vous contacte ici)"
+              type="tel"
+              value={form.phone}
+              onChange={(v) => update("phone", v)}
+            />
             <Field label="Adresse" value={form.line1} onChange={(v) => update("line1", v)} />
             <div className="grid grid-cols-2 gap-4">
               <Field label="Ville" value={form.city} onChange={(v) => update("city", v)} />
               <Field label="Code postal (optionnel)" value={form.postalCode} onChange={(v) => update("postalCode", v)} required={false} />
             </div>
             <Field label="Pays" value={form.country} onChange={(v) => update("country", v)} />
-            <Field label="Téléphone (optionnel)" value={form.phone} onChange={(v) => update("phone", v)} required={false} />
             <div className="mt-4 flex gap-3">
               <button onClick={() => setStep("informations")} className="border border-line px-6 py-4 text-xs uppercase tracking-widest2 text-paper/70">
                 Retour
               </button>
               <button
                 onClick={() => setStep("recapitulatif")}
-                disabled={!form.line1 || !form.city}
+                disabled={!form.line1 || !form.city || !form.phone}
                 className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
               >
                 Continuer
@@ -258,8 +272,8 @@ export default function CheckoutPage() {
 
             <div className="border border-line bg-line/20 px-4 py-4 text-xs text-paper/60">
               Aucun prestataire de paiement en ligne n&apos;est encore connecté à ce site. Votre
-              commande sera enregistrée et notre équipe vous contactera par email pour finaliser le
-              règlement.
+              commande sera enregistrée, puis vous serez redirigé·e vers WhatsApp pour finaliser le
+              règlement et l&apos;expédition avec notre équipe.
             </div>
 
             {error && <p className="text-xs font-medium text-paper">{error}</p>}
@@ -273,7 +287,7 @@ export default function CheckoutPage() {
                 disabled={submitting}
                 className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
               >
-                {submitting ? "Envoi…" : "Confirmer la commande"}
+                {submitting ? "Envoi…" : "Confirmer et ouvrir WhatsApp"}
               </button>
             </div>
           </div>

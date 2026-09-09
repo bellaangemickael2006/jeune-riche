@@ -89,6 +89,7 @@ export default async function AdminOrdersPage({
             <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
               <th className="py-2">Référence</th>
               <th className="py-2">Client</th>
+              <th className="py-2">WhatsApp</th>
               <th className="py-2">Articles</th>
               <th className="py-2">Total</th>
               <th className="py-2">Statut</th>
@@ -96,24 +97,28 @@ export default async function AdminOrdersPage({
             </tr>
           </thead>
           <tbody>
-            {orders.map((o) => (
-              <tr key={o.id} className="border-b border-line/50">
-                <td className="py-3">
-                  <Link href={`/admin/commandes/${o.id}`} className="text-paper hover:underline">
-                    {o.orderNumber}
-                  </Link>
-                </td>
-                <td className="py-3 text-paper/60">{o.customerName}</td>
-                <td className="py-3 text-paper/60">{o.items.length}</td>
-                <td className="py-3 text-paper/60">{formatPrice(Number(o.total))}</td>
-                <td className="py-3">
-                  <span className="border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
-                    {STATUS_LABEL[o.status]}
-                  </span>
-                </td>
-                <td className="py-3 text-paper/40">{o.createdAt.toLocaleDateString("fr-FR")}</td>
-              </tr>
-            ))}
+            {orders.map((o) => {
+              const phone = (o.shippingAddress as { phone?: string } | null)?.phone;
+              return (
+                <tr key={o.id} className="border-b border-line/50">
+                  <td className="py-3">
+                    <Link href={`/admin/commandes/${o.id}`} className="text-paper hover:underline">
+                      {o.orderNumber}
+                    </Link>
+                  </td>
+                  <td className="py-3 text-paper/60">{o.customerName}</td>
+                  <td className="py-3 text-paper/60">{phone || "—"}</td>
+                  <td className="py-3 text-paper/60">{o.items.length}</td>
+                  <td className="py-3 text-paper/60">{formatPrice(Number(o.total))}</td>
+                  <td className="py-3">
+                    <span className="border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
+                      {STATUS_LABEL[o.status]}
+                    </span>
+                  </td>
+                  <td className="py-3 text-paper/40">{o.createdAt.toLocaleDateString("fr-FR")}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       )}

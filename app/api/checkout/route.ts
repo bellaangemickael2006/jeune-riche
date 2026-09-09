@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { sendEmail, orderConfirmationEmail } from "@/lib/email";
 import { getStoreSettings } from "@/lib/data/settings";
 import { createClient } from "@/lib/supabase/server";
+import { whatsappOrderLink } from "@/lib/utils";
 
 // Le stock est revérifié à l'écriture, pas seulement à la lecture plus haut :
 // entre la vérification initiale et la transaction, une autre commande
@@ -25,13 +25,16 @@ const lineSchema = z.object({
 
 const schema = z.object({
   customerName: z.string().min(1),
-  customerEmail: z.string().email(),
+  // WhatsApp (numéro obligatoire ci-dessous) est le canal de contact
+  // principal désormais — l'email reste utile pour l'historique du compte
+  // mais ne doit jamais bloquer la commande s'il est laissé vide.
+  customerEmail: z.union([z.literal(""), z.string().email()]),
   shippingAddress: z.object({
     line1: z.string().min(1),
     city: z.string().min(1),
     postalCode: z.string().optional(),
     country: z.string().min(1),
-    phone: z.string().optional(),
+    phone: z.string().min(1, "Le numéro de téléphone est requis."),
   }),
   lines: z.array(lineSchema).min(1),
 });
@@ -162,24 +165,28 @@ export async function POST(req: NextRequest) {
     });
 
     // Empêche la relance panier abandonné de cibler une commande déjà
-    // passée — ne doit jamais faire échouer la commande si ça rate.
-    prisma.abandonedCart
-      .updateMany({ where: { email: customerEmail, convertedAt: null }, data: { convertedAt: new Date() } })
-      .catch((error) => console.error("[api/checkout] abandonedCart.updateMany:", error));
+    // passée — ne doit jamais faire échouer la commande si ça rate. No-op
+    // silencieux si customerEmail est vide (rien à retrouver, pas grave).
+    if (customerEmail) {
+      prisma.abandonedCart
+        .updateMany({ where: { email: customerEmail, convertedAt: null }, data: { convertedAt: new Date() } })
+        .catch((error) => console.error("[api/checkout] abandonedCart.updateMany:", error));
+    }
 
-    // L'email ne doit jamais faire échouer la commande si l'envoi rate.
-    sendEmail({
-      to: customerEmail,
-      subject: `Commande ${order.orderNumber} — JEUNE RICHE`,
-      html: orderConfirmationEmail({
-        orderNumber: order.orderNumber,
-        customerName,
-        items: resolvedLines,
-        total,
-      }),
-    }).catch((error) => console.error("[api/checkout] email confirmation:", error));
+    // WhatsApp (numéro renseigné, obligatoire) est le canal de contact
+    // principal — construit côté serveur à partir des lignes résolues en
+    // base (jamais depuis ce qu'a envoyé le navigateur), pour que le message
+    // pré-rempli reflète exactement ce qui a été enregistré.
+    const whatsappUrl = whatsappOrderLink({
+      orderNumber: order.orderNumber,
+      customerName,
+      phone: shippingAddress.phone,
+      address: shippingAddress,
+      items: resolvedLines,
+      total,
+    });
 
-    return NextResponse.json({ ok: true, orderNumber: order.orderNumber });
+    return NextResponse.json({ ok: true, orderNumber: order.orderNumber, whatsappUrl });
   } catch (error) {
     if (error instanceof InsufficientStockError) {
       return NextResponse.json({ error: error.message }, { status: 409 });
