@@ -15,6 +15,22 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: false,
   },
+  // Durcissement de base, sans CSP : le site utilise déjà des <script>
+  // inline (init du thème, JSON-LD) qu'une CSP stricte casserait sans un
+  // vrai système de nonce — à traiter séparément plutôt qu'en aveugle.
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+        ],
+      },
+    ];
+  },
 };
 
 // L'upload des source maps (le plugin webpack Sentry) a besoin d'org/projet/
