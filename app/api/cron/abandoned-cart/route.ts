@@ -28,28 +28,35 @@ export async function GET(req: NextRequest) {
   const from = new Date(now - 48 * 3600_000);
   const until = new Date(now - 3600_000);
 
-  const candidates = await prisma.abandonedCart.findMany({
-    where: {
-      remindedAt: null,
-      convertedAt: null,
-      createdAt: { gte: from, lte: until },
-    },
-  });
-
-  let sent = 0;
-  for (const cart of candidates) {
-    const items = cart.items as unknown as CartLineSnapshot[];
-    const result = await sendEmail({
-      to: cart.email,
-      subject: "Votre sélection JEUNE RICHE vous attend",
-      html: abandonedCartEmail({ items, total: Number(cart.total) }),
+  try {
+    const candidates = await prisma.abandonedCart.findMany({
+      where: {
+        remindedAt: null,
+        convertedAt: null,
+        createdAt: { gte: from, lte: until },
+      },
     });
-    if (result.sent) sent++;
-    // Marqué même en cas d'échec d'envoi : on ne veut pas retenter en boucle
-    // sur une adresse qui rejette systématiquement (évite tout risque de
-    // spam involontaire vers un email invalide).
-    await prisma.abandonedCart.update({ where: { id: cart.id }, data: { remindedAt: new Date() } });
-  }
 
-  return NextResponse.json({ ok: true, candidates: candidates.length, sent });
+    let sent = 0;
+    for (const cart of candidates) {
+      const items = cart.items as unknown as CartLineSnapshot[];
+      const result = await sendEmail({
+        to: cart.email,
+        subject: "Votre sélection JEUNE RICHE vous attend",
+        html: abandonedCartEmail({ items, total: Number(cart.total) }),
+      });
+      if (result.sent) sent++;
+      // Marqué même en cas d'échec d'envoi : on ne veut pas retenter en
+      // boucle sur une adresse qui rejette systématiquement (évite tout
+      // risque de spam involontaire vers un email invalide).
+      await prisma.abandonedCart.update({ where: { id: cart.id }, data: { remindedAt: new Date() } });
+    }
+
+    return NextResponse.json({ ok: true, candidates: candidates.length, sent });
+  } catch (error) {
+    // Ex. table pas encore migrée — ne doit jamais faire échouer le cron de
+    // façon bruyante, juste réessayer sans effet le lendemain.
+    console.error("[cron/abandoned-cart]", error);
+    return NextResponse.json({ ok: false, candidates: 0, sent: 0 });
+  }
 }
