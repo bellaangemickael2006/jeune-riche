@@ -20,7 +20,7 @@ export default async function ContactPage() {
           href={`https://wa.me/${WHATSAPP_NUMBER}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="border border-paper px-6 py-3 text-xs uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
+          className="inline-flex h-14 items-center justify-center border border-paper/60 px-10 font-display text-[11px] uppercase leading-none tracking-widest2 text-paper transition-colors duration-200 ease-editorial hover:border-paper hover:bg-paper/5"
         >
           {t("legal.contact.cta")}
         </a>

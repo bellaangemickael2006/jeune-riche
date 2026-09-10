@@ -55,7 +55,16 @@
     "welcomeToastTitle": "Chào mừng",
     "welcomeToastMessage": "Tài khoản đã được xác nhận — chào mừng đến với JEUNE RICHE.",
     "loginWelcomeMessage": "Rất vui được gặp lại bạn.",
-    "loginWelcomeMessageNamed": "Rất vui được gặp lại bạn, {{name}}."
+    "loginWelcomeMessageNamed": "Rất vui được gặp lại bạn, {{name}}.",
+    "discover": "Khám phá",
+    "detailTitle": "Chi tiết",
+    "detailMeta": "Áo thun",
+    "detailLine1": "Huy hiệu, thêu tay.",
+    "detailLine2": "Nhãn cổ, có chữ ký.",
+    "detailLine3": "Và tên bạn, nếu bạn muốn.",
+    "detailCta": "Xem sản phẩm",
+    "detailAltHanging": "Áo thun JEUNE RICHE trắng trên móc",
+    "detailAltNeck": "Cận cảnh cổ áo và huy hiệu thêu"
   },
   "catalogue": {
     "eyebrow": "Danh mục",

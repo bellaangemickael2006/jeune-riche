@@ -55,7 +55,16 @@
     "welcomeToastTitle": "Tervetuloa",
     "welcomeToastMessage": "Tili vahvistettu — tervetuloa JEUNE RICHEen.",
     "loginWelcomeMessage": "Mukava nähdä sinut taas.",
-    "loginWelcomeMessageNamed": "Mukava nähdä sinut taas, {{name}}."
+    "loginWelcomeMessageNamed": "Mukava nähdä sinut taas, {{name}}.",
+    "discover": "Tutustu",
+    "detailTitle": "Yksityiskohta",
+    "detailMeta": "T-paita",
+    "detailLine1": "Vaakuna, kirjottuna.",
+    "detailLine2": "Niskalappu, signeerattuna.",
+    "detailLine3": "Ja nimesi, jos haluat.",
+    "detailCta": "Katso tuote",
+    "detailAltHanging": "Valkoinen JEUNE RICHE -t-paita ripustimella",
+    "detailAltNeck": "Lähikuva kauluksesta ja kirjotusta vaakunasta"
   },
   "catalogue": {
     "eyebrow": "Luettelo",

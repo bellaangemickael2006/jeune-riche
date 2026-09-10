@@ -55,7 +55,16 @@
     "welcomeToastTitle": "Witamy",
     "welcomeToastMessage": "Konto potwierdzone — witamy w JEUNE RICHE.",
     "loginWelcomeMessage": "Miło znów cię widzieć.",
-    "loginWelcomeMessageNamed": "Miło znów cię widzieć, {{name}}."
+    "loginWelcomeMessageNamed": "Miło znów cię widzieć, {{name}}.",
+    "discover": "Odkryj",
+    "detailTitle": "Detal",
+    "detailMeta": "Koszulka",
+    "detailLine1": "Herb, haftowany.",
+    "detailLine2": "Metka przy karku, sygnowana.",
+    "detailLine3": "I twoje imię, jeśli zechcesz.",
+    "detailCta": "Zobacz model",
+    "detailAltHanging": "Biała koszulka JEUNE RICHE na wieszaku",
+    "detailAltNeck": "Zbliżenie kołnierza i haftowanego herbu"
   },
   "catalogue": {
     "eyebrow": "Katalog",

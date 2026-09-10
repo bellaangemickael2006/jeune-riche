@@ -1,8 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import WordPullUp from "@/components/ui/WordPullUp";
 import FadeIn from "@/components/ui/FadeIn";
-import Magnetic from "@/components/ui/Magnetic";
+import { ButtonLink } from "@/components/ui/Button";
 import { getServerTranslation } from "@/lib/i18n/server";
 
 // Expérience éditoriale en plusieurs temps plutôt qu'un bloc "titre + 3
@@ -67,14 +66,9 @@ export default async function ManifesteBody() {
           className="mx-auto max-w-3xl font-editorial text-heading text-paper md:text-[3.5rem] md:leading-[1.1]"
         />
         <FadeIn delay={0.3} className="mt-12">
-          <Magnetic strength={0.4} className="inline-block">
-            <Link
-              href="/catalogue"
-              className="inline-block bg-paper px-8 py-4 text-label text-ink transition-transform duration-300 ease-editorial hover:scale-[1.02]"
-            >
-              {t("manifesto.viewCollection")}
-            </Link>
-          </Magnetic>
+          <ButtonLink href="/catalogue" variant="primary">
+            {t("manifesto.viewCollection")}
+          </ButtonLink>
         </FadeIn>
       </section>
     </div>

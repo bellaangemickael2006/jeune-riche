@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice } from "@/lib/utils";
 import { useLocale } from "@/components/providers/I18nProvider";
+import { Button } from "@/components/ui/Button";
 
 type Order = {
   id: string;
@@ -158,13 +159,15 @@ function AddressBook({ address }: { address: Address }) {
           className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
         />
         {error && <p className="text-xs text-paper">{error}</p>}
-        <button
+        <Button
           type="submit"
+          variant="secondary"
+          size="sm"
           disabled={saving || !form.addressLine1 || !form.addressCity || !form.addressCountry}
-          className="w-fit border border-paper px-6 py-3 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-80 disabled:opacity-30"
+          className="w-fit"
         >
           {saving ? t("account.saving") : saved ? t("account.saved") : t("account.saveAddress")}
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -55,7 +55,16 @@
     "welcomeToastTitle": "Bine ai venit",
     "welcomeToastMessage": "Cont confirmat — bine ai venit la JEUNE RICHE.",
     "loginWelcomeMessage": "Ne bucurăm să te revedem.",
-    "loginWelcomeMessageNamed": "Ne bucurăm să te revedem, {{name}}."
+    "loginWelcomeMessageNamed": "Ne bucurăm să te revedem, {{name}}.",
+    "discover": "Descoperă",
+    "detailTitle": "Detaliul",
+    "detailMeta": "Tricou",
+    "detailLine1": "Blazonul, brodat.",
+    "detailLine2": "Eticheta de la gât, semnată.",
+    "detailLine3": "Și numele tău, dacă vrei.",
+    "detailCta": "Vezi piesa",
+    "detailAltHanging": "Tricou JEUNE RICHE alb pe umeraș",
+    "detailAltNeck": "Prim-plan cu gulerul și blazonul brodat"
   },
   "catalogue": {
     "eyebrow": "Catalog",

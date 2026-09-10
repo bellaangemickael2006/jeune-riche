@@ -7,6 +7,7 @@ import { useCart } from "@/store/cart";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice, cn } from "@/lib/utils";
 import BackButton from "@/components/ui/BackButton";
+import { Button } from "@/components/ui/Button";
 import { useLocale } from "@/components/providers/I18nProvider";
 
 type Step = "informations" | "livraison" | "recapitulatif";
@@ -260,7 +261,7 @@ export default function CheckoutPage() {
               onChange={(v) => update("customerEmail", v)}
               required={false}
             />
-            <button
+            <Button
               onClick={() => {
                 setStep("livraison");
                 // Snapshot pour la relance panier abandonné — best-effort,
@@ -287,10 +288,10 @@ export default function CheckoutPage() {
                 }
               }}
               disabled={!form.customerName}
-              className="mt-4 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
+              className="mt-4 w-full"
             >
               {t("common.continue")}
-            </button>
+            </Button>
           </div>
         )}
 
@@ -310,16 +311,16 @@ export default function CheckoutPage() {
             </div>
             <Field label={t("checkout.country")} value={form.country} onChange={(v) => update("country", v)} />
             <div className="mt-4 flex gap-3">
-              <button onClick={() => setStep("informations")} className="border border-line px-6 py-4 text-xs uppercase tracking-widest2 text-paper/70">
+              <Button variant="secondary" onClick={() => setStep("informations")}>
                 {t("common.back")}
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => setStep("recapitulatif")}
                 disabled={!form.line1 || !form.city || !form.phone}
-                className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-30"
+                className="flex-1"
               >
                 {t("common.continue")}
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -388,13 +389,14 @@ export default function CheckoutPage() {
                     placeholder={t("checkout.promoCodePlaceholder")}
                     className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 placeholder:normal-case focus:border-paper focus:outline-none"
                   />
-                  <button
+                  <Button
+                    variant="secondary"
                     onClick={applyPromoCode}
                     disabled={checkingPromo || !promoInput.trim()}
-                    className="shrink-0 border border-line px-6 py-3 text-xs uppercase tracking-widest2 text-paper/70 transition-colors hover:border-paper hover:text-paper disabled:opacity-30"
+                    className="shrink-0"
                   >
                     {checkingPromo ? "…" : t("common.apply")}
-                  </button>
+                  </Button>
                 </div>
               )}
               {promoMessage && <p className="mt-2 text-xs text-paper/50">{promoMessage}</p>}
@@ -407,16 +409,12 @@ export default function CheckoutPage() {
             {error && <p className="text-xs font-medium text-paper">{error}</p>}
 
             <div className="flex gap-3">
-              <button onClick={() => setStep("livraison")} className="border border-line px-6 py-4 text-xs uppercase tracking-widest2 text-paper/70">
+              <Button variant="secondary" onClick={() => setStep("livraison")}>
                 {t("common.back")}
-              </button>
-              <button
-                onClick={submitOrder}
-                disabled={submitting}
-                className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
-              >
+              </Button>
+              <Button onClick={submitOrder} disabled={submitting} className="flex-1">
                 {submitting ? t("checkout.sending") : t("checkout.confirmAndOpenWhatsapp")}
-              </button>
+              </Button>
             </div>
           </div>
         )}

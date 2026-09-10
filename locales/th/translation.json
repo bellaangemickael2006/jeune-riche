@@ -55,7 +55,16 @@
     "welcomeToastTitle": "ยินดีต้อนรับ",
     "welcomeToastMessage": "ยืนยันบัญชีแล้ว — ยินดีต้อนรับสู่ JEUNE RICHE",
     "loginWelcomeMessage": "ยินดีที่ได้พบคุณอีกครั้ง",
-    "loginWelcomeMessageNamed": "ยินดีที่ได้พบคุณอีกครั้ง {{name}}"
+    "loginWelcomeMessageNamed": "ยินดีที่ได้พบคุณอีกครั้ง {{name}}",
+    "discover": "ค้นพบ",
+    "detailTitle": "รายละเอียด",
+    "detailMeta": "เสื้อยืด",
+    "detailLine1": "ตราสัญลักษณ์ ปักด้วยด้าย",
+    "detailLine2": "ป้ายคอ มีลายเซ็น",
+    "detailLine3": "และชื่อของคุณ หากคุณต้องการ",
+    "detailCta": "ดูสินค้า",
+    "detailAltHanging": "เสื้อยืด JEUNE RICHE สีขาวบนไม้แขวน",
+    "detailAltNeck": "ภาพระยะใกล้ของคอเสื้อและตราปัก"
   },
   "catalogue": {
     "eyebrow": "แคตตาล็อก",

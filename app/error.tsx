@@ -1,9 +1,9 @@
 "use client";
 
 import * as Sentry from "@sentry/nextjs";
-import Link from "next/link";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Button, ButtonLink } from "@/components/ui/Button";
 
 // Filet pour toute erreur survenant sous le layout racine (page, composant
 // serveur ou client qui plante) — contrairement à global-error.tsx, celui-ci
@@ -29,19 +29,13 @@ export default function Error({
       <p className="text-xs uppercase tracking-widest2 text-paper/40">{t("errors.generic.eyebrow")}</p>
       <h1 className="font-editorial text-3xl text-paper md:text-4xl">{t("errors.generic.title")}</h1>
       <p className="max-w-sm text-sm leading-relaxed text-paper/50">{t("errors.generic.message")}</p>
-      <div className="mt-2 flex items-center gap-6">
-        <button
-          onClick={reset}
-          className="border border-paper px-6 py-3 text-xs uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
-        >
+      <div className="mt-2 flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
+        <Button variant="secondary" onClick={reset}>
           {t("errors.generic.retry")}
-        </button>
-        <Link
-          href="/"
-          className="text-xs uppercase tracking-widest2 text-paper/60 underline underline-offset-4 hover:text-paper"
-        >
+        </Button>
+        <ButtonLink href="/" variant="text">
           {t("errors.generic.home")}
-        </Link>
+        </ButtonLink>
       </div>
     </div>
   );

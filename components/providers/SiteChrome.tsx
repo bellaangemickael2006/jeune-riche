@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
-import CustomCursor from "@/components/ui/CustomCursor";
 import WhatsappButton from "@/components/ui/WhatsappButton";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import GrainOverlay from "@/components/ui/GrainOverlay";
@@ -27,7 +26,6 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
     <>
       <SmoothScroll />
       <GrainOverlay />
-      <CustomCursor />
       <Header />
       <main>{children}</main>
       <Footer />

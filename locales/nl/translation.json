@@ -55,7 +55,16 @@
     "welcomeToastTitle": "Welkom",
     "welcomeToastMessage": "Account bevestigd — welkom bij JEUNE RICHE.",
     "loginWelcomeMessage": "Fijn je weer te zien.",
-    "loginWelcomeMessageNamed": "Fijn je weer te zien, {{name}}."
+    "loginWelcomeMessageNamed": "Fijn je weer te zien, {{name}}.",
+    "discover": "Ontdekken",
+    "detailTitle": "Het detail",
+    "detailMeta": "T-shirt",
+    "detailLine1": "Het wapen, geborduurd.",
+    "detailLine2": "Het neklabel, gesigneerd.",
+    "detailLine3": "En jouw naam, als je wilt.",
+    "detailCta": "Bekijk het stuk",
+    "detailAltHanging": "Wit JEUNE RICHE T-shirt op een hanger",
+    "detailAltNeck": "Close-up van de kraag en het geborduurde wapen"
   },
   "catalogue": {
     "eyebrow": "Catalogus",

@@ -55,7 +55,16 @@
     "welcomeToastTitle": "환영합니다",
     "welcomeToastMessage": "계정이 확인되었습니다 — JEUNE RICHE에 오신 것을 환영합니다.",
     "loginWelcomeMessage": "다시 만나서 반가워요.",
-    "loginWelcomeMessageNamed": "{{name}}님, 다시 만나서 반가워요."
+    "loginWelcomeMessageNamed": "{{name}}님, 다시 만나서 반가워요.",
+    "discover": "둘러보기",
+    "detailTitle": "디테일",
+    "detailMeta": "티셔츠",
+    "detailLine1": "자수 크레스트.",
+    "detailLine2": "서명된 넥 라벨.",
+    "detailLine3": "원하신다면 당신의 이름까지.",
+    "detailCta": "제품 보기",
+    "detailAltHanging": "옷걸이에 걸린 흰색 JEUNE RICHE 티셔츠",
+    "detailAltNeck": "칼라와 자수 크레스트 클로즈업"
   },
   "catalogue": {
     "eyebrow": "카탈로그",

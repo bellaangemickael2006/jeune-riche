@@ -5,6 +5,7 @@ import { useActionState, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createReview, type CreateReviewState } from "@/lib/actions/reviews";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 
 export default function ReviewForm({
   productId,
@@ -62,13 +63,9 @@ export default function ReviewForm({
         className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
       />
       {state && !state.ok && <p className="text-xs text-paper/60">{state.message}</p>}
-      <button
-        type="submit"
-        disabled={pending}
-        className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
-      >
+      <Button type="submit" disabled={pending} size="sm" className="w-fit">
         {pending ? t("product.sending") : t("product.publishReview")}
-      </button>
+      </Button>
     </form>
   );
 }

@@ -55,7 +55,16 @@
     "welcomeToastTitle": "مرحبًا",
     "welcomeToastMessage": "تم تأكيد الحساب — مرحبًا بك في JEUNE RICHE.",
     "loginWelcomeMessage": "سعداء برؤيتك مجددًا.",
-    "loginWelcomeMessageNamed": "سعداء برؤيتك مجددًا، {{name}}."
+    "loginWelcomeMessageNamed": "سعداء برؤيتك مجددًا، {{name}}.",
+    "discover": "اكتشف",
+    "detailTitle": "التفصيل",
+    "detailMeta": "تي شيرت",
+    "detailLine1": "الشعار، مطرَّز.",
+    "detailLine2": "بطاقة الرقبة، موقّعة.",
+    "detailLine3": "واسمك، إن أردت.",
+    "detailCta": "شاهد القطعة",
+    "detailAltHanging": "تي شيرت JEUNE RICHE أبيض على علاقة",
+    "detailAltNeck": "لقطة قريبة للياقة والشعار المطرَّز"
   },
   "catalogue": {
     "eyebrow": "الكتالوج",

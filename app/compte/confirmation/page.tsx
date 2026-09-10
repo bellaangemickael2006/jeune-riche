@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
+import { ButtonLink } from "@/components/ui/Button";
 
 type Status = "checking" | "confirmed" | "invalid";
 
@@ -103,12 +103,9 @@ export default function SignupConfirmationPage() {
         {status === "confirmed" && (
           <div className="mt-8">
             <p className="text-sm text-paper/70">{t("account.confirmationSuccess")}</p>
-            <Link
-              href="/?welcome=1"
-              className="mt-6 inline-block bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90"
-            >
+            <ButtonLink href="/?welcome=1" className="mt-6">
               {t("account.confirmationCta")}
-            </Link>
+            </ButtonLink>
           </div>
         )}
 
