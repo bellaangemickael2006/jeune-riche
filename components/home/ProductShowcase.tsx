@@ -28,6 +28,7 @@ export default function ProductShowcase({ items }: { items: ShowcaseItem[] }) {
           aspect="aspect-[4/5] md:aspect-auto md:h-full"
           textSize="text-heading md:text-heading-lg"
           sizes="(max-width: 768px) 100vw, 45vw"
+          priority
         />
       </FadeIn>
 
@@ -61,11 +62,13 @@ function Tile({
   aspect,
   textSize,
   sizes,
+  priority = false,
 }: {
   item: ShowcaseItem;
   aspect: string;
   textSize: string;
   sizes: string;
+  priority?: boolean;
 }) {
   return (
     <Link
@@ -78,6 +81,7 @@ function Tile({
           alt={item.name}
           fill
           sizes={sizes}
+          priority={priority}
           className="object-contain p-6 transition-transform duration-700 ease-editorial group-hover:scale-105 md:p-10"
         />
       ) : (

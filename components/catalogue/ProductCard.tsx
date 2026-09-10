@@ -64,6 +64,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
                 alt={primary.alt}
                 fill
                 sizes="(max-width: 768px) 50vw, 25vw"
+                priority={index < 4}
                 className="object-contain p-4"
               />
             </motion.div>
