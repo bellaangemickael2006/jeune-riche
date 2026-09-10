@@ -1,13 +1,23 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Anton, Fraunces, Inter } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import "./globals.css";
 import SiteChrome from "@/components/providers/SiteChrome";
 import StoreHydration from "@/components/providers/StoreHydration";
 import I18nProvider from "@/components/providers/I18nProvider";
+import PWARegister from "@/components/providers/PWARegister";
 import { getLocale, getServerTranslation, loadResource } from "@/lib/i18n/server";
 import { getDirection } from "@/lib/i18n/languages";
 import { siteUrl } from "@/lib/utils";
+
+// Couleur de la barre d'adresse mobile / de la barre de statut en mode
+// standalone (PWA installée) — même teinte que le fond de l'app (--color-ink)
+// pour que la transition entre chrome navigateur et contenu soit invisible.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0B0B0C",
+};
 
 const anton = Anton({
   subsets: ["latin"],
@@ -43,6 +53,11 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s — JEUNE RICHE",
     },
     description,
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "black-translucent",
+      title: "JEUNE RICHE",
+    },
     openGraph: {
       title: "JEUNE RICHE",
       description,
@@ -124,6 +139,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="bg-ink font-body text-paper antialiased">
         <I18nProvider initialLocale={locale} initialResource={initialResource}>
           <StoreHydration />
+          <PWARegister />
           <MotionConfig reducedMotion="user">
             <SiteChrome>{children}</SiteChrome>
           </MotionConfig>
