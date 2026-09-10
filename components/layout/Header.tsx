@@ -20,9 +20,26 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const count = useCart((s) => s.count());
   const openCart = useCart((s) => s.open);
+  const router = useRouter();
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
+  const isHome = pathname === "/";
   useScrollLock(menuOpen || searchOpen);
+
+  // En PWA installée (mode standalone), il n'y a ni barre d'adresse ni geste
+  // "retour" du navigateur — sur iOS notamment, une app ajoutée à l'écran
+  // d'accueil ne propose aucune navigation arrière native. Sans ce bouton, un
+  // client entré dans le catalogue ou une fiche produit depuis l'accueil n'a
+  // aucun moyen de revenir en arrière autrement qu'en retapant le logo
+  // (retour à l'accueil, pas à l'écran précédent). Visible uniquement sur
+  // mobile : le navigateur desktop a toujours son propre bouton retour.
+  function handleBack() {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/");
+    }
+  }
 
   const NAV = [
     { label: t("navigation.collection"), href: "/catalogue" },
@@ -83,19 +100,31 @@ export default function Header() {
       )}
     >
       <div className="relative z-20 flex items-center justify-between px-5 md:px-10">
-        <Link href="/" className="flex items-center" aria-label="JEUNE RICHE — accueil">
-          <Image
-            src="/images/logo/logo-transparent.png"
-            alt="JEUNE RICHE"
-            width={200}
-            height={200}
-            className={cn(
-              "jr-logo object-contain transition-[height,width] duration-300 ease-editorial",
-              scrolled ? "h-12 w-12 md:h-14 md:w-14" : "h-16 w-16 md:h-20 md:w-20"
-            )}
-            priority
-          />
-        </Link>
+        <div className="flex items-center gap-3">
+          {!isHome && (
+            <button
+              type="button"
+              onClick={handleBack}
+              aria-label={t("common.back")}
+              className="-ml-1 flex h-9 w-9 items-center justify-center text-paper/80 transition-colors hover:text-paper lg:hidden"
+            >
+              <BackArrowIcon />
+            </button>
+          )}
+          <Link href="/" className="flex items-center" aria-label="JEUNE RICHE — accueil">
+            <Image
+              src="/images/logo/logo-transparent.png"
+              alt="JEUNE RICHE"
+              width={200}
+              height={200}
+              className={cn(
+                "jr-logo object-contain transition-[height,width] duration-300 ease-editorial",
+                scrolled ? "h-12 w-12 md:h-14 md:w-14" : "h-16 w-16 md:h-20 md:w-20"
+              )}
+              priority
+            />
+          </Link>
+        </div>
 
         <nav className="hidden items-center gap-9 lg:flex">
           {NAV.map((item) => (
@@ -216,6 +245,14 @@ export default function Header() {
         )}
       </AnimatePresence>
     </header>
+  );
+}
+
+function BackArrowIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path d="M12.5 4.5L6 10l6.5 5.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
