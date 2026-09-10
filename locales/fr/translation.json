@@ -53,7 +53,9 @@
     "manifestoQuote": "Une couronne gravée, un visage tribal — le luxe qui ne s'excuse pas d'où il vient.",
     "enterUniverse": "Entrer dans l'univers",
     "welcomeToastTitle": "Bienvenue",
-    "welcomeToastMessage": "Compte confirmé — bienvenue chez JEUNE RICHE."
+    "welcomeToastMessage": "Compte confirmé — bienvenue chez JEUNE RICHE.",
+    "loginWelcomeMessage": "Heureux de vous revoir.",
+    "loginWelcomeMessageNamed": "Heureux de vous revoir, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Catalogue",

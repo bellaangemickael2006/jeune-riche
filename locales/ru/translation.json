@@ -53,7 +53,9 @@
     "manifestoQuote": "Гравированная корона, племенное лицо — роскошь, которая не извиняется за своё происхождение.",
     "enterUniverse": "Войти во вселенную",
     "welcomeToastTitle": "Добро пожаловать",
-    "welcomeToastMessage": "Аккаунт подтверждён — добро пожаловать в JEUNE RICHE."
+    "welcomeToastMessage": "Аккаунт подтверждён — добро пожаловать в JEUNE RICHE.",
+    "loginWelcomeMessage": "Рады видеть вас снова.",
+    "loginWelcomeMessageNamed": "Рады видеть вас снова, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Каталог",

@@ -53,7 +53,9 @@
     "manifestoQuote": "Taji lililochongwa, uso wa kikabila — anasa isiyoomba radhi kwa asili yake.",
     "enterUniverse": "Ingia kwenye ulimwengu huu",
     "welcomeToastTitle": "Karibu",
-    "welcomeToastMessage": "Akaunti imethibitishwa — karibu JEUNE RICHE."
+    "welcomeToastMessage": "Akaunti imethibitishwa — karibu JEUNE RICHE.",
+    "loginWelcomeMessage": "Furaha kukuona tena.",
+    "loginWelcomeMessageNamed": "Furaha kukuona tena, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalogi",

@@ -53,7 +53,9 @@
     "manifestoQuote": "O coroană gravată, un chip tribal — lux care nu se scuză pentru originea sa.",
     "enterUniverse": "Intră în univers",
     "welcomeToastTitle": "Bine ai venit",
-    "welcomeToastMessage": "Cont confirmat — bine ai venit la JEUNE RICHE."
+    "welcomeToastMessage": "Cont confirmat — bine ai venit la JEUNE RICHE.",
+    "loginWelcomeMessage": "Ne bucurăm să te revedem.",
+    "loginWelcomeMessageNamed": "Ne bucurăm să te revedem, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Catalog",

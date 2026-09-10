@@ -53,7 +53,9 @@
     "manifestoQuote": "Vyrytá koruna, kmenová tvář — luxus, který se neomlouvá za svůj původ.",
     "enterUniverse": "Vstoupit do vesmíru",
     "welcomeToastTitle": "Vítejte",
-    "welcomeToastMessage": "Účet potvrzen — vítejte v JEUNE RICHE."
+    "welcomeToastMessage": "Účet potvrzen — vítejte v JEUNE RICHE.",
+    "loginWelcomeMessage": "Rádi vás zase vidíme.",
+    "loginWelcomeMessageNamed": "Rádi vás zase vidíme, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

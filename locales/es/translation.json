@@ -53,7 +53,9 @@
     "manifestoQuote": "Una corona grabada, un rostro tribal — el lujo que no se disculpa por sus orígenes.",
     "enterUniverse": "Entrar al universo",
     "welcomeToastTitle": "Bienvenido",
-    "welcomeToastMessage": "Cuenta confirmada — bienvenido a JEUNE RICHE."
+    "welcomeToastMessage": "Cuenta confirmada — bienvenido a JEUNE RICHE.",
+    "loginWelcomeMessage": "Un placer verte de nuevo.",
+    "loginWelcomeMessageNamed": "Un placer verte de nuevo, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Catálogo",

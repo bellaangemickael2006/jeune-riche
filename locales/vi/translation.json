@@ -53,7 +53,9 @@
     "manifestoQuote": "Một chiếc vương miện được khắc, một khuôn mặt bộ lạc — sự sang trọng không xin lỗi vì nguồn gốc của mình.",
     "enterUniverse": "Bước vào thế giới",
     "welcomeToastTitle": "Chào mừng",
-    "welcomeToastMessage": "Tài khoản đã được xác nhận — chào mừng đến với JEUNE RICHE."
+    "welcomeToastMessage": "Tài khoản đã được xác nhận — chào mừng đến với JEUNE RICHE.",
+    "loginWelcomeMessage": "Rất vui được gặp lại bạn.",
+    "loginWelcomeMessageNamed": "Rất vui được gặp lại bạn, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Danh mục",

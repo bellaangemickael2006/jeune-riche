@@ -53,7 +53,9 @@
     "manifestoQuote": "Kaiverrettu kruunu, heimokasvot — ylellisyyttä, joka ei pahoittele alkuperäänsä.",
     "enterUniverse": "Astu maailmaan",
     "welcomeToastTitle": "Tervetuloa",
-    "welcomeToastMessage": "Tili vahvistettu — tervetuloa JEUNE RICHEen."
+    "welcomeToastMessage": "Tili vahvistettu — tervetuloa JEUNE RICHEen.",
+    "loginWelcomeMessage": "Mukava nähdä sinut taas.",
+    "loginWelcomeMessageNamed": "Mukava nähdä sinut taas, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Luettelo",

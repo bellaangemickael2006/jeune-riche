@@ -53,7 +53,9 @@
     "manifestoQuote": "一顶雕刻的王冠，一张部落面孔——不为自己的出身道歉的奢华。",
     "enterUniverse": "进入这个世界",
     "welcomeToastTitle": "欢迎",
-    "welcomeToastMessage": "账户已确认 — 欢迎加入 JEUNE RICHE。"
+    "welcomeToastMessage": "账户已确认 — 欢迎加入 JEUNE RICHE。",
+    "loginWelcomeMessage": "很高兴再次见到您。",
+    "loginWelcomeMessageNamed": "很高兴再次见到您，{{name}}。"
   },
   "catalogue": {
     "eyebrow": "目录",

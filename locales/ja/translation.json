@@ -53,7 +53,9 @@
     "manifestoQuote": "刻まれた王冠、部族の顔——出自を恥じないラグジュアリー。",
     "enterUniverse": "世界観に入る",
     "welcomeToastTitle": "ようこそ",
-    "welcomeToastMessage": "アカウントが確認されました。JEUNE RICHEへようこそ。"
+    "welcomeToastMessage": "アカウントが確認されました。JEUNE RICHEへようこそ。",
+    "loginWelcomeMessage": "またお会いできて嬉しいです。",
+    "loginWelcomeMessageNamed": "{{name}}様、またお会いできて嬉しいです。"
   },
   "catalogue": {
     "eyebrow": "カタログ",

@@ -53,7 +53,9 @@
     "manifestoQuote": "Una corona incisa, un volto tribale — il lusso che non si scusa delle proprie origini.",
     "enterUniverse": "Entra nell'universo",
     "welcomeToastTitle": "Benvenuto",
-    "welcomeToastMessage": "Account confermato — benvenuto su JEUNE RICHE."
+    "welcomeToastMessage": "Account confermato — benvenuto su JEUNE RICHE.",
+    "loginWelcomeMessage": "Che piacere rivederti.",
+    "loginWelcomeMessageNamed": "Che piacere rivederti, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Catalogo",

@@ -53,7 +53,9 @@
     "manifestoQuote": "एक उकेरा हुआ ताज, एक आदिवासी चेहरा — ऐसी विलासिता जो अपनी उत्पत्ति के लिए माफ़ी नहीं मांगती।",
     "enterUniverse": "इस दुनिया में प्रवेश करें",
     "welcomeToastTitle": "स्वागत है",
-    "welcomeToastMessage": "खाता पुष्टि हो गया — JEUNE RICHE में आपका स्वागत है।"
+    "welcomeToastMessage": "खाता पुष्टि हो गया — JEUNE RICHE में आपका स्वागत है।",
+    "loginWelcomeMessage": "आपको दोबारा देखकर खुशी हुई।",
+    "loginWelcomeMessageNamed": "आपको दोबारा देखकर खुशी हुई, {{name}}।"
   },
   "catalogue": {
     "eyebrow": "कैटलॉग",

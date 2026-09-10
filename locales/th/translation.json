@@ -53,7 +53,9 @@
     "manifestoQuote": "มงกุฎที่แกะสลัก ใบหน้าชนเผ่า — ความหรูหราที่ไม่ขอโทษต่อที่มาของตัวเอง",
     "enterUniverse": "เข้าสู่โลกนี้",
     "welcomeToastTitle": "ยินดีต้อนรับ",
-    "welcomeToastMessage": "ยืนยันบัญชีแล้ว — ยินดีต้อนรับสู่ JEUNE RICHE"
+    "welcomeToastMessage": "ยืนยันบัญชีแล้ว — ยินดีต้อนรับสู่ JEUNE RICHE",
+    "loginWelcomeMessage": "ยินดีที่ได้พบคุณอีกครั้ง",
+    "loginWelcomeMessageNamed": "ยินดีที่ได้พบคุณอีกครั้ง {{name}}"
   },
   "catalogue": {
     "eyebrow": "แคตตาล็อก",

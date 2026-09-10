@@ -53,7 +53,9 @@
     "manifestoQuote": "تاج محفور، وجه قبلي — فخامة لا تعتذر عن أصلها.",
     "enterUniverse": "ادخل إلى العالم",
     "welcomeToastTitle": "مرحبًا",
-    "welcomeToastMessage": "تم تأكيد الحساب — مرحبًا بك في JEUNE RICHE."
+    "welcomeToastMessage": "تم تأكيد الحساب — مرحبًا بك في JEUNE RICHE.",
+    "loginWelcomeMessage": "سعداء برؤيتك مجددًا.",
+    "loginWelcomeMessageNamed": "سعداء برؤيتك مجددًا، {{name}}."
   },
   "catalogue": {
     "eyebrow": "الكتالوج",

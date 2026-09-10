@@ -53,7 +53,9 @@
     "manifestoQuote": "Mahkota terukir, wajah suku — kemewahan yang tak meminta maaf atas asal-usulnya.",
     "enterUniverse": "Masuki dunianya",
     "welcomeToastTitle": "Selamat datang",
-    "welcomeToastMessage": "Akun dikonfirmasi — selamat datang di JEUNE RICHE."
+    "welcomeToastMessage": "Akun dikonfirmasi — selamat datang di JEUNE RICHE.",
+    "loginWelcomeMessage": "Senang bertemu Anda lagi.",
+    "loginWelcomeMessageNamed": "Senang bertemu Anda lagi, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

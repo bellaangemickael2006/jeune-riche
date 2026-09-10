@@ -53,7 +53,9 @@
     "manifestoQuote": "En graverad krona, ett stamansikte — lyx som inte ber om ursäkt för sitt ursprung.",
     "enterUniverse": "Kliv in i universum",
     "welcomeToastTitle": "Välkommen",
-    "welcomeToastMessage": "Konto bekräftat — välkommen till JEUNE RICHE."
+    "welcomeToastMessage": "Konto bekräftat — välkommen till JEUNE RICHE.",
+    "loginWelcomeMessage": "Roligt att se dig igen.",
+    "loginWelcomeMessageNamed": "Roligt att se dig igen, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

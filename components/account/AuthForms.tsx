@@ -77,7 +77,11 @@ export default function AuthForms() {
       setLoading(false);
       return;
     }
-    router.refresh();
+    // Ramène le client vers l'accueil avec l'animation de bienvenue
+    // (LoginWelcome, voir components/home/LoginWelcome.tsx) plutôt que de
+    // rester sur /compte — un vrai moment de retour, pas juste un
+    // rafraîchissement silencieux du tableau de bord.
+    router.push("/?login=1");
   }
 
   return (

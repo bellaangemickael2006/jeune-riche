@@ -53,7 +53,9 @@
     "manifestoQuote": "Kazınmış bir taç, kabile bir yüz — kökeninden özür dilemeyen lüks.",
     "enterUniverse": "Evrene gir",
     "welcomeToastTitle": "Hoş geldiniz",
-    "welcomeToastMessage": "Hesap onaylandı — JEUNE RICHE'e hoş geldiniz."
+    "welcomeToastMessage": "Hesap onaylandı — JEUNE RICHE'e hoş geldiniz.",
+    "loginWelcomeMessage": "Sizi tekrar görmek güzel.",
+    "loginWelcomeMessageNamed": "Sizi tekrar görmek güzel, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

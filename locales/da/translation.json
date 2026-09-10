@@ -53,7 +53,9 @@
     "manifestoQuote": "En graveret krone, et stammeansigt — luksus, der ikke undskylder for sin oprindelse.",
     "enterUniverse": "Træd ind i universet",
     "welcomeToastTitle": "Velkommen",
-    "welcomeToastMessage": "Konto bekræftet — velkommen til JEUNE RICHE."
+    "welcomeToastMessage": "Konto bekræftet — velkommen til JEUNE RICHE.",
+    "loginWelcomeMessage": "Dejligt at se dig igen.",
+    "loginWelcomeMessageNamed": "Dejligt at se dig igen, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

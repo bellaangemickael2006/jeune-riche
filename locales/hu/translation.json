@@ -53,7 +53,9 @@
     "manifestoQuote": "Egy vésett korona, egy törzsi arc — luxus, amely nem kér bocsánatot az eredetéért.",
     "enterUniverse": "Lépj be a világba",
     "welcomeToastTitle": "Üdvözlünk",
-    "welcomeToastMessage": "Fiók megerősítve — üdvözlünk a JEUNE RICHE-nél."
+    "welcomeToastMessage": "Fiók megerősítve — üdvözlünk a JEUNE RICHE-nél.",
+    "loginWelcomeMessage": "Örülünk, hogy újra itt vagy.",
+    "loginWelcomeMessageNamed": "Örülünk, hogy újra itt vagy, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalógus",

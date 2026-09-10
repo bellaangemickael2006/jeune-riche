@@ -2,6 +2,7 @@ import Hero from "@/components/home/Hero";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import ManifesteTeaser from "@/components/home/ManifesteTeaser";
 import WelcomeToast from "@/components/home/WelcomeToast";
+import LoginWelcome from "@/components/home/LoginWelcome";
 import { getPublishedProducts } from "@/lib/data/products";
 
 export default async function HomePage() {
@@ -15,6 +16,7 @@ export default async function HomePage() {
   return (
     <>
       <WelcomeToast />
+      <LoginWelcome />
       <Hero />
       <CategoryGrid items={showcaseItems} />
       <ManifesteTeaser />

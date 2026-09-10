@@ -53,7 +53,9 @@
     "manifestoQuote": "Гравійована корона, племінне обличчя — розкіш, яка не вибачається за своє походження.",
     "enterUniverse": "Увійти у всесвіт",
     "welcomeToastTitle": "Ласкаво просимо",
-    "welcomeToastMessage": "Обліковий запис підтверджено — ласкаво просимо до JEUNE RICHE."
+    "welcomeToastMessage": "Обліковий запис підтверджено — ласкаво просимо до JEUNE RICHE.",
+    "loginWelcomeMessage": "Раді бачити вас знову.",
+    "loginWelcomeMessageNamed": "Раді бачити вас знову, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Каталог",

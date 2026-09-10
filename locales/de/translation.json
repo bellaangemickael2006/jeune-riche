@@ -53,7 +53,9 @@
     "manifestoQuote": "Eine gravierte Krone, ein tribales Gesicht — Luxus, der sich nicht für seine Herkunft entschuldigt.",
     "enterUniverse": "Die Welt betreten",
     "welcomeToastTitle": "Willkommen",
-    "welcomeToastMessage": "Konto bestätigt — willkommen bei JEUNE RICHE."
+    "welcomeToastMessage": "Konto bestätigt — willkommen bei JEUNE RICHE.",
+    "loginWelcomeMessage": "Schön, dich wiederzusehen.",
+    "loginWelcomeMessageNamed": "Schön, dich wiederzusehen, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

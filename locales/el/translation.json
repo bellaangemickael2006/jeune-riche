@@ -53,7 +53,9 @@
     "manifestoQuote": "Ένα χαραγμένο στέμμα, ένα φυλετικό πρόσωπο — πολυτέλεια που δεν ζητά συγγνώμη για την καταγωγή της.",
     "enterUniverse": "Είσοδος στο σύμπαν",
     "welcomeToastTitle": "Καλώς ήρθατε",
-    "welcomeToastMessage": "Ο λογαριασμός επιβεβαιώθηκε — καλώς ήρθατε στη JEUNE RICHE."
+    "welcomeToastMessage": "Ο λογαριασμός επιβεβαιώθηκε — καλώς ήρθατε στη JEUNE RICHE.",
+    "loginWelcomeMessage": "Χαιρόμαστε που σας ξαναβλέπουμε.",
+    "loginWelcomeMessageNamed": "Χαιρόμαστε που σας ξαναβλέπουμε, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Κατάλογος",
