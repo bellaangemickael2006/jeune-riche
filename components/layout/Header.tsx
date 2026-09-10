@@ -24,6 +24,11 @@ export default function Header() {
   const pathname = usePathname();
   const headerRef = useRef<HTMLElement>(null);
   const isHome = pathname === "/";
+  // La fiche produit (ProductViewer) et le checkout affichent déjà leur
+  // propre bouton "Retour" contextuel — en ajouter un second ici ferait
+  // doublon à l'écran plutôt que de combler un manque.
+  const hasOwnBackButton = pathname === "/checkout" || (pathname?.startsWith("/catalogue/") ?? false);
+  const showBack = !isHome && !hasOwnBackButton;
   useScrollLock(menuOpen || searchOpen);
 
   // En PWA installée (mode standalone), il n'y a ni barre d'adresse ni geste
@@ -101,7 +106,7 @@ export default function Header() {
     >
       <div className="relative z-20 flex items-center justify-between px-5 md:px-10">
         <div className="flex items-center gap-3">
-          {!isHome && (
+          {showBack && (
             <button
               type="button"
               onClick={handleBack}
