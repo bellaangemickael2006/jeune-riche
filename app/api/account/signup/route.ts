@@ -9,6 +9,10 @@ const schema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
   name: z.string().optional(),
+  // Le téléphone (WhatsApp) est le canal de contact principal de la
+  // boutique — demandé dès l'inscription plutôt qu'au premier achat
+  // seulement, pour pouvoir joindre le client sans attendre une commande.
+  phone: z.string().min(1, "Le numéro de téléphone est requis."),
 });
 
 // Remplace supabase.auth.signUp() côté client : celui-ci déclenche l'envoi
@@ -37,7 +41,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Trop de tentatives. Réessayez plus tard." }, { status: 429 });
   }
 
-  const { email, password, name } = parsed.data;
+  const { email, password, name, phone } = parsed.data;
 
   try {
     // Vérifié ICI, avant tout appel à Supabase : generateLink({type:"signup"})
@@ -78,12 +82,13 @@ export async function POST(req: NextRequest) {
 
     await prisma.user.upsert({
       where: { supabaseId: data.user.id },
-      update: {},
+      update: { addressPhone: phone },
       create: {
         supabaseId: data.user.id,
         email,
         name: name || null,
         role: "CLIENT",
+        addressPhone: phone,
       },
     });
 

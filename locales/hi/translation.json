@@ -225,7 +225,8 @@
     "confirmationTitle": "पंजीकरण की पुष्टि हुई",
     "confirmationSuccess": "आपका खाता सक्रिय कर दिया गया है। JEUNE RICHE में आपका स्वागत है।",
     "confirmationInvalid": "यह पुष्टिकरण लिंक अमान्य है या समाप्त हो चुका है।",
-    "confirmationCta": "मेरे खाते पर जाएं"
+    "confirmationCta": "मेरे खाते पर जाएं",
+    "phone": "फ़ोन"
   },
   "wishlist": {
     "title": "पसंदीदा",

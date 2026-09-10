@@ -225,7 +225,8 @@
     "confirmationTitle": "Înregistrare confirmată",
     "confirmationSuccess": "Contul tău este activat. Bine ai venit la JEUNE RICHE.",
     "confirmationInvalid": "Acest link de confirmare este invalid sau a expirat.",
-    "confirmationCta": "Accesează contul meu"
+    "confirmationCta": "Accesează contul meu",
+    "phone": "Telefon"
   },
   "wishlist": {
     "title": "Favorite",

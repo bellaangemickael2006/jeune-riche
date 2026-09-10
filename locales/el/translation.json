@@ -225,7 +225,8 @@
     "confirmationTitle": "Η εγγραφή επιβεβαιώθηκε",
     "confirmationSuccess": "Ο λογαριασμός σας είναι ενεργός. Καλώς ήρθατε στη JEUNE RICHE.",
     "confirmationInvalid": "Αυτός ο σύνδεσμος επιβεβαίωσης δεν είναι έγκυρος ή έχει λήξει.",
-    "confirmationCta": "Μετάβαση στον λογαριασμό μου"
+    "confirmationCta": "Μετάβαση στον λογαριασμό μου",
+    "phone": "Τηλέφωνο"
   },
   "wishlist": {
     "title": "Αγαπημένα",

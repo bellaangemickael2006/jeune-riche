@@ -225,7 +225,8 @@
     "confirmationTitle": "Regisztráció megerősítve",
     "confirmationSuccess": "A fiókod aktiválva lett. Üdvözlünk a JEUNE RICHE-nél.",
     "confirmationInvalid": "Ez a megerősítő link érvénytelen vagy lejárt.",
-    "confirmationCta": "Ugrás a fiókomhoz"
+    "confirmationCta": "Ugrás a fiókomhoz",
+    "phone": "Telefon"
   },
   "wishlist": {
     "title": "Kedvencek",

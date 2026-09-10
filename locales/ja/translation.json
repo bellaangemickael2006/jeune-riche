@@ -225,7 +225,8 @@
     "confirmationTitle": "登録が確認されました",
     "confirmationSuccess": "アカウントが有効になりました。JEUNE RICHEへようこそ。",
     "confirmationInvalid": "この確認リンクは無効か、有効期限が切れています。",
-    "confirmationCta": "マイアカウントへ"
+    "confirmationCta": "マイアカウントへ",
+    "phone": "電話番号"
   },
   "wishlist": {
     "title": "お気に入り",

@@ -225,7 +225,8 @@
     "confirmationTitle": "Registrace potvrzena",
     "confirmationSuccess": "Váš účet byl aktivován. Vítejte v JEUNE RICHE.",
     "confirmationInvalid": "Tento potvrzovací odkaz je neplatný nebo vypršel.",
-    "confirmationCta": "Přejít na můj účet"
+    "confirmationCta": "Přejít na můj účet",
+    "phone": "Telefon"
   },
   "wishlist": {
     "title": "Oblíbené",

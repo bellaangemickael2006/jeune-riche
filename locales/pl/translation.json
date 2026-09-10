@@ -225,7 +225,8 @@
     "confirmationTitle": "Rejestracja potwierdzona",
     "confirmationSuccess": "Twoje konto zostało aktywowane. Witamy w JEUNE RICHE.",
     "confirmationInvalid": "Ten link potwierdzający jest nieprawidłowy lub wygasł.",
-    "confirmationCta": "Przejdź do mojego konta"
+    "confirmationCta": "Przejdź do mojego konta",
+    "phone": "Telefon"
   },
   "wishlist": {
     "title": "Ulubione",

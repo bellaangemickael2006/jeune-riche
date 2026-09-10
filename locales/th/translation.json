@@ -225,7 +225,8 @@
     "confirmationTitle": "ยืนยันการสมัครแล้ว",
     "confirmationSuccess": "บัญชีของคุณเปิดใช้งานแล้ว ยินดีต้อนรับสู่ JEUNE RICHE",
     "confirmationInvalid": "ลิงก์ยืนยันนี้ไม่ถูกต้องหรือหมดอายุแล้ว",
-    "confirmationCta": "ไปที่บัญชีของฉัน"
+    "confirmationCta": "ไปที่บัญชีของฉัน",
+    "phone": "โทรศัพท์"
   },
   "wishlist": {
     "title": "รายการโปรด",

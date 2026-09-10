@@ -225,7 +225,8 @@
     "confirmationTitle": "Kayıt onaylandı",
     "confirmationSuccess": "Hesabınız aktif edildi. JEUNE RICHE'e hoş geldiniz.",
     "confirmationInvalid": "Bu onay bağlantısı geçersiz veya süresi dolmuş.",
-    "confirmationCta": "Hesabıma git"
+    "confirmationCta": "Hesabıma git",
+    "phone": "Telefon"
   },
   "wishlist": {
     "title": "Favoriler",

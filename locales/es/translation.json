@@ -225,7 +225,8 @@
     "confirmationTitle": "Inscripción confirmada",
     "confirmationSuccess": "Tu cuenta está activada. Bienvenido a JEUNE RICHE.",
     "confirmationInvalid": "Este enlace de confirmación no es válido o ha caducado.",
-    "confirmationCta": "Ir a mi cuenta"
+    "confirmationCta": "Ir a mi cuenta",
+    "phone": "Teléfono"
   },
   "wishlist": {
     "title": "Favoritos",

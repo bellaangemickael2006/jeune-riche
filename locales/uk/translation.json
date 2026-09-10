@@ -225,7 +225,8 @@
     "confirmationTitle": "Реєстрацію підтверджено",
     "confirmationSuccess": "Ваш обліковий запис активовано. Ласкаво просимо до JEUNE RICHE.",
     "confirmationInvalid": "Це посилання для підтвердження недійсне або застаріло.",
-    "confirmationCta": "Перейти до мого акаунту"
+    "confirmationCta": "Перейти до мого акаунту",
+    "phone": "Телефон"
   },
   "wishlist": {
     "title": "Обране",

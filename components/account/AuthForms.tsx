@@ -17,6 +17,7 @@ export default function AuthForms() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
@@ -57,7 +58,7 @@ export default function AuthForms() {
       const res = await fetch("/api/account/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, name }),
+        body: JSON.stringify({ email, password, name, phone }),
       });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -157,6 +158,18 @@ export default function AuthForms() {
             className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
           />
         </label>
+        {mode === "signup" && (
+          <label className="block">
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{t("account.phone")}</span>
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+            />
+          </label>
+        )}
         {mode !== "forgot" && (
           <label className="block">
             <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{t("account.password")}</span>

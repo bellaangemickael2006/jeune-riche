@@ -225,7 +225,8 @@
     "confirmationTitle": "Inschrijving bevestigd",
     "confirmationSuccess": "Je account is geactiveerd. Welkom bij JEUNE RICHE.",
     "confirmationInvalid": "Deze bevestigingslink is ongeldig of verlopen.",
-    "confirmationCta": "Naar mijn account"
+    "confirmationCta": "Naar mijn account",
+    "phone": "Telefoon"
   },
   "wishlist": {
     "title": "Favorieten",

@@ -225,7 +225,8 @@
     "confirmationTitle": "Registrering bekräftad",
     "confirmationSuccess": "Ditt konto är nu aktiverat. Välkommen till JEUNE RICHE.",
     "confirmationInvalid": "Den här bekräftelselänken är ogiltig eller har gått ut.",
-    "confirmationCta": "Gå till mitt konto"
+    "confirmationCta": "Gå till mitt konto",
+    "phone": "Telefon"
   },
   "wishlist": {
     "title": "Favoriter",

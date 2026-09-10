@@ -225,7 +225,8 @@
     "confirmationTitle": "تم تأكيد التسجيل",
     "confirmationSuccess": "تم تفعيل حسابك. مرحبًا بك في JEUNE RICHE.",
     "confirmationInvalid": "رابط التأكيد هذا غير صالح أو منتهي الصلاحية.",
-    "confirmationCta": "الذهاب إلى حسابي"
+    "confirmationCta": "الذهاب إلى حسابي",
+    "phone": "الهاتف"
   },
   "wishlist": {
     "title": "المفضلة",

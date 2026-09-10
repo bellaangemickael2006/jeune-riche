@@ -225,7 +225,8 @@
     "confirmationTitle": "Rekisteröinti vahvistettu",
     "confirmationSuccess": "Tilisi on nyt aktivoitu. Tervetuloa JEUNE RICHEen.",
     "confirmationInvalid": "Tämä vahvistuslinkki on virheellinen tai vanhentunut.",
-    "confirmationCta": "Siirry tililleni"
+    "confirmationCta": "Siirry tililleni",
+    "phone": "Puhelin"
   },
   "wishlist": {
     "title": "Suosikit",

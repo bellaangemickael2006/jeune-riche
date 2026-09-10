@@ -225,7 +225,8 @@
     "confirmationTitle": "Tilmelding bekræftet",
     "confirmationSuccess": "Din konto er nu aktiveret. Velkommen til JEUNE RICHE.",
     "confirmationInvalid": "Dette bekræftelseslink er ugyldigt eller udløbet.",
-    "confirmationCta": "Gå til min konto"
+    "confirmationCta": "Gå til min konto",
+    "phone": "Telefon"
   },
   "wishlist": {
     "title": "Favoritter",

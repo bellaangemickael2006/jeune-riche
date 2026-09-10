@@ -225,7 +225,8 @@
     "confirmationTitle": "Usajili umethibitishwa",
     "confirmationSuccess": "Akaunti yako imewashwa. Karibu JEUNE RICHE.",
     "confirmationInvalid": "Kiungo hiki cha uthibitisho si sahihi au kimeisha muda wake.",
-    "confirmationCta": "Nenda kwenye akaunti yangu"
+    "confirmationCta": "Nenda kwenye akaunti yangu",
+    "phone": "Simu"
   },
   "wishlist": {
     "title": "Unavyopenda",

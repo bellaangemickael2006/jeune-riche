@@ -225,7 +225,8 @@
     "confirmationTitle": "注册已确认",
     "confirmationSuccess": "您的账户已激活。欢迎加入 JEUNE RICHE。",
     "confirmationInvalid": "此确认链接无效或已过期。",
-    "confirmationCta": "前往我的账户"
+    "confirmationCta": "前往我的账户",
+    "phone": "电话"
   },
   "wishlist": {
     "title": "收藏",

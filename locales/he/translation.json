@@ -225,7 +225,8 @@
     "confirmationTitle": "ההרשמה אושרה",
     "confirmationSuccess": "החשבון שלך הופעל. ברוכים הבאים ל-JEUNE RICHE.",
     "confirmationInvalid": "קישור האישור אינו תקף או שפג תוקפו.",
-    "confirmationCta": "מעבר לחשבון שלי"
+    "confirmationCta": "מעבר לחשבון שלי",
+    "phone": "טלפון"
   },
   "wishlist": {
     "title": "מועדפים",
