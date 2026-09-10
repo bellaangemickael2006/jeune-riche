@@ -40,6 +40,21 @@ export async function POST(req: NextRequest) {
   const { email, password, name } = parsed.data;
 
   try {
+    // Vérifié ICI, avant tout appel à Supabase : generateLink({type:"signup"})
+    // sur un email déjà inscrit ne renvoie pas toujours une erreur côté
+    // Supabase — dans certains cas il remplace silencieusement le compte
+    // existant par une nouvelle identité non confirmée (nouvel id, nouveau
+    // mot de passe), ce qui casse le lien avec la ligne Prisma existante
+    // (email unique) et fait planter l'upsert juste en dessous avec une 500
+    // générique ("Erreur serveur.") au lieu du message attendu. Un email déjà
+    // présent dans notre table User (créée dès le premier generateLink
+    // réussi, avant même la confirmation) détecte un compte existant de
+    // façon fiable, sans dépendre du comportement de Supabase sur ce cas.
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing) {
+      return NextResponse.json({ error: "Un compte existe déjà avec cet email." }, { status: 409 });
+    }
+
     const admin = createAdminClient();
     const { data, error } = await admin.auth.admin.generateLink({
       type: "signup",
