@@ -11,6 +11,15 @@ import { useLocale } from "@/components/providers/I18nProvider";
 
 type Step = "informations" | "livraison" | "recapitulatif";
 
+// Brouillon local (formulaire + étape) — survit à un rechargement complet de
+// la page, pas seulement à une navigation interne : utile en PWA installée,
+// où le système peut tuer puis relancer l'app en arrière-plan (mémoire
+// faible, longue mise en veille...), ce qui revient à un rechargement total
+// et efface tout état React en mémoire. Sans ça, un client interrompu en
+// cours de commande devrait tout retaper. Effacé une fois la commande
+// envoyée (voir submitOrder) — jamais destiné à survivre au-delà d'un achat.
+const DRAFT_KEY = "jeune-riche-checkout-draft";
+
 export default function CheckoutPage() {
   const { t } = useTranslation();
   const { locale } = useLocale();
@@ -114,6 +123,34 @@ export default function CheckoutPage() {
     phone: "",
   });
 
+  // Restaure le brouillon AVANT le préremplissage compte (effet ci-dessus) :
+  // celui-ci ne remplit jamais un champ déjà rempli (`f.x || compte`), donc
+  // peu importe lequel des deux termine en premier, un brouillon existant
+  // gagne toujours sur l'adresse enregistrée — cohérent avec l'intention du
+  // client qui retape/corrige quelque chose en cours de commande.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return;
+      const draft = JSON.parse(raw) as { form?: Partial<typeof form>; step?: Step };
+      if (draft.form) setForm((f) => ({ ...f, ...draft.form }));
+      if (draft.step && (["informations", "livraison", "recapitulatif"] as Step[]).includes(draft.step)) {
+        setStep(draft.step);
+      }
+    } catch {
+      // brouillon corrompu ou stockage indisponible (navigation privée
+      // stricte...) : tant pis, le client repart d'un formulaire vide.
+    }
+  }, []);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({ form, step }));
+    } catch {
+      // best-effort — jamais bloquant pour la saisie en cours.
+    }
+  }, [form, step]);
+
   const steps: Step[] = ["informations", "livraison", "recapitulatif"];
   const stepIndex = steps.indexOf(step);
 
@@ -151,6 +188,11 @@ export default function CheckoutPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? t("checkout.unknownError"));
       clear();
+      try {
+        localStorage.removeItem(DRAFT_KEY);
+      } catch {
+        // best-effort
+      }
       // La commande est déjà enregistrée à ce stade — ce lien sert juste à
       // amorcer la conversation, pas à valider la commande.
       window.location.href = data.whatsappUrl;
