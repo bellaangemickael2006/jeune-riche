@@ -8,7 +8,8 @@ export default async function AdminPromoCodesPage() {
   let available = true;
   try {
     codes = await load();
-  } catch {
+  } catch (err) {
+    console.error("[admin/codes-promo]", err);
     available = false;
   }
 

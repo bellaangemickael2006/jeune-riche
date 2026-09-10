@@ -7,7 +7,8 @@ export default async function AdminDropsPage() {
   let available = true;
   try {
     drops = await load();
-  } catch {
+  } catch (err) {
+    console.error("[admin/drops]", err);
     available = false;
   }
 

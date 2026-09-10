@@ -72,7 +72,8 @@ async function getStats() {
       recentOrders,
       available: true,
     };
-  } catch {
+  } catch (err) {
+    console.error("[admin/dashboard]", err);
     return {
       orderCount: 0,
       productCount: 0,

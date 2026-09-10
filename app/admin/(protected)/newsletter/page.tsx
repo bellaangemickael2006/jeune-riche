@@ -6,7 +6,8 @@ export default async function AdminNewsletterPage() {
   let available = true;
   try {
     subscribers = await load();
-  } catch {
+  } catch (err) {
+    console.error("[admin/newsletter]", err);
     available = false;
   }
 

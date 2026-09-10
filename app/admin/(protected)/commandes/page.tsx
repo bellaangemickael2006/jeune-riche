@@ -24,7 +24,8 @@ export default async function AdminOrdersPage({
   let available = true;
   try {
     orders = await load(q, statut);
-  } catch {
+  } catch (err) {
+    console.error("[admin/commandes]", err);
     available = false;
   }
 

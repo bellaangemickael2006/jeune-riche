@@ -6,7 +6,8 @@ export default async function NewProductPage() {
   let available = true;
   try {
     categories = await prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
-  } catch {
+  } catch (err) {
+    console.error("[admin/produits/nouveau]", err);
     available = false;
   }
 

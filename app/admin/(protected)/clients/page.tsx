@@ -12,7 +12,8 @@ export default async function AdminClientsPage({
   let available = true;
   try {
     clients = await load(q);
-  } catch {
+  } catch (err) {
+    console.error("[admin/clients]", err);
     available = false;
   }
 

@@ -7,7 +7,8 @@ export default async function AdminCategoriesPage() {
   let available = true;
   try {
     categories = await load();
-  } catch {
+  } catch (err) {
+    console.error("[admin/categories]", err);
     available = false;
   }
 

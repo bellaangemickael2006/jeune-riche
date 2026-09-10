@@ -13,7 +13,8 @@ export default async function AdminProductsPage({
   let available = true;
   try {
     products = await loadProducts(q);
-  } catch {
+  } catch (err) {
+    console.error("[admin/produits]", err);
     available = false;
   }
 

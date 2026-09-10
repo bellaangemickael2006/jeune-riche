@@ -6,7 +6,8 @@ export default async function AdminReviewsPage() {
   let available = true;
   try {
     reviews = await load();
-  } catch {
+  } catch (err) {
+    console.error("[admin/avis]", err);
     available = false;
   }
 
