@@ -6,6 +6,7 @@ import SiteChrome from "@/components/providers/SiteChrome";
 import StoreHydration from "@/components/providers/StoreHydration";
 import I18nProvider from "@/components/providers/I18nProvider";
 import PWARegister from "@/components/providers/PWARegister";
+import SplashScreen from "@/components/providers/SplashScreen";
 import { getLocale, getServerTranslation, loadResource } from "@/lib/i18n/server";
 import { getDirection } from "@/lib/i18n/languages";
 import { siteUrl } from "@/lib/utils";
@@ -140,6 +141,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <I18nProvider initialLocale={locale} initialResource={initialResource}>
           <StoreHydration />
           <PWARegister />
+          <SplashScreen />
           <MotionConfig reducedMotion="user">
             <SiteChrome>{children}</SiteChrome>
           </MotionConfig>
