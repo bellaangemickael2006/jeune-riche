@@ -330,5 +330,10 @@
       "retry": "Próbálja újra",
       "home": "Vissza a főoldalra"
     }
+  },
+  "pwa": {
+    "installTitle": "Telepítsd a JEUNE RICHE alkalmazást",
+    "installSubtitle": "Gyorsabb hozzáférés, offline is",
+    "installCta": "Letöltés"
   }
 }

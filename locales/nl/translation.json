@@ -330,5 +330,10 @@
       "retry": "Opnieuw proberen",
       "home": "Terug naar home"
     }
+  },
+  "pwa": {
+    "installTitle": "Installeer de JEUNE RICHE-app",
+    "installSubtitle": "Snellere toegang, ook offline",
+    "installCta": "Downloaden"
   }
 }

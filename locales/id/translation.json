@@ -330,5 +330,10 @@
       "retry": "Coba lagi",
       "home": "Kembali ke beranda"
     }
+  },
+  "pwa": {
+    "installTitle": "Pasang aplikasi JEUNE RICHE",
+    "installSubtitle": "Akses lebih cepat, bahkan offline",
+    "installCta": "Unduh"
   }
 }

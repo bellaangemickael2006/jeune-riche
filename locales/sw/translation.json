@@ -330,5 +330,10 @@
       "retry": "Jaribu tena",
       "home": "Rudi mwanzo"
     }
+  },
+  "pwa": {
+    "installTitle": "Sakinisha programu ya JEUNE RICHE",
+    "installSubtitle": "Ufikiaji wa haraka zaidi, hata bila mtandao",
+    "installCta": "Pakua"
   }
 }

@@ -8,6 +8,7 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import WhatsappButton from "@/components/ui/WhatsappButton";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import GrainOverlay from "@/components/ui/GrainOverlay";
+import InstallPrompt from "@/components/providers/InstallPrompt";
 
 // L'admin a son propre shell (AdminSidebar, voir app/admin/(protected)/layout.tsx)
 // et doit rester un outil de gestion sobre : le header fixe du site client
@@ -32,6 +33,7 @@ export default function SiteChrome({ children }: { children: React.ReactNode }) 
       <Footer />
       <CartDrawer />
       <WhatsappButton />
+      <InstallPrompt />
     </>
   );
 }

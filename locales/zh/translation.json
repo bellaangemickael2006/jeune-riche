@@ -330,5 +330,10 @@
       "retry": "重试",
       "home": "返回首页"
     }
+  },
+  "pwa": {
+    "installTitle": "安装 JEUNE RICHE 应用",
+    "installSubtitle": "访问更快，离线也能用",
+    "installCta": "下载"
   }
 }

@@ -330,5 +330,10 @@
       "retry": "Riprova",
       "home": "Torna alla home"
     }
+  },
+  "pwa": {
+    "installTitle": "Installa l'app JEUNE RICHE",
+    "installSubtitle": "Accesso più rapido, anche offline",
+    "installCta": "Scarica"
   }
 }

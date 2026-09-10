@@ -330,5 +330,10 @@
       "retry": "फिर से कोशिश करें",
       "home": "होम पर वापस जाएं"
     }
+  },
+  "pwa": {
+    "installTitle": "JEUNE RICHE ऐप इंस्टॉल करें",
+    "installSubtitle": "तेज़ पहुंच, ऑफ़लाइन भी",
+    "installCta": "डाउनलोड करें"
   }
 }

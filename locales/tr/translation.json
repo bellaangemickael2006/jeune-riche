@@ -330,5 +330,10 @@
       "retry": "Tekrar dene",
       "home": "Ana sayfaya dön"
     }
+  },
+  "pwa": {
+    "installTitle": "JEUNE RICHE uygulamasını yükleyin",
+    "installSubtitle": "Daha hızlı erişim, çevrimdışında bile",
+    "installCta": "İndir"
   }
 }

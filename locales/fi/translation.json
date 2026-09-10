@@ -330,5 +330,10 @@
       "retry": "Yritä uudelleen",
       "home": "Takaisin etusivulle"
     }
+  },
+  "pwa": {
+    "installTitle": "Asenna JEUNE RICHE -sovellus",
+    "installSubtitle": "Nopeampi käyttö, myös offline-tilassa",
+    "installCta": "Lataa"
   }
 }

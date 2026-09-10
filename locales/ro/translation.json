@@ -330,5 +330,10 @@
       "retry": "Încearcă din nou",
       "home": "Înapoi la pagina principală"
     }
+  },
+  "pwa": {
+    "installTitle": "Instalează aplicația JEUNE RICHE",
+    "installSubtitle": "Acces mai rapid, chiar și offline",
+    "installCta": "Descarcă"
   }
 }

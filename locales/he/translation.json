@@ -330,5 +330,10 @@
       "retry": "ניסיון נוסף",
       "home": "חזרה לדף הבית"
     }
+  },
+  "pwa": {
+    "installTitle": "התקינו את אפליקציית JEUNE RICHE",
+    "installSubtitle": "גישה מהירה יותר, גם במצב לא מקוון",
+    "installCta": "הורדה"
   }
 }

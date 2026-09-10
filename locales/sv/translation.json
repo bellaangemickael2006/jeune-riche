@@ -330,5 +330,10 @@
       "retry": "Försök igen",
       "home": "Tillbaka till startsidan"
     }
+  },
+  "pwa": {
+    "installTitle": "Installera JEUNE RICHE-appen",
+    "installSubtitle": "Snabbare åtkomst, även offline",
+    "installCta": "Ladda ner"
   }
 }

@@ -330,5 +330,10 @@
       "retry": "再試行",
       "home": "ホームに戻る"
     }
+  },
+  "pwa": {
+    "installTitle": "JEUNE RICHEアプリをインストール",
+    "installSubtitle": "より速いアクセス、オフラインでも",
+    "installCta": "ダウンロード"
   }
 }

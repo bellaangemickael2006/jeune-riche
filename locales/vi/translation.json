@@ -330,5 +330,10 @@
       "retry": "Thử lại",
       "home": "Về trang chủ"
     }
+  },
+  "pwa": {
+    "installTitle": "Cài đặt ứng dụng JEUNE RICHE",
+    "installSubtitle": "Truy cập nhanh hơn, kể cả khi ngoại tuyến",
+    "installCta": "Tải xuống"
   }
 }

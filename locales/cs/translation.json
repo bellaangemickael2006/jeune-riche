@@ -330,5 +330,10 @@
       "retry": "Zkusit znovu",
       "home": "Zpět na hlavní stránku"
     }
+  },
+  "pwa": {
+    "installTitle": "Nainstalujte si aplikaci JEUNE RICHE",
+    "installSubtitle": "Rychlejší přístup, i offline",
+    "installCta": "Stáhnout"
   }
 }
