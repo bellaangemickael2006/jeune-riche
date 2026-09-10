@@ -167,7 +167,8 @@
       "reference": "Numer referencyjny: {{number}}",
       "message": "Otrzymasz email potwierdzający. Nasz zespół skontaktuje się z Tobą ponownie, aby dokończyć płatność i dostawę.",
       "backToCatalogue": "Powrót do katalogu"
-    }
+    },
+    "shippingTBD": "Podane w wiadomości"
   },
   "account": {
     "login": "Zaloguj się",

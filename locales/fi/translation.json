@@ -167,7 +167,8 @@
       "reference": "Viitenumero: {{number}}",
       "message": "Saat vahvistussähköpostin. Tiimimme ottaa sinuun uudelleen yhteyttä viimeistelläkseen maksun ja toimituksen.",
       "backToCatalogue": "Takaisin luetteloon"
-    }
+    },
+    "shippingTBD": "Ilmoitetaan viestillä"
   },
   "account": {
     "login": "Kirjaudu sisään",

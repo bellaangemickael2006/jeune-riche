@@ -167,7 +167,8 @@
       "reference": "Riferimento: {{number}}",
       "message": "Riceverai un'email di conferma. Il nostro team ti ricontatterà per finalizzare pagamento e spedizione.",
       "backToCatalogue": "Torna al catalogo"
-    }
+    },
+    "shippingTBD": "Comunicate via messaggio"
   },
   "account": {
     "login": "Accedi",

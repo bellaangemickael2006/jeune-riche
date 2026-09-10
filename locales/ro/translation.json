@@ -167,7 +167,8 @@
       "reference": "Referință: {{number}}",
       "message": "Vei primi un email de confirmare. Echipa noastră te va contacta din nou pentru a finaliza plata și livrarea.",
       "backToCatalogue": "Înapoi la catalog"
-    }
+    },
+    "shippingTBD": "Comunicate prin mesaj"
   },
   "account": {
     "login": "Conectare",

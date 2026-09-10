@@ -167,7 +167,8 @@
       "reference": "Sipariş no: {{number}}",
       "message": "Size bir onay e-postası gönderilecektir. Ekibimiz ödeme ve teslimatı tamamlamak için sizinle tekrar iletişime geçecektir.",
       "backToCatalogue": "Kataloğa dön"
-    }
+    },
+    "shippingTBD": "Mesajla bildirilir"
   },
   "account": {
     "login": "Giriş yap",

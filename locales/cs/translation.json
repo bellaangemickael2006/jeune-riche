@@ -167,7 +167,8 @@
       "reference": "Číslo objednávky: {{number}}",
       "message": "Bude vám zaslán potvrzovací email. Náš tým vás znovu kontaktuje k dokončení platby a dopravy.",
       "backToCatalogue": "Zpět do katalogu"
-    }
+    },
+    "shippingTBD": "Sdělíme zprávou"
   },
   "account": {
     "login": "Přihlásit se",

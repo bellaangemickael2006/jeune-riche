@@ -167,7 +167,8 @@
       "reference": "Mã đơn hàng: {{number}}",
       "message": "Bạn sẽ nhận được email xác nhận. Đội ngũ của chúng tôi sẽ liên hệ lại để hoàn tất thanh toán và vận chuyển.",
       "backToCatalogue": "Quay lại danh mục"
-    }
+    },
+    "shippingTBD": "Thông báo qua tin nhắn"
   },
   "account": {
     "login": "Đăng nhập",

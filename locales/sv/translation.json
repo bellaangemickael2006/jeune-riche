@@ -167,7 +167,8 @@
       "reference": "Referensnummer: {{number}}",
       "message": "Ett bekräftelsemejl skickas till dig. Vårt team kontaktar dig igen för att slutföra betalning och frakt.",
       "backToCatalogue": "Tillbaka till katalogen"
-    }
+    },
+    "shippingTBD": "Meddelas via meddelande"
   },
   "account": {
     "login": "Logga in",

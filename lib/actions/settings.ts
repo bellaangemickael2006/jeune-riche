@@ -9,7 +9,6 @@ const SETTINGS_ID = "default";
 export async function updateStoreSettings(formData: FormData) {
   await requireAdmin();
 
-  const shippingCostRaw = String(formData.get("shippingCost") ?? "").trim();
   const freeShippingThresholdRaw = String(formData.get("freeShippingThreshold") ?? "").trim();
   const contactEmail = String(formData.get("contactEmail") ?? "").trim();
   const contactPhone = String(formData.get("contactPhone") ?? "").trim();
@@ -18,13 +17,11 @@ export async function updateStoreSettings(formData: FormData) {
     where: { id: SETTINGS_ID },
     create: {
       id: SETTINGS_ID,
-      shippingCost: shippingCostRaw ? Number(shippingCostRaw) : 0,
       freeShippingThreshold: freeShippingThresholdRaw ? Number(freeShippingThresholdRaw) : null,
       contactEmail: contactEmail || null,
       contactPhone: contactPhone || null,
     },
     update: {
-      shippingCost: shippingCostRaw ? Number(shippingCostRaw) : 0,
       freeShippingThreshold: freeShippingThresholdRaw ? Number(freeShippingThresholdRaw) : null,
       contactEmail: contactEmail || null,
       contactPhone: contactPhone || null,

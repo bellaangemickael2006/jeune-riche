@@ -167,7 +167,8 @@
       "reference": "Nambari ya rejea: {{number}}",
       "message": "Barua pepe ya uthibitisho itatumwa kwako. Timu yetu itawasiliana nawe tena kukamilisha malipo na usafirishaji.",
       "backToCatalogue": "Rudi kwenye katalogi"
-    }
+    },
+    "shippingTBD": "Itaelezwa kwa ujumbe"
   },
   "account": {
     "login": "Ingia",

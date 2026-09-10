@@ -122,17 +122,14 @@ export async function POST(req: NextRequest) {
 
     const subtotal = resolvedLines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
 
-    // Toujours calculés côté serveur depuis les réglages admin — jamais
-    // acceptés depuis le client, même logique de confiance que le prix.
+    // Pas de frais de livraison fixes : ça varie trop selon la destination
+    // pour un montant unique facturé en ligne — communiqués au client par
+    // message après la commande, jamais ajoutés à `total`. Le seuil de
+    // livraison offerte (réglable en admin) n'est qu'un argument affiché au
+    // client côté /checkout (voir /api/shipping) ; il n'a aucun effet ici
+    // puisqu'aucun montant de livraison n'est de toute façon facturé.
     const settings = await getStoreSettings();
-    const freeThreshold =
-      settings?.freeShippingThreshold !== null && settings?.freeShippingThreshold !== undefined
-        ? Number(settings.freeShippingThreshold)
-        : null;
-    // Calculé sur le sous-total AVANT remise : le seuil de livraison offerte
-    // porte sur la taille réelle du panier, pas sur ce qu'il reste à payer.
-    const shippingCost =
-      freeThreshold !== null && subtotal >= freeThreshold ? 0 : Number(settings?.shippingCost ?? 0);
+    const shippingCost = 0;
 
     // Revalidé ici, jamais confiance au montant affiché côté client. Une
     // erreur promo (invalide, expiré, ou épuisé par une commande concurrente

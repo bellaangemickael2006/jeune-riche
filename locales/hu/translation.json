@@ -167,7 +167,8 @@
       "reference": "Rendelésszám: {{number}}",
       "message": "Megerősítő emailt küldünk Önnek. Csapatunk ismét felveszi Önnel a kapcsolatot a fizetés és szállítás befejezéséhez.",
       "backToCatalogue": "Vissza a katalógushoz"
-    }
+    },
+    "shippingTBD": "Üzenetben közöljük"
   },
   "account": {
     "login": "Bejelentkezés",

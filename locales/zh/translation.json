@@ -167,7 +167,8 @@
       "reference": "订单号：{{number}}",
       "message": "确认邮件即将发送给您。我们的团队会再次联系您，以完成付款和配送安排。",
       "backToCatalogue": "返回目录"
-    }
+    },
+    "shippingTBD": "通过消息告知"
   },
   "account": {
     "login": "登录",

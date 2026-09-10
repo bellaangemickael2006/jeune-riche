@@ -22,19 +22,10 @@ export default async function AdminSettingsPage() {
             <p className="mb-4 border-b border-line pb-2 text-xs uppercase tracking-widest2 text-paper/50">
               Livraison
             </p>
-            <label className="block">
-              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
-                Frais de livraison (F CFA)
-              </span>
-              <input
-                name="shippingCost"
-                type="number"
-                min={0}
-                step={1}
-                defaultValue={Number(settings.shippingCost)}
-                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper"
-              />
-            </label>
+            <p className="text-xs text-paper/40">
+              Les frais de livraison varient selon la destination — communiqués directement au client
+              par message, pas de montant fixe ici.
+            </p>
             <label className="mt-4 block">
               <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
                 Livraison gratuite à partir de (F CFA) — laisser vide pour désactiver

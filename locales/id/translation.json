@@ -167,7 +167,8 @@
       "reference": "Referensi: {{number}}",
       "message": "Email konfirmasi akan dikirimkan kepada Anda. Tim kami akan menghubungi Anda kembali untuk menyelesaikan pembayaran dan pengiriman.",
       "backToCatalogue": "Kembali ke katalog"
-    }
+    },
+    "shippingTBD": "Diberitahukan lewat pesan"
   },
   "account": {
     "login": "Masuk",

@@ -18,7 +18,7 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<Step>("informations");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [shipping, setShipping] = useState({ shippingCost: 0, freeShippingThreshold: null as number | null });
+  const [shipping, setShipping] = useState({ freeShippingThreshold: null as number | null });
   const [promoInput, setPromoInput] = useState("");
   const [promo, setPromo] = useState<{ code: string; discountAmount: number } | null>(null);
   const [promoMessage, setPromoMessage] = useState<string | null>(null);
@@ -69,12 +69,14 @@ export default function CheckoutPage() {
   }, []);
 
   const subtotal = total();
-  const shippingCost =
-    shipping.freeShippingThreshold !== null && subtotal >= shipping.freeShippingThreshold
-      ? 0
-      : shipping.shippingCost;
+  // Pas de frais de livraison fixes : ça varie trop selon la destination
+  // pour un montant unique en ligne — communiqués directement au client par
+  // message après la commande. Seul le seuil de livraison offerte (réglable
+  // en admin) est calculé ici, pour l'afficher comme avantage au client.
+  const freeShipping =
+    shipping.freeShippingThreshold !== null && subtotal >= shipping.freeShippingThreshold;
   const discountAmount = promo?.discountAmount ?? 0;
-  const grandTotal = subtotal - discountAmount + shippingCost;
+  const grandTotal = subtotal - discountAmount;
 
   async function applyPromoCode() {
     if (!promoInput.trim()) return;
@@ -309,7 +311,7 @@ export default function CheckoutPage() {
                 )}
                 <div className="flex justify-between text-paper/60">
                   <span className="uppercase tracking-widest2">{t("checkout.shipping")}</span>
-                  <span>{shippingCost === 0 ? t("checkout.freeShipping") : formatPrice(shippingCost, locale)}</span>
+                  <span>{freeShipping ? t("checkout.freeShipping") : t("checkout.shippingTBD")}</span>
                 </div>
                 <div className="flex justify-between border-t border-line pt-2">
                   <span className="uppercase tracking-widest2 text-paper/50">{t("checkout.total")}</span>

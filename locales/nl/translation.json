@@ -167,7 +167,8 @@
       "reference": "Referentie: {{number}}",
       "message": "U ontvangt een bevestigingsmail. Ons team neemt opnieuw contact met u op om betaling en verzending af te ronden.",
       "backToCatalogue": "Terug naar de catalogus"
-    }
+    },
+    "shippingTBD": "Doorgegeven per bericht"
   },
   "account": {
     "login": "Inloggen",

@@ -167,7 +167,8 @@
       "reference": "注文番号：{{number}}",
       "message": "確認メールをお送りします。スタッフより改めてご連絡し、お支払いと配送を確定いたします。",
       "backToCatalogue": "カタログに戻る"
-    }
+    },
+    "shippingTBD": "メッセージでお知らせします"
   },
   "account": {
     "login": "ログイン",

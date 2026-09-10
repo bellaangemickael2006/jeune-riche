@@ -167,7 +167,8 @@
       "reference": "Referansenummer: {{number}}",
       "message": "Du vil motta en bekreftelses-e-post. Teamet vårt kontakter deg på nytt for å fullføre betaling og frakt.",
       "backToCatalogue": "Tilbake til katalogen"
-    }
+    },
+    "shippingTBD": "Oppgis via melding"
   },
   "account": {
     "login": "Logg inn",

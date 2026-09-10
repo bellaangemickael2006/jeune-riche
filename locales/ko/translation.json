@@ -167,7 +167,8 @@
       "reference": "주문 번호: {{number}}",
       "message": "확인 이메일이 발송됩니다. 저희 팀이 다시 연락드려 결제와 배송을 진행합니다.",
       "backToCatalogue": "카탈로그로 돌아가기"
-    }
+    },
+    "shippingTBD": "메시지로 안내"
   },
   "account": {
     "login": "로그인",
