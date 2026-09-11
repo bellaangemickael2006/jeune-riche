@@ -73,7 +73,9 @@
     "pieceCount_one": "bidhaa {{count}}",
     "pieceCount_other": "bidhaa {{count}}",
     "empty": "Hakuna bidhaa zinazopatikana kwa sasa.",
-    "emptyHint": "Bidhaa zilizochapishwa kutoka kwa usimamizi zitaonekana hapa."
+    "emptyHint": "Bidhaa zilizochapishwa kutoka kwa usimamizi zitaonekana hapa.",
+    "viewPiece": "Tazama kipande",
+    "personalizable": "Inaweza kubinafsishwa"
   },
   "product": {
     "back": "Rudi",

@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} darab",
     "pieceCount_other": "{{count}} darab",
     "empty": "Jelenleg nincs elérhető termék.",
-    "emptyHint": "Az adminisztrációból közzétett termékek itt fognak megjelenni."
+    "emptyHint": "Az adminisztrációból közzétett termékek itt fognak megjelenni.",
+    "viewPiece": "Darab megtekintése",
+    "personalizable": "Személyre szabható"
   },
   "product": {
     "back": "Vissza",

@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}}点",
     "pieceCount_other": "{{count}}点",
     "empty": "現在利用可能な商品はありません。",
-    "emptyHint": "管理画面で公開された商品がここに表示されます。"
+    "emptyHint": "管理画面で公開された商品がここに表示されます。",
+    "viewPiece": "アイテムを見る",
+    "personalizable": "名入れ可能"
   },
   "product": {
     "back": "戻る",

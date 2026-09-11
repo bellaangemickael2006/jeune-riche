@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} peça",
     "pieceCount_other": "{{count}} peças",
     "empty": "Nenhum produto disponível no momento.",
-    "emptyHint": "Os produtos publicados a partir da administração aparecerão aqui."
+    "emptyHint": "Os produtos publicados a partir da administração aparecerão aqui.",
+    "viewPiece": "Ver a peça",
+    "personalizable": "Personalizável"
   },
   "product": {
     "back": "Voltar",

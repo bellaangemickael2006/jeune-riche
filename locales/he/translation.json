@@ -73,7 +73,9 @@
     "pieceCount_one": "פריט {{count}}",
     "pieceCount_other": "{{count}} פריטים",
     "empty": "אין כרגע מוצרים זמינים.",
-    "emptyHint": "מוצרים שיפורסמו מהניהול יופיעו כאן."
+    "emptyHint": "מוצרים שיפורסמו מהניהול יופיעו כאן.",
+    "viewPiece": "לצפייה בפריט",
+    "personalizable": "ניתן להתאמה אישית"
   },
   "product": {
     "back": "חזרה",

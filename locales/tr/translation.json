@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} ürün",
     "pieceCount_other": "{{count}} ürün",
     "empty": "Şu anda kullanılabilir ürün yok.",
-    "emptyHint": "Yönetim panelinden yayınlanan ürünler burada görünecek."
+    "emptyHint": "Yönetim panelinden yayınlanan ürünler burada görünecek.",
+    "viewPiece": "Parçayı gör",
+    "personalizable": "Kişiselleştirilebilir"
   },
   "product": {
     "back": "Geri",

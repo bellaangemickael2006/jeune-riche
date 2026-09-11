@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} sztuka",
     "pieceCount_other": "{{count}} sztuk",
     "empty": "Obecnie brak dostępnych produktów.",
-    "emptyHint": "Produkty opublikowane z panelu administracyjnego pojawią się tutaj."
+    "emptyHint": "Produkty opublikowane z panelu administracyjnego pojawią się tutaj.",
+    "viewPiece": "Zobacz model",
+    "personalizable": "Z personalizacją"
   },
   "product": {
     "back": "Wstecz",

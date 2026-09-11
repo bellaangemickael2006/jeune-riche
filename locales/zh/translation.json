@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} 件",
     "pieceCount_other": "{{count}} 件",
     "empty": "暂无可用产品。",
-    "emptyHint": "后台发布的产品将显示在这里。"
+    "emptyHint": "后台发布的产品将显示在这里。",
+    "viewPiece": "查看单品",
+    "personalizable": "可定制"
   },
   "product": {
     "back": "返回",

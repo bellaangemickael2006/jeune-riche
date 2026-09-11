@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}}개",
     "pieceCount_other": "{{count}}개",
     "empty": "현재 이용 가능한 제품이 없습니다.",
-    "emptyHint": "관리자에서 게시된 제품이 여기에 표시됩니다."
+    "emptyHint": "관리자에서 게시된 제품이 여기에 표시됩니다.",
+    "viewPiece": "제품 보기",
+    "personalizable": "개인화 가능"
   },
   "product": {
     "back": "뒤로",

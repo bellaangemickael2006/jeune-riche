@@ -1,9 +1,24 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
+// Apparition au défilement — reconstruite pour être sûre plutôt que jolie.
+//
+// L'ancienne version rendait le contenu à opacity:0 côté serveur et comptait
+// sur framer-motion pour le révéler. Conséquence : si le JavaScript tarde,
+// échoue, ou si le navigateur gèle les frames (onglet en arrière-plan,
+// économie d'énergie, appareil lent), le contenu restait invisible pour de
+// bon — sur le catalogue, cela voulait dire une page de boutique vide.
+//
+// Désormais l'état de repos est VISIBLE. Le masquage n'est appliqué qu'une
+// fois le composant monté, c'est-à-dire seulement si JavaScript tourne
+// réellement et peut donc aussi le révéler. Sans JS, le contenu s'affiche.
+//
+// L'observation utilise un IntersectionObserver natif plutôt que le suivi de
+// viewport de framer-motion, et la transition passe par CSS : les deux
+// continuent de fonctionner quand la boucle d'animation est ralentie.
 export default function FadeIn({
   children,
   delay = 0,
@@ -20,22 +35,21 @@ export default function FadeIn({
   x?: number;
   y?: number;
   once?: boolean;
-  /** Anime au montage plutôt qu'à l'entrée dans le viewport — pour le contenu
-   * visible dès le premier écran (hero), où whileInView n'est pas fiable. */
+  /** Révèle au montage plutôt qu'à l'entrée dans le viewport — pour le
+   * contenu déjà visible au premier écran. */
   immediate?: boolean;
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(immediate);
+  const [mounted, setMounted] = useState(false);
+  const [inView, setInView] = useState(false);
 
-  // whileInView de Framer Motion (IntersectionObserver interne) reste parfois
-  // bloqué à l'état initial même quand l'élément est bel et bien visible à
-  // l'écran — repéré sur "Nos pièces" et les vignettes produit de l'accueil,
-  // restées invisibles en permanence chez de vrais visiteurs. Un
-  // IntersectionObserver posé nous-mêmes sur l'élément, vérifié fiable dans
-  // les mêmes conditions, remplace whileInView plutôt que d'en dépendre.
   useEffect(() => {
-    if (immediate) return;
+    setMounted(true);
+    if (immediate) {
+      setInView(true);
+      return;
+    }
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
@@ -47,21 +61,25 @@ export default function FadeIn({
           setInView(false);
         }
       },
-      { rootMargin: "-10% 0px" }
+      { rootMargin: "-8% 0px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, [immediate, once]);
 
+  const hidden = mounted && !inView;
+
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, x, y }}
-      animate={inView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, x, y }}
-      transition={{ duration, delay, ease: [0.16, 1, 0.3, 1] }}
-      className={className}
+      className={cn("motion-reduce:!translate-x-0 motion-reduce:!translate-y-0 motion-reduce:!opacity-100", className)}
+      style={{
+        opacity: hidden ? 0 : 1,
+        transform: hidden ? `translate3d(${x}px, ${y}px, 0)` : "translate3d(0, 0, 0)",
+        transition: `opacity ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform ${duration}s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

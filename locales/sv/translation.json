@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} plagg",
     "pieceCount_other": "{{count}} plagg",
     "empty": "Inga produkter tillgängliga just nu.",
-    "emptyHint": "Produkter som publiceras från administrationen visas här."
+    "emptyHint": "Produkter som publiceras från administrationen visas här.",
+    "viewPiece": "Se plagget",
+    "personalizable": "Kan personaliseras"
   },
   "product": {
     "back": "Tillbaka",

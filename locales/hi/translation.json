@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} उत्पाद",
     "pieceCount_other": "{{count}} उत्पाद",
     "empty": "फ़िलहाल कोई उत्पाद उपलब्ध नहीं है।",
-    "emptyHint": "एडमिन से प्रकाशित उत्पाद यहाँ दिखाई देंगे।"
+    "emptyHint": "एडमिन से प्रकाशित उत्पाद यहाँ दिखाई देंगे।",
+    "viewPiece": "पीस देखें",
+    "personalizable": "वैयक्तिकरण संभव"
   },
   "product": {
     "back": "वापस",

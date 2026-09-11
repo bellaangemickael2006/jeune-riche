@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} capo",
     "pieceCount_other": "{{count}} capi",
     "empty": "Nessun prodotto disponibile al momento.",
-    "emptyHint": "I prodotti pubblicati dall'amministrazione appariranno qui."
+    "emptyHint": "I prodotti pubblicati dall'amministrazione appariranno qui.",
+    "viewPiece": "Vedere il capo",
+    "personalizable": "Personalizzabile"
   },
   "product": {
     "back": "Indietro",

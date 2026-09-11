@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} piesă",
     "pieceCount_other": "{{count}} piese",
     "empty": "Niciun produs disponibil momentan.",
-    "emptyHint": "Produsele publicate din administrare vor apărea aici."
+    "emptyHint": "Produsele publicate din administrare vor apărea aici.",
+    "viewPiece": "Vezi piesa",
+    "personalizable": "Personalizabil"
   },
   "product": {
     "back": "Înapoi",

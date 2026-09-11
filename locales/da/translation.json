@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} stykke",
     "pieceCount_other": "{{count}} stykker",
     "empty": "Ingen produkter tilgængelige lige nu.",
-    "emptyHint": "Produkter offentliggjort fra administrationen vises her."
+    "emptyHint": "Produkter offentliggjort fra administrationen vises her.",
+    "viewPiece": "Se stykket",
+    "personalizable": "Kan personaliseres"
   },
   "product": {
     "back": "Tilbage",

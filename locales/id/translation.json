@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} produk",
     "pieceCount_other": "{{count}} produk",
     "empty": "Saat ini tidak ada produk yang tersedia.",
-    "emptyHint": "Produk yang dipublikasikan dari admin akan muncul di sini."
+    "emptyHint": "Produk yang dipublikasikan dari admin akan muncul di sini.",
+    "viewPiece": "Lihat produknya",
+    "personalizable": "Bisa dipersonalisasi"
   },
   "product": {
     "back": "Kembali",

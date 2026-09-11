@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} tuote",
     "pieceCount_other": "{{count}} tuotetta",
     "empty": "Tuotteita ei ole tällä hetkellä saatavilla.",
-    "emptyHint": "Ylläpidosta julkaistut tuotteet näkyvät täällä."
+    "emptyHint": "Ylläpidosta julkaistut tuotteet näkyvät täällä.",
+    "viewPiece": "Katso tuote",
+    "personalizable": "Personoitavissa"
   },
   "product": {
     "back": "Takaisin",

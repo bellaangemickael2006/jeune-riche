@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} sản phẩm",
     "pieceCount_other": "{{count}} sản phẩm",
     "empty": "Hiện không có sản phẩm nào khả dụng.",
-    "emptyHint": "Các sản phẩm được đăng từ trang quản trị sẽ hiển thị ở đây."
+    "emptyHint": "Các sản phẩm được đăng từ trang quản trị sẽ hiển thị ở đây.",
+    "viewPiece": "Xem sản phẩm",
+    "personalizable": "Có thể cá nhân hóa"
   },
   "product": {
     "back": "Quay lại",

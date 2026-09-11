@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} kus",
     "pieceCount_other": "{{count}} kusů",
     "empty": "Momentálně nejsou k dispozici žádné produkty.",
-    "emptyHint": "Produkty zveřejněné z administrace se zobrazí zde."
+    "emptyHint": "Produkty zveřejněné z administrace se zobrazí zde.",
+    "viewPiece": "Zobrazit kus",
+    "personalizable": "S personalizací"
   },
   "product": {
     "back": "Zpět",

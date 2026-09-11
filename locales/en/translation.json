@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} piece",
     "pieceCount_other": "{{count}} pieces",
     "empty": "No products available at the moment.",
-    "emptyHint": "Products published from the admin panel will appear here."
+    "emptyHint": "Products published from the admin panel will appear here.",
+    "viewPiece": "View the piece",
+    "personalizable": "Can be personalised"
   },
   "product": {
     "back": "Back",

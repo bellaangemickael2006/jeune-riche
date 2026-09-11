@@ -73,7 +73,9 @@
     "pieceCount_one": "{{count}} stuk",
     "pieceCount_other": "{{count}} stuks",
     "empty": "Momenteel geen producten beschikbaar.",
-    "emptyHint": "Producten die vanuit het beheer worden gepubliceerd, verschijnen hier."
+    "emptyHint": "Producten die vanuit het beheer worden gepubliceerd, verschijnen hier.",
+    "viewPiece": "Bekijk het stuk",
+    "personalizable": "Personaliseerbaar"
   },
   "product": {
     "back": "Terug",
