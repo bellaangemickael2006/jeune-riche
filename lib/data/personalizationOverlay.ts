@@ -107,6 +107,24 @@ const DEBARDEUR_NOIR: PersonalizationOverlay = {
   maxWidthPct: 13,
 };
 
+// Jogger gris — mockup face + dos. La paire de face est celle de GAUCHE.
+// Seule pièce sans poitrine : la marque a confirmé que le prénom s'imprime
+// sur la cuisse, en face du blason (qui occupe déjà l'autre jambe, mesuré
+// centre 37,8 % / 34,8 %) — la symétrie des hauts, transposée aux jambes.
+// Couloir mesuré sur la jambe de gauche : bord extérieur à 13,7 %, cordon de
+// serrage à 24,7 % (il pend devant la cuisse ; le texte s'arrête avant plutôt
+// que de le traverser). Centre 19,2 % ; un nom de 16 caractères tient de
+// 14,5 % à 24,0 %. Encre du blason relevée sur la photo : #111214, soit
+// l'encre sombre déjà utilisée ailleurs.
+const JOGGER_GRIS: PersonalizationOverlay = {
+  xPct: 19.2,
+  yPct: 34.8,
+  aspectRatio: RATIO_STUDIO,
+  fontSizePct: 3.6,
+  color: ENCRE_SOMBRE,
+  maxWidthPct: 9.5,
+};
+
 export const PERSONALIZATION_OVERLAY_BY_IMAGE: Record<string, PersonalizationOverlay> = {
   // La base de données réelle (admin) référence "front-1-neutral.jpg" pour ce
   // produit — pas "front-1.jpg" comme dans prisma/seed.ts. Les deux fichiers
@@ -126,13 +144,12 @@ export const PERSONALIZATION_OVERLAY_BY_IMAGE: Record<string, PersonalizationOve
   "/images/products/chemise-blanche/mockup-front-back.jpg": CHEMISE_BLANCHE,
   "/images/products/debardeur-noir/mockup-front-back-neutral.jpg": DEBARDEUR_NOIR,
   "/images/products/debardeur-noir/mockup-front-back.jpg": DEBARDEUR_NOIR,
+  "/images/products/jogger-gris/mockup-front-back-neutral.jpg": JOGGER_GRIS,
+  "/images/products/jogger-gris/mockup-front-back.jpg": JOGGER_GRIS,
 
   // NON CALIBRÉS, volontairement :
   // - tshirt-noir/mockup-1*.jpg et mockup-6*.jpg portent déjà un prénom
   //   imprimé dans l'image ("BAISACHTE") : y superposer un second prénom
   //   afficherait deux noms sur la même poitrine.
-  // - jogger-gris : aucun exemple personnalisé et aucune poitrine. La marque
-  //   n'a jamais montré où un prénom s'imprime sur un bas de survêtement :
-  //   inventer une position serait mentir sur le rendu.
   // - casquette-blanche : personnalisation désactivée en base.
 };
