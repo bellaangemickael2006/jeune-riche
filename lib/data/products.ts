@@ -19,6 +19,20 @@ import { prisma } from "@/lib/prisma";
 // crée son propre unstable_cache dont la clé contient littéralement la
 // valeur de l'argument, donc aucune dérivation implicite à faire confiance.
 
+// Segment de version glissé dans chaque clé de cache produit. Le TTL de 120 s
+// ne suffit pas toujours : sur Vercel, une entrée peut rester figée quand la
+// donnée change en dehors des actions d'administration — seules celles-ci
+// appellent revalidateTag("products") (voir lib/actions/products.ts). Changer
+// cette valeur fabrique de nouvelles clés et écarte les anciennes d'un coup.
+// À incrémenter après toute écriture en base faite hors admin.
+//
+// v2 (11/09) : la personnalisation de la casquette a été activée directement
+// en base. L'atelier l'a vue tout de suite (clé "published-products",
+// recréée depuis), mais l'entrée ["product-by-slug","casquette-jeune-riche"]
+// est restée sur personalizationEnabled=false pendant plus d'une heure — ni
+// le TTL, ni un redéploiement, ni une salve de requêtes ne l'ont rafraîchie.
+const CACHE_VERSION = "v2";
+
 export async function getPublishedProducts() {
   try {
     return await unstable_cache(
@@ -33,7 +47,7 @@ export async function getPublishedProducts() {
           },
           orderBy: { createdAt: "desc" },
         }),
-      ["published-products"],
+      [CACHE_VERSION, "published-products"],
       { tags: ["products"], revalidate: 120 }
     )();
   } catch (error) {
@@ -62,7 +76,7 @@ export async function getProductsByCategory(categorySlug: string) {
         }),
       // La valeur réelle de categorySlug fait partie de la clé, pas
       // seulement un libellé statique — c'est ce qui manquait avant.
-      ["products-by-category", categorySlug],
+      [CACHE_VERSION, "products-by-category", categorySlug],
       { tags: ["products"], revalidate: 120 }
     )();
   } catch (error) {
@@ -86,7 +100,7 @@ export async function getProductBySlug(slug: string) {
             drop: true,
           },
         }),
-      ["product-by-slug", slug],
+      [CACHE_VERSION, "product-by-slug", slug],
       { tags: ["products"], revalidate: 120 }
     )();
   } catch (error) {
@@ -110,7 +124,7 @@ export async function getProductsBySlugs(slugs: string[]) {
             drop: true,
           },
         }),
-      ["products-by-slugs", sorted.join(",")],
+      [CACHE_VERSION, "products-by-slugs", sorted.join(",")],
       { tags: ["products"], revalidate: 120 }
     )();
   } catch (error) {
