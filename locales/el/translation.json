@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Καλώς ήρθατε",
     "welcomeToastMessage": "Ο λογαριασμός επιβεβαιώθηκε — καλώς ήρθατε στη JEUNE RICHE.",
     "loginWelcomeMessage": "Χαιρόμαστε που σας ξαναβλέπουμε.",
-    "loginWelcomeMessageNamed": "Χαιρόμαστε που σας ξαναβλέπουμε, {{name}}.",
-    "discover": "Ανακαλύψτε",
-    "detailTitle": "Η λεπτομέρεια",
-    "detailMeta": "Μπλουζάκι",
-    "detailLine1": "Το έμβλημα, κεντημένο.",
-    "detailLine2": "Η ετικέτα λαιμού, υπογεγραμμένη.",
-    "detailLine3": "Και το όνομά σας, αν το θέλετε.",
-    "detailCta": "Δείτε το κομμάτι",
-    "detailAltHanging": "Λευκό μπλουζάκι JEUNE RICHE σε κρεμάστρα",
-    "detailAltNeck": "Κοντινό πλάνο του γιακά και του κεντημένου εμβλήματος"
+    "loginWelcomeMessageNamed": "Χαιρόμαστε που σας ξαναβλέπουμε, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Κατάλογος",

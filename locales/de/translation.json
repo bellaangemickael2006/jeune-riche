@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Willkommen",
     "welcomeToastMessage": "Konto bestätigt — willkommen bei JEUNE RICHE.",
     "loginWelcomeMessage": "Schön, dich wiederzusehen.",
-    "loginWelcomeMessageNamed": "Schön, dich wiederzusehen, {{name}}.",
-    "discover": "Entdecken",
-    "detailTitle": "Das Detail",
-    "detailMeta": "T-Shirt",
-    "detailLine1": "Das Wappen, gestickt.",
-    "detailLine2": "Das Nackenetikett, signiert.",
-    "detailLine3": "Und dein Name, wenn du willst.",
-    "detailCta": "Das Stück ansehen",
-    "detailAltHanging": "Weißes JEUNE RICHE T-Shirt auf einem Bügel",
-    "detailAltNeck": "Nahaufnahme von Kragen und gesticktem Wappen"
+    "loginWelcomeMessageNamed": "Schön, dich wiederzusehen, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

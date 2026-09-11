@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Üdvözlünk",
     "welcomeToastMessage": "Fiók megerősítve — üdvözlünk a JEUNE RICHE-nél.",
     "loginWelcomeMessage": "Örülünk, hogy újra itt vagy.",
-    "loginWelcomeMessageNamed": "Örülünk, hogy újra itt vagy, {{name}}.",
-    "discover": "Felfedezés",
-    "detailTitle": "A részlet",
-    "detailMeta": "Póló",
-    "detailLine1": "A címer, hímezve.",
-    "detailLine2": "A nyakcímke, szignózva.",
-    "detailLine3": "És a neved, ha kéred.",
-    "detailCta": "Darab megtekintése",
-    "detailAltHanging": "Fehér JEUNE RICHE póló vállfán",
-    "detailAltNeck": "Közeli kép a gallérról és a hímzett címerről"
+    "loginWelcomeMessageNamed": "Örülünk, hogy újra itt vagy, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalógus",

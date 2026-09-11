@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Hoş geldiniz",
     "welcomeToastMessage": "Hesap onaylandı — JEUNE RICHE'e hoş geldiniz.",
     "loginWelcomeMessage": "Sizi tekrar görmek güzel.",
-    "loginWelcomeMessageNamed": "Sizi tekrar görmek güzel, {{name}}.",
-    "discover": "Keşfet",
-    "detailTitle": "Detay",
-    "detailMeta": "Tişört",
-    "detailLine1": "Arma, işlemeli.",
-    "detailLine2": "Yaka etiketi, imzalı.",
-    "detailLine3": "Ve isterseniz adınız.",
-    "detailCta": "Parçayı gör",
-    "detailAltHanging": "Askıda beyaz JEUNE RICHE tişört",
-    "detailAltNeck": "Yaka ve işlemeli arma yakın çekim"
+    "loginWelcomeMessageNamed": "Sizi tekrar görmek güzel, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

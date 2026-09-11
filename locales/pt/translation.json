@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Bem-vindo",
     "welcomeToastMessage": "Conta confirmada — bem-vindo à JEUNE RICHE.",
     "loginWelcomeMessage": "Que bom te ver de novo.",
-    "loginWelcomeMessageNamed": "Que bom te ver de novo, {{name}}.",
-    "discover": "Descobrir",
-    "detailTitle": "O detalhe",
-    "detailMeta": "T-shirt",
-    "detailLine1": "O brasão, bordado.",
-    "detailLine2": "A etiqueta da gola, assinada.",
-    "detailLine3": "E o seu nome, se quiser.",
-    "detailCta": "Ver a peça",
-    "detailAltHanging": "T-shirt JEUNE RICHE branca num cabide",
-    "detailAltNeck": "Detalhe da gola e do brasão bordado"
+    "loginWelcomeMessageNamed": "Que bom te ver de novo, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Catálogo",

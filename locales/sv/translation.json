@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Välkommen",
     "welcomeToastMessage": "Konto bekräftat — välkommen till JEUNE RICHE.",
     "loginWelcomeMessage": "Roligt att se dig igen.",
-    "loginWelcomeMessageNamed": "Roligt att se dig igen, {{name}}.",
-    "discover": "Upptäck",
-    "detailTitle": "Detaljen",
-    "detailMeta": "T-shirt",
-    "detailLine1": "Vapnet, broderat.",
-    "detailLine2": "Nacketiketten, signerad.",
-    "detailLine3": "Och ditt namn, om du vill.",
-    "detailCta": "Se plagget",
-    "detailAltHanging": "Vit JEUNE RICHE-t-shirt på galge",
-    "detailAltNeck": "Närbild på kragen och det broderade vapnet"
+    "loginWelcomeMessageNamed": "Roligt att se dig igen, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

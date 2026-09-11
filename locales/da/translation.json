@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Velkommen",
     "welcomeToastMessage": "Konto bekræftet — velkommen til JEUNE RICHE.",
     "loginWelcomeMessage": "Dejligt at se dig igen.",
-    "loginWelcomeMessageNamed": "Dejligt at se dig igen, {{name}}.",
-    "discover": "Opdag",
-    "detailTitle": "Detaljen",
-    "detailMeta": "T-shirt",
-    "detailLine1": "Våbenskjoldet, broderet.",
-    "detailLine2": "Nakkelabelen, signeret.",
-    "detailLine3": "Og dit navn, hvis du vil.",
-    "detailCta": "Se stykket",
-    "detailAltHanging": "Hvid JEUNE RICHE T-shirt på bøjle",
-    "detailAltNeck": "Nærbillede af kraven og det broderede våbenskjold"
+    "loginWelcomeMessageNamed": "Dejligt at se dig igen, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

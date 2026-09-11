@@ -8,7 +8,6 @@ import { useCart } from "@/store/cart";
 import { formatPrice } from "@/lib/utils";
 import { useScrollLock } from "@/lib/scrollLock";
 import { useLocale } from "@/components/providers/I18nProvider";
-import { ButtonLink } from "@/components/ui/Button";
 
 export default function CartDrawer() {
   const { t } = useTranslation();
@@ -37,33 +36,22 @@ export default function CartDrawer() {
             role="dialog"
             aria-label={t("cart.title")}
           >
-            {/* Le compte est écrit en chiffres, à côté du mot — "PANIER 02"
-                plutôt qu'une pastille numérotée sur une icône. */}
-            <div className="flex items-baseline justify-between border-b border-ink/15 px-6 py-5">
-              <p className="font-display text-lg uppercase tracking-widest2">
-                {t("cart.title")}
-                {lines.length > 0 && (
-                  <span className="ml-3 tabular-nums text-ink/40">
-                    {String(lines.length).padStart(2, "0")}
-                  </span>
-                )}
+            <div className="flex items-center justify-between border-b border-ink/10 px-6 py-5">
+              <p className="font-display text-lg uppercase tracking-wide">
+                {lines.length > 0 ? t("cart.titleWithCount", { count: lines.length }) : t("cart.title")}
               </p>
-              <button
-                onClick={close}
-                aria-label={t("common.close")}
-                className="text-label border-b border-ink/30 pb-0.5 transition-colors hover:border-ink"
-              >
+              <button onClick={close} aria-label={t("common.close")} className="text-sm uppercase tracking-widest2">
                 {t("common.close")}
               </button>
             </div>
 
             {lines.length === 0 ? (
-              <div className="flex flex-1 flex-col items-start justify-end gap-4 px-6 pb-8">
-                <p className="font-editorial text-2xl text-ink/70">{t("cart.empty")}</p>
+              <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+                <p className="text-sm text-ink/60">{t("cart.empty")}</p>
                 <Link
                   href="/catalogue"
                   onClick={close}
-                  className="text-label border-b border-ink/30 pb-1 transition-colors hover:border-ink"
+                  className="text-xs uppercase tracking-widest2 underline underline-offset-4"
                 >
                   {t("common.viewCatalogue")}
                 </Link>
@@ -76,17 +64,14 @@ export default function CartDrawer() {
                       key={`${line.variantId}-${line.personalization ?? ""}`}
                       className="flex gap-4 border-b border-ink/10 py-5"
                     >
-                      {/* object-contain sur fond studio : les visuels sont des
-                          mockups produit, un object-cover les rognait en plein
-                          milieu du vêtement. */}
-                      <div className="relative h-24 w-20 shrink-0 overflow-hidden bg-studio">
-                        <Image src={line.image} alt={line.productName} fill className="object-contain p-1" sizes="80px" />
+                      <div className="relative h-24 w-20 shrink-0 overflow-hidden bg-ink/5">
+                        <Image src={line.image} alt={line.productName} fill className="object-cover" sizes="80px" />
                       </div>
                       <div className="flex min-w-0 flex-1 flex-col justify-between gap-2">
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
-                            <p className="font-editorial text-base leading-tight">{line.productName}</p>
-                            <p className="text-label mt-1.5 text-ink/45">
+                            <p className="text-sm font-medium">{line.productName}</p>
+                            <p className="mt-1 text-xs text-ink/50">
                               {line.color} · {line.size}
                             </p>
                             {line.personalization && (
@@ -98,26 +83,22 @@ export default function CartDrawer() {
                           <p className="shrink-0 text-sm">{formatPrice(line.unitPrice * line.quantity, locale)}</p>
                         </div>
                         <div className="flex flex-wrap items-center justify-between gap-2">
-                          {/* Compteur d'un seul tenant, filets partagés — pas
-                              trois petites boîtes séparées. */}
-                          <div className="flex items-stretch border border-ink/20 text-sm">
+                          <div className="flex items-center gap-2 text-xs">
                             <button
                               onClick={() =>
                                 setQuantity(line.variantId, line.personalization, line.quantity - 1)
                               }
-                              className="w-8 py-1 transition-colors hover:bg-ink/5"
+                              className="h-6 w-6 border border-ink/20"
                               aria-label={t("cart.decreaseQuantity")}
                             >
                               −
                             </button>
-                            <span className="flex w-8 items-center justify-center border-x border-ink/20 tabular-nums">
-                              {line.quantity}
-                            </span>
+                            <span>{line.quantity}</span>
                             <button
                               onClick={() =>
                                 setQuantity(line.variantId, line.personalization, line.quantity + 1)
                               }
-                              className="w-8 py-1 transition-colors hover:bg-ink/5"
+                              className="h-6 w-6 border border-ink/20"
                               aria-label={t("cart.increaseQuantity")}
                             >
                               +
@@ -125,7 +106,7 @@ export default function CartDrawer() {
                           </div>
                           <button
                             onClick={() => removeLine(line.variantId, line.personalization)}
-                            className="text-label text-ink/40 transition-colors hover:text-ink"
+                            className="text-xs uppercase tracking-widest2 text-ink/40 hover:text-ink"
                           >
                             {t("cart.remove")}
                           </button>
@@ -134,16 +115,18 @@ export default function CartDrawer() {
                     </li>
                   ))}
                 </ul>
-                <div className="border-t border-ink/15 px-6 py-6">
-                  <div className="mb-5 flex items-baseline justify-between border-b border-ink/15 pb-4">
-                    <span className="text-label text-ink/45">{t("cart.subtotal")}</span>
-                    <span className="font-editorial text-xl tabular-nums">
-                      {formatPrice(total(), locale)}
-                    </span>
+                <div className="border-t border-ink/10 px-6 py-6">
+                  <div className="mb-4 flex items-center justify-between text-sm">
+                    <span className="uppercase tracking-widest2 text-ink/50">{t("cart.subtotal")}</span>
+                    <span className="font-medium">{formatPrice(total(), locale)}</span>
                   </div>
-                  <ButtonLink href="/checkout" onClick={close} variant="dark" className="w-full">
+                  <Link
+                    href="/checkout"
+                    onClick={close}
+                    className="block w-full bg-ink py-4 text-center text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-90"
+                  >
                     {t("cart.checkout")}
-                  </ButtonLink>
+                  </Link>
                 </div>
               </>
             )}

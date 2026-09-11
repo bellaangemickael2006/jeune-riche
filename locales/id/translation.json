@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Selamat datang",
     "welcomeToastMessage": "Akun dikonfirmasi — selamat datang di JEUNE RICHE.",
     "loginWelcomeMessage": "Senang bertemu Anda lagi.",
-    "loginWelcomeMessageNamed": "Senang bertemu Anda lagi, {{name}}.",
-    "discover": "Jelajahi",
-    "detailTitle": "Detailnya",
-    "detailMeta": "Kaus",
-    "detailLine1": "Lambang, disulam.",
-    "detailLine2": "Label leher, bertanda tangan.",
-    "detailLine3": "Dan nama Anda, jika Anda mau.",
-    "detailCta": "Lihat produknya",
-    "detailAltHanging": "Kaus JEUNE RICHE putih di gantungan",
-    "detailAltNeck": "Close-up kerah dan lambang sulam"
+    "loginWelcomeMessageNamed": "Senang bertemu Anda lagi, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

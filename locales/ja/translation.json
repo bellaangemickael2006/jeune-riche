@@ -55,16 +55,7 @@
     "welcomeToastTitle": "ようこそ",
     "welcomeToastMessage": "アカウントが確認されました。JEUNE RICHEへようこそ。",
     "loginWelcomeMessage": "またお会いできて嬉しいです。",
-    "loginWelcomeMessageNamed": "{{name}}様、またお会いできて嬉しいです。",
-    "discover": "見る",
-    "detailTitle": "ディテール",
-    "detailMeta": "Tシャツ",
-    "detailLine1": "刺繍のクレスト。",
-    "detailLine2": "署名入りのネックラベル。",
-    "detailLine3": "そしてご希望ならあなたの名前を。",
-    "detailCta": "アイテムを見る",
-    "detailAltHanging": "ハンガーに掛かった白のJEUNE RICHE Tシャツ",
-    "detailAltNeck": "襟と刺繍クレストのクローズアップ"
+    "loginWelcomeMessageNamed": "{{name}}様、またお会いできて嬉しいです。"
   },
   "catalogue": {
     "eyebrow": "カタログ",

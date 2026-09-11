@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Ласкаво просимо",
     "welcomeToastMessage": "Обліковий запис підтверджено — ласкаво просимо до JEUNE RICHE.",
     "loginWelcomeMessage": "Раді бачити вас знову.",
-    "loginWelcomeMessageNamed": "Раді бачити вас знову, {{name}}.",
-    "discover": "Відкрити",
-    "detailTitle": "Деталь",
-    "detailMeta": "Футболка",
-    "detailLine1": "Герб, вишитий.",
-    "detailLine2": "Етикетка на комірі, підписана.",
-    "detailLine3": "І ваше ім'я, якщо забажаєте.",
-    "detailCta": "Переглянути річ",
-    "detailAltHanging": "Біла футболка JEUNE RICHE на вішаку",
-    "detailAltNeck": "Великий план коміра та вишитого герба"
+    "loginWelcomeMessageNamed": "Раді бачити вас знову, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Каталог",

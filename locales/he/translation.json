@@ -55,16 +55,7 @@
     "welcomeToastTitle": "ברוכים הבאים",
     "welcomeToastMessage": "החשבון אושר — ברוכים הבאים ל-JEUNE RICHE.",
     "loginWelcomeMessage": "שמחים לראות אותך שוב.",
-    "loginWelcomeMessageNamed": "שמחים לראות אותך שוב, {{name}}.",
-    "discover": "לגלות",
-    "detailTitle": "הפרט",
-    "detailMeta": "חולצה",
-    "detailLine1": "הסמל, רקום.",
-    "detailLine2": "תווית הצווארון, חתומה.",
-    "detailLine3": "והשם שלך, אם תרצה.",
-    "detailCta": "לצפייה בפריט",
-    "detailAltHanging": "חולצת JEUNE RICHE לבנה על קולב",
-    "detailAltNeck": "תקריב של הצווארון והסמל הרקום"
+    "loginWelcomeMessageNamed": "שמחים לראות אותך שוב, {{name}}."
   },
   "catalogue": {
     "eyebrow": "קטלוג",

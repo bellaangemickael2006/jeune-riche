@@ -55,16 +55,7 @@
     "welcomeToastTitle": "स्वागत है",
     "welcomeToastMessage": "खाता पुष्टि हो गया — JEUNE RICHE में आपका स्वागत है।",
     "loginWelcomeMessage": "आपको दोबारा देखकर खुशी हुई।",
-    "loginWelcomeMessageNamed": "आपको दोबारा देखकर खुशी हुई, {{name}}।",
-    "discover": "देखें",
-    "detailTitle": "बारीकी",
-    "detailMeta": "टी-शर्ट",
-    "detailLine1": "कढ़ाई किया हुआ क्रेस्ट।",
-    "detailLine2": "हस्ताक्षरित नेक लेबल।",
-    "detailLine3": "और आपका नाम, अगर आप चाहें।",
-    "detailCta": "पीस देखें",
-    "detailAltHanging": "हैंगर पर सफ़ेद JEUNE RICHE टी-शर्ट",
-    "detailAltNeck": "कॉलर और कढ़ाई वाले क्रेस्ट का नज़दीकी दृश्य"
+    "loginWelcomeMessageNamed": "आपको दोबारा देखकर खुशी हुई, {{name}}।"
   },
   "catalogue": {
     "eyebrow": "कैटलॉग",

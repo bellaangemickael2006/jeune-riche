@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Bienvenido",
     "welcomeToastMessage": "Cuenta confirmada — bienvenido a JEUNE RICHE.",
     "loginWelcomeMessage": "Un placer verte de nuevo.",
-    "loginWelcomeMessageNamed": "Un placer verte de nuevo, {{name}}.",
-    "discover": "Descubrir",
-    "detailTitle": "El detalle",
-    "detailMeta": "Camiseta",
-    "detailLine1": "El escudo, bordado.",
-    "detailLine2": "La etiqueta del cuello, firmada.",
-    "detailLine3": "Y tu nombre, si lo quieres.",
-    "detailCta": "Ver la pieza",
-    "detailAltHanging": "Camiseta JEUNE RICHE blanca en una percha",
-    "detailAltNeck": "Primer plano del cuello y del escudo bordado"
+    "loginWelcomeMessageNamed": "Un placer verte de nuevo, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Catálogo",

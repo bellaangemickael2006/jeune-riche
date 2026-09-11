@@ -84,38 +84,30 @@ export default async function CataloguePage({
 
   return (
     <div className="mx-auto min-h-screen max-w-[1600px] bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
-      {/* Ouverture de page alignée sur le chapitrage de l'accueil : filet,
-          numéro de rubrique, compte réel des pièces. Le titre éditorial
-          descend ensuite seul, sans concurrence visuelle. */}
-      <div className="flex items-baseline justify-between gap-6 border-t border-line pt-4">
-        <span className="text-label text-paper/30">{t("catalogue.eyebrow")}</span>
-        <span className="text-label text-paper/30">
-          {t("catalogue.pieceCount", { count: cardData.length })}
-        </span>
-      </div>
-      <h1 className="mt-6 max-w-4xl font-editorial text-heading-lg text-paper md:mt-8 md:text-[4.5rem] md:leading-[0.98]">
-        {t("catalogue.title")}
-      </h1>
-
-      {/* Filtres et tri sur une même ligne de contrôle, séparés par un filet
-          du contenu qu'ils gouvernent. */}
-      <div className="mb-12 mt-12 flex flex-col gap-5 border-b border-line pb-4 md:mt-16 md:flex-row md:items-baseline md:justify-between md:gap-10">
+      <div className="mb-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="text-label text-paper/40">{t("catalogue.eyebrow")}</p>
+          <h1 className="mt-3 font-editorial text-heading-lg text-paper md:text-[4.5rem] md:leading-[0.98]">
+            {t("catalogue.title")}
+          </h1>
+        </div>
         <CategoryFilters categories={displayCategories} active={activeCategory} allLabel={t("catalogue.all")} />
-        <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
-          <span className="text-label hidden text-paper/25 sm:inline">{t("catalogue.sort")}</span>
+      </div>
+
+      <div className="mb-12 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line pt-4">
+        <p className="text-caption text-paper/40">{t("catalogue.pieceCount", { count: cardData.length })}</p>
+        <div className="flex flex-wrap items-center gap-4">
+          <span className="hidden text-caption text-paper/30 sm:inline">{t("catalogue.sort")}</span>
           {SORTS.map((sort) => (
             <Link
               key={sort.value}
               href={sortHref(sort.value)}
               className={cn(
-                "text-label relative pb-2 transition-colors",
-                activeSort === sort.value ? "text-paper" : "text-paper/40 hover:text-paper/80"
+                "text-caption transition-colors",
+                activeSort === sort.value ? "text-paper underline underline-offset-4" : "text-paper/40 hover:text-paper/70"
               )}
             >
               {sort.label}
-              {activeSort === sort.value && (
-                <span className="absolute inset-x-0 bottom-0 h-px bg-paper" />
-              )}
             </Link>
           ))}
         </div>

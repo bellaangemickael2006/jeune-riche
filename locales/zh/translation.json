@@ -55,16 +55,7 @@
     "welcomeToastTitle": "欢迎",
     "welcomeToastMessage": "账户已确认 — 欢迎加入 JEUNE RICHE。",
     "loginWelcomeMessage": "很高兴再次见到您。",
-    "loginWelcomeMessageNamed": "很高兴再次见到您，{{name}}。",
-    "discover": "探索",
-    "detailTitle": "细节",
-    "detailMeta": "T恤",
-    "detailLine1": "刺绣徽章。",
-    "detailLine2": "署名领标。",
-    "detailLine3": "以及你的名字，如果你愿意。",
-    "detailCta": "查看单品",
-    "detailAltHanging": "衣架上的白色 JEUNE RICHE T恤",
-    "detailAltNeck": "领口与刺绣徽章特写"
+    "loginWelcomeMessageNamed": "很高兴再次见到您，{{name}}。"
   },
   "catalogue": {
     "eyebrow": "目录",

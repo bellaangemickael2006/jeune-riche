@@ -210,21 +210,3 @@ export function getDropCountdown(
 
   return null;
 }
-
-// Les tailles arrivent de la base dans l'ordre d'insertion (XL, L, M, S pour
-// le t-shirt) — sans importance tant qu'elles vivaient dans un menu
-// déroulant, mais la fiche produit les affiche désormais en bande, où un
-// ordre inversé se voit immédiatement. Les valeurs inconnues (« Taille
-// unique ») passent après, dans leur ordre d'origine.
-const SIZE_ORDER = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"];
-
-export function sortSizes<T extends { size: string }>(variants: T[]): T[] {
-  return [...variants].sort((a, b) => {
-    const ia = SIZE_ORDER.indexOf(a.size.toUpperCase());
-    const ib = SIZE_ORDER.indexOf(b.size.toUpperCase());
-    if (ia === -1 && ib === -1) return 0;
-    if (ia === -1) return 1;
-    if (ib === -1) return -1;
-    return ia - ib;
-  });
-}

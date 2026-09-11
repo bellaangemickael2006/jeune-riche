@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Vítejte",
     "welcomeToastMessage": "Účet potvrzen — vítejte v JEUNE RICHE.",
     "loginWelcomeMessage": "Rádi vás zase vidíme.",
-    "loginWelcomeMessageNamed": "Rádi vás zase vidíme, {{name}}.",
-    "discover": "Objevit",
-    "detailTitle": "Detail",
-    "detailMeta": "Tričko",
-    "detailLine1": "Znak, vyšívaný.",
-    "detailLine2": "Štítek u krku, signovaný.",
-    "detailLine3": "A vaše jméno, pokud chcete.",
-    "detailCta": "Zobrazit kus",
-    "detailAltHanging": "Bílé tričko JEUNE RICHE na ramínku",
-    "detailAltNeck": "Detail límce a vyšívaného znaku"
+    "loginWelcomeMessageNamed": "Rádi vás zase vidíme, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalog",

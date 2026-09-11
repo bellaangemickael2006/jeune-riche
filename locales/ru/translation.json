@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Добро пожаловать",
     "welcomeToastMessage": "Аккаунт подтверждён — добро пожаловать в JEUNE RICHE.",
     "loginWelcomeMessage": "Рады видеть вас снова.",
-    "loginWelcomeMessageNamed": "Рады видеть вас снова, {{name}}.",
-    "discover": "Открыть",
-    "detailTitle": "Деталь",
-    "detailMeta": "Футболка",
-    "detailLine1": "Герб, вышитый.",
-    "detailLine2": "Этикетка на вороте, подписанная.",
-    "detailLine3": "И ваше имя, если захотите.",
-    "detailCta": "Посмотреть вещь",
-    "detailAltHanging": "Белая футболка JEUNE RICHE на вешалке",
-    "detailAltNeck": "Крупный план ворота и вышитого герба"
+    "loginWelcomeMessageNamed": "Рады видеть вас снова, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Каталог",

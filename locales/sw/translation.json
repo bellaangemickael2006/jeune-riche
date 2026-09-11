@@ -55,16 +55,7 @@
     "welcomeToastTitle": "Karibu",
     "welcomeToastMessage": "Akaunti imethibitishwa — karibu JEUNE RICHE.",
     "loginWelcomeMessage": "Furaha kukuona tena.",
-    "loginWelcomeMessageNamed": "Furaha kukuona tena, {{name}}.",
-    "discover": "Gundua",
-    "detailTitle": "Undani",
-    "detailMeta": "Fulana",
-    "detailLine1": "Nembo, iliyodarizwa.",
-    "detailLine2": "Lebo ya shingo, yenye saini.",
-    "detailLine3": "Na jina lako, ukitaka.",
-    "detailCta": "Tazama kipande",
-    "detailAltHanging": "Fulana nyeupe ya JEUNE RICHE kwenye hanga",
-    "detailAltNeck": "Mtazamo wa karibu wa shingo na nembo iliyodarizwa"
+    "loginWelcomeMessageNamed": "Furaha kukuona tena, {{name}}."
   },
   "catalogue": {
     "eyebrow": "Katalogi",

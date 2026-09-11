@@ -7,6 +7,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/store/cart";
+import Magnetic from "@/components/ui/Magnetic";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { cn } from "@/lib/utils";
@@ -130,20 +131,16 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Les liens étaient enveloppés dans un effet magnétique qui les
-            faisait fuir le curseur — un tic de portfolio, pas de maison de
-            mode. Remplacé par un filet qui se déploie sous le lien et un
-            décalage d'un pixel : la nav bouge, mais elle reste lisible. */}
         <nav className="hidden items-center gap-9 lg:flex">
           {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="group relative inline-block pb-1 font-display text-[11px] uppercase tracking-widest2 text-paper/70 transition-[color,transform] duration-300 ease-editorial hover:-translate-y-px hover:text-paper"
-            >
-              {item.label}
-              <span className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-paper transition-transform duration-300 ease-editorial group-hover:scale-x-100" />
-            </Link>
+            <Magnetic key={item.href} strength={0.5}>
+              <Link
+                href={item.href}
+                className="inline-block text-label text-paper/80 transition-colors duration-300 ease-editorial hover:text-paper"
+              >
+                {item.label}
+              </Link>
+            </Magnetic>
           ))}
         </nav>
 
