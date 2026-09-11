@@ -159,7 +159,7 @@ export default function Header() {
               setMenuOpen(false);
               openCart();
             }}
-            className="font-display text-[11px] uppercase tracking-widest2 text-paper/70 transition-colors hover:text-paper"
+            className="flex min-h-[44px] items-center font-display text-[11px] uppercase tracking-widest2 text-paper/70 transition-colors hover:text-paper"
             aria-label={t("navigation.cartWithCount", { count })}
           >
             {t("navigation.cart")}
@@ -173,7 +173,7 @@ export default function Header() {
             }}
             aria-label={t("navigation.menu")}
             aria-expanded={menuOpen}
-            className="flex flex-col items-end gap-1.5 py-1 text-paper"
+            className="flex min-h-[44px] flex-col items-end justify-center gap-1.5 text-paper"
           >
             <span className="block h-px w-6 bg-paper" />
             <span className="block h-px w-4 bg-paper transition-[width] duration-300 ease-editorial group-hover:w-6" />

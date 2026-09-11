@@ -54,12 +54,12 @@ export default function Footer() {
 
       <div className="mt-14 px-5 md:mt-20 md:px-10">
         {/* Navigation en ligne continue plutôt qu'en colonnes. */}
-        <nav className="flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-line py-7">
+        <nav className="flex flex-wrap items-center gap-x-7 border-t border-line py-4">
           {LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-label text-paper/55 transition-colors hover:text-paper"
+              className="text-label inline-flex min-h-[40px] items-center text-paper/55 transition-colors hover:text-paper"
             >
               {link.label}
             </Link>
@@ -68,12 +68,12 @@ export default function Footer() {
 
         {/* WhatsApp est un canal de vente, pas un widget de support : il tient
             sa place dans l'ours, en toutes lettres, à côté des réseaux. */}
-        <div className="flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-line py-7">
+        <div className="flex flex-wrap items-center gap-x-7 border-t border-line py-4">
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-label text-paper transition-opacity hover:opacity-60"
+            className="text-label inline-flex min-h-[40px] items-center text-paper transition-opacity hover:opacity-60"
           >
             WhatsApp
           </a>
@@ -84,7 +84,7 @@ export default function Footer() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-label text-paper/55 transition-colors hover:text-paper"
+                className="text-label inline-flex min-h-[40px] items-center text-paper/55 transition-colors hover:text-paper"
               >
                 {name}
               </a>

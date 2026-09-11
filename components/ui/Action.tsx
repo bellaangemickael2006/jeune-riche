@@ -27,14 +27,16 @@ const FAMILIES: Record<Family, string> = {
 };
 
 // La variante « passer » vit dans le flux typographique : lui imposer une
-// hauteur de boîte la ferait ressembler aux deux autres.
+// hauteur de boîte la ferait ressembler aux deux autres. Elle garde en
+// revanche une zone tactile d'au moins 40px (min-h + padding compensé par
+// une marge négative) — invisible à l'œil, mais atteignable au doigt.
 const BOX: Record<Size, string> = {
   sm: "h-11 px-6 text-[10px]",
   md: "h-14 px-10 text-[11px]",
 };
 const FLOW: Record<Size, string> = {
-  sm: "pb-1 text-[10px]",
-  md: "pb-1.5 text-[11px]",
+  sm: "min-h-[40px] pt-3 pb-2 text-[10px]",
+  md: "min-h-[44px] pt-3.5 pb-2.5 text-[11px]",
 };
 
 function actionClasses(family: Family, size: Size, className?: string) {
