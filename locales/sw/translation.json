@@ -40,7 +40,8 @@
     "search": "Tafuta",
     "searchPlaceholder": "T-shirt, jogger, kofia…",
     "closeSearch": "Funga utafutaji",
-    "menu": "Menyu"
+    "menu": "Menyu",
+    "atelier": "Karakana"
   },
   "home": {
     "tagline": "MAVAZI YA KIFAHARI YA MITAANI — UTAMBULISHO WA KIKABILA",
@@ -342,5 +343,14 @@
     "installTitle": "Sakinisha programu ya JEUNE RICHE",
     "installSubtitle": "Ufikiaji wa haraka zaidi, hata bila mtandao",
     "installCta": "Pakua"
+  },
+  "atelier": {
+    "eyebrow": "Karakana",
+    "title": "Weka jina lako juu yake",
+    "intro": "Andika jina: kipande kinalibeba mara moja, mahali hasa litakapochapishwa.",
+    "stepName": "Jina",
+    "stepPiece": "Kipande",
+    "seeFullPiece": "Ona ukurasa kamili wa bidhaa",
+    "unavailable": "Hakuna kipande kinachoweza kubinafsishwa kwa sasa."
   }
 }

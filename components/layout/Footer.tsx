@@ -23,6 +23,7 @@ export default function Footer() {
       title: t("footer.columnBrand"),
       links: [
         { label: t("navigation.collection"), href: "/catalogue" },
+        { label: t("navigation.atelier"), href: "/atelier" },
         { label: t("navigation.manifesto"), href: "/manifeste" },
         { label: t("navigation.drops"), href: "/drops" },
       ],

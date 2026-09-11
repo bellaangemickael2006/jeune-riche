@@ -83,11 +83,15 @@ export const WHATSAPP_NUMBER = "2250700590504";
 // pas seulement de contact générique.
 export function whatsappProductLink(
   productName: string,
-  options?: { color?: string; size?: string; url?: string }
+  options?: { color?: string; size?: string; personalization?: string; url?: string }
 ): string {
   const lines = [`Bonjour, je suis intéressé·e par le produit "${productName}"`];
   if (options?.color) lines.push(`Couleur : ${options.color}`);
   if (options?.size) lines.push(`Taille : ${options.size}`);
+  // La personnalisation est l'élément le plus spécifique d'une demande : si
+  // le client a déjà saisi un nom, il doit arriver dans la conversation sans
+  // qu'il ait à le retaper.
+  if (options?.personalization) lines.push(`Personnalisation : ${options.personalization}`);
   if (options?.url) lines.push(options.url);
   const message = lines.join("\n");
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -209,4 +213,22 @@ export function getDropCountdown(
   }
 
   return null;
+}
+
+// Les tailles arrivent de la base dans l'ordre d'insertion (XL, L, M, S pour
+// le t-shirt) — sans importance tant qu'elles vivaient dans un menu
+// déroulant, mais la fiche produit les affiche désormais en bande, où un
+// ordre inversé se voit immédiatement. Les valeurs hors barème
+// (« Taille unique ») passent après, dans leur ordre d'origine.
+const SIZE_ORDER = ["XXS", "XS", "S", "M", "L", "XL", "XXL", "XXXL"];
+
+export function sortSizes<T extends { size: string }>(variants: T[]): T[] {
+  return [...variants].sort((a, b) => {
+    const ia = SIZE_ORDER.indexOf(a.size.toUpperCase());
+    const ib = SIZE_ORDER.indexOf(b.size.toUpperCase());
+    if (ia === -1 && ib === -1) return 0;
+    if (ia === -1) return 1;
+    if (ib === -1) return -1;
+    return ia - ib;
+  });
 }

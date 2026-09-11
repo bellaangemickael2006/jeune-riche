@@ -40,7 +40,8 @@
     "search": "חיפוש",
     "searchPlaceholder": "חולצה, מכנסי ג'וגר, כובע…",
     "closeSearch": "סגירת חיפוש",
-    "menu": "תפריט"
+    "menu": "תפריט",
+    "atelier": "אטלייה"
   },
   "home": {
     "tagline": "סטריטוור יוקרתי — זהות שבטית",
@@ -342,5 +343,14 @@
     "installTitle": "התקינו את אפליקציית JEUNE RICHE",
     "installSubtitle": "גישה מהירה יותר, גם במצב לא מקוון",
     "installCta": "הורדה"
+  },
+  "atelier": {
+    "eyebrow": "אטלייה",
+    "title": "תשים עליה את השם שלך",
+    "intro": "הקלד שם: הפריט נושא אותו מיד, בדיוק במקום שבו יודפס.",
+    "stepName": "השם",
+    "stepPiece": "הפריט",
+    "seeFullPiece": "לעמוד המוצר המלא",
+    "unavailable": "אין כרגע פריט הניתן להתאמה אישית."
   }
 }

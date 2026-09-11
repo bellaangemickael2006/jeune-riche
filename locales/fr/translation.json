@@ -40,7 +40,8 @@
     "search": "Rechercher",
     "searchPlaceholder": "T-shirt, jogger, casquette…",
     "closeSearch": "Fermer la recherche",
-    "menu": "Menu"
+    "menu": "Menu",
+    "atelier": "Atelier"
   },
   "home": {
     "tagline": "LUXE STREETWEAR — IDENTITÉ TRIBALE",
@@ -342,5 +343,14 @@
     "installTitle": "Installez l'app JEUNE RICHE",
     "installSubtitle": "Accès plus rapide, même hors ligne",
     "installCta": "Télécharger"
+  },
+  "atelier": {
+    "eyebrow": "Atelier",
+    "title": "Mettez votre nom dessus",
+    "intro": "Entrez un nom ou un pseudo : la pièce le porte immédiatement, à l'endroit exact où il sera imprimé.",
+    "stepName": "Le nom",
+    "stepPiece": "La pièce",
+    "seeFullPiece": "Voir la fiche complète",
+    "unavailable": "Aucune pièce personnalisable n'est disponible pour le moment."
   }
 }

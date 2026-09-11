@@ -40,7 +40,8 @@
     "search": "Search",
     "searchPlaceholder": "T-shirt, jogger, cap…",
     "closeSearch": "Close search",
-    "menu": "Menu"
+    "menu": "Menu",
+    "atelier": "Atelier"
   },
   "home": {
     "tagline": "LUXURY STREETWEAR — TRIBAL IDENTITY",
@@ -342,5 +343,14 @@
     "installTitle": "Install the JEUNE RICHE app",
     "installSubtitle": "Faster access, even offline",
     "installCta": "Download"
+  },
+  "atelier": {
+    "eyebrow": "Atelier",
+    "title": "Put your name on it",
+    "intro": "Enter a name or a handle: the piece carries it straight away, exactly where it will be printed.",
+    "stepName": "The name",
+    "stepPiece": "The piece",
+    "seeFullPiece": "See the full product page",
+    "unavailable": "No personalisable piece is available at the moment."
   }
 }

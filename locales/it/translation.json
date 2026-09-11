@@ -40,7 +40,8 @@
     "search": "Cerca",
     "searchPlaceholder": "Maglietta, jogger, cappellino…",
     "closeSearch": "Chiudi ricerca",
-    "menu": "Menu"
+    "menu": "Menu",
+    "atelier": "Atelier"
   },
   "home": {
     "tagline": "STREETWEAR DI LUSSO — IDENTITÀ TRIBALE",
@@ -342,5 +343,14 @@
     "installTitle": "Installa l'app JEUNE RICHE",
     "installSubtitle": "Accesso più rapido, anche offline",
     "installCta": "Scarica"
+  },
+  "atelier": {
+    "eyebrow": "Atelier",
+    "title": "Metti il tuo nome",
+    "intro": "Scrivi un nome o un soprannome: il capo lo porta subito, esattamente dove verrà stampato.",
+    "stepName": "Il nome",
+    "stepPiece": "Il capo",
+    "seeFullPiece": "Vedi la scheda completa",
+    "unavailable": "Nessun capo personalizzabile disponibile al momento."
   }
 }

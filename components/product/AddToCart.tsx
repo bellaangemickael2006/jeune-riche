@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useCart } from "@/store/cart";
-import { sanitizePersonalization, swatchColor, cn, siteUrl, whatsappProductLink, LOW_STOCK_THRESHOLD } from "@/lib/utils";
+import { sanitizePersonalization, swatchColor, cn, siteUrl, sortSizes, whatsappProductLink, LOW_STOCK_THRESHOLD } from "@/lib/utils";
 
 type Variant = { id: string; size: string; color: string; stock: number };
 
@@ -41,7 +41,7 @@ export default function AddToCart({
   const color = controlledColor ?? internalColor;
   const setColor = onColorChange ?? setInternalColor;
   const sizesForColor = useMemo(
-    () => variants.filter((v) => v.color === color),
+    () => sortSizes(variants.filter((v) => v.color === color)),
     [variants, color]
   );
   const [size, setSize] = useState(sizesForColor[0]?.size ?? "");
@@ -83,7 +83,7 @@ export default function AddToCart({
                 key={c}
                 onClick={() => {
                   setColor(c);
-                  const first = variants.find((v) => v.color === c);
+                  const first = sortSizes(variants.filter((v) => v.color === c))[0];
                   setSize(first?.size ?? "");
                 }}
                 aria-pressed={color === c}
@@ -107,47 +107,63 @@ export default function AddToCart({
 
       {sizesForColor.length > 0 && (
         <div>
-          <label htmlFor="size-select" className="mb-2 block text-label text-paper/50">
-            {t("product.size")}
-          </label>
-          {/* Empilé en permanence (jamais côte à côte, même sur grand écran) :
-              ce bloc vit dans la colonne info de la fiche produit, dont la
-              largeur réelle dépend du ratio de la grille (1.2fr/1.35fr) et
-              non du viewport — un breakpoint classique (sm:/md:) la fait
-              passer en ligne pile quand cette colonne devient étroite
-              (grille 2 colonnes en tablette), provoquant un débordement du
-              bouton. Empiler évite le problème quelle que soit la largeur. */}
-          <div className="flex flex-col gap-3">
-            <select
-              id="size-select"
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-              className="border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper focus:border-paper focus:outline-none"
-            >
-              {sizesForColor.map((v) => (
-                <option key={v.id} value={v.size} disabled={v.stock === 0} className="bg-ink">
+          <p className="mb-3 text-label text-paper/50">{t("product.size")}</p>
+          {/* Les tailles vivaient dans un <select> natif : le composant le
+              plus anonyme du web pour une décision qui mérite d'être vue — et
+              elles en sortaient dans l'ordre d'insertion en base (XL, M, L,
+              S). Désormais une bande de cellules à filet, triée, où les
+              tailles épuisées restent visibles et barrées plutôt que cachées
+              dans une liste déroulante.
+
+              La bande s'enroule (flex-wrap) plutôt que de déborder : ce bloc
+              vit dans la colonne info de la fiche, dont la largeur dépend du
+              ratio de la grille et non du viewport. */}
+          <div
+            role="radiogroup"
+            aria-label={t("product.size")}
+            className="flex flex-wrap divide-x divide-line border border-line"
+          >
+            {sizesForColor.map((v) => {
+              const isSelected = size === v.size;
+              const soldOut = v.stock === 0;
+              return (
+                <button
+                  key={v.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={isSelected}
+                  disabled={soldOut}
+                  onClick={() => setSize(v.size)}
+                  title={soldOut ? t("product.outOfStock") : undefined}
+                  className={cn(
+                    "min-w-[3.5rem] flex-1 px-4 py-3.5 font-display text-[11px] uppercase tracking-widest2 transition-colors",
+                    isSelected && !soldOut && "bg-paper text-ink",
+                    !isSelected && !soldOut && "text-paper/60 hover:bg-paper/5 hover:text-paper",
+                    soldOut && "cursor-not-allowed text-paper/20 line-through"
+                  )}
+                >
                   {v.size}
-                  {v.stock === 0 ? ` — ${t("product.outOfStock")}` : ""}
-                </option>
-              ))}
-            </select>
-            <button
-              onClick={handleAdd}
-              disabled={!canAdd}
-              className={cn(
-                "px-6 py-3 text-xs uppercase tracking-widest2 transition-all",
-                canAdd ? "bg-paper text-ink hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
-              )}
-            >
-              {price === null
-                ? t("product.priceUndefined")
-                : !selectedVariant || !inStock
-                  ? t("product.unavailable")
-                  : added
-                    ? t("product.added")
-                    : t("product.addToCart")}
-            </button>
+                </button>
+              );
+            })}
           </div>
+
+          <button
+            onClick={handleAdd}
+            disabled={!canAdd}
+            className={cn(
+              "mt-4 w-full px-6 py-3.5 text-xs uppercase tracking-widest2 transition-all",
+              canAdd ? "bg-paper text-ink hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
+            )}
+          >
+            {price === null
+              ? t("product.priceUndefined")
+              : !selectedVariant || !inStock
+                ? t("product.unavailable")
+                : added
+                  ? t("product.added")
+                  : t("product.addToCart")}
+          </button>
           {selectedVariant && inStock && selectedVariant.stock <= LOW_STOCK_THRESHOLD && (
             <p className="mt-2 text-[11px] uppercase tracking-widest2 text-paper/70">
               {t("product.lowStock", { count: selectedVariant.stock })}
@@ -167,6 +183,7 @@ export default function AddToCart({
         href={whatsappProductLink(productName, {
           color: color || undefined,
           size: size || undefined,
+          personalization: personalization.trim() || undefined,
           url: `${siteUrl()}/catalogue/${productSlug}`,
         })}
         target="_blank"

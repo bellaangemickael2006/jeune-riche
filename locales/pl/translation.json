@@ -40,7 +40,8 @@
     "search": "Szukaj",
     "searchPlaceholder": "T-shirt, spodnie jogger, czapka…",
     "closeSearch": "Zamknij wyszukiwanie",
-    "menu": "Menu"
+    "menu": "Menu",
+    "atelier": "Atelier"
   },
   "home": {
     "tagline": "LUKSUSOWY STREETWEAR — TOŻSAMOŚĆ PLEMIENNA",
@@ -342,5 +343,14 @@
     "installTitle": "Zainstaluj aplikację JEUNE RICHE",
     "installSubtitle": "Szybszy dostęp, nawet offline",
     "installCta": "Pobierz"
+  },
+  "atelier": {
+    "eyebrow": "Atelier",
+    "title": "Umieść na niej swoje imię",
+    "intro": "Wpisz imię: model od razu je nosi, dokładnie tam, gdzie zostanie nadrukowane.",
+    "stepName": "Imię",
+    "stepPiece": "Model",
+    "seeFullPiece": "Zobacz pełną stronę produktu",
+    "unavailable": "Obecnie brak modeli z personalizacją."
   }
 }

@@ -40,7 +40,8 @@
     "search": "Suchen",
     "searchPlaceholder": "T-Shirt, Jogger, Cap…",
     "closeSearch": "Suche schließen",
-    "menu": "Menü"
+    "menu": "Menü",
+    "atelier": "Atelier"
   },
   "home": {
     "tagline": "LUXUS-STREETWEAR — TRIBALE IDENTITÄT",
@@ -342,5 +343,14 @@
     "installTitle": "JEUNE RICHE App installieren",
     "installSubtitle": "Schnellerer Zugriff, auch offline",
     "installCta": "Herunterladen"
+  },
+  "atelier": {
+    "eyebrow": "Atelier",
+    "title": "Setz deinen Namen darauf",
+    "intro": "Gib einen Namen ein: Das Stück trägt ihn sofort, genau dort, wo er gedruckt wird.",
+    "stepName": "Der Name",
+    "stepPiece": "Das Stück",
+    "seeFullPiece": "Zur vollständigen Produktseite",
+    "unavailable": "Derzeit ist kein personalisierbares Stück verfügbar."
   }
 }
