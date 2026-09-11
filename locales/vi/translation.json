@@ -40,8 +40,7 @@
     "search": "Tìm kiếm",
     "searchPlaceholder": "Áo thun, quần jogger, mũ…",
     "closeSearch": "Đóng tìm kiếm",
-    "menu": "Menu",
-    "atelier": "Xưởng"
+    "menu": "Menu"
   },
   "home": {
     "tagline": "THỜI TRANG ĐƯỜNG PHỐ CAO CẤP — BẢN SẮC BỘ LẠC",
@@ -74,9 +73,7 @@
     "pieceCount_one": "{{count}} sản phẩm",
     "pieceCount_other": "{{count}} sản phẩm",
     "empty": "Hiện không có sản phẩm nào khả dụng.",
-    "emptyHint": "Các sản phẩm được đăng từ trang quản trị sẽ hiển thị ở đây.",
-    "viewPiece": "Xem sản phẩm",
-    "personalizable": "Có thể cá nhân hóa"
+    "emptyHint": "Các sản phẩm được đăng từ trang quản trị sẽ hiển thị ở đây."
   },
   "product": {
     "back": "Quay lại",
@@ -345,14 +342,5 @@
     "installTitle": "Cài đặt ứng dụng JEUNE RICHE",
     "installSubtitle": "Truy cập nhanh hơn, kể cả khi ngoại tuyến",
     "installCta": "Tải xuống"
-  },
-  "atelier": {
-    "eyebrow": "Xưởng",
-    "title": "Đặt tên bạn lên đó",
-    "intro": "Nhập một cái tên: sản phẩm hiện ngay, đúng vị trí sẽ được in.",
-    "stepName": "Tên",
-    "stepPiece": "Sản phẩm",
-    "seeFullPiece": "Xem trang sản phẩm đầy đủ",
-    "unavailable": "Hiện chưa có sản phẩm nào có thể cá nhân hóa."
   }
 }

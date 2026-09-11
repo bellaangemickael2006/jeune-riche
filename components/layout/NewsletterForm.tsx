@@ -55,7 +55,7 @@ export default function NewsletterForm() {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="text-label inline-flex min-h-[44px] shrink-0 items-center px-2 text-paper/70 transition-colors hover:text-paper disabled:opacity-50"
+          className="shrink-0 text-label text-paper/70 transition-colors hover:text-paper disabled:opacity-50"
         >
           {status === "submitting" ? t("product.sending") : t("common.send")}
         </button>

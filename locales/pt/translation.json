@@ -40,8 +40,7 @@
     "search": "Pesquisar",
     "searchPlaceholder": "T-shirt, jogger, boné…",
     "closeSearch": "Fechar pesquisa",
-    "menu": "Menu",
-    "atelier": "Atelier"
+    "menu": "Menu"
   },
   "home": {
     "tagline": "STREETWEAR DE LUXO — IDENTIDADE TRIBAL",
@@ -74,9 +73,7 @@
     "pieceCount_one": "{{count}} peça",
     "pieceCount_other": "{{count}} peças",
     "empty": "Nenhum produto disponível no momento.",
-    "emptyHint": "Os produtos publicados a partir da administração aparecerão aqui.",
-    "viewPiece": "Ver a peça",
-    "personalizable": "Personalizável"
+    "emptyHint": "Os produtos publicados a partir da administração aparecerão aqui."
   },
   "product": {
     "back": "Voltar",
@@ -345,14 +342,5 @@
     "installTitle": "Instale o app JEUNE RICHE",
     "installSubtitle": "Acesso mais rápido, mesmo offline",
     "installCta": "Baixar"
-  },
-  "atelier": {
-    "eyebrow": "Atelier",
-    "title": "Ponha o seu nome",
-    "intro": "Escreva um nome ou um pseudónimo: a peça leva-o de imediato, exatamente onde será impresso.",
-    "stepName": "O nome",
-    "stepPiece": "A peça",
-    "seeFullPiece": "Ver a ficha completa",
-    "unavailable": "Nenhuma peça personalizável está disponível de momento."
   }
 }

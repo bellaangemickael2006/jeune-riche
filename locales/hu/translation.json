@@ -40,8 +40,7 @@
     "search": "Keresés",
     "searchPlaceholder": "Póló, jogging nadrág, sapka…",
     "closeSearch": "Keresés bezárása",
-    "menu": "Menü",
-    "atelier": "Atelier"
+    "menu": "Menü"
   },
   "home": {
     "tagline": "LUXUS STREETWEAR — TÖRZSI IDENTITÁS",
@@ -74,9 +73,7 @@
     "pieceCount_one": "{{count}} darab",
     "pieceCount_other": "{{count}} darab",
     "empty": "Jelenleg nincs elérhető termék.",
-    "emptyHint": "Az adminisztrációból közzétett termékek itt fognak megjelenni.",
-    "viewPiece": "Darab megtekintése",
-    "personalizable": "Személyre szabható"
+    "emptyHint": "Az adminisztrációból közzétett termékek itt fognak megjelenni."
   },
   "product": {
     "back": "Vissza",
@@ -345,14 +342,5 @@
     "installTitle": "Telepítsd a JEUNE RICHE alkalmazást",
     "installSubtitle": "Gyorsabb hozzáférés, offline is",
     "installCta": "Letöltés"
-  },
-  "atelier": {
-    "eyebrow": "Atelier",
-    "title": "Tedd rá a neved",
-    "intro": "Írj be egy nevet: a darab azonnal viseli, pontosan ott, ahová nyomtatva lesz.",
-    "stepName": "A név",
-    "stepPiece": "A darab",
-    "seeFullPiece": "Teljes termékoldal megtekintése",
-    "unavailable": "Jelenleg nincs személyre szabható darab."
   }
 }

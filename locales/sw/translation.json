@@ -40,8 +40,7 @@
     "search": "Tafuta",
     "searchPlaceholder": "T-shirt, jogger, kofia…",
     "closeSearch": "Funga utafutaji",
-    "menu": "Menyu",
-    "atelier": "Karakana"
+    "menu": "Menyu"
   },
   "home": {
     "tagline": "MAVAZI YA KIFAHARI YA MITAANI — UTAMBULISHO WA KIKABILA",
@@ -74,9 +73,7 @@
     "pieceCount_one": "bidhaa {{count}}",
     "pieceCount_other": "bidhaa {{count}}",
     "empty": "Hakuna bidhaa zinazopatikana kwa sasa.",
-    "emptyHint": "Bidhaa zilizochapishwa kutoka kwa usimamizi zitaonekana hapa.",
-    "viewPiece": "Tazama kipande",
-    "personalizable": "Inaweza kubinafsishwa"
+    "emptyHint": "Bidhaa zilizochapishwa kutoka kwa usimamizi zitaonekana hapa."
   },
   "product": {
     "back": "Rudi",
@@ -345,14 +342,5 @@
     "installTitle": "Sakinisha programu ya JEUNE RICHE",
     "installSubtitle": "Ufikiaji wa haraka zaidi, hata bila mtandao",
     "installCta": "Pakua"
-  },
-  "atelier": {
-    "eyebrow": "Karakana",
-    "title": "Weka jina lako juu yake",
-    "intro": "Andika jina: kipande kinalibeba mara moja, mahali hasa litakapochapishwa.",
-    "stepName": "Jina",
-    "stepPiece": "Kipande",
-    "seeFullPiece": "Ona ukurasa kamili wa bidhaa",
-    "unavailable": "Hakuna kipande kinachoweza kubinafsishwa kwa sasa."
   }
 }

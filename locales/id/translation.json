@@ -40,8 +40,7 @@
     "search": "Cari",
     "searchPlaceholder": "Kaos, celana jogger, topi…",
     "closeSearch": "Tutup pencarian",
-    "menu": "Menu",
-    "atelier": "Atelier"
+    "menu": "Menu"
   },
   "home": {
     "tagline": "STREETWEAR MEWAH — IDENTITAS SUKU",
@@ -74,9 +73,7 @@
     "pieceCount_one": "{{count}} produk",
     "pieceCount_other": "{{count}} produk",
     "empty": "Saat ini tidak ada produk yang tersedia.",
-    "emptyHint": "Produk yang dipublikasikan dari admin akan muncul di sini.",
-    "viewPiece": "Lihat produknya",
-    "personalizable": "Bisa dipersonalisasi"
+    "emptyHint": "Produk yang dipublikasikan dari admin akan muncul di sini."
   },
   "product": {
     "back": "Kembali",
@@ -345,14 +342,5 @@
     "installTitle": "Pasang aplikasi JEUNE RICHE",
     "installSubtitle": "Akses lebih cepat, bahkan offline",
     "installCta": "Unduh"
-  },
-  "atelier": {
-    "eyebrow": "Atelier",
-    "title": "Taruh namamu di atasnya",
-    "intro": "Ketik sebuah nama: produk langsung menampilkannya, tepat di tempat ia akan dicetak.",
-    "stepName": "Nama",
-    "stepPiece": "Produk",
-    "seeFullPiece": "Lihat halaman produk lengkap",
-    "unavailable": "Belum ada produk yang bisa dipersonalisasi."
   }
 }

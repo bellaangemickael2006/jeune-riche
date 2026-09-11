@@ -40,8 +40,7 @@
     "search": "検索",
     "searchPlaceholder": "Tシャツ、ジョガー、キャップ…",
     "closeSearch": "検索を閉じる",
-    "menu": "メニュー",
-    "atelier": "アトリエ"
+    "menu": "メニュー"
   },
   "home": {
     "tagline": "ラグジュアリーストリートウェア — トライバルアイデンティティ",
@@ -74,9 +73,7 @@
     "pieceCount_one": "{{count}}点",
     "pieceCount_other": "{{count}}点",
     "empty": "現在利用可能な商品はありません。",
-    "emptyHint": "管理画面で公開された商品がここに表示されます。",
-    "viewPiece": "アイテムを見る",
-    "personalizable": "名入れ可能"
+    "emptyHint": "管理画面で公開された商品がここに表示されます。"
   },
   "product": {
     "back": "戻る",
@@ -345,14 +342,5 @@
     "installTitle": "JEUNE RICHEアプリをインストール",
     "installSubtitle": "より速いアクセス、オフラインでも",
     "installCta": "ダウンロード"
-  },
-  "atelier": {
-    "eyebrow": "アトリエ",
-    "title": "あなたの名前を載せる",
-    "intro": "名前を入力すると、実際に印字される位置にそのまま反映されます。",
-    "stepName": "名前",
-    "stepPiece": "アイテム",
-    "seeFullPiece": "商品ページを見る",
-    "unavailable": "現在、名入れ可能なアイテムはありません。"
   }
 }

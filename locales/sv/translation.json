@@ -40,8 +40,7 @@
     "search": "Sök",
     "searchPlaceholder": "T-shirt, joggerbyxor, keps…",
     "closeSearch": "Stäng sökning",
-    "menu": "Meny",
-    "atelier": "Ateljé"
+    "menu": "Meny"
   },
   "home": {
     "tagline": "LYXIG STREETWEAR — STAMIDENTITET",
@@ -74,9 +73,7 @@
     "pieceCount_one": "{{count}} plagg",
     "pieceCount_other": "{{count}} plagg",
     "empty": "Inga produkter tillgängliga just nu.",
-    "emptyHint": "Produkter som publiceras från administrationen visas här.",
-    "viewPiece": "Se plagget",
-    "personalizable": "Kan personaliseras"
+    "emptyHint": "Produkter som publiceras från administrationen visas här."
   },
   "product": {
     "back": "Tillbaka",
@@ -345,14 +342,5 @@
     "installTitle": "Installera JEUNE RICHE-appen",
     "installSubtitle": "Snabbare åtkomst, även offline",
     "installCta": "Ladda ner"
-  },
-  "atelier": {
-    "eyebrow": "Ateljé",
-    "title": "Sätt ditt namn på det",
-    "intro": "Skriv ett namn: plagget bär det direkt, precis där det kommer att tryckas.",
-    "stepName": "Namnet",
-    "stepPiece": "Plagget",
-    "seeFullPiece": "Se hela produktsidan",
-    "unavailable": "Inget plagg med personalisering är tillgängligt just nu."
   }
 }

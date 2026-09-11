@@ -40,8 +40,7 @@
     "search": "Søg",
     "searchPlaceholder": "T-shirt, joggingbukser, kasket…",
     "closeSearch": "Luk søgning",
-    "menu": "Menu",
-    "atelier": "Atelier"
+    "menu": "Menu"
   },
   "home": {
     "tagline": "LUKSUS STREETWEAR — STAMMEIDENTITET",
@@ -74,9 +73,7 @@
     "pieceCount_one": "{{count}} stykke",
     "pieceCount_other": "{{count}} stykker",
     "empty": "Ingen produkter tilgængelige lige nu.",
-    "emptyHint": "Produkter offentliggjort fra administrationen vises her.",
-    "viewPiece": "Se stykket",
-    "personalizable": "Kan personaliseres"
+    "emptyHint": "Produkter offentliggjort fra administrationen vises her."
   },
   "product": {
     "back": "Tilbage",
@@ -345,14 +342,5 @@
     "installTitle": "Installer JEUNE RICHE-appen",
     "installSubtitle": "Hurtigere adgang, også offline",
     "installCta": "Download"
-  },
-  "atelier": {
-    "eyebrow": "Atelier",
-    "title": "Sæt dit navn på",
-    "intro": "Skriv et navn: stykket bærer det med det samme, præcis hvor det bliver trykt.",
-    "stepName": "Navnet",
-    "stepPiece": "Stykket",
-    "seeFullPiece": "Se hele produktsiden",
-    "unavailable": "Der er intet stykke med personalisering lige nu."
   }
 }

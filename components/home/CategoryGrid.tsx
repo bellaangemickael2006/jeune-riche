@@ -1,34 +1,44 @@
+import Link from "next/link";
+import Marquee from "@/components/ui/Marquee";
+import WordPullUp from "@/components/ui/WordPullUp";
 import ProductShowcase, { type ShowcaseItem } from "@/components/home/ProductShowcase";
-import SectionHeader from "@/components/ui/SectionHeader";
-import { ActionLink } from "@/components/ui/Action";
 import { getServerTranslation } from "@/lib/i18n/server";
 
-// La section s'ouvrait sur un marquee « JEUNE RICHE » défilant en boucle,
-// puis sur un titre qui montait mot par mot. Deux motifs décoratifs qui ne
-// portaient aucune information et qu'on retrouve sur n'importe quel site
-// généré. Remplacés par un chapitrage de magazine — intitulé, compte réel
-// des pièces — et une sortie de section sous la grille.
 export default async function CategoryGrid({ items }: { items: ShowcaseItem[] }) {
   const { t } = await getServerTranslation();
 
   return (
-    <section className="py-20 md:py-28">
-      <SectionHeader
-        title={t("home.ourPieces")}
-        meta={t("catalogue.pieceCount", { count: items.length })}
-      />
+    <section className="py-20 md:py-32">
+      <Marquee className="mb-16 border-y border-line py-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <span
+            key={i}
+            className="font-display flex items-center gap-6 whitespace-nowrap text-sm uppercase tracking-widest2 text-paper/30"
+          >
+            Jeune Riche <span className="text-paper/50">•</span>
+          </span>
+        ))}
+      </Marquee>
+
+      <div className="mb-10 flex items-end justify-between px-5 md:px-10">
+        <WordPullUp
+          text={t("home.ourPieces")}
+          as="h2"
+          className="font-display text-3xl uppercase text-paper md:text-5xl"
+        />
+        <Link
+          href="/catalogue"
+          className="hidden text-xs uppercase tracking-widest2 text-paper/60 underline underline-offset-4 hover:text-paper md:block"
+        >
+          {t("home.viewFullCatalogue")}
+        </Link>
+      </div>
 
       {items.length > 0 ? (
         <ProductShowcase items={items} />
       ) : (
-        <p className="px-5 text-body text-paper/40 md:px-10">{t("home.noProducts")}</p>
+        <p className="px-5 text-sm text-paper/40 md:px-10">{t("home.noProducts")}</p>
       )}
-
-      <div className="mt-14 flex justify-end px-5 md:mt-20 md:px-10">
-        <ActionLink href="/catalogue" family="passer">
-          {t("home.viewFullCatalogue")}
-        </ActionLink>
-      </div>
     </section>
   );
 }

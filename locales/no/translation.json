@@ -40,8 +40,7 @@
     "search": "Søk",
     "searchPlaceholder": "T-skjorte, joggebukse, caps…",
     "closeSearch": "Lukk søk",
-    "menu": "Meny",
-    "atelier": "Atelier"
+    "menu": "Meny"
   },
   "home": {
     "tagline": "LUKSURIØS STREETWEAR — STAMMEIDENTITET",
@@ -74,9 +73,7 @@
     "pieceCount_one": "{{count}} plagg",
     "pieceCount_other": "{{count}} plagg",
     "empty": "Ingen produkter tilgjengelige akkurat nå.",
-    "emptyHint": "Produkter publisert fra administrasjonen vises her.",
-    "viewPiece": "Se plagget",
-    "personalizable": "Kan personaliseres"
+    "emptyHint": "Produkter publisert fra administrasjonen vises her."
   },
   "product": {
     "back": "Tilbake",
@@ -345,14 +342,5 @@
     "installTitle": "Installer JEUNE RICHE-appen",
     "installSubtitle": "Raskere tilgang, selv offline",
     "installCta": "Last ned"
-  },
-  "atelier": {
-    "eyebrow": "Atelier",
-    "title": "Sett navnet ditt på",
-    "intro": "Skriv et navn: plagget bærer det med en gang, akkurat der det blir trykket.",
-    "stepName": "Navnet",
-    "stepPiece": "Plagget",
-    "seeFullPiece": "Se hele produktsiden",
-    "unavailable": "Ingen plagg med personalisering er tilgjengelig nå."
   }
 }

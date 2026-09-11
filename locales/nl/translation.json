@@ -40,8 +40,7 @@
     "search": "Zoeken",
     "searchPlaceholder": "T-shirt, jogger, pet…",
     "closeSearch": "Zoeken sluiten",
-    "menu": "Menu",
-    "atelier": "Atelier"
+    "menu": "Menu"
   },
   "home": {
     "tagline": "LUXE STREETWEAR — TRIBALE IDENTITEIT",
@@ -74,9 +73,7 @@
     "pieceCount_one": "{{count}} stuk",
     "pieceCount_other": "{{count}} stuks",
     "empty": "Momenteel geen producten beschikbaar.",
-    "emptyHint": "Producten die vanuit het beheer worden gepubliceerd, verschijnen hier.",
-    "viewPiece": "Bekijk het stuk",
-    "personalizable": "Personaliseerbaar"
+    "emptyHint": "Producten die vanuit het beheer worden gepubliceerd, verschijnen hier."
   },
   "product": {
     "back": "Terug",
@@ -345,14 +342,5 @@
     "installTitle": "Installeer de JEUNE RICHE-app",
     "installSubtitle": "Snellere toegang, ook offline",
     "installCta": "Downloaden"
-  },
-  "atelier": {
-    "eyebrow": "Atelier",
-    "title": "Zet je naam erop",
-    "intro": "Vul een naam in: het stuk draagt hem meteen, precies waar hij gedrukt wordt.",
-    "stepName": "De naam",
-    "stepPiece": "Het stuk",
-    "seeFullPiece": "Bekijk de volledige productpagina",
-    "unavailable": "Er is momenteel geen personaliseerbaar stuk beschikbaar."
   }
 }
