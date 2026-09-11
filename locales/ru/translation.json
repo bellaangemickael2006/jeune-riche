@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Добро пожаловать",
     "welcomeToastMessage": "Аккаунт подтверждён — добро пожаловать в JEUNE RICHE.",
     "loginWelcomeMessage": "Рады видеть вас снова.",
-    "loginWelcomeMessageNamed": "Рады видеть вас снова, {{name}}."
+    "loginWelcomeMessageNamed": "Рады видеть вас снова, {{name}}.",
+    "wornTitle": "На себе",
+    "wornCaptionBack": "Значок напечатан на спине",
+    "wornCaptionFront": "Герб на груди",
+    "wornAltBack": "Мужчина со спины в белой футболке JEUNE RICHE со значком на спине",
+    "wornAltFront": "Мужчина в белой футболке JEUNE RICHE сидит в автомобиле"
   },
   "catalogue": {
     "eyebrow": "Каталог",

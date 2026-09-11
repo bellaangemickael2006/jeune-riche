@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Selamat datang",
     "welcomeToastMessage": "Akun dikonfirmasi — selamat datang di JEUNE RICHE.",
     "loginWelcomeMessage": "Senang bertemu Anda lagi.",
-    "loginWelcomeMessageNamed": "Senang bertemu Anda lagi, {{name}}."
+    "loginWelcomeMessageNamed": "Senang bertemu Anda lagi, {{name}}.",
+    "wornTitle": "Dikenakan",
+    "wornCaptionBack": "Lambang tercetak di punggung",
+    "wornCaptionFront": "Lambang di dada",
+    "wornAltBack": "Pria dari belakang mengenakan kaus JEUNE RICHE putih dengan lambang tercetak di punggung",
+    "wornAltFront": "Pria mengenakan kaus JEUNE RICHE putih, duduk di dalam mobil"
   },
   "catalogue": {
     "eyebrow": "Katalog",

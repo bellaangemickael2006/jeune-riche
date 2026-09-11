@@ -55,7 +55,12 @@
     "welcomeToastTitle": "ยินดีต้อนรับ",
     "welcomeToastMessage": "ยืนยันบัญชีแล้ว — ยินดีต้อนรับสู่ JEUNE RICHE",
     "loginWelcomeMessage": "ยินดีที่ได้พบคุณอีกครั้ง",
-    "loginWelcomeMessageNamed": "ยินดีที่ได้พบคุณอีกครั้ง {{name}}"
+    "loginWelcomeMessageNamed": "ยินดีที่ได้พบคุณอีกครั้ง {{name}}",
+    "wornTitle": "เมื่อสวมใส่",
+    "wornCaptionBack": "ตราพิมพ์ด้านหลัง",
+    "wornCaptionFront": "ตราที่หน้าอก",
+    "wornAltBack": "ชายมองจากด้านหลังสวมเสื้อยืด JEUNE RICHE สีขาว มีตราพิมพ์ด้านหลัง",
+    "wornAltFront": "ชายสวมเสื้อยืด JEUNE RICHE สีขาว นั่งอยู่ในรถ"
   },
   "catalogue": {
     "eyebrow": "แคตตาล็อก",

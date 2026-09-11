@@ -55,7 +55,12 @@
     "welcomeToastTitle": "مرحبًا",
     "welcomeToastMessage": "تم تأكيد الحساب — مرحبًا بك في JEUNE RICHE.",
     "loginWelcomeMessage": "سعداء برؤيتك مجددًا.",
-    "loginWelcomeMessageNamed": "سعداء برؤيتك مجددًا، {{name}}."
+    "loginWelcomeMessageNamed": "سعداء برؤيتك مجددًا، {{name}}.",
+    "wornTitle": "مُرتدى",
+    "wornCaptionBack": "شارة مطبوعة على الظهر",
+    "wornCaptionFront": "الشعار على الصدر",
+    "wornAltBack": "رجل من الخلف يرتدي تي شيرت JEUNE RICHE أبيض بشارة مطبوعة على الظهر",
+    "wornAltFront": "رجل يرتدي تي شيرت JEUNE RICHE أبيض، جالس في سيارة"
   },
   "catalogue": {
     "eyebrow": "الكتالوج",

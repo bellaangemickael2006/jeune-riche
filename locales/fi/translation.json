@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Tervetuloa",
     "welcomeToastMessage": "Tili vahvistettu — tervetuloa JEUNE RICHEen.",
     "loginWelcomeMessage": "Mukava nähdä sinut taas.",
-    "loginWelcomeMessageNamed": "Mukava nähdä sinut taas, {{name}}."
+    "loginWelcomeMessageNamed": "Mukava nähdä sinut taas, {{name}}.",
+    "wornTitle": "Päällä",
+    "wornCaptionBack": "Merkki painettuna selkään",
+    "wornCaptionFront": "Vaakuna rinnassa",
+    "wornAltBack": "Mies takaapäin valkoisessa JEUNE RICHE -t-paidassa, merkki painettuna selkään",
+    "wornAltFront": "Mies valkoisessa JEUNE RICHE -t-paidassa istumassa autossa"
   },
   "catalogue": {
     "eyebrow": "Luettelo",

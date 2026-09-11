@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Bem-vindo",
     "welcomeToastMessage": "Conta confirmada — bem-vindo à JEUNE RICHE.",
     "loginWelcomeMessage": "Que bom te ver de novo.",
-    "loginWelcomeMessageNamed": "Que bom te ver de novo, {{name}}."
+    "loginWelcomeMessageNamed": "Que bom te ver de novo, {{name}}.",
+    "wornTitle": "Vestido",
+    "wornCaptionBack": "Emblema impresso nas costas",
+    "wornCaptionFront": "Brasão no peito",
+    "wornAltBack": "Homem de costas a vestir a t-shirt JEUNE RICHE branca com emblema impresso atrás",
+    "wornAltFront": "Homem a vestir a t-shirt JEUNE RICHE branca, sentado num carro"
   },
   "catalogue": {
     "eyebrow": "Catálogo",

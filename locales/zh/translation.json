@@ -55,7 +55,12 @@
     "welcomeToastTitle": "欢迎",
     "welcomeToastMessage": "账户已确认 — 欢迎加入 JEUNE RICHE。",
     "loginWelcomeMessage": "很高兴再次见到您。",
-    "loginWelcomeMessageNamed": "很高兴再次见到您，{{name}}。"
+    "loginWelcomeMessageNamed": "很高兴再次见到您，{{name}}。",
+    "wornTitle": "上身",
+    "wornCaptionBack": "背后印制徽章",
+    "wornCaptionFront": "胸前徽标",
+    "wornAltBack": "男子背影，身穿白色 JEUNE RICHE T恤，背后印有徽章",
+    "wornAltFront": "男子身穿白色 JEUNE RICHE T恤，坐在车内"
   },
   "catalogue": {
     "eyebrow": "目录",

@@ -55,7 +55,12 @@
     "welcomeToastTitle": "स्वागत है",
     "welcomeToastMessage": "खाता पुष्टि हो गया — JEUNE RICHE में आपका स्वागत है।",
     "loginWelcomeMessage": "आपको दोबारा देखकर खुशी हुई।",
-    "loginWelcomeMessageNamed": "आपको दोबारा देखकर खुशी हुई, {{name}}।"
+    "loginWelcomeMessageNamed": "आपको दोबारा देखकर खुशी हुई, {{name}}।",
+    "wornTitle": "पहना हुआ",
+    "wornCaptionBack": "पीठ पर छपा बैज",
+    "wornCaptionFront": "छाती पर क्रेस्ट",
+    "wornAltBack": "सफ़ेद JEUNE RICHE टी-शर्ट पहने पीठ से दिखता व्यक्ति, पीठ पर छपा बैज",
+    "wornAltFront": "सफ़ेद JEUNE RICHE टी-शर्ट पहने व्यक्ति, कार में बैठा हुआ"
   },
   "catalogue": {
     "eyebrow": "कैटलॉग",

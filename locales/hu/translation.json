@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Üdvözlünk",
     "welcomeToastMessage": "Fiók megerősítve — üdvözlünk a JEUNE RICHE-nél.",
     "loginWelcomeMessage": "Örülünk, hogy újra itt vagy.",
-    "loginWelcomeMessageNamed": "Örülünk, hogy újra itt vagy, {{name}}."
+    "loginWelcomeMessageNamed": "Örülünk, hogy újra itt vagy, {{name}}.",
+    "wornTitle": "Viselve",
+    "wornCaptionBack": "Hátra nyomott embléma",
+    "wornCaptionFront": "Címer a mellkason",
+    "wornAltBack": "Férfi hátulnézetből fehér JEUNE RICHE pólóban, hátán nyomott emblémával",
+    "wornAltFront": "Férfi fehér JEUNE RICHE pólóban, autóban ülve"
   },
   "catalogue": {
     "eyebrow": "Katalógus",

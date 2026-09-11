@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Hoş geldiniz",
     "welcomeToastMessage": "Hesap onaylandı — JEUNE RICHE'e hoş geldiniz.",
     "loginWelcomeMessage": "Sizi tekrar görmek güzel.",
-    "loginWelcomeMessageNamed": "Sizi tekrar görmek güzel, {{name}}."
+    "loginWelcomeMessageNamed": "Sizi tekrar görmek güzel, {{name}}.",
+    "wornTitle": "Giyilmiş",
+    "wornCaptionBack": "Sırtta baskılı arma",
+    "wornCaptionFront": "Göğüste arma",
+    "wornAltBack": "Sırtı dönük, beyaz JEUNE RICHE tişört giyen adam, sırtında baskılı arma",
+    "wornAltFront": "Beyaz JEUNE RICHE tişört giyen adam, arabada oturuyor"
   },
   "catalogue": {
     "eyebrow": "Katalog",

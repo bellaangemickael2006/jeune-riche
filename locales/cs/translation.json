@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Vítejte",
     "welcomeToastMessage": "Účet potvrzen — vítejte v JEUNE RICHE.",
     "loginWelcomeMessage": "Rádi vás zase vidíme.",
-    "loginWelcomeMessageNamed": "Rádi vás zase vidíme, {{name}}."
+    "loginWelcomeMessageNamed": "Rádi vás zase vidíme, {{name}}.",
+    "wornTitle": "Na sobě",
+    "wornCaptionBack": "Znak potištěný na zádech",
+    "wornCaptionFront": "Znak na hrudi",
+    "wornAltBack": "Muž zezadu v bílém tričku JEUNE RICHE se znakem potištěným na zádech",
+    "wornAltFront": "Muž v bílém tričku JEUNE RICHE sedící v autě"
   },
   "catalogue": {
     "eyebrow": "Katalog",

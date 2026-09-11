@@ -58,13 +58,29 @@ Le hero (titre `Jeune Riche` en `vw`) reste une exception assumée : un display 
 | Jogger | Gris | 1 mockup front+back |
 | Casquette | Blanche | 1 mockup front+back |
 
-Aucune photo mannequin réelle (personne portant le vêtement) n'est disponible : tout est mockup produit sur fond uni (rouge pour le t-shirt noir, fonds neutres/dégradés studio pour le reste). Traité comme référence de design, jamais présenté comme photo de campagne (règle #12 du brief).
+**Mise à jour du 11/09 — la marque a fourni ses premières vraies photos.** Cinq visuels réels sont désormais dans le projet (`public/images/campagne/` et les dossiers produit), et ils priment sur les mockups partout où ils s'appliquent :
+
+| Fichier | Sujet | Où il sert | Définition |
+|---|---|---|---|
+| `campagne/portant-atelier.jpg` | T-shirt noir sur un portant, silhouette assise | Fond du hero d'accueil | 1400×1600 — le seul assez grand pour un plein cadre |
+| `campagne/porte-dos-ciel.jpg` | Porté de dos, badge imprimé au dos, ciel | Section « Porté » + galerie fiche produit (Blanc) | 696×724 |
+| `campagne/porte-voiture.jpg` | Porté, assis dans une voiture | Section « Porté » + galerie fiche produit (Blanc) | 720×725 |
+| `products/tshirt-blanc/personnalisation-aura.jpg` | Flat-lay, personnalisation « AURA. » | Galerie fiche produit (Blanc) | 432×540 |
+| `products/tshirt-noir/personnalisation-bella.jpg` | Flat-lay, personnalisation « BELLA » | Galerie fiche produit (Noir) | 416×520 |
+
+Recadrages appliqués (voir `scripts/import-campagne-assets.js`), uniquement pour lever un blocage d'usage, jamais pour embellir :
+- le portant portait un filigrane **doré** incrusté en bas à gauche — le doré n'appartient pas à la palette, la colonne de gauche a été recadrée ;
+- les deux flat-lay ont été resserrés sur le vêtement pour sortir du cadre des livres et objets de marques tierces.
+
+Contrainte à retenir : **les photos portées ne font que ~720 px**. Elles ne doivent jamais être affichées au-delà de cette largeur (d'où deux colonnes et non un plein cadre dans la section « Porté »). Pour un hero plein cadre, il faudra des fichiers plus définis.
+
+Les mockups produit sur fond `studio` restent la référence du catalogue tant qu'une vraie photo ne couvre pas la pièce concernée. Ils ne sont jamais présentés comme des photos de campagne.
 
 Personnalisation : les mockups portent des exemples baked-in (« BAISACHTE », « BELLA_K », « LIONEL_k »). Ce sont des exemples visuels — le champ de personnalisation réel démarre toujours vide.
 
 ## 5. Vidéos
 
-- `hero-production.mp4` (20 MB) : travelling showroom 3D, plein écran, page d'accueil uniquement, autoplay/muted/loop/playsInline.
+- `hero-production.mp4` (20 MB) : travelling showroom 3D. **Retiré du hero le 10/09 sur décision du client** — l'accueil s'ouvre désormais sur une vraie photo (`campagne/portant-atelier.jpg`). Le fichier est conservé pour un usage ultérieur, il n'est plus référencé par aucun composant.
 - `manifeste-motif.mp4` (11 MB) : motif mosaïque noir/blanc incliné avec badge, en fond de `/manifeste` uniquement.
 
 Servies depuis `public/video/` (asset statique Next.js/Vercel, pas de fonction serverless). Poster image à générer plus tard pour le fallback (non disponible aujourd'hui — voir TODO).
@@ -80,7 +96,7 @@ Performance avant effet : pas de 3D lourde par défaut sur mobile, animations r�
 
 ## 7. Structure homepage
 
-Écran 1 (vidéo hero + logo + nav + CTA) → preuve de marque (badge + wordmark en mouvement) → catégories réelles (grille éditoriale) → manifeste teaser → footer sobre.
+Écran 1 (photo d'atelier plein cadre + accroche + CTA, texte en bas à gauche) → catégories réelles (grille éditoriale) → **Porté** (deux photos de campagne, légendes factuelles) → manifeste teaser → footer sobre.
 
 ## 8. Catalogue / fiche produit
 

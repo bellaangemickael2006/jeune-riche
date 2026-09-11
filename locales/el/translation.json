@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Καλώς ήρθατε",
     "welcomeToastMessage": "Ο λογαριασμός επιβεβαιώθηκε — καλώς ήρθατε στη JEUNE RICHE.",
     "loginWelcomeMessage": "Χαιρόμαστε που σας ξαναβλέπουμε.",
-    "loginWelcomeMessageNamed": "Χαιρόμαστε που σας ξαναβλέπουμε, {{name}}."
+    "loginWelcomeMessageNamed": "Χαιρόμαστε που σας ξαναβλέπουμε, {{name}}.",
+    "wornTitle": "Φορεμένο",
+    "wornCaptionBack": "Έμβλημα τυπωμένο στην πλάτη",
+    "wornCaptionFront": "Έμβλημα στο στήθος",
+    "wornAltBack": "Άνδρας από πίσω με το λευκό μπλουζάκι JEUNE RICHE και έμβλημα τυπωμένο στην πλάτη",
+    "wornAltFront": "Άνδρας με το λευκό μπλουζάκι JEUNE RICHE, καθισμένος σε αυτοκίνητο"
   },
   "catalogue": {
     "eyebrow": "Κατάλογος",

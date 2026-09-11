@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Karibu",
     "welcomeToastMessage": "Akaunti imethibitishwa — karibu JEUNE RICHE.",
     "loginWelcomeMessage": "Furaha kukuona tena.",
-    "loginWelcomeMessageNamed": "Furaha kukuona tena, {{name}}."
+    "loginWelcomeMessageNamed": "Furaha kukuona tena, {{name}}.",
+    "wornTitle": "Ikivaliwa",
+    "wornCaptionBack": "Nembo iliyochapishwa mgongoni",
+    "wornCaptionFront": "Nembo kifuani",
+    "wornAltBack": "Mwanamume akionekana kwa nyuma amevaa fulana nyeupe ya JEUNE RICHE yenye nembo mgongoni",
+    "wornAltFront": "Mwanamume amevaa fulana nyeupe ya JEUNE RICHE, ameketi ndani ya gari"
   },
   "catalogue": {
     "eyebrow": "Katalogi",

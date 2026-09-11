@@ -8,29 +8,33 @@ import TextScramble from "@/components/ui/TextScramble";
 import Magnetic from "@/components/ui/Magnetic";
 import FadeIn from "@/components/ui/FadeIn";
 
-// La vidéo de showroom a été retirée du hero sur décision du client : c'est
-// désormais le badge de marque qui tient le fond, comme le faisait déjà le
-// repli en cas d'échec de lecture. Le fichier reste dans public/video/ et
-// pourra être remplacé par un autre visuel plus tard.
+// La vidéo de showroom a été retirée du hero sur décision du client. Le fond
+// est maintenant une vraie photo de la marque (portant d'atelier) plutôt que
+// le badge recadré qui servait de repli : c'est le seul visuel fourni en
+// assez haute définition (1400×1600) pour tenir un plein cadre sans se
+// dégrader. Le cadrage privilégie le haut de l'image — le portant et la
+// pièce — parce qu'en format paysage le bas se retrouve rogné.
+// Le fichier vidéo reste dans public/video/ pour un usage ultérieur.
 export default function Hero() {
   const { t } = useTranslation();
 
   return (
     <section className="relative flex h-[100svh] w-full items-end overflow-hidden bg-ink">
       <Image
-        src="/images/badge/badge-white-on-black.png"
-        alt="JEUNE RICHE"
+        src="/images/campagne/portant-atelier.jpg"
+        alt="T-shirt JEUNE RICHE noir sur un portant d'atelier"
         fill
         priority
         sizes="100vw"
-        className="object-cover"
+        className="object-cover object-[center_38%]"
       />
 
-      {/* Superposée à une vidéo/photo réelle, pas au fond de page : reste
-          toujours sombre pour le contraste du texte blanc, quel que soit le
-          thème choisi (bg-ink/text-paper suivraient le thème et casseraient
-          la lisibilité en mode clair). */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/40" />
+      {/* Superposée à une photo réelle, pas au fond de page : reste toujours
+          sombre pour le contraste du texte blanc, quel que soit le thème
+          choisi (bg-ink/text-paper suivraient le thème et casseraient la
+          lisibilité en mode clair). Assombrissement concentré en bas, là où
+          le texte se pose — le haut de la photo reste lisible. */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/20" />
 
       <div className="relative z-10 flex w-full flex-col gap-8 px-5 pb-14 md:px-10 md:pb-20">
         <TextScramble

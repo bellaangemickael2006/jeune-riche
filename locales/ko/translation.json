@@ -55,7 +55,12 @@
     "welcomeToastTitle": "환영합니다",
     "welcomeToastMessage": "계정이 확인되었습니다 — JEUNE RICHE에 오신 것을 환영합니다.",
     "loginWelcomeMessage": "다시 만나서 반가워요.",
-    "loginWelcomeMessageNamed": "{{name}}님, 다시 만나서 반가워요."
+    "loginWelcomeMessageNamed": "{{name}}님, 다시 만나서 반가워요.",
+    "wornTitle": "착용",
+    "wornCaptionBack": "뒷면 배지 프린트",
+    "wornCaptionFront": "가슴의 크레스트",
+    "wornAltBack": "흰색 JEUNE RICHE 티셔츠를 입은 남성의 뒷모습, 뒷면에 배지 프린트",
+    "wornAltFront": "흰색 JEUNE RICHE 티셔츠를 입고 차에 앉은 남성"
   },
   "catalogue": {
     "eyebrow": "카탈로그",

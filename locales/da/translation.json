@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Velkommen",
     "welcomeToastMessage": "Konto bekræftet — velkommen til JEUNE RICHE.",
     "loginWelcomeMessage": "Dejligt at se dig igen.",
-    "loginWelcomeMessageNamed": "Dejligt at se dig igen, {{name}}."
+    "loginWelcomeMessageNamed": "Dejligt at se dig igen, {{name}}.",
+    "wornTitle": "Båret",
+    "wornCaptionBack": "Emblem trykt på ryggen",
+    "wornCaptionFront": "Våbenskjold på brystet",
+    "wornAltBack": "Mand set bagfra i hvid JEUNE RICHE T-shirt med emblem trykt på ryggen",
+    "wornAltFront": "Mand i hvid JEUNE RICHE T-shirt siddende i en bil"
   },
   "catalogue": {
     "eyebrow": "Katalog",

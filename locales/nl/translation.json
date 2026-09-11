@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Welkom",
     "welcomeToastMessage": "Account bevestigd — welkom bij JEUNE RICHE.",
     "loginWelcomeMessage": "Fijn je weer te zien.",
-    "loginWelcomeMessageNamed": "Fijn je weer te zien, {{name}}."
+    "loginWelcomeMessageNamed": "Fijn je weer te zien, {{name}}.",
+    "wornTitle": "Gedragen",
+    "wornCaptionBack": "Badge op de rug",
+    "wornCaptionFront": "Wapen op de borst",
+    "wornAltBack": "Man op de rug gezien in het witte JEUNE RICHE T-shirt met badge op de rug",
+    "wornAltFront": "Man in het witte JEUNE RICHE T-shirt, zittend in een auto"
   },
   "catalogue": {
     "eyebrow": "Catalogus",

@@ -55,7 +55,12 @@
     "welcomeToastTitle": "ברוכים הבאים",
     "welcomeToastMessage": "החשבון אושר — ברוכים הבאים ל-JEUNE RICHE.",
     "loginWelcomeMessage": "שמחים לראות אותך שוב.",
-    "loginWelcomeMessageNamed": "שמחים לראות אותך שוב, {{name}}."
+    "loginWelcomeMessageNamed": "שמחים לראות אותך שוב, {{name}}.",
+    "wornTitle": "בלבישה",
+    "wornCaptionBack": "סמל מודפס בגב",
+    "wornCaptionFront": "סמל על החזה",
+    "wornAltBack": "גבר מגבו לובש חולצת JEUNE RICHE לבנה עם סמל מודפס בגב",
+    "wornAltFront": "גבר לובש חולצת JEUNE RICHE לבנה, יושב במכונית"
   },
   "catalogue": {
     "eyebrow": "קטלוג",

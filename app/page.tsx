@@ -1,5 +1,6 @@
 import Hero from "@/components/home/Hero";
 import CategoryGrid from "@/components/home/CategoryGrid";
+import Lookbook from "@/components/home/Lookbook";
 import ManifesteTeaser from "@/components/home/ManifesteTeaser";
 import WelcomeToast from "@/components/home/WelcomeToast";
 import LoginWelcome from "@/components/home/LoginWelcome";
@@ -19,6 +20,7 @@ export default async function HomePage() {
       <LoginWelcome />
       <Hero />
       <CategoryGrid items={showcaseItems} />
+      <Lookbook />
       <ManifesteTeaser />
     </>
   );

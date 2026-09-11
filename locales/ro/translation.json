@@ -55,7 +55,12 @@
     "welcomeToastTitle": "Bine ai venit",
     "welcomeToastMessage": "Cont confirmat — bine ai venit la JEUNE RICHE.",
     "loginWelcomeMessage": "Ne bucurăm să te revedem.",
-    "loginWelcomeMessageNamed": "Ne bucurăm să te revedem, {{name}}."
+    "loginWelcomeMessageNamed": "Ne bucurăm să te revedem, {{name}}.",
+    "wornTitle": "Purtat",
+    "wornCaptionBack": "Emblemă imprimată pe spate",
+    "wornCaptionFront": "Blazon pe piept",
+    "wornAltBack": "Bărbat văzut din spate purtând tricoul JEUNE RICHE alb cu emblemă imprimată pe spate",
+    "wornAltFront": "Bărbat purtând tricoul JEUNE RICHE alb, așezat într-o mașină"
   },
   "catalogue": {
     "eyebrow": "Catalog",

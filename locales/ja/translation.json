@@ -55,7 +55,12 @@
     "welcomeToastTitle": "ようこそ",
     "welcomeToastMessage": "アカウントが確認されました。JEUNE RICHEへようこそ。",
     "loginWelcomeMessage": "またお会いできて嬉しいです。",
-    "loginWelcomeMessageNamed": "{{name}}様、またお会いできて嬉しいです。"
+    "loginWelcomeMessageNamed": "{{name}}様、またお会いできて嬉しいです。",
+    "wornTitle": "着用",
+    "wornCaptionBack": "バックにバッジプリント",
+    "wornCaptionFront": "胸元にクレスト",
+    "wornAltBack": "白のJEUNE RICHE Tシャツを着た男性の後ろ姿、背面にバッジプリント",
+    "wornAltFront": "白のJEUNE RICHE Tシャツを着て車に座る男性"
   },
   "catalogue": {
     "eyebrow": "カタログ",
