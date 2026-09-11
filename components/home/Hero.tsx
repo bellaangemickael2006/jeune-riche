@@ -2,51 +2,29 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import WordPullUp from "@/components/ui/WordPullUp";
 import TextScramble from "@/components/ui/TextScramble";
 import Magnetic from "@/components/ui/Magnetic";
 import FadeIn from "@/components/ui/FadeIn";
 
+// La vidéo de showroom a été retirée du hero sur décision du client : c'est
+// désormais le badge de marque qui tient le fond, comme le faisait déjà le
+// repli en cas d'échec de lecture. Le fichier reste dans public/video/ et
+// pourra être remplacé par un autre visuel plus tard.
 export default function Hero() {
   const { t } = useTranslation();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoFailed, setVideoFailed] = useState(false);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.play().catch(() => {
-      // autoplay bloqué par le navigateur — le poster statique reste affiché
-    });
-  }, []);
 
   return (
     <section className="relative flex h-[100svh] w-full items-end overflow-hidden bg-ink">
-      {!videoFailed ? (
-        <video
-          ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster="/images/badge/badge-white-on-black.png"
-          onError={() => setVideoFailed(true)}
-        >
-          <source src="/video/hero-production.mp4" type="video/mp4" />
-        </video>
-      ) : (
-        <Image
-          src="/images/badge/badge-white-on-black.png"
-          alt="JEUNE RICHE"
-          fill
-          priority
-          className="object-cover"
-        />
-      )}
+      <Image
+        src="/images/badge/badge-white-on-black.png"
+        alt="JEUNE RICHE"
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
 
       {/* Superposée à une vidéo/photo réelle, pas au fond de page : reste
           toujours sombre pour le contraste du texte blanc, quel que soit le
