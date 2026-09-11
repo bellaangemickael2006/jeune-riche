@@ -125,6 +125,25 @@ const JOGGER_GRIS: PersonalizationOverlay = {
   maxWidthPct: 9.5,
 };
 
+// Casquette blanche — mockup dos + face (vue 3/4, la face est à DROITE).
+// Seule pièce où le blason ne laisse aucune poitrine libre : il occupe tout
+// le panneau avant avec le lettrage. La marque a confirmé que le prénom
+// s'imprime SOUS le lettrage, dans la bande libre au-dessus de la visière.
+// Mesures : bloc logo 53,81 → 71,38 % en x, bas du lettrage à 63,98 % ;
+// couture couronne/visière relevée entre 73 et 77 % selon la colonne. Le
+// prénom est aligné sur le centre du lettrage (62,4 %) et calé à 69,5 %,
+// à mi-hauteur de cette bande. maxWidthPct vaut la largeur du lettrage :
+// un nom de 16 caractères tient de 53,4 % à 71,4 %, soit exactement sous
+// JEUNE RICHE, sans jamais déborder sur la visière.
+const CASQUETTE_BLANCHE: PersonalizationOverlay = {
+  xPct: 62.4,
+  yPct: 69.5,
+  aspectRatio: RATIO_STUDIO,
+  fontSizePct: 3.4,
+  color: ENCRE_SOMBRE,
+  maxWidthPct: 18,
+};
+
 export const PERSONALIZATION_OVERLAY_BY_IMAGE: Record<string, PersonalizationOverlay> = {
   // La base de données réelle (admin) référence "front-1-neutral.jpg" pour ce
   // produit — pas "front-1.jpg" comme dans prisma/seed.ts. Les deux fichiers
@@ -146,10 +165,11 @@ export const PERSONALIZATION_OVERLAY_BY_IMAGE: Record<string, PersonalizationOve
   "/images/products/debardeur-noir/mockup-front-back.jpg": DEBARDEUR_NOIR,
   "/images/products/jogger-gris/mockup-front-back-neutral.jpg": JOGGER_GRIS,
   "/images/products/jogger-gris/mockup-front-back.jpg": JOGGER_GRIS,
+  "/images/products/casquette-blanche/mockup-front-back-neutral.jpg": CASQUETTE_BLANCHE,
+  "/images/products/casquette-blanche/mockup-front-back.jpg": CASQUETTE_BLANCHE,
 
   // NON CALIBRÉS, volontairement :
   // - tshirt-noir/mockup-1*.jpg et mockup-6*.jpg portent déjà un prénom
   //   imprimé dans l'image ("BAISACHTE") : y superposer un second prénom
   //   afficherait deux noms sur la même poitrine.
-  // - casquette-blanche : personnalisation désactivée en base.
 };
