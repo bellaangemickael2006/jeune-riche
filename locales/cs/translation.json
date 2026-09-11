@@ -40,7 +40,8 @@
     "search": "Hledat",
     "searchPlaceholder": "Tričko, jogger kalhoty, kšiltovka…",
     "closeSearch": "Zavřít vyhledávání",
-    "menu": "Menu"
+    "menu": "Menu",
+    "atelier": "Atelier"
   },
   "home": {
     "tagline": "LUXUSNÍ STREETWEAR — KMENOVÁ IDENTITA",
@@ -344,5 +345,14 @@
     "installTitle": "Nainstalujte si aplikaci JEUNE RICHE",
     "installSubtitle": "Rychlejší přístup, i offline",
     "installCta": "Stáhnout"
+  },
+  "atelier": {
+    "eyebrow": "Atelier",
+    "title": "Dejte na to své jméno",
+    "intro": "Napište jméno: kus ho okamžitě nese, přesně tam, kde bude vytištěno.",
+    "stepName": "Jméno",
+    "stepPiece": "Kus",
+    "seeFullPiece": "Zobrazit celou stránku produktu",
+    "unavailable": "Momentálně není dostupný žádný kus s personalizací."
   }
 }

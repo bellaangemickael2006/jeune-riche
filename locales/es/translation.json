@@ -40,7 +40,8 @@
     "search": "Buscar",
     "searchPlaceholder": "Camiseta, jogger, gorra…",
     "closeSearch": "Cerrar búsqueda",
-    "menu": "Menú"
+    "menu": "Menú",
+    "atelier": "Taller"
   },
   "home": {
     "tagline": "STREETWEAR DE LUJO — IDENTIDAD TRIBAL",
@@ -344,5 +345,14 @@
     "installTitle": "Instala la app de JEUNE RICHE",
     "installSubtitle": "Acceso más rápido, incluso sin conexión",
     "installCta": "Descargar"
+  },
+  "atelier": {
+    "eyebrow": "Taller",
+    "title": "Pon tu nombre encima",
+    "intro": "Escribe un nombre o un alias: la pieza lo lleva al instante, justo donde se imprimirá.",
+    "stepName": "El nombre",
+    "stepPiece": "La pieza",
+    "seeFullPiece": "Ver la ficha completa",
+    "unavailable": "No hay ninguna pieza personalizable disponible por ahora."
   }
 }

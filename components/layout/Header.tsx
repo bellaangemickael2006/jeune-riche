@@ -47,6 +47,7 @@ export default function Header() {
 
   const NAV = [
     { label: t("navigation.collection"), href: "/catalogue" },
+    { label: t("navigation.atelier"), href: "/atelier" },
     { label: t("navigation.manifesto"), href: "/manifeste" },
     { label: t("navigation.drops"), href: "/drops" },
     { label: t("navigation.about"), href: "/a-propos" },

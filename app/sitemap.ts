@@ -6,7 +6,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteUrl();
   const products = await getPublishedProducts();
 
-  const staticRoutes = ["", "/catalogue", "/manifeste", "/drops", "/a-propos", "/contact"].map((path) => ({
+  const staticRoutes = ["", "/catalogue", "/atelier", "/manifeste", "/drops", "/a-propos", "/contact"].map((path) => ({
     url: `${base}${path}`,
     lastModified: new Date(),
   }));

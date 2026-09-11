@@ -40,7 +40,8 @@
     "search": "Ara",
     "searchPlaceholder": "Tişört, jogger, şapka…",
     "closeSearch": "Aramayı kapat",
-    "menu": "Menü"
+    "menu": "Menü",
+    "atelier": "Atölye"
   },
   "home": {
     "tagline": "LÜKS SOKAK MODASI — KABİLE KİMLİĞİ",
@@ -344,5 +345,14 @@
     "installTitle": "JEUNE RICHE uygulamasını yükleyin",
     "installSubtitle": "Daha hızlı erişim, çevrimdışında bile",
     "installCta": "İndir"
+  },
+  "atelier": {
+    "eyebrow": "Atölye",
+    "title": "Adını üstüne koy",
+    "intro": "Bir ad yaz: parça onu anında taşır, tam basılacağı yerde.",
+    "stepName": "Ad",
+    "stepPiece": "Parça",
+    "seeFullPiece": "Tüm ürün sayfasını gör",
+    "unavailable": "Şu anda kişiselleştirilebilir parça yok."
   }
 }

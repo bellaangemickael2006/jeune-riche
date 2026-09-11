@@ -40,7 +40,8 @@
     "search": "Haku",
     "searchPlaceholder": "T-paita, collegehousut, lippis…",
     "closeSearch": "Sulje haku",
-    "menu": "Valikko"
+    "menu": "Valikko",
+    "atelier": "Ateljee"
   },
   "home": {
     "tagline": "YLELLINEN STREETWEAR — HEIMOIDENTITEETTI",
@@ -344,5 +345,14 @@
     "installTitle": "Asenna JEUNE RICHE -sovellus",
     "installSubtitle": "Nopeampi käyttö, myös offline-tilassa",
     "installCta": "Lataa"
+  },
+  "atelier": {
+    "eyebrow": "Ateljee",
+    "title": "Laita nimesi siihen",
+    "intro": "Kirjoita nimi: tuote näyttää sen heti, juuri siinä kohdassa mihin se painetaan.",
+    "stepName": "Nimi",
+    "stepPiece": "Tuote",
+    "seeFullPiece": "Katso koko tuotesivu",
+    "unavailable": "Personoitavia tuotteita ei ole juuri nyt saatavilla."
   }
 }

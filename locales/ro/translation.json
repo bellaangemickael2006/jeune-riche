@@ -40,7 +40,8 @@
     "search": "Caută",
     "searchPlaceholder": "Tricou, pantaloni jogger, șapcă…",
     "closeSearch": "Închide căutarea",
-    "menu": "Meniu"
+    "menu": "Meniu",
+    "atelier": "Atelier"
   },
   "home": {
     "tagline": "STREETWEAR DE LUX — IDENTITATE TRIBALĂ",
@@ -344,5 +345,14 @@
     "installTitle": "Instalează aplicația JEUNE RICHE",
     "installSubtitle": "Acces mai rapid, chiar și offline",
     "installCta": "Descarcă"
+  },
+  "atelier": {
+    "eyebrow": "Atelier",
+    "title": "Pune-ți numele pe ea",
+    "intro": "Scrie un nume: piesa îl poartă imediat, exact unde va fi imprimat.",
+    "stepName": "Numele",
+    "stepPiece": "Piesa",
+    "seeFullPiece": "Vezi pagina completă",
+    "unavailable": "Nicio piesă personalizabilă nu este disponibilă momentan."
   }
 }
