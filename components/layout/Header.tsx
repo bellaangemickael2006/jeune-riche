@@ -7,7 +7,6 @@ import { useRouter, usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/store/cart";
-import Magnetic from "@/components/ui/Magnetic";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { cn } from "@/lib/utils";
@@ -101,7 +100,7 @@ export default function Header() {
       ref={headerRef}
       className={cn(
         "fixed inset-x-0 top-0 z-40 border-b bg-ink transition-[padding,box-shadow] duration-300 ease-editorial",
-        scrolled ? "border-line py-3 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.6)] md:py-3.5" : "border-line py-4 md:py-5"
+        scrolled ? "border-line py-2.5 shadow-[0_8px_24px_-16px_rgba(0,0,0,0.6)] md:py-3" : "border-line py-3 md:py-4"
       )}
     >
       <div className="relative z-20 flex items-center justify-between px-5 md:px-10">
@@ -124,87 +123,59 @@ export default function Header() {
               height={200}
               className={cn(
                 "jr-logo object-contain transition-[height,width] duration-300 ease-editorial",
-                scrolled ? "h-12 w-12 md:h-14 md:w-14" : "h-16 w-16 md:h-20 md:w-20"
+                scrolled ? "h-9 w-9 md:h-10 md:w-10" : "h-11 w-11 md:h-12 md:w-12"
               )}
               priority
             />
           </Link>
         </div>
 
-        <nav className="hidden items-center gap-9 lg:flex">
+        {/* Les liens fuyaient le curseur (effet magnétique) — un tic de
+            portfolio, pas de maison. Remplacé par un filet qui se déploie
+            sous le lien : la nav bouge, mais elle reste lisible. */}
+        <nav className="hidden items-center gap-10 lg:flex">
           {NAV.map((item) => (
-            <Magnetic key={item.href} strength={0.5}>
-              <Link
-                href={item.href}
-                className="inline-block text-label text-paper/80 transition-colors duration-300 ease-editorial hover:text-paper"
-              >
-                {item.label}
-              </Link>
-            </Magnetic>
+            <Link
+              key={item.href}
+              href={item.href}
+              className="group relative inline-block pb-1 font-display text-[11px] uppercase tracking-widest2 text-paper/70 transition-colors duration-300 ease-editorial hover:text-paper"
+            >
+              {item.label}
+              <span className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-paper transition-transform duration-300 ease-editorial group-hover:scale-x-100" />
+            </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-5">
-          <LanguageSwitcher className="hidden lg:block" />
-          <ThemeToggle className="hidden text-paper/80 transition-colors hover:text-paper lg:block" />
-          <button
-            onClick={() => {
-              setSearchOpen((v) => !v);
-              setMenuOpen(false);
-            }}
-            className="hidden text-paper/80 transition-colors hover:text-paper lg:block"
-            aria-label={t("navigation.search")}
-            aria-expanded={searchOpen}
-          >
-            <SearchIcon />
-          </button>
-          <Link
-            href="/favoris"
-            className="hidden text-label text-paper/80 transition-colors hover:text-paper lg:block"
-          >
-            {t("navigation.favorites")}
-          </Link>
-          <Link
-            href="/compte"
-            className="hidden text-label text-paper/80 transition-colors hover:text-paper lg:block"
-          >
-            {t("navigation.account")}
-          </Link>
+        {/* Le bandeau portait neuf contrôles simultanés (langue, thème,
+            recherche, favoris, compte, panier + doublons mobile) — aucune
+            maison de mode n'en expose autant. Il n'en reste que deux :
+            le panier, et une entrée de menu unique qui contient tout le
+            reste. Rien n'est supprimé, tout est rangé. */}
+        <div className="flex items-center gap-6">
           <button
             onClick={() => {
               setSearchOpen(false);
               setMenuOpen(false);
               openCart();
             }}
-            className="text-label text-paper/80 transition-colors hover:text-paper"
+            className="font-display text-[11px] uppercase tracking-widest2 text-paper/70 transition-colors hover:text-paper"
             aria-label={t("navigation.cartWithCount", { count })}
           >
-            {count > 0 ? t("navigation.cartWithCount", { count }) : t("navigation.cart")}
+            {t("navigation.cart")}
+            <span className="ml-2 tabular-nums text-paper">{String(count).padStart(2, "0")}</span>
           </button>
-          <ThemeToggle className="text-paper lg:hidden" />
-          <LanguageSwitcher className="lg:hidden" />
+
           <button
-            onClick={() => {
-              setSearchOpen((v) => !v);
-              setMenuOpen(false);
-            }}
-            className="text-paper lg:hidden"
-            aria-label={t("navigation.search")}
-            aria-expanded={searchOpen}
-          >
-            <SearchIcon />
-          </button>
-          <button
-            className="text-paper lg:hidden"
             onClick={() => {
               setMenuOpen((v) => !v);
               setSearchOpen(false);
             }}
             aria-label={t("navigation.menu")}
             aria-expanded={menuOpen}
+            className="flex flex-col items-end gap-1.5 py-1 text-paper"
           >
             <span className="block h-px w-6 bg-paper" />
-            <span className="mt-1.5 block h-px w-6 bg-paper" />
+            <span className="block h-px w-4 bg-paper transition-[width] duration-300 ease-editorial group-hover:w-6" />
           </button>
         </div>
       </div>
@@ -228,24 +199,53 @@ export default function Header() {
             // (useScrollLock) comme si le menu occupait tout l'écran. z-10 (<
             // z-20 du bandeau ci-dessus) pour que le logo/icônes restent
             // cliquables par-dessus (fermer via le bouton menu redevenu visible).
-            className="fixed inset-0 z-10 flex flex-col gap-6 overflow-y-auto border-t border-line bg-ink px-5 pb-8 pt-28 lg:hidden"
+            className="fixed inset-0 z-10 flex flex-col overflow-y-auto border-t border-line bg-ink px-5 pb-10 pt-28 md:px-10"
           >
-            {NAV.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}
-                className="font-display text-2xl uppercase text-paper"
+            {/* Les destinations principales, en grand. Fraunces et non Anton :
+                ce sont des noms de lieux de la maison, pas des étiquettes
+                d'interface. */}
+            <nav className="flex flex-col gap-1">
+              {NAV.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="border-b border-line py-4 font-editorial text-[2rem] leading-none text-paper transition-opacity hover:opacity-60 md:text-[3rem]"
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+
+            {/* Tout ce qui encombrait le bandeau vit maintenant ici. */}
+            <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <button
+                onClick={() => {
+                  setMenuOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="text-label text-paper/60 transition-colors hover:text-paper"
               >
-                {item.label}
+                {t("navigation.search")}
+              </button>
+              <Link href="/favoris" onClick={() => setMenuOpen(false)} className="text-label text-paper/60 transition-colors hover:text-paper">
+                {t("navigation.favorites")}
               </Link>
-            ))}
-            <Link href="/favoris" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
-              {t("navigation.favorites")}
-            </Link>
-            <Link href="/compte" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
-              {t("navigation.account")}
-            </Link>
+              <Link href="/compte" onClick={() => setMenuOpen(false)} className="text-label text-paper/60 transition-colors hover:text-paper">
+                {t("navigation.account")}
+              </Link>
+              <Link href="/a-propos" onClick={() => setMenuOpen(false)} className="text-label text-paper/60 transition-colors hover:text-paper">
+                {t("navigation.about")}
+              </Link>
+              <Link href="/contact" onClick={() => setMenuOpen(false)} className="text-label text-paper/60 transition-colors hover:text-paper">
+                {t("footer.contact")}
+              </Link>
+            </div>
+
+            <div className="mt-auto flex items-center gap-6 pt-10">
+              <LanguageSwitcher />
+              <ThemeToggle className="text-paper/60 transition-colors hover:text-paper" />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -261,14 +261,6 @@ function BackArrowIcon() {
   );
 }
 
-function SearchIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.3" />
-      <line x1="12.4" y1="12.4" x2="17" y2="17" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 function SearchPanel({ onClose }: { onClose: () => void }) {
   const { t } = useTranslation();

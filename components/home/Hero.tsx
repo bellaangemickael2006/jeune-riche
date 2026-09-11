@@ -1,12 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import WordPullUp from "@/components/ui/WordPullUp";
-import TextScramble from "@/components/ui/TextScramble";
-import Magnetic from "@/components/ui/Magnetic";
-import FadeIn from "@/components/ui/FadeIn";
+import { ActionLink } from "@/components/ui/Action";
 
 // La vidéo de showroom a été retirée du hero sur décision du client. Le fond
 // est maintenant une vraie photo de la marque (portant d'atelier) plutôt que
@@ -36,34 +32,30 @@ export default function Hero() {
           le texte se pose — le haut de la photo reste lisible. */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/20" />
 
-      <div className="relative z-10 flex w-full flex-col gap-8 px-5 pb-14 md:px-10 md:pb-20">
-        <TextScramble
-          text={t("home.tagline")}
-          immediate
-          className="font-body text-xs uppercase tracking-widest2 text-white/70"
-        />
-        <WordPullUp
-          text="Jeune Riche"
-          as="h1"
-          immediate
-          className="font-display max-w-3xl text-[13vw] uppercase leading-[0.92] text-white md:text-[7vw]"
-        />
-        <FadeIn delay={0.5} immediate className="flex flex-wrap items-center gap-6">
-          <Magnetic strength={0.4}>
-            <Link
-              href="/catalogue"
-              className="inline-block bg-paper px-8 py-4 text-xs uppercase tracking-widest2 text-ink transition-transform duration-300 ease-editorial hover:scale-[1.02]"
-            >
-              {t("home.viewCatalogue")}
-            </Link>
-          </Magnetic>
-          <Link
-            href="/manifeste"
-            className="text-xs uppercase tracking-widest2 text-white/80 underline underline-offset-4 transition-colors hover:text-white"
-          >
+      {/* L'accroche brouillait ses lettres à l'ouverture (scramble) et le
+          wordmark montait mot par mot : deux animations qui retardaient la
+          lecture du premier écran sans rien dire de la marque.
+
+          Surtout, le bloc entier était parqué à opacity:0 en attendant une
+          animation au montage — si le JavaScript tarde, échoue, ou si le
+          navigateur throttle les frames (onglet en arrière-plan, économie
+          d'énergie), le nom de la marque reste invisible. Le premier écran
+          ne dépend plus d'aucune animation : il est là, au repos. */}
+      <div className="relative z-10 flex w-full flex-col gap-7 px-5 pb-14 md:px-10 md:pb-20">
+        <p className="text-label text-white/60">{t("home.tagline")}</p>
+
+        <h1 className="max-w-3xl font-display text-[13vw] uppercase leading-[0.9] text-white md:text-[7vw]">
+          Jeune Riche
+        </h1>
+
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-4">
+          <ActionLink href="/catalogue" family="engager">
+            {t("home.viewCatalogue")}
+          </ActionLink>
+          <ActionLink href="/manifeste" family="passer" className="text-white/70 hover:text-white">
             {t("home.readManifesto")}
-          </Link>
-        </FadeIn>
+          </ActionLink>
+        </div>
       </div>
 
       <div className="absolute bottom-6 right-6 hidden flex-col items-center gap-2 text-white/50 md:flex">

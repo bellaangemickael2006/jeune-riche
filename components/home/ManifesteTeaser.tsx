@@ -1,7 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import FadeIn from "@/components/ui/FadeIn";
-import Magnetic from "@/components/ui/Magnetic";
+import { ActionLink } from "@/components/ui/Action";
 import Spotlight from "@/components/ui/Spotlight";
 import { getServerTranslation } from "@/lib/i18n/server";
 
@@ -27,14 +26,9 @@ export default async function ManifesteTeaser() {
         <p className="font-editorial text-2xl italic leading-snug text-paper md:text-4xl">
           {t("home.manifestoQuote")}
         </p>
-        <Magnetic strength={0.3}>
-          <Link
-            href="/manifeste"
-            className="inline-block text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 transition-opacity hover:opacity-70"
-          >
-            {t("home.enterUniverse")}
-          </Link>
-        </Magnetic>
+        <ActionLink href="/manifeste" family="passer">
+          {t("home.enterUniverse")}
+        </ActionLink>
       </FadeIn>
     </Spotlight>
   );
