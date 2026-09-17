@@ -73,14 +73,20 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     alternates: { canonical: "/" },
     // Vérification de propriété Google Search Console. Sans elle, Google ne
-    // découvre le site que par hasard : il n'y a aujourd'hui aucun lien
-    // entrant vers le domaine. Le code se colle dans la variable
-    // GOOGLE_SITE_VERIFICATION sur Vercel — aucun déploiement de code n'est
-    // nécessaire, la balise apparaît au redémarrage. Absente, la clé est
-    // simplement omise du <head>.
-    ...(process.env.GOOGLE_SITE_VERIFICATION
-      ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
-      : {}),
+    // découvre le site que par hasard : il n'existe aujourd'hui aucun lien
+    // entrant vers le domaine.
+    //
+    // Ce jeton n'est pas un secret : Google exige qu'il soit servi en clair
+    // dans le <head> pour valider la propriété, donc il est public par
+    // construction et n'a rien à faire dans un coffre. Il est écrit ici pour
+    // que la validation fonctionne sans configuration, et reste surchargeable
+    // par GOOGLE_SITE_VERIFICATION — utile le jour où le site passe sur son
+    // propre nom de domaine, qui sera une autre propriété pour Google.
+    verification: {
+      google:
+        process.env.GOOGLE_SITE_VERIFICATION ||
+        "8dJdSPx8r-U00gBQUgS3Jy9In3OQdr31P4Y2szWvFl4",
+    },
     appleWebApp: {
       capable: true,
       statusBarStyle: "black-translucent",
