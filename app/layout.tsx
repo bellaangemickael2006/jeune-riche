@@ -47,26 +47,50 @@ const inter = Inter({
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
   const description = t("meta.description");
+
+  // Image de partage : la photo de campagne portée, dos au ciel. C'est la
+  // seule image de la marque qui se lit en vignette de 300 px sans légende.
+  // Sans elle, un lien partagé sur WhatsApp — canal principal de la marque —
+  // s'affichait en carte de texte nue, alors même que twitter:card promettait
+  // une grande image.
+  const ogImage = {
+    url: "/images/campagne/porte-dos-ciel.jpg",
+    width: 696,
+    height: 724,
+    alt: "T-shirt JEUNE RICHE blanc porté de dos, badge imprimé, ciel d'Abidjan",
+  };
+
+  // Le titre par défaut portait le seul nom de la marque : il ne gagnait
+  // aucune recherche pour quelqu'un qui ne connaît pas encore JEUNE RICHE.
+  // Il dit maintenant ce qu'on vend et où — les deux termes que les gens
+  // tapent réellement. Le template des autres pages reste inchangé.
   return {
     metadataBase: new URL(siteUrl()),
     title: {
-      default: "JEUNE RICHE",
+      default: "JEUNE RICHE — Streetwear personnalisable à Abidjan",
       template: "%s — JEUNE RICHE",
     },
     description,
+    alternates: { canonical: "/" },
     appleWebApp: {
       capable: true,
       statusBarStyle: "black-translucent",
       title: "JEUNE RICHE",
     },
     openGraph: {
-      title: "JEUNE RICHE",
+      title: "JEUNE RICHE — Streetwear personnalisable à Abidjan",
       description,
       type: "website",
+      url: siteUrl(),
+      siteName: "JEUNE RICHE",
+      locale: "fr_CI",
+      images: [ogImage],
     },
     twitter: {
       card: "summary_large_image",
-      title: "JEUNE RICHE",
+      title: "JEUNE RICHE — Streetwear personnalisable à Abidjan",
+      description,
+      images: [ogImage.url],
     },
   };
 }
