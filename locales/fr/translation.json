@@ -74,7 +74,8 @@
     "pieceCount_one": "{{count}} pièce",
     "pieceCount_other": "{{count}} pièces",
     "empty": "Aucun produit disponible pour le moment.",
-    "emptyHint": "Les produits publiés depuis l'administration apparaîtront ici."
+    "emptyHint": "Les produits publiés depuis l'administration apparaîtront ici.",
+    "metaDescription": "Les six pièces JEUNE RICHE : t-shirt, polo, chemise, débardeur, jogger et casquette. Du S au XL, personnalisables à votre nom. Livraison à Abidjan."
   },
   "product": {
     "back": "Retour",
@@ -260,7 +261,8 @@
       "daysShort": "j",
       "hoursShort": "h",
       "minutesShort": "min"
-    }
+    },
+    "metaDescription": "Les sorties JEUNE RICHE sont annoncées sur cette page : pièces en série limitée, dates et disponibilités."
   },
   "footer": {
     "newsletter": "Newsletter — soyez informé des prochains drops.",
@@ -283,7 +285,8 @@
       "eyebrow": "Contact",
       "title": "Nous contacter",
       "message": "Le plus rapide pour nous joindre reste WhatsApp — nous répondons directement.",
-      "cta": "Écrire sur WhatsApp"
+      "cta": "Écrire sur WhatsApp",
+      "metaDescription": "Joindre JEUNE RICHE : WhatsApp pour une commande, une taille ou une personnalisation. Réponse directe, livraison à Abidjan et en Côte d'Ivoire."
     },
     "shipping": {
       "eyebrow": "Service",
@@ -309,11 +312,12 @@
       "eyebrow": "À propos",
       "title": "Jeune Riche",
       "message": "Pour l'univers et la philosophie de la marque, retrouvez le manifeste JEUNE RICHE.",
-      "cta": "Lire le manifeste"
+      "cta": "Lire le manifeste",
+      "metaDescription": "JEUNE RICHE, marque de streetwear née en Côte d'Ivoire. Le visage-roi couronné, la personnalisation au nom, et le manifeste de la maison."
     }
   },
   "manifesto": {
-    "metaDescription": "L'univers JEUNE RICHE.",
+    "metaDescription": "Une couronne gravée sur un visage tribal. Le manifeste JEUNE RICHE : la tension entre le luxe et la rue, tenue par un symbole et une palette resserrée.",
     "section1": "Une couronne gravée sur un visage tribal.",
     "section2Title": "Le noir qui affirme, le blanc qui respire — rien d'autre.",
     "section2Body": "Pas de dégradé, pas de couleur de studio confondue avec une couleur de marque. Une palette resserrée, tenue.",

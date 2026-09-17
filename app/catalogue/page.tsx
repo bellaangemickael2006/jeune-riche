@@ -11,7 +11,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
   return {
     title: t("catalogue.eyebrow"),
-    description: t("catalogue.title"),
+    // La description reprenait le titre affiché à l'écran (« Toute la
+    // collection ») : dix-neuf caractères qui ne disent ni ce qu'on vend, ni
+    // où. Elle nomme désormais les pièces, les tailles et la livraison — les
+    // termes réellement tapés dans un moteur de recherche.
+    description: t("catalogue.metaDescription"),
     // Les filtres/tri (?categorie=, ?tri=, ?q=) ne doivent pas créer autant de
     // pages distinctes aux yeux de Google que de combinaisons possibles — tout
     // pointe vers la même page canonique.

@@ -74,7 +74,8 @@
     "pieceCount_one": "{{count}} piece",
     "pieceCount_other": "{{count}} pieces",
     "empty": "No products available at the moment.",
-    "emptyHint": "Products published from the admin panel will appear here."
+    "emptyHint": "Products published from the admin panel will appear here.",
+    "metaDescription": "The six JEUNE RICHE pieces: t-shirt, polo, shirt, tank top, joggers and cap. Sizes S to XL, personalised with your name. Delivery in Abidjan."
   },
   "product": {
     "back": "Back",
@@ -260,7 +261,8 @@
       "daysShort": "d",
       "hoursShort": "h",
       "minutesShort": "min"
-    }
+    },
+    "metaDescription": "JEUNE RICHE releases are announced on this page: limited-run pieces, dates and availability."
   },
   "footer": {
     "newsletter": "Newsletter — stay informed about upcoming drops.",
@@ -283,7 +285,8 @@
       "eyebrow": "Contact",
       "title": "Get in touch",
       "message": "The fastest way to reach us is WhatsApp — we reply directly.",
-      "cta": "Message us on WhatsApp"
+      "cta": "Message us on WhatsApp",
+      "metaDescription": "Reach JEUNE RICHE: WhatsApp for an order, a size or a personalisation. Direct reply, delivery in Abidjan and across Côte d'Ivoire."
     },
     "shipping": {
       "eyebrow": "Service",
@@ -309,11 +312,12 @@
       "eyebrow": "About",
       "title": "Jeune Riche",
       "message": "For the brand's world and philosophy, discover the JEUNE RICHE manifesto.",
-      "cta": "Read the manifesto"
+      "cta": "Read the manifesto",
+      "metaDescription": "JEUNE RICHE, a streetwear label born in Côte d'Ivoire. The crowned king-face, name personalisation, and the house manifesto."
     }
   },
   "manifesto": {
-    "metaDescription": "The JEUNE RICHE universe.",
+    "metaDescription": "A crown engraved on a tribal face. The JEUNE RICHE manifesto: the tension between luxury and the street, held by one symbol and a tight palette.",
     "section1": "An engraved crown on a tribal face.",
     "section2Title": "The black that affirms, the white that breathes — nothing else.",
     "section2Body": "No gradients, no studio color mistaken for a brand color. A tight, disciplined palette.",

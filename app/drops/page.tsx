@@ -7,7 +7,10 @@ import { getServerTranslation } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
-  return { title: t("drops.title") };
+  return {
+    title: t("drops.title"),
+    description: t("drops.metaDescription"),
+  };
 }
 
 async function getDrops() {

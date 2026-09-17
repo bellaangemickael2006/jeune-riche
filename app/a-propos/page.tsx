@@ -4,7 +4,12 @@ import { getServerTranslation } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
-  return { title: t("legal.about.eyebrow") };
+  // Sans description propre, la page héritait de celle de l'accueil : Google
+  // voyait deux pages quasi identiques et n'en gardait qu'une.
+  return {
+    title: t("legal.about.eyebrow"),
+    description: t("legal.about.metaDescription"),
+  };
 }
 
 export default async function AProposPage() {

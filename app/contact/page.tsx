@@ -5,7 +5,10 @@ import { WHATSAPP_NUMBER } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
-  return { title: t("legal.contact.eyebrow") };
+  return {
+    title: t("legal.contact.eyebrow"),
+    description: t("legal.contact.metaDescription"),
+  };
 }
 
 export default async function ContactPage() {
