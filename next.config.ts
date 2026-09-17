@@ -2,6 +2,13 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
+  // Les fichiers de police lus au runtime par /api/og ne sont pas détectés
+  // par le traçage automatique (ils sont ouverts via un chemin construit,
+  // pas importés). Sans cette ligne, la route fonctionne en local et échoue
+  // une fois déployée, faute de trouver les .ttf.
+  outputFileTracingIncludes: {
+    "/api/og": ["./app/api/og/fonts/**"],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

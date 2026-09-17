@@ -355,6 +355,7 @@
     "stepName": "Le nom",
     "stepPiece": "La pièce",
     "seeFullPiece": "Voir la fiche complète",
-    "unavailable": "Aucune pièce personnalisable n'est disponible pour le moment."
+    "unavailable": "Aucune pièce personnalisable n'est disponible pour le moment.",
+    "sharedDescription": "{{nom}} sur une pièce JEUNE RICHE, à l'endroit exact où le nom sera imprimé. Compose le tien."
   }
 }

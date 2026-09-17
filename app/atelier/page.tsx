@@ -4,12 +4,47 @@ import AtelierStudio, { type AtelierPiece } from "@/components/atelier/AtelierSt
 import { getServerTranslation } from "@/lib/i18n/server";
 import { sanitizePersonalization } from "@/lib/utils";
 
-export async function generateMetadata(): Promise<Metadata> {
+// L'aperçu partagé porte le prénom saisi. C'est le seul endroit du site où
+// une page se partage naturellement : quelqu'un compose son nom, envoie le
+// lien, et le destinataire doit voir la pièce avec ce nom dessus — pas une
+// vignette générique. L'image est fabriquée par /api/og.
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ nom?: string }>;
+}): Promise<Metadata> {
   const { t } = await getServerTranslation();
+  const { nom } = await searchParams;
+  const propre = sanitizePersonalization(nom ?? "", 16).trim();
+
+  const image = propre
+    ? `/api/og?nom=${encodeURIComponent(propre)}`
+    : "/api/og";
+
+  // Le titre et la description reprennent le prénom : dans la carte WhatsApp,
+  // le texte compte autant que l'image.
+  const titre = propre ? `${propre.toUpperCase()} — JEUNE RICHE` : t("atelier.title");
+  const description = propre
+    ? t("atelier.sharedDescription", { nom: propre.toUpperCase() })
+    : t("atelier.intro");
+
   return {
-    title: t("atelier.title"),
-    description: t("atelier.intro"),
+    title: titre,
+    description,
     alternates: { canonical: "/atelier" },
+    openGraph: {
+      title: titre,
+      description,
+      url: propre ? `/atelier?nom=${encodeURIComponent(propre)}` : "/atelier",
+      type: "website",
+      images: [{ url: image, width: 1200, height: 630, alt: titre }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: titre,
+      description,
+      images: [image],
+    },
   };
 }
 

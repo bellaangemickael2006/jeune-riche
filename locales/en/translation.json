@@ -355,6 +355,7 @@
     "stepName": "The name",
     "stepPiece": "The piece",
     "seeFullPiece": "See the full product page",
-    "unavailable": "No personalisable piece is available at the moment."
+    "unavailable": "No personalisable piece is available at the moment.",
+    "sharedDescription": "{{nom}} on a JEUNE RICHE piece, at the exact spot where the name will be printed. Compose your own."
   }
 }
