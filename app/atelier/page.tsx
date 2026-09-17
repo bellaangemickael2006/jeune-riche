@@ -23,13 +23,18 @@ export async function generateMetadata({
 
   // Le titre et la description reprennent le prénom : dans la carte WhatsApp,
   // le texte compte autant que l'image.
+  // Le gabarit du layout ajoute déjà « — JEUNE RICHE » au titre de page :
+  // le répéter ici produisait « BELLA — JEUNE RICHE — JEUNE RICHE » dans
+  // l'onglet. Le titre de page reste donc nu, et seule la carte de partage —
+  // qui n'utilise pas le gabarit — porte le nom complet de la marque.
+  const titrePage = propre ? propre.toUpperCase() : t("atelier.title");
   const titre = propre ? `${propre.toUpperCase()} — JEUNE RICHE` : t("atelier.title");
   const description = propre
     ? t("atelier.sharedDescription", { nom: propre.toUpperCase() })
     : t("atelier.intro");
 
   return {
-    title: titre,
+    title: titrePage,
     description,
     alternates: { canonical: "/atelier" },
     openGraph: {
