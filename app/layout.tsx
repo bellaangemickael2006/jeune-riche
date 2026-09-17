@@ -72,6 +72,15 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description,
     alternates: { canonical: "/" },
+    // Vérification de propriété Google Search Console. Sans elle, Google ne
+    // découvre le site que par hasard : il n'y a aujourd'hui aucun lien
+    // entrant vers le domaine. Le code se colle dans la variable
+    // GOOGLE_SITE_VERIFICATION sur Vercel — aucun déploiement de code n'est
+    // nécessaire, la balise apparaît au redémarrage. Absente, la clé est
+    // simplement omise du <head>.
+    ...(process.env.GOOGLE_SITE_VERIFICATION
+      ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+      : {}),
     appleWebApp: {
       capable: true,
       statusBarStyle: "black-translucent",
