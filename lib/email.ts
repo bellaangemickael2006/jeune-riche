@@ -142,6 +142,17 @@ export function lowStockAlertEmail(params: {
   `);
 }
 
+// Les champs du panier viennent du navigateur (cart snapshot) : ils doivent
+// être échappés avant d'être insérés dans le HTML de l'email.
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export function abandonedCartEmail(params: {
   items: { productName: string; size: string; color: string; quantity: number }[];
   total: number;
@@ -154,7 +165,7 @@ export function abandonedCartEmail(params: {
       (i) => `
       <tr>
         <td style="padding:8px 0;border-bottom:1px solid #262626;">
-          ${i.productName} — ${i.color} / ${i.size} × ${i.quantity}
+          ${escapeHtml(i.productName)} — ${escapeHtml(i.color)} / ${escapeHtml(i.size)} × ${Number(i.quantity)}
         </td>
       </tr>`
     )
