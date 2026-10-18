@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [master, ameliorations]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      # Valeurs factices : le build n'ouvre aucune connexion à la base. Ne jamais
+      # mettre ici une URL de production.
+      DATABASE_URL: postgresql://build:build@localhost:5432/build
+      DIRECT_URL: postgresql://build:build@localhost:5432/build
+      NEXT_PUBLIC_SITE_URL: https://example.test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npx next build

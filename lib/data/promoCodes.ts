@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
+import { discountOf } from "@/lib/orders/pricing";
 
 export type PromoValidationResult =
   | { valid: true; code: string; promoCodeId: string; discountAmount: number }
@@ -33,10 +34,7 @@ export async function resolvePromoCode(rawCode: string, subtotal: number): Promi
     return { valid: false, message: `Ce code s'applique à partir de ${formatPrice(Number(promo.minSubtotal))} d'achat.` };
   }
 
-  const discountAmount =
-    promo.type === "PERCENT"
-      ? Math.round(subtotal * (Number(promo.value) / 100))
-      : Math.min(Number(promo.value), subtotal);
+  const discountAmount = discountOf(subtotal, { type: promo.type, value: Number(promo.value) });
 
   return { valid: true, code: promo.code, promoCodeId: promo.id, discountAmount };
 }

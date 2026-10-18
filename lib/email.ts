@@ -1,6 +1,17 @@
 import nodemailer from "nodemailer";
 import { siteUrl } from "@/lib/utils";
 
+// Toute valeur variable insérée dans le HTML d'un email doit passer ici : les
+// noms, tailles et couleurs viennent du navigateur ou de saisies utilisateur.
+export function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function getTransport() {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) return null;
 
@@ -86,14 +97,14 @@ export function passwordResetEmail(actionLink: string) {
       Si vous êtes à l'origine de cette demande, cliquez ci-dessous pour choisir un nouveau mot de passe.
       Si vous n'êtes pas à l'origine de cette demande, ignorez simplement cet email.
     </p>
-    <a href="${actionLink}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+    <a href="${escapeHtml(actionLink)}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
       Réinitialiser mon mot de passe
     </a>
   `);
 }
 
 export function signupConfirmationEmail(actionLink: string, name?: string) {
-  const greeting = name ? `Bienvenue ${name},` : "Bienvenue,";
+  const greeting = name ? `Bienvenue ${escapeHtml(name)},` : "Bienvenue,";
   return emailShell(`
     <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Confirmation d'inscription</p>
     <p style="margin:0 0 16px;">${greeting}</p>
@@ -101,7 +112,7 @@ export function signupConfirmationEmail(actionLink: string, name?: string) {
       Merci de vous être inscrit sur JEUNE RICHE. Confirmez votre adresse email pour activer votre compte
       et accéder à vos commandes, votre liste d'envies et nos offres exclusives.
     </p>
-    <a href="${actionLink}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+    <a href="${escapeHtml(actionLink)}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
       Confirmer mon compte
     </a>
     <p style="margin:28px 0 0;color:#6a6a6a;font-size:12px;">
@@ -111,11 +122,11 @@ export function signupConfirmationEmail(actionLink: string, name?: string) {
 }
 
 export function restockEmail(params: { productName: string; size: string; color: string; productSlug: string }) {
-  const productUrl = `${siteUrl()}/catalogue/${params.productSlug}`;
+  const productUrl = `${siteUrl()}/catalogue/${encodeURIComponent(params.productSlug)}`;
   return emailShell(`
     <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">De retour en stock</p>
     <p style="margin:0 0 16px;">
-      <strong style="color:#f5f4f1;">${params.productName}</strong> (${params.color} · ${params.size}) est de nouveau disponible.
+      <strong style="color:#f5f4f1;">${escapeHtml(params.productName)}</strong> (${escapeHtml(params.color)} · ${escapeHtml(params.size)}) est de nouveau disponible.
     </p>
     <p style="margin:0 0 28px;color:#9a9a9a;">
       Les stocks sont limités — commandez avant qu'il ne s'épuise à nouveau.
@@ -135,22 +146,11 @@ export function lowStockAlertEmail(params: {
   return emailShell(`
     <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Stock critique</p>
     <p style="margin:0 0 16px;">
-      <strong style="color:#f5f4f1;">${params.productName}</strong> (${params.color} · ${params.size}) —
+      <strong style="color:#f5f4f1;">${escapeHtml(params.productName)}</strong> (${escapeHtml(params.color)} · ${escapeHtml(params.size)}) —
       il ne reste plus que <strong style="color:#f5f4f1;">${params.remaining}</strong> exemplaire${params.remaining > 1 ? "s" : ""}.
     </p>
     <p style="margin:0;color:#9a9a9a;">Pensez à réapprovisionner avant rupture totale.</p>
   `);
-}
-
-// Les champs du panier viennent du navigateur (cart snapshot) : ils doivent
-// être échappés avant d'être insérés dans le HTML de l'email.
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 export function abandonedCartEmail(params: {
@@ -191,7 +191,7 @@ export function campaignEmail(bodyText: string) {
   const paragraphs = bodyText
     .split("\n")
     .filter((line) => line.trim().length > 0)
-    .map((line) => `<p style="margin:0 0 14px;">${line}</p>`)
+    .map((line) => `<p style="margin:0 0 14px;">${escapeHtml(line)}</p>`)
     .join("");
   return emailShell(paragraphs);
 }

@@ -271,17 +271,15 @@ export default function CheckoutPage() {
                   fetch("/api/cart/snapshot", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
+                    // Le serveur relit nom, taille, couleur et prix en base :
+                    // on n'envoie que les identifiants et les quantités.
                     body: JSON.stringify({
                       email: form.customerEmail,
                       items: lines.map((l) => ({
-                        productName: l.productName,
-                        size: l.size,
-                        color: l.color,
+                        variantId: l.variantId,
                         quantity: l.quantity,
-                        unitPrice: l.unitPrice,
                         personalization: l.personalization,
                       })),
-                      total: subtotal,
                     }),
                   }).catch(() => {});
                 }

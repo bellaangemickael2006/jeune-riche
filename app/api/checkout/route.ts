@@ -7,6 +7,7 @@ import { whatsappOrderLink, LOW_STOCK_THRESHOLD } from "@/lib/utils";
 import { sendEmail, lowStockAlertEmail } from "@/lib/email";
 import { resolvePromoCode } from "@/lib/data/promoCodes";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
+import { subtotalOf, totalOf } from "@/lib/orders/pricing";
 
 // Le stock est revérifié à l'écriture, pas seulement à la lecture plus haut :
 // entre la vérification initiale et la transaction, une autre commande
@@ -120,7 +121,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const subtotal = resolvedLines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
+    const subtotal = subtotalOf(resolvedLines);
 
     // Pas de frais de livraison fixes : ça varie trop selon la destination
     // pour un montant unique facturé en ligne — communiqués au client par
@@ -172,22 +173,18 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      const total = subtotal - discountAmount + shippingCost;
+      const total = totalOf(subtotal, discountAmount, shippingCost);
 
       const created = await tx.order.create({
         data: {
           orderNumber,
           customerName,
           customerEmail,
-          // Order n'a pas encore de colonnes discountCode/discountAmount —
-          // ce champ a été retiré du schéma tant que la migration Prisma
-          // n'est pas appliquée à la vraie base (voir commit history). La
-          // remise reste appliquée à `total` et visible dans le message
-          // WhatsApp ci-dessous ; à réintégrer proprement dans Order une
-          // fois la migration passée.
           shippingAddress,
           subtotal,
           shippingCost,
+          discountCode,
+          discountAmount,
           total,
           userId: loggedInUserId,
           // `stockBefore` sert uniquement à l'alerte stock bas plus bas dans
