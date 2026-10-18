@@ -5,7 +5,7 @@ import { getProductsBySlugs } from "@/lib/data/products";
 const schema = z.object({ slugs: z.array(z.string()).max(100) });
 
 export async function POST(req: NextRequest) {
-  const parsed = schema.safeParse(await req.json());
+  const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });
   }

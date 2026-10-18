@@ -11,6 +11,14 @@ export default function ManifesteHero() {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
+    // La vidéo pèse ~11 Mo : on ne la charge pas pour un visiteur qui a
+    // activé l'économie de données ou réduit les animations — l'image de
+    // repli suffit, et la page reste fluide sur une connexion mobile lente.
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (connection?.saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setFailed(true);
+      return;
+    }
     videoRef.current?.play().catch(() => {});
   }, []);
 
@@ -24,14 +32,14 @@ export default function ManifesteHero() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           poster="/images/badge/badge-black-on-white.png"
           onError={() => setFailed(true)}
         >
           <source src="/video/manifeste-motif.mp4" type="video/mp4" />
         </video>
       ) : (
-        <Image src="/images/badge/badge-black-on-white.png" alt="JEUNE RICHE" fill className="object-cover" />
+        <Image src="/images/badge/badge-black-on-white.png" alt="JEUNE RICHE" fill priority sizes="100vw" className="object-cover" />
       )}
       {/* Superposé à une vidéo réelle, pas au fond de page : reste toujours
           sombre pour le titre blanc, quel que soit le thème. */}

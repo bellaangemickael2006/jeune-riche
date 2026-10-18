@@ -1,7 +1,9 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
-import { motion } from "framer-motion";
+import { useRef, type ReactNode } from "react";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+
+const SPRING = { stiffness: 150, damping: 12, mass: 0.2 };
 
 export default function Magnetic({
   children,
@@ -13,30 +15,26 @@ export default function Magnetic({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  // Valeurs de mouvement plutôt qu'un state React : avant, chaque mouvement
+  // de souris relançait un rendu du composant et de tout son contenu.
+  const x = useSpring(useMotionValue(0), SPRING);
+  const y = useSpring(useMotionValue(0), SPRING);
 
   function handleMouseMove(e: React.MouseEvent) {
     const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
-    const x = e.clientX - (rect.left + rect.width / 2);
-    const y = e.clientY - (rect.top + rect.height / 2);
-    setOffset({ x: x * strength, y: y * strength });
+    x.set((e.clientX - (rect.left + rect.width / 2)) * strength);
+    y.set((e.clientY - (rect.top + rect.height / 2)) * strength);
   }
 
   function reset() {
-    setOffset({ x: 0, y: 0 });
+    x.set(0);
+    y.set(0);
   }
 
   return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={reset}
-      animate={{ x: offset.x, y: offset.y }}
-      transition={{ type: "spring", stiffness: 150, damping: 12, mass: 0.2 }}
-      className={className}
-    >
+    <motion.div ref={ref} onMouseMove={handleMouseMove} onMouseLeave={reset} style={{ x, y }} className={className}>
       {children}
     </motion.div>
   );

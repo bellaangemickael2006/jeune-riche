@@ -97,7 +97,7 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: promoInput, subtotal }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({ valid: false }));
       if (data.valid) {
         setPromo({ code: data.code, discountAmount: data.discountAmount });
         setPromoMessage(null);
@@ -185,8 +185,10 @@ export default function CheckoutPage() {
           promoCode: promo?.code,
         }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? t("checkout.unknownError"));
+      // Une réponse non JSON (délai dépassé, page d'erreur de l'hébergeur)
+      // affichait au client un message technique du type « Unexpected token ».
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.whatsappUrl) throw new Error(data.error ?? t("checkout.unknownError"));
       clear();
       try {
         localStorage.removeItem(DRAFT_KEY);

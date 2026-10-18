@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/auth";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, cn, LOW_STOCK_THRESHOLD } from "@/lib/utils";
@@ -8,6 +9,8 @@ export default async function AdminProductsPage({
 }: {
   searchParams: Promise<{ q?: string; stock?: string }>;
 }) {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   const { q, stock } = await searchParams;
   let products: Awaited<ReturnType<typeof loadProducts>> = [];
   let available = true;

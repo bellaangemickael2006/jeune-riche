@@ -29,7 +29,21 @@ export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request: { headers: requestHeaders } });
   const detectedLanguage = detectLanguageCookie(request);
 
+  // Les pages admin doivent être bloquées AVANT tout rendu : le contrôle du
+  // layout (requireAdmin) s'exécute en parallèle de la page, qui avait déjà
+  // lu la base et envoyé son contenu (commandes, clients…) au moment où la
+  // redirection vers la connexion arrivait.
+  const { pathname } = request.nextUrl;
+  const isProtectedAdmin = pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
+  const toLogin = (query = "") => {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/login";
+    url.search = query;
+    return url;
+  };
+
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (isProtectedAdmin) return NextResponse.redirect(toLogin("?erreur=config_manquante"));
     if (detectedLanguage) {
       response.cookies.set(LANGUAGE_COOKIE, detectedLanguage, { path: "/", maxAge: 31536000, sameSite: "lax" });
     }
@@ -55,7 +69,16 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (isProtectedAdmin && !user) {
+    const redirect = NextResponse.redirect(toLogin());
+    // Garde les cookies de session éventuellement rafraîchis ci-dessus.
+    response.cookies.getAll().forEach((cookie) => redirect.cookies.set(cookie));
+    return redirect;
+  }
 
   if (detectedLanguage) {
     response.cookies.set(LANGUAGE_COOKIE, detectedLanguage, { path: "/", maxAge: 31536000, sameSite: "lax" });

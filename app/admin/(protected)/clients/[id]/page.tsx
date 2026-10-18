@@ -1,9 +1,13 @@
 import { notFound } from "next/navigation";
+import { requireAdmin } from "@/lib/auth";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
+import { ORDER_STATUS_LABEL, REVIEW_STATUS_LABEL } from "@/lib/adminLabels";
 
 export default async function AdminClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   const { id } = await params;
   const client = await prisma.user.findUnique({
     where: { id },
@@ -61,7 +65,7 @@ export default async function AdminClientDetailPage({ params }: { params: Promis
                 </div>
                 <div className="shrink-0 text-right">
                   <p className="text-paper/70">{formatPrice(Number(o.total))}</p>
-                  <p className="text-[10px] uppercase tracking-widest2 text-paper/40">{o.status}</p>
+                  <p className="text-[10px] uppercase tracking-widest2 text-paper/40">{ORDER_STATUS_LABEL[o.status]}</p>
                 </div>
               </li>
             ))}
@@ -76,7 +80,7 @@ export default async function AdminClientDetailPage({ params }: { params: Promis
             {client.reviews.map((r) => (
               <li key={r.id} className="py-3 text-sm">
                 <p className="text-paper">
-                  {r.product.name} — {r.rating}/5 · <span className="text-paper/40">{r.status}</span>
+                  {r.product.name} — {r.rating}/5 · <span className="text-paper/40">{REVIEW_STATUS_LABEL[r.status]}</span>
                 </p>
                 <p className="mt-1 text-paper/60">{r.comment}</p>
               </li>

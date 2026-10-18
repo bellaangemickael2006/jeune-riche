@@ -1,9 +1,31 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { addProductImage, setProductVideo, removeProductVideo } from "@/lib/actions/products";
+import { addProductImage, setProductVideo, removeProductVideo, prepareMediaUpload } from "@/lib/actions/products";
+import { createClient } from "@/lib/supabase/client";
 
 const IMAGE_TYPES = ["MOCKUP", "FRONT", "BACK", "DETAIL", "LIFESTYLE"] as const;
+const MEDIA_BUCKET = "product-media";
+
+/**
+ * Envoie le fichier directement du navigateur vers Supabase Storage via une
+ * URL signée délivrée par le serveur (voir prepareMediaUpload). Renvoie le
+ * chemin stocké, ou un message d'erreur lisible.
+ */
+async function uploadMedia(
+  productId: string,
+  kind: "image" | "video",
+  file: File
+): Promise<{ path: string } | { error: string }> {
+  const prepared = await prepareMediaUpload(productId, kind, { name: file.name, type: file.type, size: file.size });
+  if (!prepared.ok) return { error: prepared.error };
+
+  const { error } = await createClient()
+    .storage.from(MEDIA_BUCKET)
+    .uploadToSignedUrl(prepared.data.path, prepared.data.token, file, { contentType: file.type });
+  if (error) return { error: `Échec de l'envoi : ${error.message}` };
+  return { path: prepared.data.path };
+}
 
 export function ImageUploadForm({ productId, colors }: { productId: string; colors: string[] }) {
   const [preview, setPreview] = useState<string | null>(null);
@@ -29,21 +51,32 @@ export function ImageUploadForm({ productId, colors }: { productId: string; colo
       setError("Sélectionnez une image.");
       return;
     }
-    const formData = new FormData();
-    formData.set("file", file);
-    formData.set("alt", alt);
-    formData.set("type", type);
-    formData.set("color", color);
+    setError(null);
     startTransition(async () => {
       try {
-        await addProductImage(productId, formData);
+        const uploaded = await uploadMedia(productId, "image", file);
+        if ("error" in uploaded) {
+          setError(uploaded.error);
+          return;
+        }
+        const formData = new FormData();
+        formData.set("path", uploaded.path);
+        formData.set("alt", alt);
+        formData.set("type", type);
+        formData.set("color", color);
+        const result = await addProductImage(productId, formData);
+        if (!result.ok) {
+          setError(result.error);
+          return;
+        }
+        if (preview) URL.revokeObjectURL(preview);
         setPreview(null);
         setAlt("");
         setColor("");
         fileHeld.current = null;
         if (fileRef.current) fileRef.current.value = "";
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Échec de l'ajout.");
+      } catch {
+        setError("Échec de l'envoi. Vérifiez la connexion et réessayez.");
       }
     });
   }
@@ -148,23 +181,41 @@ export function VideoUploadForm({
       setError("Sélectionnez une vidéo.");
       return;
     }
-    const formData = new FormData();
-    formData.set("file", file);
+    setError(null);
     startTransition(async () => {
       try {
-        await setProductVideo(productId, formData);
+        const uploaded = await uploadMedia(productId, "video", file);
+        if ("error" in uploaded) {
+          setError(uploaded.error);
+          return;
+        }
+        const formData = new FormData();
+        formData.set("path", uploaded.path);
+        const result = await setProductVideo(productId, formData);
+        if (!result.ok) {
+          setError(result.error);
+          return;
+        }
+        if (preview) URL.revokeObjectURL(preview);
         setPreview(null);
         fileHeld.current = null;
         if (fileRef.current) fileRef.current.value = "";
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Échec de l'ajout.");
+      } catch {
+        setError("Échec de l'envoi. Vérifiez la connexion et réessayez.");
       }
     });
   }
 
   function onRemove() {
+    if (!window.confirm("Retirer la vidéo de ce produit ?")) return;
+    setError(null);
     startTransition(async () => {
-      await removeProductVideo(productId);
+      try {
+        const result = await removeProductVideo(productId);
+        if (!result.ok) setError(result.error);
+      } catch {
+        setError("Échec. Vérifiez la connexion.");
+      }
     });
   }
 

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, cn } from "@/lib/utils";
 import type { OrderStatus } from "@prisma/client";
@@ -19,6 +20,8 @@ export default async function AdminOrdersPage({
 }: {
   searchParams: Promise<{ q?: string; statut?: string }>;
 }) {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   const { q, statut } = await searchParams;
   let orders: Awaited<ReturnType<typeof load>> = [];
   let available = true;

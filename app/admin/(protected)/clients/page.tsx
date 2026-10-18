@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
 
@@ -7,6 +8,8 @@ export default async function AdminClientsPage({
 }: {
   searchParams: Promise<{ q?: string }>;
 }) {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   const { q } = await searchParams;
   let clients: Awaited<ReturnType<typeof load>> = [];
   let available = true;

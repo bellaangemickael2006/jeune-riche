@@ -35,3 +35,11 @@ jobs:
 
       - name: Build
         run: npx next build
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      # Uniquement les parcours sans base de données (tests/navigation.spec.ts) :
+      # aucune base n'est disponible en CI.
+      - name: E2E tests
+        run: npx playwright test tests/navigation.spec.ts

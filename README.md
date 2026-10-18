@@ -70,6 +70,20 @@ Déploiement cible : push sur GitHub → Vercel (build automatique) → variable
 renseignées séparément pour Development / Preview / Production dans le dashboard Vercel, et projet
 Supabase dédié par environnement si possible.
 
+Le build **n'applique plus les migrations**. Après tout changement de `prisma/schema.prisma`,
+appliquer la migration sur la base de production avec son URL :
+
+```bash
+npm run db:deploy
+```
+
+### Mode démo
+
+Admin → Paramètres → « Mode démo — formater les données » : efface au choix les commandes et
+l'activité, les abonnés, les comptes clients, le catalogue, ou remet les stocks à 0. Les comptes
+admin, les catégories et les paramètres ne sont jamais touchés. Il faut taper `FORMATER` pour
+confirmer : l'action est définitive.
+
 Les vidéos (`public/video/*.mp4`, ~20 Mo et ~11 Mo) sont servies comme assets statiques Next.js —
 elles ne transitent jamais par une fonction serverless. Pour un trafic important, migrer vers un
 stockage/CDN dédié (Supabase Storage ou équivalent) est recommandé — voir TODO.md.
@@ -89,9 +103,13 @@ types/          types partagés
 ## Tests
 
 ```bash
+npm test                          # tests unitaires (montants, emails, saisies admin)
 npx playwright install chromium   # une seule fois
 npm run test:e2e                  # lance le serveur dev et exécute la suite
 ```
+
+La CI GitHub (`.github/workflows/ci.yml`) lance typecheck, lint, tests unitaires, build et les
+tests de navigation à chaque push.
 
 `tests/navigation.spec.ts` couvre les parcours qui ne dépendent pas d'une base de données
 (navigation, états vides honnêtes, 404, redirection admin). Voir [TESTS.md](TESTS.md) pour le

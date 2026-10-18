@@ -39,7 +39,7 @@ export async function PATCH(req: NextRequest) {
   const user = await currentUser();
   if (!user) return NextResponse.json({ error: "Non connecté." }, { status: 401 });
 
-  const parsed = schema.safeParse(await req.json());
+  const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Adresse invalide.", details: parsed.error.flatten() }, { status: 400 });
   }

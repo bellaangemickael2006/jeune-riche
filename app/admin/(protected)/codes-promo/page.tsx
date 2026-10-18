@@ -1,9 +1,13 @@
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import { formatPrice, cn } from "@/lib/utils";
 import { createPromoCode, togglePromoCode, deletePromoCode } from "@/lib/actions/promoCodes";
 import ConfirmButton from "@/components/admin/ConfirmButton";
+import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 
 export default async function AdminPromoCodesPage() {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   let codes: Awaited<ReturnType<typeof load>> = [];
   let available = true;
   try {
@@ -51,19 +55,19 @@ export default async function AdminPromoCodesPage() {
                   >
                     {expired ? "Expiré" : exhausted ? "Épuisé" : c.active ? "Actif" : "Désactivé"}
                   </span>
-                  <form action={togglePromoCode.bind(null, c.id, !c.active)}>
-                    <button className="text-[10px] uppercase tracking-widest2 text-paper/50 hover:text-paper">
+                  <ActionForm action={togglePromoCode.bind(null, c.id, !c.active)}>
+                    <SubmitButton className="text-[10px] uppercase tracking-widest2 text-paper/50 hover:text-paper">
                       {c.active ? "Désactiver" : "Activer"}
-                    </button>
-                  </form>
-                  <form action={deletePromoCode.bind(null, c.id)}>
+                    </SubmitButton>
+                  </ActionForm>
+                  <ActionForm action={deletePromoCode.bind(null, c.id)}>
                     <ConfirmButton
                       confirmMessage={`Supprimer le code "${c.code}" ?`}
                       className="text-[10px] uppercase tracking-widest2 text-paper/30 hover:text-paper"
                     >
                       Supprimer
                     </ConfirmButton>
-                  </form>
+                  </ActionForm>
                 </div>
               </li>
             );
@@ -71,7 +75,7 @@ export default async function AdminPromoCodesPage() {
         </ul>
       )}
 
-      <form action={createPromoCode} className="mt-10 flex max-w-md flex-col gap-4 border-t border-line pt-8">
+      <ActionForm action={createPromoCode} resetOnSuccess className="mt-10 flex max-w-md flex-col gap-4 border-t border-line pt-8">
         <p className="text-xs uppercase tracking-widest2 text-paper/50">Créer un code</p>
         <label className="block">
           <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/40">Code</span>
@@ -141,8 +145,8 @@ export default async function AdminPromoCodesPage() {
             className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper"
           />
         </label>
-        <button className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">Créer</button>
-      </form>
+        <SubmitButton className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">Créer</SubmitButton>
+      </ActionForm>
     </div>
   );
 }

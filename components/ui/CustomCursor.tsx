@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
-const INTERACTIVE_SELECTOR = "a, button, [role='button'], input, textarea, select";
+const INTERACTIVE_SELECTOR = "a, button, [role='button'], input, textarea, select, label";
+const SIZE = 16; // px — doit correspondre à h-4 w-4 ci-dessous
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -15,40 +16,52 @@ export default function CustomCursor() {
     const scale = scaleRef.current;
     if (!dot || !scale) return;
 
-    let x = window.innerWidth / 2;
-    let y = window.innerHeight / 2;
+    let x = -100;
+    let y = -100;
     let hover = false;
-    let rafId: number;
+    let rafId = 0;
+
+    // Une seule écriture par frame, et seulement quand la souris a bougé :
+    // l'ancienne boucle tournait en permanence (60 écritures de style par
+    // seconde, souris immobile comprise), ce qui grignotait le budget de
+    // chaque frame pendant le défilement.
+    const render = () => {
+      rafId = 0;
+      // Centré sur le pointeur : le translate inline remplaçait les classes
+      // -translate-x/y-1/2, le point était décalé de 8 px en bas à droite.
+      dot.style.transform = `translate3d(${x - SIZE / 2}px, ${y - SIZE / 2}px, 0)`;
+    };
+    const schedule = () => {
+      if (!rafId) rafId = requestAnimationFrame(render);
+    };
 
     const move = (e: PointerEvent) => {
       x = e.clientX;
       y = e.clientY;
+      dot.style.opacity = "1";
+      schedule();
     };
 
     const over = (e: PointerEvent) => {
-      const target = e.target as Element | null;
-      hover = Boolean(target?.closest(INTERACTIVE_SELECTOR));
-    };
-
-    // La position (translate) est appliquée à chaque frame sans aucune
-    // transition CSS — un transform qui rattrape une valeur déjà en train de
-    // bouger produit un effet de traînée, pas de fluidité. Seul le
-    // grossissement au survol (état discret, pas continu) vit sur un
-    // élément séparé qui garde sa transition CSS.
-    const render = () => {
-      dot.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      const next = Boolean((e.target as Element | null)?.closest(INTERACTIVE_SELECTOR));
+      if (next === hover) return;
+      hover = next;
       scale.style.transform = `scale(${hover ? 2.2 : 1})`;
-      rafId = requestAnimationFrame(render);
     };
 
-    window.addEventListener("pointermove", move);
-    window.addEventListener("pointerover", over);
-    rafId = requestAnimationFrame(render);
+    const leave = () => {
+      dot.style.opacity = "0";
+    };
+
+    window.addEventListener("pointermove", move, { passive: true });
+    window.addEventListener("pointerover", over, { passive: true });
+    document.documentElement.addEventListener("pointerleave", leave);
 
     return () => {
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerover", over);
-      cancelAnimationFrame(rafId);
+      document.documentElement.removeEventListener("pointerleave", leave);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -56,7 +69,8 @@ export default function CustomCursor() {
     <div
       ref={dotRef}
       aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-4 w-4 -translate-x-1/2 -translate-y-1/2 md:block"
+      style={{ opacity: 0 }}
+      className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-4 w-4 transition-opacity duration-200 will-change-transform md:block"
     >
       <div
         ref={scaleRef}

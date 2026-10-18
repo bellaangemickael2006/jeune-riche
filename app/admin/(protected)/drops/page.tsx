@@ -1,8 +1,13 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { createDrop } from "@/lib/actions/drops";
+import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
+import { DROP_STATUS_LABEL } from "@/lib/adminLabels";
 
 export default async function AdminDropsPage() {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   let drops: Awaited<ReturnType<typeof load>> = [];
   let available = true;
   try {
@@ -35,14 +40,14 @@ export default async function AdminDropsPage() {
                 </p>
               </Link>
               <span className="shrink-0 border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
-                {d.status}
+                {DROP_STATUS_LABEL[d.status]}
               </span>
             </li>
           ))}
         </ul>
       )}
 
-      <form action={createDrop} className="mt-10 flex max-w-md flex-col gap-4 border-t border-line pt-8">
+      <ActionForm action={createDrop} resetOnSuccess className="mt-10 flex max-w-md flex-col gap-4 border-t border-line pt-8">
         <p className="text-xs uppercase tracking-widest2 text-paper/50">Créer un drop</p>
         <label className="block">
           <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/40">Nom</span>
@@ -83,11 +88,11 @@ export default async function AdminDropsPage() {
             className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30"
           />
         </label>
-        <button className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">Créer</button>
+        <SubmitButton className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">Créer</SubmitButton>
         <p className="text-[11px] text-paper/30">
           Statut initial déterminé automatiquement selon la date de début (à ajuster ensuite si besoin).
         </p>
-      </form>
+      </ActionForm>
     </div>
   );
 }

@@ -1,15 +1,20 @@
 import { getStoreSettings } from "@/lib/data/settings";
+import { requireAdmin } from "@/lib/auth";
 import { updateStoreSettings } from "@/lib/actions/settings";
+import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
+import DemoResetForm from "@/components/admin/DemoResetForm";
 
 export default async function AdminSettingsPage() {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   const settings = await getStoreSettings();
 
   return (
     <div>
       <h1 className="font-display text-2xl uppercase text-paper">Paramètres</h1>
       <p className="mt-2 max-w-lg text-xs text-paper/40">
-        Ces valeurs sont utilisées directement par le site (frais de livraison au moment du paiement,
-        coordonnées de contact affichées aux clients).
+        Ces valeurs sont utilisées directement par le site (seuil de livraison offerte affiché au
+        paiement, coordonnées de contact affichées aux clients).
       </p>
 
       {!settings ? (
@@ -17,7 +22,7 @@ export default async function AdminSettingsPage() {
           Base de données indisponible.
         </p>
       ) : (
-        <form action={updateStoreSettings} className="mt-8 flex max-w-md flex-col gap-6">
+        <ActionForm action={updateStoreSettings} className="mt-8 flex max-w-md flex-col gap-6">
           <div>
             <p className="mb-4 border-b border-line pb-2 text-xs uppercase tracking-widest2 text-paper/50">
               Livraison
@@ -68,11 +73,26 @@ export default async function AdminSettingsPage() {
             </label>
           </div>
 
-          <button className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">
+          <SubmitButton
+            pendingLabel="Enregistrement…"
+            className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink"
+          >
             Enregistrer
-          </button>
-        </form>
+          </SubmitButton>
+        </ActionForm>
       )}
+
+      <section className="mt-16 max-w-md border-t border-line pt-8">
+        <p className="text-xs uppercase tracking-widest2 text-paper/50">Mode démo — formater les données</p>
+        <p className="mt-2 text-xs text-paper/40">
+          Remet la boutique à zéro avant une démonstration : choisissez ce qui doit être effacé. Les comptes
+          administrateurs, les catégories et les paramètres ci-dessus ne sont jamais touchés.{" "}
+          <strong className="text-paper/70">Action définitive, sans retour possible.</strong>
+        </p>
+        <div className="mt-6">
+          <DemoResetForm />
+        </div>
+      </section>
     </div>
   );
 }

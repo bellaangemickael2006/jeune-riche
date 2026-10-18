@@ -5,7 +5,9 @@
 // hachés, images, polices) profitent d'un cache-first — c'est ce qui rend
 // les visites répétées rapides sur un réseau mobile instable, sans jamais
 // risquer d'afficher un stock ou un prix obsolète.
-const CACHE_VERSION = "v1";
+// v2 : ne met plus en cache les réponses en erreur ni les pages personnelles.
+// Changer la version vide les anciens caches à l'activation.
+const CACHE_VERSION = "v2";
 const STATIC_CACHE = `jr-static-${CACHE_VERSION}`;
 const PAGES_CACHE = `jr-pages-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline.html";
@@ -42,6 +44,13 @@ function isStaticAsset(url) {
   return /\.(?:png|jpe?g|webp|avif|svg|gif|ico|woff2?|ttf)$/.test(url.pathname);
 }
 
+// Pages propres à un visiteur (compte, panier, commande) : jamais gardées
+// hors-ligne, pour ne pas réafficher les données d'un client à quelqu'un
+// d'autre sur un appareil partagé.
+function isPrivatePage(url) {
+  return /^\/(compte|panier|checkout|favoris)(\/|$)/.test(url.pathname);
+}
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
@@ -58,8 +67,12 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(PAGES_CACHE).then((cache) => cache.put(request, copy));
+          // Une page en erreur (500, 404) gardée en cache serait resservie
+          // hors-ligne à la place de la vraie page.
+          if (response.ok && !isPrivatePage(url)) {
+            const copy = response.clone();
+            caches.open(PAGES_CACHE).then((cache) => cache.put(request, copy));
+          }
           return response;
         })
         .catch(async () => (await caches.match(request)) || caches.match(OFFLINE_URL))
@@ -75,8 +88,12 @@ self.addEventListener("fetch", (event) => {
         (cached) =>
           cached ||
           fetch(request).then((response) => {
-            const copy = response.clone();
-            caches.open(STATIC_CACHE).then((cache) => cache.put(request, copy));
+            // Cache-first = définitif : une image en erreur mise en cache ne
+            // se serait plus jamais affichée, même après correction.
+            if (response.ok) {
+              const copy = response.clone();
+              caches.open(STATIC_CACHE).then((cache) => cache.put(request, copy));
+            }
             return response;
           })
       )

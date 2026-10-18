@@ -11,9 +11,12 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    command: "npm run dev",
+    // En CI, on sert le build de production (déjà fait par l'étape Build) :
+    // le premier rendu de `next dev` compile chaque page à la demande et peut
+    // dépasser le délai d'attente.
+    command: process.env.CI ? "npm run start" : "npm run dev",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
+    timeout: 180_000,
   },
 });

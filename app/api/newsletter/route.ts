@@ -4,7 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { sendEmail, newsletterWelcomeEmail } from "@/lib/email";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 
-const schema = z.object({ email: z.string().email() });
+// En minuscules : « Awa@Mail.com » et « awa@mail.com » sont le même abonné.
+const schema = z.object({ email: z.string().trim().toLowerCase().email().max(254) });
 
 export async function POST(req: NextRequest) {
   if (!rateLimit(`newsletter:${clientIp(req)}`, 10, 15 * 60_000)) {
@@ -13,8 +14,11 @@ export async function POST(req: NextRequest) {
 
   const contentType = req.headers.get("content-type") ?? "";
   const body = contentType.includes("application/json")
-    ? await req.json()
-    : Object.fromEntries((await req.formData()).entries());
+    ? await req.json().catch(() => null)
+    : await req
+        .formData()
+        .then((fd) => Object.fromEntries(fd.entries()))
+        .catch(() => null);
 
   const parsed = schema.safeParse(body);
   if (!parsed.success) {

@@ -6,9 +6,11 @@ import { sendEmail, signupConfirmationEmail } from "@/lib/email";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 
 const schema = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  name: z.string().optional(),
+  // Supabase enregistre l'email en minuscules : la ligne Prisma doit suivre,
+  // sinon « Awa@Mail.com » échappe au contrôle de doublon ci-dessous.
+  email: z.string().trim().toLowerCase().email(),
+  password: z.string().min(8).max(72),
+  name: z.string().trim().max(80).optional(),
   // Le téléphone (WhatsApp) est le canal de contact principal de la
   // boutique — demandé dès l'inscription plutôt qu'au premier achat
   // seulement, pour pouvoir joindre le client sans attendre une commande.

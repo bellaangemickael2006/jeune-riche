@@ -5,11 +5,33 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getServerTranslation } from "@/lib/i18n/server";
+import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
 
-export async function moderateReview(reviewId: string, status: "APPROVED" | "REJECTED") {
-  await requireAdmin();
-  await prisma.review.update({ where: { id: reviewId }, data: { status } });
-  revalidatePath("/admin/avis");
+export async function moderateReview(reviewId: string, status: "APPROVED" | "REJECTED"): Promise<ActionResult> {
+  return runAction(async () => {
+    await requireAdmin();
+    if (status !== "APPROVED" && status !== "REJECTED") throw new ActionError("Statut inconnu.");
+    const review = await prisma.review.update({
+      where: { id: reviewId },
+      data: { status },
+      include: { product: { select: { slug: true } } },
+    });
+    revalidatePath("/admin/avis");
+    // Un avis approuvé doit apparaître sur la fiche produit sans attendre.
+    revalidatePath(`/catalogue/${review.product.slug}`);
+  });
+}
+
+export async function deleteReview(reviewId: string): Promise<ActionResult> {
+  return runAction(async () => {
+    await requireAdmin();
+    const review = await prisma.review.delete({
+      where: { id: reviewId },
+      include: { product: { select: { slug: true } } },
+    });
+    revalidatePath("/admin/avis");
+    revalidatePath(`/catalogue/${review.product.slug}`);
+  });
 }
 
 export type CreateReviewState = { ok: boolean; message: string } | null;

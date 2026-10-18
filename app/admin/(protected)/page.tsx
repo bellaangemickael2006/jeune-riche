@@ -1,15 +1,12 @@
 import Link from "next/link";
+import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, LOW_STOCK_THRESHOLD } from "@/lib/utils";
+import { ORDER_STATUS_LABEL as STATUS_LABEL } from "@/lib/adminLabels";
 
-const STATUS_LABEL: Record<string, string> = {
-  NOUVELLE: "Nouvelle",
-  CONFIRMEE: "Confirmée",
-  PREPARATION: "Préparation",
-  EXPEDIEE: "Expédiée",
-  LIVREE: "Livrée",
-  ANNULEE: "Annulée",
-};
+// Toujours calculé à la demande : un tableau de bord mis en cache afficherait
+// d'anciens chiffres juste après une commande ou un formatage démo.
+export const dynamic = "force-dynamic";
 
 function startOfDay(daysAgo: number) {
   const d = new Date();
@@ -24,9 +21,15 @@ async function getStats() {
     // (voir lib/prisma.ts), plusieurs requêtes lancées en parallèle depuis la
     // même instance peuvent se retrouver à attendre une connexion libre.
     const orderCount = await prisma.order.count();
+    // Le panier moyen se calcule sur les commandes comptées dans le chiffre
+    // d'affaires : diviser par toutes les commandes, annulées comprises, le
+    // sous-estimait.
+    const paidOrderCount = await prisma.order.count({ where: { status: { not: "ANNULEE" } } });
     const productCount = await prisma.product.count({ where: { published: true } });
     const customerCount = await prisma.user.count({ where: { role: "CLIENT" } });
-    const lowStock = await prisma.productVariant.count({ where: { stock: { lte: 3, gt: 0 } } });
+    const lowStock = await prisma.productVariant.count({
+      where: { stock: { lte: LOW_STOCK_THRESHOLD, gt: 0 }, product: { published: true } },
+    });
     const revenue = await prisma.order.aggregate({
       _sum: { total: true },
       where: { status: { not: "ANNULEE" } },
@@ -67,7 +70,7 @@ async function getStats() {
       revenue: totalRevenue,
       revenueToday: revenueToday._sum.total ? Number(revenueToday._sum.total) : 0,
       revenue7d: revenue7d._sum.total ? Number(revenue7d._sum.total) : 0,
-      averageOrderValue: orderCount > 0 ? totalRevenue / orderCount : 0,
+      averageOrderValue: paidOrderCount > 0 ? totalRevenue / paidOrderCount : 0,
       topProducts,
       recentOrders,
       available: true,
@@ -91,6 +94,8 @@ async function getStats() {
 }
 
 export default async function AdminDashboard() {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   const stats = await getStats();
 
   const cards = [
@@ -101,7 +106,7 @@ export default async function AdminDashboard() {
     { label: "Commandes", value: stats.orderCount, href: "/admin/commandes" },
     { label: "Produits publiés", value: stats.productCount, href: "/admin/produits" },
     { label: "Clients", value: stats.customerCount, href: "/admin/clients" },
-    { label: "Stock faible (≤3)", value: stats.lowStock, href: "/admin/produits?stock=faible" },
+    { label: `Stock faible (≤${LOW_STOCK_THRESHOLD})`, value: stats.lowStock, href: "/admin/produits?stock=faible" },
   ];
 
   return (

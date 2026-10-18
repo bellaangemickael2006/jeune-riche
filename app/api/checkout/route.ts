@@ -1,25 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { getStoreSettings } from "@/lib/data/settings";
 import { createClient } from "@/lib/supabase/server";
-import { whatsappOrderLink, LOW_STOCK_THRESHOLD } from "@/lib/utils";
-import { sendEmail, lowStockAlertEmail } from "@/lib/email";
-import { resolvePromoCode } from "@/lib/data/promoCodes";
+import { whatsappOrderLink } from "@/lib/utils";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
-import { subtotalOf, totalOf } from "@/lib/orders/pricing";
-
-// Le stock est revérifié à l'écriture, pas seulement à la lecture plus haut :
-// entre la vérification initiale et la transaction, une autre commande
-// concurrente a pu épuiser le stock (deux clients sur le dernier exemplaire
-// d'un drop limité, par exemple) — sans ce garde-fou, decrement() peut passer
-// le stock en négatif.
-class InsufficientStockError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "InsufficientStockError";
-  }
-}
+import { createOrder, afterOrderCreated, CheckoutError } from "@/lib/orders/createOrder";
 
 const lineSchema = z.object({
   variantId: z.string(),
@@ -44,6 +29,24 @@ const schema = z.object({
   promoCode: z.string().optional(),
 });
 
+// Résolu côté serveur depuis le cookie de session — jamais depuis un champ
+// envoyé par le client — pour rattacher la commande au compte connecté
+// (historique dans /compte) et mettre à jour son adresse enregistrée.
+async function currentUserId(): Promise<string | null> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
+    if (!authUser) return null;
+    const dbUser = await prisma.user.findUnique({ where: { supabaseId: authUser.id } });
+    return dbUser?.id ?? null;
+  } catch {
+    // pas de session ou Supabase indisponible : commande traitée comme invité
+    return null;
+  }
+}
+
 export async function POST(req: NextRequest) {
   // Généreux exprès : ne doit jamais gêner un client qui retente après une
   // erreur réseau, seulement freiner un script qui viderait le stock en
@@ -52,218 +55,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Trop de tentatives, réessayez dans quelques minutes." }, { status: 429 });
   }
 
-  const parsed = schema.safeParse(await req.json());
+  const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Requête invalide.", details: parsed.error.flatten() }, { status: 400 });
   }
 
-  const { customerName, customerEmail, shippingAddress, lines, promoCode } = parsed.data;
-  const orderNumber = `JR-${Date.now().toString(36).toUpperCase()}`;
-
-  // Résolu côté serveur depuis le cookie de session — jamais depuis un champ
-  // envoyé par le client — pour rattacher la commande au compte connecté
-  // (historique dans /compte) et mettre à jour son adresse enregistrée.
-  let loggedInUserId: string | null = null;
-  try {
-    const supabase = await createClient();
-    const {
-      data: { user: authUser },
-    } = await supabase.auth.getUser();
-    if (authUser) {
-      const dbUser = await prisma.user.findUnique({ where: { supabaseId: authUser.id } });
-      if (dbUser) loggedInUserId = dbUser.id;
-    }
-  } catch {
-    // pas de session ou Supabase indisponible : commande traitée comme invité
-  }
+  const { customerName, customerEmail, shippingAddress } = parsed.data;
 
   try {
-    // Le prix envoyé par le navigateur n'est jamais fiable : on ne fait
-    // confiance qu'à variantId + quantity, et on relit prix/stock/nom en base.
-    const resolvedLines: {
-      variantId: string;
-      productName: string;
-      size: string;
-      color: string;
-      quantity: number;
-      unitPrice: number;
-      personalization: string | null;
-      stockBefore: number;
-    }[] = [];
-    for (const line of lines) {
-      const variant = await prisma.productVariant.findUnique({
-        where: { id: line.variantId },
-        include: { product: true },
-      });
-
-      if (!variant || !variant.product.published || variant.product.price === null) {
-        return NextResponse.json(
-          { error: "Un des articles du panier n'est plus disponible à la commande." },
-          { status: 409 }
-        );
-      }
-      if (variant.stock < line.quantity) {
-        return NextResponse.json(
-          { error: `Stock insuffisant pour ${variant.product.name} (${variant.size}/${variant.color}).` },
-          { status: 409 }
-        );
-      }
-
-      resolvedLines.push({
-        variantId: variant.id,
-        productName: variant.product.name,
-        size: variant.size,
-        color: variant.color,
-        quantity: line.quantity,
-        unitPrice: Number(variant.product.price),
-        personalization: line.personalization,
-        stockBefore: variant.stock,
-      });
-    }
-
-    const subtotal = subtotalOf(resolvedLines);
-
-    // Pas de frais de livraison fixes : ça varie trop selon la destination
-    // pour un montant unique facturé en ligne — communiqués au client par
-    // message après la commande, jamais ajoutés à `total`. Le seuil de
-    // livraison offerte (réglable en admin) n'est qu'un argument affiché au
-    // client côté /checkout (voir /api/shipping) ; il n'a aucun effet ici
-    // puisqu'aucun montant de livraison n'est de toute façon facturé.
-    const settings = await getStoreSettings();
-    const shippingCost = 0;
-
-    // Revalidé ici, jamais confiance au montant affiché côté client. Une
-    // erreur promo (invalide, expiré, ou épuisé par une commande concurrente
-    // entre-temps) ne bloque jamais la vente : la remise est simplement
-    // ignorée plutôt que de faire échouer tout le checkout pour un problème
-    // de marketing — contrairement au stock, où une rupture doit bloquer.
-    let discountAmount = 0;
-    let discountCode: string | null = null;
-    let appliedPromoId: string | null = null;
-    if (promoCode) {
-      const promoResult = await resolvePromoCode(promoCode, subtotal);
-      if (promoResult.valid) {
-        discountAmount = promoResult.discountAmount;
-        discountCode = promoResult.code;
-        appliedPromoId = promoResult.promoCodeId;
-      }
-    }
-
-    const order = await prisma.$transaction(async (tx) => {
-      if (appliedPromoId) {
-        // Comparer-échanger sur usedCount (relu ici, pas la valeur mise en
-        // cache plus haut) : si une commande concurrente vient de prendre la
-        // dernière place disponible, on le détecte et on abandonne juste la
-        // remise pour CETTE commande plutôt que de la faire échouer.
-        const promo = await tx.promoCode.findUnique({ where: { id: appliedPromoId } });
-        const stillValid =
-          promo && promo.active && (promo.maxUses === null || promo.usedCount < promo.maxUses);
-        if (stillValid) {
-          const promoUpdate = await tx.promoCode.updateMany({
-            where: { id: appliedPromoId, usedCount: promo.usedCount },
-            data: { usedCount: { increment: 1 } },
-          });
-          if (promoUpdate.count === 0) {
-            discountAmount = 0;
-            discountCode = null;
-          }
-        } else {
-          discountAmount = 0;
-          discountCode = null;
-        }
-      }
-
-      const total = totalOf(subtotal, discountAmount, shippingCost);
-
-      const created = await tx.order.create({
-        data: {
-          orderNumber,
-          customerName,
-          customerEmail,
-          shippingAddress,
-          subtotal,
-          shippingCost,
-          discountCode,
-          discountAmount,
-          total,
-          userId: loggedInUserId,
-          // `stockBefore` sert uniquement à l'alerte stock bas plus bas dans
-          // cette fonction — ce n'est pas un champ d'OrderItem. TypeScript ne
-          // signale pas les propriétés en trop sur une variable (seulement
-          // sur un littéral), donc le laisser dans `resolvedLines` ici fait
-          // échouer la requête Prisma à l'exécution ("Unknown argument").
-          items: {
-            create: resolvedLines.map((l) => ({
-              variantId: l.variantId,
-              productName: l.productName,
-              size: l.size,
-              color: l.color,
-              quantity: l.quantity,
-              unitPrice: l.unitPrice,
-              personalization: l.personalization,
-            })),
-          },
-        },
-      });
-
-      if (loggedInUserId) {
-        await tx.user.update({
-          where: { id: loggedInUserId },
-          data: {
-            addressLine1: shippingAddress.line1,
-            addressCity: shippingAddress.city,
-            addressPostalCode: shippingAddress.postalCode || null,
-            addressCountry: shippingAddress.country,
-            addressPhone: shippingAddress.phone || null,
-          },
-        });
-      }
-
-      for (const line of resolvedLines) {
-        const result = await tx.productVariant.updateMany({
-          where: { id: line.variantId, stock: { gte: line.quantity } },
-          data: { stock: { decrement: line.quantity } },
-        });
-        if (result.count === 0) {
-          throw new InsufficientStockError(
-            `Stock insuffisant pour ${line.productName} (${line.size}/${line.color}).`
-          );
-        }
-      }
-
-      return created;
+    const { order, resolvedLines, discountCode, discountAmount } = await createOrder({
+      ...parsed.data,
+      userId: await currentUserId(),
     });
 
-    // Alerte l'admin uniquement au moment où une variante FRANCHIT le seuil
-    // (stock avant > seuil >= stock après) — jamais à chaque vente tant
-    // qu'elle reste déjà basse, pour ne pas spammer. Best-effort : ne doit
-    // jamais faire échouer la commande.
-    if (settings?.contactEmail) {
-      for (const line of resolvedLines) {
-        const stockAfter = line.stockBefore - line.quantity;
-        if (line.stockBefore > LOW_STOCK_THRESHOLD && stockAfter <= LOW_STOCK_THRESHOLD) {
-          sendEmail({
-            to: settings.contactEmail,
-            subject: `Stock critique — ${line.productName} (${line.color}/${line.size})`,
-            html: lowStockAlertEmail({
-              productName: line.productName,
-              color: line.color,
-              size: line.size,
-              remaining: Math.max(stockAfter, 0),
-            }),
-          }).catch((error) => console.error("[api/checkout] low stock alert:", error));
-        }
-      }
-    }
-
-    // Empêche la relance panier abandonné de cibler une commande déjà
-    // passée — ne doit jamais faire échouer la commande si ça rate. No-op
-    // silencieux si customerEmail est vide (rien à retrouver, pas grave).
-    if (customerEmail) {
-      prisma.abandonedCart
-        .updateMany({ where: { email: customerEmail, convertedAt: null }, data: { convertedAt: new Date() } })
-        .catch((error) => console.error("[api/checkout] abandonedCart.updateMany:", error));
-    }
+    // Attendu (comme avant l'extraction) pour que la lecture des réglages se
+    // termine avant la réponse : sur Vercel, le travail après la réponse peut
+    // être interrompu. Les envois d'email restent non bloquants.
+    await afterOrderCreated({ customerEmail, resolvedLines });
 
     // WhatsApp (numéro renseigné, obligatoire) est le canal de contact
     // principal — construit côté serveur à partir des lignes résolues en
@@ -281,8 +89,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true, orderNumber: order.orderNumber, whatsappUrl });
   } catch (error) {
-    if (error instanceof InsufficientStockError) {
-      return NextResponse.json({ error: error.message }, { status: 409 });
+    if (error instanceof CheckoutError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
     }
     console.error("[api/checkout]", error);
     return NextResponse.json({ error: "Impossible de créer la commande." }, { status: 500 });

@@ -1,7 +1,13 @@
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/auth";
 import CampaignForm from "@/components/admin/CampaignForm";
+import ActionForm from "@/components/admin/ActionForm";
+import ConfirmButton from "@/components/admin/ConfirmButton";
+import { deleteSubscriber } from "@/lib/actions/newsletter";
 
 export default async function AdminNewsletterPage() {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   let subscribers: Awaited<ReturnType<typeof load>> = [];
   let available = true;
   try {
@@ -33,6 +39,7 @@ export default async function AdminNewsletterPage() {
               <th className="py-2">Email</th>
               <th className="py-2">Source</th>
               <th className="py-2">Date</th>
+              <th className="py-2" />
             </tr>
           </thead>
           <tbody>
@@ -41,6 +48,16 @@ export default async function AdminNewsletterPage() {
                 <td className="py-2 text-paper">{s.email}</td>
                 <td className="py-2 text-paper/60">{s.source}</td>
                 <td className="py-2 text-paper/40">{s.createdAt.toLocaleDateString("fr-FR")}</td>
+                <td className="py-2 text-right">
+                  <ActionForm action={deleteSubscriber.bind(null, s.id)}>
+                    <ConfirmButton
+                      confirmMessage={`Retirer ${s.email} de la newsletter ?`}
+                      className="text-[10px] uppercase tracking-widest2 text-paper/30 hover:text-paper"
+                    >
+                      Retirer
+                    </ConfirmButton>
+                  </ActionForm>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -48,7 +65,7 @@ export default async function AdminNewsletterPage() {
         </div>
       )}
 
-      {available && subscribers.length > 0 && <CampaignForm />}
+      {available && subscribers.length > 0 && <CampaignForm subscriberCount={subscribers.length} />}
     </div>
   );
 }

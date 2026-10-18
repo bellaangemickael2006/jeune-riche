@@ -36,26 +36,31 @@ function AdminLoginForm() {
       return;
     }
 
-    if (mode === "forgot") {
-      await fetch("/api/account/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      setMessage("Si un compte existe avec cet email, un lien de réinitialisation vient d'être envoyé.");
-      setLoading(false);
-      return;
-    }
+    // Sans try/catch, une coupure réseau laissait le bouton bloqué sur « … ».
+    try {
+      if (mode === "forgot") {
+        await fetch("/api/account/forgot-password", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
+        setMessage("Si un compte existe avec cet email, un lien de réinitialisation vient d'être envoyé.");
+        return;
+      }
 
-    const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-    if (signInError) {
-      setError("Identifiants invalides.");
+      const supabase = createClient();
+      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+      if (signInError) {
+        setError("Identifiants invalides.");
+        return;
+      }
+      router.push("/admin");
+      router.refresh();
+    } catch {
+      setError("Connexion impossible. Vérifiez votre réseau et réessayez.");
+    } finally {
       setLoading(false);
-      return;
     }
-    router.push("/admin");
-    router.refresh();
   }
 
   return (

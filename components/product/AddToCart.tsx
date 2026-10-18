@@ -44,7 +44,10 @@ export default function AddToCart({
     () => sortSizes(variants.filter((v) => v.color === color)),
     [variants, color]
   );
-  const [size, setSize] = useState(sizesForColor[0]?.size ?? "");
+  // Première taille disponible plutôt que la première tout court : arriver
+  // sur une fiche avec une taille épuisée présélectionnée faisait croire que
+  // tout le produit était indisponible.
+  const [size, setSize] = useState(defaultSize(sizesForColor));
   const [internalPersonalization, setInternalPersonalization] = useState("");
   const personalization = controlledPersonalization ?? internalPersonalization;
   const setPersonalization = onPersonalizationChange ?? setInternalPersonalization;
@@ -83,8 +86,7 @@ export default function AddToCart({
                 key={c}
                 onClick={() => {
                   setColor(c);
-                  const first = sortSizes(variants.filter((v) => v.color === c))[0];
-                  setSize(first?.size ?? "");
+                  setSize(defaultSize(sortSizes(variants.filter((v) => v.color === c))));
                 }}
                 aria-pressed={color === c}
                 className="flex flex-col items-center gap-1.5"
@@ -127,19 +129,22 @@ export default function AddToCart({
               const isSelected = size === v.size;
               const soldOut = v.stock === 0;
               return (
+                // Une taille épuisée reste sélectionnable : c'est le seul moyen
+                // d'atteindre « Me prévenir » pour CETTE taille. Désactivée,
+                // l'alerte de retour en stock n'était presque jamais proposée.
                 <button
                   key={v.id}
                   type="button"
                   role="radio"
                   aria-checked={isSelected}
-                  disabled={soldOut}
                   onClick={() => setSize(v.size)}
                   title={soldOut ? t("product.outOfStock") : undefined}
                   className={cn(
                     "min-w-[3.5rem] flex-1 px-4 py-3.5 font-display text-[11px] uppercase tracking-widest2 transition-colors",
                     isSelected && !soldOut && "bg-paper text-ink",
                     !isSelected && !soldOut && "text-paper/60 hover:bg-paper/5 hover:text-paper",
-                    soldOut && "cursor-not-allowed text-paper/20 line-through"
+                    soldOut && "text-paper/25 line-through",
+                    soldOut && isSelected && "bg-paper/10 text-paper/60"
                   )}
                 >
                   {v.size}
@@ -224,9 +229,15 @@ export default function AddToCart({
         </div>
       )}
 
-      {!inStock && selectedVariant && <NotifyMe variantId={selectedVariant.id} />}
+      {/* key : changer de taille repart d'un formulaire vierge, sinon la
+          confirmation d'une autre taille restait affichée. */}
+      {!inStock && selectedVariant && <NotifyMe key={selectedVariant.id} variantId={selectedVariant.id} />}
     </div>
   );
+}
+
+function defaultSize(sizes: Variant[]) {
+  return (sizes.find((v) => v.stock > 0) ?? sizes[0])?.size ?? "";
 }
 
 function WhatsAppIcon() {
@@ -241,31 +252,48 @@ function NotifyMe({ variantId }: { variantId: string }) {
   const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [sent, setSent] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [pending, setPending] = useState(false);
 
+  // La confirmation s'affichait même quand l'enregistrement échouait (réseau
+  // coupé, erreur serveur) : le client attendait un email qui ne viendrait pas.
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    await fetch("/api/restock", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ variantId, email }),
-    });
-    setSent(true);
+    setPending(true);
+    setFailed(false);
+    try {
+      const res = await fetch("/api/restock", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ variantId, email }),
+      });
+      if (res.ok) setSent(true);
+      else setFailed(true);
+    } catch {
+      setFailed(true);
+    } finally {
+      setPending(false);
+    }
   }
 
   if (sent) return <p className="text-xs text-paper/60">{t("product.notifyMeConfirmation")}</p>;
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2">
+    <form onSubmit={handleSubmit} className="flex flex-wrap gap-2">
+      {failed && <p role="alert" className="w-full text-xs text-paper">{t("footer.newsletterError")}</p>}
       <input
         type="email"
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder={t("product.notifyMePlaceholder")}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+        className="min-w-0 flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
       />
-      <button className="shrink-0 border border-paper px-4 text-xs uppercase tracking-widest2 text-paper">
-        {t("product.notifyMeButton")}
+      <button
+        disabled={pending}
+        className="shrink-0 border border-paper px-4 text-xs uppercase tracking-widest2 text-paper disabled:opacity-50"
+      >
+        {pending ? "…" : t("product.notifyMeButton")}
       </button>
     </form>
   );

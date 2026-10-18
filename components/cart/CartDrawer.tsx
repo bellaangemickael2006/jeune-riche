@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,6 +15,16 @@ export default function CartDrawer() {
   const { locale } = useLocale();
   const { lines, isOpen, close, removeLine, setQuantity, total } = useCart();
   useScrollLock(isOpen);
+
+  // Échap ferme le panier, comme le menu et la recherche du header.
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen, close]);
 
   return (
     <AnimatePresence>
@@ -58,7 +69,7 @@ export default function CartDrawer() {
               </div>
             ) : (
               <>
-                <ul className="flex-1 overflow-y-auto px-6 py-4">
+                <ul data-lenis-prevent className="flex-1 overflow-y-auto overscroll-contain px-6 py-4">
                   {lines.map((line) => (
                     <li
                       key={`${line.variantId}-${line.personalization ?? ""}`}

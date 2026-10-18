@@ -1,13 +1,18 @@
 import { notFound } from "next/navigation";
+import { requireAdmin } from "@/lib/auth";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, whatsappStatusUpdateLink } from "@/lib/utils";
 import { updateOrderStatus, updateOrderFulfillment } from "@/lib/actions/orders";
 import type { OrderStatus } from "@prisma/client";
+import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
+import { ORDER_STATUS_LABEL } from "@/lib/adminLabels";
 
 const STATUSES: OrderStatus[] = ["NOUVELLE", "CONFIRMEE", "PREPARATION", "EXPEDIEE", "LIVREE", "ANNULEE"];
 
 export default async function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin();
   const { id } = await params;
   const order = await prisma.order.findUnique({ where: { id }, include: { items: true } });
   if (!order) notFound();
@@ -17,13 +22,17 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
     select: { id: true },
   });
 
-  const address = order.shippingAddress as {
-    line1: string;
-    city: string;
-    postalCode: string;
-    country: string;
+  const address = (order.shippingAddress ?? {}) as {
+    line1?: string;
+    city?: string;
+    postalCode?: string;
+    country?: string;
     phone?: string;
   };
+  const addressLine = [address.line1, [address.postalCode, address.city].filter(Boolean).join(" "), address.country]
+    .filter(Boolean)
+    .join(", ");
+  const discount = Number(order.discountAmount);
 
   const notifyLink = whatsappStatusUpdateLink(order.status, order.orderNumber, address.phone, order.trackingNumber);
 
@@ -52,34 +61,28 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
         </div>
         <div>
           <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Livraison</h2>
-          <p className="mt-2 text-sm text-paper/70">
-            {address.line1}, {address.postalCode} {address.city}, {address.country}
-          </p>
+          <p className="mt-2 text-sm text-paper/70">{addressLine || "—"}</p>
         </div>
       </div>
 
       <div className="mt-8">
         <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Statut</h2>
-        <form
-          action={async (formData: FormData) => {
-            "use server";
-            await updateOrderStatus(order.id, formData.get("status") as OrderStatus);
-          }}
-          className="mt-3 flex items-center gap-3"
-        >
+        <ActionForm action={updateOrderStatus.bind(null, order.id)} className="mt-3 flex flex-wrap items-center gap-3">
           <select name="status" defaultValue={order.status} className="border border-line bg-ink px-4 py-2 text-sm text-paper">
             {STATUSES.map((s) => (
               <option key={s} value={s} className="bg-ink">
-                {s}
+                {ORDER_STATUS_LABEL[s]}
               </option>
             ))}
           </select>
-          <button className="border border-paper px-4 py-2 text-xs uppercase tracking-widest2 text-paper">
+          <SubmitButton className="border border-paper px-4 py-2 text-xs uppercase tracking-widest2 text-paper">
             Mettre à jour
-          </button>
-        </form>
+          </SubmitButton>
+        </ActionForm>
         {order.status === "ANNULEE" && (
-          <p className="mt-2 text-xs text-paper/40">Le stock des articles a été remis en rayon.</p>
+          <p className="mt-2 text-xs text-paper/40">
+            Le stock des articles a été remis en rayon. Choisir un autre statut le reprend.
+          </p>
         )}
         {notifyLink ? (
           <a
@@ -94,7 +97,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
         ) : (
           address.phone && (
             <p className="mt-2 text-[11px] text-paper/30">
-              Pas de message auto pour le statut « {order.status} ».
+              Pas de message auto pour le statut « {ORDER_STATUS_LABEL[order.status]} ».
             </p>
           )
         )}
@@ -102,13 +105,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
 
       <div className="mt-8">
         <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Suivi &amp; notes internes</h2>
-        <form
-          action={async (formData: FormData) => {
-            "use server";
-            await updateOrderFulfillment(order.id, formData);
-          }}
-          className="mt-3 flex flex-col gap-3"
-        >
+        <ActionForm action={updateOrderFulfillment.bind(null, order.id)} className="mt-3 flex flex-col gap-3">
           <label className="block">
             <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/40">
               Numéro de suivi (transporteur)
@@ -131,10 +128,10 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
               className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/30"
             />
           </label>
-          <button className="w-fit border border-line px-4 py-2 text-xs uppercase tracking-widest2 text-paper/70 hover:border-paper hover:text-paper">
+          <SubmitButton className="w-fit border border-line px-4 py-2 text-xs uppercase tracking-widest2 text-paper/70 hover:border-paper hover:text-paper">
             Enregistrer
-          </button>
-        </form>
+          </SubmitButton>
+        </ActionForm>
       </div>
 
       <div className="mt-10">
@@ -153,6 +150,18 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
             </li>
           ))}
         </ul>
+        {discount > 0 && (
+          <div className="mt-4 flex flex-col gap-1 border-t border-line pt-3 text-sm text-paper/60">
+            <div className="flex justify-between">
+              <span>Sous-total</span>
+              <span>{formatPrice(Number(order.subtotal))}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Remise{order.discountCode ? ` (${order.discountCode})` : ""}</span>
+              <span>−{formatPrice(discount)}</span>
+            </div>
+          </div>
+        )}
         <div className="mt-4 flex justify-between border-t border-line pt-3 text-sm">
           <span className="uppercase tracking-widest2 text-paper/50">Total</span>
           <span className="text-paper">{formatPrice(Number(order.total))}</span>
