@@ -1,11 +1,12 @@
 "use server";
 
 import { revalidatePath, revalidateTag } from "next/cache";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ActionError, readAmount, runAction, type ActionResult } from "@/lib/actions/result";
-import { RESET_CONFIRMATION } from "@/lib/demoReset";
+import { RESET_CONFIRMATION, isResetConfirmed } from "@/lib/demoReset";
 
 const SETTINGS_ID = "default";
 const MEDIA_BUCKET = "product-media";
@@ -47,7 +48,7 @@ export async function resetStoreData(formData: FormData): Promise<ActionResult> 
   return runAction(async () => {
     await requireAdmin();
 
-    if (String(formData.get("confirmation") ?? "").trim() !== RESET_CONFIRMATION) {
+    if (!isResetConfirmed(formData.get("confirmation"))) {
       throw new ActionError(`Tapez ${RESET_CONFIRMATION} pour confirmer le formatage.`);
     }
 
@@ -68,47 +69,56 @@ export async function resetStoreData(formData: FormData): Promise<ActionResult> 
       : [];
     const productIds = wipeCatalogue ? (await prisma.product.findMany({ select: { id: true } })).map((p) => p.id) : [];
 
-    const counts = { orders: 0, clients: 0, products: 0, subscribers: 0 };
+    // Transaction « en lot » (une seule requête, ordre garanti) plutôt
+    // qu'interactive : à travers le pooler Supabase (pgbouncer), une
+    // transaction interactive pouvait ne pas démarrer à temps (P2028) et le
+    // formatage échouait sur « erreur inattendue ».
+    const steps: { key?: "orders" | "clients" | "products" | "subscribers"; query: Prisma.PrismaPromise<unknown> }[] = [];
+    if (wipeActivity) {
+      // OrderItem est supprimé en cascade avec Order.
+      steps.push({ key: "orders", query: prisma.order.deleteMany() });
+      steps.push({ query: prisma.review.deleteMany() });
+      steps.push({ query: prisma.wishlistItem.deleteMany() });
+      steps.push({ query: prisma.cartItem.deleteMany() });
+      steps.push({ query: prisma.cart.deleteMany() });
+      steps.push({ query: prisma.abandonedCart.deleteMany() });
+      steps.push({ query: prisma.restockRequest.deleteMany() });
+      steps.push({ query: prisma.promoCode.updateMany({ data: { usedCount: 0 } }) });
+    }
+    if (wipeNewsletter) steps.push({ key: "subscribers", query: prisma.newsletterSubscriber.deleteMany() });
+    if (zeroStock) steps.push({ query: prisma.productVariant.updateMany({ data: { stock: 0 } }) });
+    if (wipeCatalogue) {
+      // Images, variantes et guides des tailles partent en cascade.
+      steps.push({ key: "products", query: prisma.product.deleteMany() });
+      steps.push({ query: prisma.drop.deleteMany() });
+      steps.push({ query: prisma.promoCode.deleteMany() });
+    }
+    if (wipeClients) steps.push({ key: "clients", query: prisma.user.deleteMany({ where: { role: "CLIENT" } }) });
 
-    await prisma.$transaction(async (tx) => {
-      if (wipeActivity) {
-        // OrderItem est supprimé en cascade avec Order.
-        counts.orders = (await tx.order.deleteMany()).count;
-        await tx.review.deleteMany();
-        await tx.wishlistItem.deleteMany();
-        await tx.cartItem.deleteMany();
-        await tx.cart.deleteMany();
-        await tx.abandonedCart.deleteMany();
-        await tx.restockRequest.deleteMany();
-        await tx.promoCode.updateMany({ data: { usedCount: 0 } });
-      }
-      if (wipeNewsletter) counts.subscribers = (await tx.newsletterSubscriber.deleteMany()).count;
-      if (zeroStock) await tx.productVariant.updateMany({ data: { stock: 0 } });
-      if (wipeCatalogue) {
-        // Images, variantes et guides des tailles partent en cascade.
-        counts.products = (await tx.product.deleteMany()).count;
-        await tx.drop.deleteMany();
-        await tx.promoCode.deleteMany();
-      }
-      if (wipeClients) counts.clients = (await tx.user.deleteMany({ where: { role: "CLIENT" } })).count;
-    }, { timeout: 30_000 });
+    const results = await prisma.$transaction(steps.map((s) => s.query));
+    const counts = { orders: 0, clients: 0, products: 0, subscribers: 0 };
+    steps.forEach((s, i) => {
+      if (s.key) counts[s.key] = (results[i] as { count: number }).count;
+    });
 
     // Hors transaction et best-effort : comptes de connexion Supabase des
-    // clients et fichiers médias des produits supprimés.
+    // clients et fichiers médias des produits supprimés. Les données sont
+    // déjà effacées à ce stade, donc rien ici ne doit faire échouer l'action.
     let authFailures = 0;
     if (clientAccounts.length > 0 || productIds.length > 0) {
-      const supabase = createAdminClient();
-      for (const { supabaseId } of clientAccounts) {
-        const { error } = await supabase.auth.admin.deleteUser(supabaseId);
-        if (error) authFailures++;
-      }
-      for (const id of productIds) {
-        try {
+      try {
+        const supabase = createAdminClient();
+        for (const { supabaseId } of clientAccounts) {
+          const { error } = await supabase.auth.admin.deleteUser(supabaseId);
+          if (error) authFailures++;
+        }
+        for (const id of productIds) {
           const { data: files } = await supabase.storage.from(MEDIA_BUCKET).list(id);
           if (files?.length) await supabase.storage.from(MEDIA_BUCKET).remove(files.map((f) => `${id}/${f.name}`));
-        } catch (error) {
-          console.error("[admin] formatage médias:", error);
         }
+      } catch (error) {
+        console.error("[admin] formatage connexions/médias:", error);
+        authFailures = Math.max(authFailures, clientAccounts.length);
       }
     }
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 import { resetStoreData } from "@/lib/actions/settings";
-import { RESET_CONFIRMATION } from "@/lib/demoReset";
+import { RESET_CONFIRMATION, isResetConfirmed } from "@/lib/demoReset";
 
 const OPTIONS = [
   {
@@ -30,7 +30,9 @@ const OPTIONS = [
 
 export default function DemoResetForm() {
   const [typed, setTyped] = useState("");
-  const armed = typed.trim() === RESET_CONFIRMATION;
+  // Le champ s'affiche en capitales (CSS) mais garde la casse tapée : « formater »
+  // apparaissait comme FORMATER sans jamais activer le bouton.
+  const armed = isResetConfirmed(typed);
 
   return (
     <ActionForm
