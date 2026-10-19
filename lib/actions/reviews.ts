@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { getServerTranslation } from "@/lib/i18n/server";
 import { randomUUID } from "node:crypto";
@@ -71,7 +71,7 @@ async function verifiedPhotoPaths(userId: string, raw: FormDataEntryValue[]) {
 
 export async function moderateReview(reviewId: string, status: "APPROVED" | "REJECTED"): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("avis");
     if (status !== "APPROVED" && status !== "REJECTED") throw new ActionError("Statut inconnu.");
     const review = await prisma.review.update({
       where: { id: reviewId },
@@ -86,7 +86,7 @@ export async function moderateReview(reviewId: string, status: "APPROVED" | "REJ
 
 export async function deleteReview(reviewId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("avis");
     let photoPaths: string[] = [];
     try {
       photoPaths = (await prisma.reviewPhoto.findMany({ where: { reviewId }, select: { path: true } })).map((p) => p.path);

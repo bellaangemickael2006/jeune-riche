@@ -2,13 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
 import { sendEmail, campaignEmail } from "@/lib/email";
 import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
 
 export async function sendCampaign(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("newsletter");
 
     const subject = String(formData.get("subject") ?? "").trim();
     const body = String(formData.get("body") ?? "").trim();
@@ -35,7 +35,7 @@ export async function sendCampaign(formData: FormData): Promise<ActionResult> {
 
 export async function deleteSubscriber(id: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("newsletter");
     await prisma.newsletterSubscriber.delete({ where: { id } });
     revalidatePath("/admin/newsletter");
   });

@@ -7,7 +7,7 @@ import { csvFilename, toCsv } from "@/lib/csv";
 // Export CSV des clients avec leurs totaux, mêmes filtres que la liste
 // Admin → Clients. Les commandes annulées ne comptent pas dans le total.
 export async function GET(request: NextRequest) {
-  await requireAdmin();
+  await requireAdmin("clients");
   const clients = await prisma.user.findMany({
     where: clientsWhere({ q: request.nextUrl.searchParams.get("q") ?? undefined }),
     include: { orders: { select: { status: true, total: true, createdAt: true } } },

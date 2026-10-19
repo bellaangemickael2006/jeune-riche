@@ -1,5 +1,6 @@
 import AdminSidebar from "@/components/admin/AdminSidebar";
-import { requireAdmin } from "@/lib/auth";
+import { getAdminAccess } from "@/lib/auth";
+import { hasPermission } from "@/lib/admin/permissions";
 import { prisma } from "@/lib/prisma";
 
 // L'admin est toujours servi dynamiquement : jamais de prérendu statique
@@ -7,13 +8,15 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export default async function ProtectedAdminLayout({ children }: { children: React.ReactNode }) {
-  await requireAdmin();
+  const { permissions } = await getAdminAccess();
   // Commandes encore à traiter, affichées à côté de « Commandes » dans le menu.
-  const newOrders = await prisma.order.count({ where: { status: "NOUVELLE" } }).catch(() => 0);
+  const newOrders = hasPermission(permissions, "commandes")
+    ? await prisma.order.count({ where: { status: "NOUVELLE" } }).catch(() => 0)
+    : 0;
 
   return (
     <div className="min-h-screen bg-ink font-body">
-      <AdminSidebar badges={{ "/admin/commandes": newOrders }} />
+      <AdminSidebar badges={{ "/admin/commandes": newOrders }} permissions={permissions} />
       <div className="min-h-screen px-5 pb-10 pt-24 lg:ml-56 lg:px-10 lg:py-10">{children}</div>
     </div>
   );

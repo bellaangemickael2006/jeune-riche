@@ -34,7 +34,10 @@ export async function middleware(request: NextRequest) {
   // lu la base et envoyé son contenu (commandes, clients…) au moment où la
   // redirection vers la connexion arrivait.
   const { pathname } = request.nextUrl;
-  const isProtectedAdmin = pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
+  // /admin/activer : un nouvel employé n'est pas encore connecté quand il
+  // ouvre son lien d'invitation (voir lib/actions/team.ts).
+  const isProtectedAdmin =
+    pathname.startsWith("/admin") && !pathname.startsWith("/admin/login") && !pathname.startsWith("/admin/activer");
   const toLogin = (query = "") => {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";

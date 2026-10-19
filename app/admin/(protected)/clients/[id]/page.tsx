@@ -7,7 +7,7 @@ import { ORDER_STATUS_LABEL, REVIEW_STATUS_LABEL } from "@/lib/adminLabels";
 
 export default async function AdminClientDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("clients");
   const { id } = await params;
   const client = await prisma.user.findUnique({
     where: { id },

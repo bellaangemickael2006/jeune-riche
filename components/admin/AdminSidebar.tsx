@@ -8,11 +8,13 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { useScrollLock } from "@/lib/scrollLock";
+import { canSeeLink, type AdminPermissions } from "@/lib/admin/permissions";
 
 const LINKS = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/accueil", label: "Page d'accueil" },
   { href: "/admin/produits", label: "Produits" },
+  { href: "/admin/stock", label: "Stock" },
   { href: "/admin/categories", label: "Catégories" },
   { href: "/admin/commandes", label: "Commandes" },
   { href: "/admin/clients", label: "Clients" },
@@ -21,9 +23,17 @@ const LINKS = [
   { href: "/admin/codes-promo", label: "Codes promo" },
   { href: "/admin/newsletter", label: "Newsletter" },
   { href: "/admin/parametres", label: "Paramètres" },
+  { href: "/admin/equipe", label: "Équipe" },
 ];
 
-export default function AdminSidebar({ badges = {} }: { badges?: Record<string, number> }) {
+export default function AdminSidebar({
+  badges = {},
+  permissions = null,
+}: {
+  badges?: Record<string, number>;
+  /** null = propriétaire : tout le menu. */
+  permissions?: AdminPermissions;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   // La sidebar était en `fixed w-56` permanent, y compris sur mobile, où
@@ -73,7 +83,7 @@ export default function AdminSidebar({ badges = {} }: { badges?: Record<string, 
           <p className="hidden font-display text-sm uppercase tracking-wide text-paper lg:block">Jeune Riche</p>
           <p className="mb-8 hidden text-[10px] uppercase tracking-widest2 text-paper/30 lg:block">Administration</p>
           <nav className="mt-16 flex flex-col gap-1 lg:mt-0">
-            {LINKS.map((link) => {
+            {LINKS.filter((link) => canSeeLink(permissions, link.href)).map((link) => {
               const active = link.href === "/admin" ? pathname === "/admin" : pathname.startsWith(link.href);
               return (
                 <Link

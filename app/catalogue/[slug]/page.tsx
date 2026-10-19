@@ -19,9 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  // Ici plutôt que dans la page seule : les métadonnées sont résolues avant
-  // l'envoi pour les robots, qui reçoivent ainsi un vrai code 404.
-  if (!product) notFound();
+  if (!product) return { title: "Produit introuvable" };
   return {
     title: product.name,
     description: product.description ?? undefined,

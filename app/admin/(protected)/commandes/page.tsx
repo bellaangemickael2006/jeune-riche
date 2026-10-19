@@ -19,7 +19,7 @@ export default async function AdminOrdersPage({
   searchParams: Promise<{ q?: string; statut?: string }>;
 }) {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("commandes");
   const { q, statut } = await searchParams;
   let orders: Awaited<ReturnType<typeof load>> = [];
   let available = true;

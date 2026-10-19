@@ -9,7 +9,7 @@ import { REVIEW_STATUS_LABEL } from "@/lib/adminLabels";
 
 export default async function AdminReviewsPage() {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("avis");
   let reviews: Awaited<ReturnType<typeof load>> = [];
   let available = true;
   try {

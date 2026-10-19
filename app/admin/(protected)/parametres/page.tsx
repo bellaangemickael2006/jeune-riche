@@ -1,12 +1,14 @@
 import { getStoreSettings } from "@/lib/data/settings";
-import { requireAdmin } from "@/lib/auth";
+import { getAdminAccess, requireAdmin } from "@/lib/auth";
 import { updateStoreSettings } from "@/lib/actions/settings";
 import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 import DemoResetForm from "@/components/admin/DemoResetForm";
 
 export default async function AdminSettingsPage() {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("parametres");
+  // Le formatage est réservé au propriétaire (vérifié aussi dans l'action).
+  const { isOwner } = await getAdminAccess();
   const settings = await getStoreSettings();
 
   return (
@@ -82,6 +84,7 @@ export default async function AdminSettingsPage() {
         </ActionForm>
       )}
 
+      {isOwner && (
       <section className="mt-16 max-w-md border-t border-line pt-8">
         <p className="text-xs uppercase tracking-widest2 text-paper/50">Mode démo — formater les données</p>
         <p className="mt-2 text-xs text-paper/40">
@@ -93,6 +96,7 @@ export default async function AdminSettingsPage() {
           <DemoResetForm />
         </div>
       </section>
+      )}
     </div>
   );
 }

@@ -3,9 +3,9 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { sendEmail, restockEmail } from "@/lib/email";
+import { notifyRestock, recordMovements } from "@/lib/stock/movements";
 import {
   ActionError,
   readAmount,
@@ -51,7 +51,7 @@ function revalidateProduct(productId: string) {
 
 export async function createProduct(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
 
     const name = String(formData.get("name") ?? "").trim();
     const categoryId = String(formData.get("categoryId") ?? "");
@@ -83,7 +83,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult> {
 
 export async function updateProduct(productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
 
     const name = String(formData.get("name") ?? "").trim();
     const categoryId = String(formData.get("categoryId") ?? "").trim();
@@ -124,7 +124,7 @@ export async function updateProduct(productId: string, formData: FormData): Prom
 
 export async function deleteProduct(productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
 
     const orderCount = await prisma.orderItem.count({ where: { variant: { productId } } });
     if (orderCount > 0) {
@@ -150,7 +150,7 @@ export async function deleteProduct(productId: string): Promise<ActionResult> {
 
 export async function addVariant(productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    const admin = await requireAdminAction("produits");
     const size = String(formData.get("size") ?? "").trim();
     const color = String(formData.get("color") ?? "").trim();
     const stock = readInt(formData, "stock", "Stock") ?? 0;
@@ -168,7 +168,10 @@ export async function addVariant(productId: string, formData: FormData): Promise
     let sku = base;
     for (let i = 2; await prisma.productVariant.findUnique({ where: { sku } }); i++) sku = `${base}-${i}`;
 
-    await prisma.productVariant.create({ data: { productId, size, color, stock, sku } });
+    const variant = await prisma.productVariant.create({ data: { productId, size, color, stock, sku } });
+    await recordMovements([
+      { variantId: variant.id, productId, delta: stock, stockAfter: stock, reason: "creation", actorEmail: admin.email },
+    ]);
 
     revalidateProduct(productId);
     return `Variante ${color} / ${size} ajoutée.`;
@@ -177,7 +180,7 @@ export async function addVariant(productId: string, formData: FormData): Promise
 
 export async function updateVariantStock(variantId: string, productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    const admin = await requireAdminAction("produits");
     const stock = readInt(formData, "stock", "Stock");
     if (stock === null) throw new ActionError("Indiquez un stock (0 ou plus).");
 
@@ -186,35 +189,15 @@ export async function updateVariantStock(variantId: string, productId: string, f
       select: { stock: true },
     });
     await prisma.productVariant.update({ where: { id: variantId }, data: { stock } });
+    if (previous) {
+      await recordMovements([
+        { variantId, productId, delta: stock - previous.stock, stockAfter: stock, reason: "ajustement", actorEmail: admin.email },
+      ]);
+    }
 
     // "Nous vous préviendrons dès le retour en stock" (voir NotifyMe dans
     // AddToCart.tsx) : envoyé quand une variante en rupture est réapprovisionnée.
-    let notified = 0;
-    if (previous && previous.stock <= 0 && stock > 0) {
-      const pending = await prisma.restockRequest.findMany({
-        where: { variantId, notified: false },
-        include: { variant: { include: { product: true } } },
-      });
-      for (const request of pending) {
-        const result = await sendEmail({
-          to: request.email,
-          subject: `De retour en stock — JEUNE RICHE`,
-          html: restockEmail({
-            productName: request.variant.product.name,
-            size: request.variant.size,
-            color: request.variant.color,
-            productSlug: request.variant.product.slug,
-          }),
-        });
-        if (result.sent) notified++;
-      }
-      if (pending.length > 0) {
-        await prisma.restockRequest.updateMany({
-          where: { id: { in: pending.map((p) => p.id) } },
-          data: { notified: true },
-        });
-      }
-    }
+    const notified = previous && previous.stock <= 0 && stock > 0 ? await notifyRestock([variantId]) : 0;
 
     revalidateProduct(productId);
     return notified > 0 ? `Stock mis à jour — ${notified} client(s) prévenu(s).` : "Stock mis à jour.";
@@ -223,7 +206,7 @@ export async function updateVariantStock(variantId: string, productId: string, f
 
 export async function deleteVariant(variantId: string, productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const used = await prisma.orderItem.count({ where: { variantId } });
     if (used > 0) {
       throw new ActionError("Impossible de retirer cette variante : elle figure dans une commande. Mettez son stock à 0.");
@@ -248,7 +231,7 @@ export async function prepareMediaUpload(
   file: { name: string; type: string; size: number }
 ): Promise<DataResult<{ path: string; token: string }>> {
   return runDataAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     if (kind === "image" && !file.type.startsWith("image/")) {
       throw new ActionError("Le fichier sélectionné n'est pas une image.");
     }
@@ -292,7 +275,7 @@ function storagePathFromUrl(url: string) {
 
 export async function addProductImage(productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const path = String(formData.get("path") ?? "");
     const alt = String(formData.get("alt") ?? "").trim();
     const color = String(formData.get("color") ?? "").trim();
@@ -322,7 +305,7 @@ export async function addProductImage(productId: string, formData: FormData): Pr
 
 export async function deleteProductImage(imageId: string, productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const image = await prisma.productImage.delete({ where: { id: imageId } });
 
     // Supprimer l'image principale laissait le produit sans visuel principal
@@ -350,7 +333,7 @@ async function removeStoredFile(url: string | null) {
 
 export async function setProductVideo(productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const path = String(formData.get("path") ?? "");
     checkUploadedPath(productId, path, "video");
 
@@ -366,7 +349,7 @@ export async function setProductVideo(productId: string, formData: FormData): Pr
 
 export async function removeProductVideo(productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const previous = await prisma.product.findUnique({ where: { id: productId }, select: { videoUrl: true } });
     await prisma.product.update({ where: { id: productId }, data: { videoUrl: null } });
     await removeStoredFile(previous?.videoUrl ?? null);
@@ -380,7 +363,7 @@ export async function removeProductVideo(productId: string): Promise<ActionResul
  */
 export async function addProductModel(productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const path = String(formData.get("path") ?? "");
     const color = String(formData.get("color") ?? "").trim() || null;
     checkUploadedPath(productId, path, "model");
@@ -400,7 +383,7 @@ export async function addProductModel(productId: string, formData: FormData): Pr
 
 export async function deleteProductModel(modelId: string, productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const model = await prisma.productModel.delete({ where: { id: modelId } });
     await removeMediaFiles([model.path]);
     revalidateProduct(productId);

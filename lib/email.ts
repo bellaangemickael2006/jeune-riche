@@ -187,6 +187,32 @@ export function abandonedCartEmail(params: {
   `);
 }
 
+/**
+ * Accès à l'administration donné à un membre de l'équipe. `actionLink` :
+ * lien d'activation (nouveau compte, choix du mot de passe) ou page de
+ * connexion (compte déjà existant).
+ */
+export function teamAccessEmail(params: { actionLink: string; isNewAccount: boolean; invitedBy: string; sections: string[] }) {
+  const list = params.sections.map((s) => `<li style="margin:0 0 4px;">${escapeHtml(s)}</li>`).join("");
+  return emailShell(`
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Équipe JEUNE RICHE</p>
+    <p style="margin:0 0 16px;">${escapeHtml(params.invitedBy)} vous donne accès à l'administration de la boutique.</p>
+    <p style="margin:0 0 8px;color:#9a9a9a;">Vos accès :</p>
+    <ul style="margin:0 0 24px;padding-left:18px;color:#e5e4e1;">${list}</ul>
+    <p style="margin:0 0 28px;color:#9a9a9a;">
+      ${
+        params.isNewAccount
+          ? "Cliquez ci-dessous pour activer votre accès et choisir votre mot de passe. Le lien est personnel et expire bientôt."
+          : "Connectez-vous avec votre email et votre mot de passe habituels."
+      }
+    </p>
+    <a href="${escapeHtml(params.actionLink)}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+      ${params.isNewAccount ? "Activer mon accès" : "Ouvrir l'administration"}
+    </a>
+    <p style="margin:28px 0 0;color:#6a6a6a;font-size:12px;">Si vous ne connaissez pas cette boutique, ignorez simplement cet email.</p>
+  `);
+}
+
 /** Prévient la boutique d'une nouvelle commande, avec tout pour la traiter tout de suite. */
 export function newOrderAdminEmail(params: {
   orderNumber: string;

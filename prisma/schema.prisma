@@ -85,8 +85,23 @@ model User {
   wishlist      WishlistItem[]
   cart          Cart?
   restockAlerts RestockRequest[]
+  adminAccess   AdminPermission?
 
   @@map("users")
+}
+
+// Droits d'un employé de l'administration (role ADMIN). Pas de ligne = accès
+// total (propriétaire). Table à part : sans elle (avant migration), tous les
+// administrateurs gardent l'accès total, comme avant.
+model AdminPermission {
+  userId      String   @id
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permissions String[]
+  invitedBy   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("admin_permissions")
 }
 
 model Category {
@@ -176,9 +191,31 @@ model ProductVariant {
   cartItems      CartItem[]
   orderItems     OrderItem[]
   restockAlerts  RestockRequest[]
+  movements      StockMovement[]
 
   @@unique([productId, size, color])
   @@map("product_variants")
+}
+
+// Historique des mouvements de stock : chaque réglage admin, vente,
+// annulation… Écrit en best-effort APRÈS l'opération : sans la table (avant
+// migration), le stock continue de fonctionner, seul l'historique manque.
+model StockMovement {
+  id         String         @id @default(cuid())
+  variantId  String
+  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  productId  String // dénormalisé pour l'historique d'un produit en une requête
+  delta      Int // + entrée, − sortie
+  stockAfter Int
+  reason     String // reception | inventaire | perte | ajustement | creation | commande | annulation | reactivation
+  note       String?
+  orderId    String?
+  actorEmail String? // admin à l'origine du mouvement, null pour une commande client
+  createdAt  DateTime       @default(now())
+
+  @@index([productId, createdAt])
+  @@index([createdAt])
+  @@map("stock_movements")
 }
 
 model SizeGuide {

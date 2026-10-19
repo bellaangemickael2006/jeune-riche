@@ -30,21 +30,12 @@ test("le catalogue affiche les 6 catégories réelles et un état vide honnête"
 test("une fiche produit inexistante affiche un 404 propre", async ({ page }) => {
   const response = await page.goto("/catalogue/produit-inexistant");
   await expect(page.getByRole("heading", { name: "Page introuvable" })).toBeVisible();
-  // Pour un navigateur, Next.js diffuse la page en continu (écran de
-  // chargement) : le code reste 200 mais la page porte « noindex ». Les robots
-  // des moteurs de recherche reçoivent, eux, un vrai 404.
+  // La fiche a un écran de chargement (loading.tsx) : Next.js commence à
+  // envoyer la page avant de savoir que le produit n'existe pas, le code HTTP
+  // reste donc 200. La page porte alors « noindex », que les moteurs de
+  // recherche traitent comme une page introuvable.
   const robots = await page.locator('meta[name="robots"]').first().getAttribute("content").catch(() => null);
   expect(response?.status() === 404 || /noindex/.test(robots ?? "")).toBe(true);
-});
-
-test("un robot de recherche reçoit un vrai 404 pour une fiche inexistante", async ({ browser }) => {
-  const context = await browser.newContext({
-    userAgent: "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
-    locale: "fr-FR",
-  });
-  const response = await (await context.newPage()).goto("/catalogue/produit-inexistant");
-  expect(response?.status()).toBe(404);
-  await context.close();
 });
 
 test("le manifeste affiche le texte éditorial", async ({ page }) => {

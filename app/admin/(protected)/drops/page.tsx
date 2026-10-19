@@ -7,7 +7,7 @@ import { DROP_STATUS_LABEL } from "@/lib/adminLabels";
 
 export default async function AdminDropsPage() {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("produits");
   let drops: Awaited<ReturnType<typeof load>> = [];
   let available = true;
   try {

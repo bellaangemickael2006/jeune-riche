@@ -12,7 +12,7 @@ const STATUSES: OrderStatus[] = ["NOUVELLE", "CONFIRMEE", "PREPARATION", "EXPEDI
 
 export default async function AdminOrderDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("commandes");
   const { id } = await params;
   const order = await prisma.order.findUnique({ where: { id }, include: { items: true } });
   if (!order) notFound();

@@ -2,13 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
 import { ActionError, readAmount, readInt, runAction, type ActionResult } from "@/lib/actions/result";
 import type { PromoType } from "@prisma/client";
 
 export async function createPromoCode(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("promos");
 
     const code = String(formData.get("code") ?? "").trim().toUpperCase().replace(/\s+/g, "");
     const type = String(formData.get("type") ?? "") as PromoType;
@@ -45,7 +45,7 @@ export async function createPromoCode(formData: FormData): Promise<ActionResult>
 
 export async function togglePromoCode(id: string, active: boolean): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("promos");
     await prisma.promoCode.update({ where: { id }, data: { active } });
     revalidatePath("/admin/codes-promo");
   });
@@ -53,7 +53,7 @@ export async function togglePromoCode(id: string, active: boolean): Promise<Acti
 
 export async function deletePromoCode(id: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("promos");
     await prisma.promoCode.delete({ where: { id } });
     revalidatePath("/admin/codes-promo");
   });

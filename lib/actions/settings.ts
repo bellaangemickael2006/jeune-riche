@@ -3,7 +3,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { MEDIA_BUCKET, REVIEW_PHOTOS_PREFIX } from "@/lib/storage";
 import { ActionError, readAmount, runAction, type ActionResult } from "@/lib/actions/result";
@@ -13,7 +13,7 @@ const SETTINGS_ID = "default";
 
 export async function updateStoreSettings(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("parametres");
 
     const freeShippingThreshold = readAmount(formData, "freeShippingThreshold", "Livraison gratuite");
     const contactEmail = String(formData.get("contactEmail") ?? "").trim();
@@ -46,7 +46,7 @@ export async function updateStoreSettings(formData: FormData): Promise<ActionRes
  */
 export async function resetStoreData(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("proprietaire");
 
     if (!isResetConfirmed(formData.get("confirmation"))) {
       throw new ActionError(`Tapez ${RESET_CONFIRMATION} pour confirmer le formatage.`);
@@ -105,6 +105,10 @@ export async function resetStoreData(formData: FormData): Promise<ActionResult> 
     // clients et fichiers médias des produits supprimés. Les données sont
     // déjà effacées à ce stade, donc rien ici ne doit faire échouer l'action.
     let authFailures = 0;
+    if (wipeActivity) {
+      // Hors transaction : la table d'historique peut ne pas exister encore.
+      await prisma.stockMovement.deleteMany().catch((error) => console.error("[admin] formatage historique stock:", error));
+    }
     if (wipeActivity) {
       try {
         const bucket = createAdminClient().storage.from(MEDIA_BUCKET);

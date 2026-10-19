@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminHomePage() {
   // Avant toute lecture — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("accueil");
   const content = await getHomeContent();
 
   return (

@@ -6,7 +6,7 @@ import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 
 export default async function NewProductPage() {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("produits");
   let categories: Awaited<ReturnType<typeof prisma.category.findMany>> = [];
   let available = true;
   try {

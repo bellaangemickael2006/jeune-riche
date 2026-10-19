@@ -10,7 +10,7 @@ export default async function AdminProductsPage({
   searchParams: Promise<{ q?: string; stock?: string }>;
 }) {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("produits");
   const { q, stock } = await searchParams;
   let products: Awaited<ReturnType<typeof loadProducts>> = [];
   let available = true;

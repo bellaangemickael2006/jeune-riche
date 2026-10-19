@@ -18,7 +18,7 @@ export default async function OrderSlipsPage({
 }: {
   searchParams: Promise<{ ids?: string; q?: string; statut?: string; du?: string; au?: string; imprimer?: string }>;
 }) {
-  await requireAdmin();
+  await requireAdmin("commandes");
   const params = await searchParams;
   const ids = params.ids
     ?.split(",")

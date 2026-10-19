@@ -2,18 +2,22 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
+import { ActionError } from "@/lib/actions/result";
+import { cleanPermissions, hasPermission, PERMISSIONS, type AdminPermissions, type Permission } from "@/lib/admin/permissions";
 
 /**
- * Vérifie côté serveur qu'un administrateur est connecté.
- * Le frontend n'est jamais considéré comme une protection suffisante (règle #91).
+ * Administrateur connecté et ses droits (null = propriétaire, accès total).
+ * Redirige vers la connexion si personne n'est connecté ou si le compte
+ * n'est pas administrateur.
  *
- * À appeler en tout début de CHAQUE page admin, avant la moindre lecture en
- * base : le layout et la page s'exécutent en parallèle, donc un contrôle
- * placé seulement dans le layout laissait la page lire et envoyer ses
- * données avant la redirection. `cache` évite de refaire les requêtes quand
- * le layout et la page l'appellent dans la même requête.
+ * Le frontend n'est jamais considéré comme une protection suffisante (règle
+ * #91) : à appeler en tout début de CHAQUE page admin et de chaque action,
+ * avant la moindre lecture en base — le layout et la page s'exécutent en
+ * parallèle, un contrôle placé seulement dans le layout laissait la page lire
+ * et envoyer ses données avant la redirection. `cache` évite de refaire les
+ * requêtes quand le layout et la page l'appellent dans la même requête.
  */
-export const requireAdmin = cache(async () => {
+export const getAdminAccess = cache(async () => {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     redirect("/admin/login?erreur=config_manquante");
   }
@@ -35,5 +39,41 @@ export const requireAdmin = cache(async () => {
 
   if (!dbUser || dbUser.role !== "ADMIN") redirect("/admin/login?erreur=acces_refuse");
 
-  return dbUser;
+  // Sans table de droits (migration pas encore appliquée), tout administrateur
+  // garde l'accès total, comme avant l'arrivée des droits par section.
+  let permissions: AdminPermissions = null;
+  try {
+    const row = await prisma.adminPermission.findUnique({ where: { userId: dbUser.id } });
+    if (row) permissions = cleanPermissions(row.permissions);
+  } catch {
+    permissions = null;
+  }
+
+  return { user: dbUser, permissions, isOwner: permissions === null };
 });
+
+/** Pour les pages et routes admin : redirige vers l'accueil admin si le droit manque. */
+export async function requireAdmin(permission?: Permission | "proprietaire") {
+  const access = await getAdminAccess();
+  if (permission && !allowed(access.permissions, permission)) {
+    redirect(`/admin?acces=refuse&section=${permission}`);
+  }
+  return access.user;
+}
+
+/** Pour les server actions : message lisible plutôt qu'une redirection. */
+export async function requireAdminAction(permission?: Permission | "proprietaire") {
+  const access = await getAdminAccess();
+  if (permission && !allowed(access.permissions, permission)) {
+    throw new ActionError(
+      permission === "proprietaire"
+        ? "Action réservée au propriétaire de la boutique."
+        : `Accès refusé : vous n'avez pas le droit « ${PERMISSIONS[permission].label} ».`
+    );
+  }
+  return access.user;
+}
+
+function allowed(permissions: AdminPermissions, permission: Permission | "proprietaire") {
+  return permission === "proprietaire" ? permissions === null : hasPermission(permissions, permission);
+}

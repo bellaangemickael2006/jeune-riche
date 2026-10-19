@@ -5,6 +5,7 @@ import { resolvePromoCode } from "@/lib/data/promoCodes";
 import { LOW_STOCK_THRESHOLD, whatsappStatusUpdateLink } from "@/lib/utils";
 import { sendEmail, lowStockAlertEmail, newOrderAdminEmail } from "@/lib/email";
 import { subtotalOf, totalOf } from "@/lib/orders/pricing";
+import { recordMovements } from "@/lib/stock/movements";
 
 /**
  * Erreur métier à renvoyer telle quelle au client (article indisponible,
@@ -196,6 +197,32 @@ export async function createOrder(input: CreateOrderInput) {
 
     return created;
   });
+
+  // Historique : stock calculé à partir de la valeur lue avant la vente
+  // (une vente simultanée peut le décaler d'une unité, sans gravité ici).
+  const productIds = await prisma.productVariant.findMany({
+    where: { id: { in: resolvedLines.map((l) => l.variantId) } },
+    select: { id: true, productId: true },
+  }).catch(() => []);
+  const productOf = new Map(productIds.map((v) => [v.id, v.productId]));
+  await recordMovements(
+    resolvedLines.flatMap((l) => {
+      const productId = productOf.get(l.variantId);
+      return productId
+        ? [
+            {
+              variantId: l.variantId,
+              productId,
+              delta: -l.quantity,
+              stockAfter: Math.max(l.stockBefore - l.quantity, 0),
+              reason: "commande" as const,
+              orderId: order.id,
+              note: order.orderNumber,
+            },
+          ]
+        : [];
+    })
+  );
 
   return { order, resolvedLines, discountCode, discountAmount };
 }

@@ -19,7 +19,7 @@ import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 
 export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("produits");
   const { id } = await params;
   const product = await prisma.product.findUnique({
     where: { id },
@@ -136,7 +136,15 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       </section>
 
       <section className="mt-12">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Variantes (taille / couleur / stock)</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Variantes (taille / couleur / stock)</h2>
+          <Link
+            href={`/admin/produits/${product.id}/stock`}
+            className="border border-paper px-3 py-1.5 text-[10px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
+          >
+            Modifier tout le stock · historique
+          </Link>
+        </div>
         {/* overflow-x-auto : la table ne tient pas sur un écran mobile — le
             scroll horizontal la garde intacte plutôt que de la réécrire en
             cartes, elle reste un outil interne. */}

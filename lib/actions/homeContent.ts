@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath, revalidateTag } from "next/cache";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ensureMediaBucket, MAX_MEDIA_BYTES, MEDIA_BUCKET } from "@/lib/storage";
 import { HOME_CONTENT_PATH, HOME_CONTENT_TAG } from "@/lib/data/homeContent";
@@ -22,7 +22,7 @@ export async function prepareSiteImageUpload(file: {
   size: number;
 }): Promise<DataResult<{ path: string; token: string; publicUrl: string }>> {
   return runDataAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("accueil");
     const ext = IMAGE_EXT[file.type];
     if (!ext) throw new ActionError("Format non pris en charge : JPEG, PNG, WebP ou AVIF.");
     if (file.size <= 0) throw new ActionError("Fichier vide.");
@@ -69,7 +69,7 @@ function refreshHome() {
 
 export async function saveHomeContent(content: unknown): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("accueil");
     const parsed = homeContentSchema.safeParse(content);
     if (!parsed.success) {
       const issue = parsed.error.issues[0];
@@ -93,7 +93,7 @@ export async function saveHomeContent(content: unknown): Promise<ActionResult> {
 
 export async function resetHomeContent(): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("accueil");
     const { error } = await createAdminClient().storage.from(MEDIA_BUCKET).remove([HOME_CONTENT_PATH]);
     if (error) throw new ActionError(`Réinitialisation impossible : ${error.message}.`);
     await removeUnusedSiteImages(null);

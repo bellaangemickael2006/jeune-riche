@@ -2,15 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
 import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
 import type { OrderStatus } from "@prisma/client";
+import { recordMovements } from "@/lib/stock/movements";
 
 const STATUSES: OrderStatus[] = ["NOUVELLE", "CONFIRMEE", "PREPARATION", "EXPEDIEE", "LIVREE", "ANNULEE"];
 
 export async function updateOrderStatus(orderId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    const admin = await requireAdminAction("commandes");
     const status = String(formData.get("status") ?? "") as OrderStatus;
     if (!STATUSES.includes(status)) throw new ActionError("Statut inconnu.");
 
@@ -49,6 +50,34 @@ export async function updateOrderStatus(orderId: string, formData: FormData): Pr
       }
     });
 
+    if (isCancelling || isRestoring) {
+      const after = await prisma.productVariant.findMany({
+        where: { id: { in: order.items.map((i) => i.variantId) } },
+        select: { id: true, stock: true, productId: true },
+      });
+      const byId = new Map(after.map((v) => [v.id, v]));
+      await recordMovements(
+        order.items.flatMap((item) => {
+          const v = byId.get(item.variantId);
+          return v
+            ? [
+                {
+                  variantId: v.id,
+                  productId: v.productId,
+                  delta: isCancelling ? item.quantity : -item.quantity,
+                  stockAfter: v.stock,
+                  reason: isCancelling ? ("annulation" as const) : ("reactivation" as const),
+                  orderId,
+                  note: order.orderNumber,
+                  actorEmail: admin.email,
+                },
+              ]
+            : [];
+        })
+      );
+      revalidatePath("/admin/stock");
+    }
+
     revalidatePath("/admin");
     revalidatePath("/admin/commandes");
     revalidatePath(`/admin/commandes/${orderId}`);
@@ -60,7 +89,7 @@ export async function updateOrderStatus(orderId: string, formData: FormData): Pr
 
 export async function updateOrderFulfillment(orderId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("commandes");
     const trackingNumber = String(formData.get("trackingNumber") ?? "").trim();
     const notes = String(formData.get("notes") ?? "").trim();
 

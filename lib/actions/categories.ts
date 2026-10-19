@@ -2,7 +2,7 @@
 
 import { revalidatePath, revalidateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
 import { ActionError, readInt, runAction, uniqueSlug, type ActionResult } from "@/lib/actions/result";
 
 function revalidateCategories() {
@@ -13,7 +13,7 @@ function revalidateCategories() {
 
 export async function createCategory(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const name = String(formData.get("name") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
     const sortOrder = readInt(formData, "sortOrder", "Ordre d'affichage") ?? 0;
@@ -34,7 +34,7 @@ export async function createCategory(formData: FormData): Promise<ActionResult> 
 
 export async function updateCategory(categoryId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const name = String(formData.get("name") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
     const sortOrder = readInt(formData, "sortOrder", "Ordre d'affichage") ?? 0;
@@ -55,7 +55,7 @@ export async function updateCategory(categoryId: string, formData: FormData): Pr
 
 export async function deleteCategory(categoryId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
 
     const productCount = await prisma.product.count({ where: { categoryId } });
     if (productCount > 0) {

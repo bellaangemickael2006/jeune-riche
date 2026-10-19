@@ -3,7 +3,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
 import { ActionError, runAction, uniqueSlug, type ActionResult } from "@/lib/actions/result";
 import type { DropStatus } from "@prisma/client";
 
@@ -37,7 +37,7 @@ function revalidateDrops(dropId?: string) {
 
 export async function createDrop(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const name = String(formData.get("name") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
     if (!name) throw new ActionError("Nom requis.");
@@ -65,7 +65,7 @@ export async function createDrop(formData: FormData): Promise<ActionResult> {
 
 export async function updateDrop(dropId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const name = String(formData.get("name") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
     const status = String(formData.get("status") ?? "") as DropStatus;
@@ -85,7 +85,7 @@ export async function updateDrop(dropId: string, formData: FormData): Promise<Ac
 
 export async function deleteDrop(dropId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     // Détache les produits plutôt que de les supprimer — un drop qui se
     // termine ne doit jamais entraîner la disparition des produits eux-mêmes.
     await prisma.$transaction([
@@ -99,7 +99,7 @@ export async function deleteDrop(dropId: string): Promise<ActionResult> {
 
 export async function assignProductToDrop(dropId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     const productId = String(formData.get("productId") ?? "");
     if (!productId) throw new ActionError("Choisissez un produit.");
 
@@ -110,7 +110,7 @@ export async function assignProductToDrop(dropId: string, formData: FormData): P
 
 export async function removeProductFromDrop(dropId: string, productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdmin();
+    await requireAdminAction("produits");
     await prisma.product.update({ where: { id: productId }, data: { dropId: null } });
     revalidateDrops(dropId);
   });

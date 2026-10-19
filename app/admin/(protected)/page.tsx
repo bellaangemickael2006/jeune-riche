@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { requireAdmin } from "@/lib/auth";
+import { getAdminAccess } from "@/lib/auth";
+import { canSeeLink, hasPermission, PERMISSIONS, type Permission } from "@/lib/admin/permissions";
 import { prisma } from "@/lib/prisma";
 import { cn, formatPrice, LOW_STOCK_THRESHOLD } from "@/lib/utils";
 import { ORDER_STATUS_LABEL as STATUS_LABEL } from "@/lib/adminLabels";
@@ -112,11 +113,48 @@ function percent(value: number) {
 export default async function AdminDashboard({
   searchParams,
 }: {
-  searchParams: Promise<{ periode?: string }>;
+  searchParams: Promise<{ periode?: string; acces?: string; section?: string }>;
 }) {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
-  const period = parsePeriod((await searchParams).periode);
+  const { user, permissions } = await getAdminAccess();
+  const params = await searchParams;
+  const refused =
+    params.acces === "refuse"
+      ? params.section === "proprietaire"
+        ? "Cette section est réservée au propriétaire de la boutique."
+        : `Vous n'avez pas accès à la section « ${PERMISSIONS[params.section as Permission]?.label ?? "demandée"} ». Demandez-le au propriétaire.`
+      : null;
+
+  // Employé sans le droit « statistiques » : accueil simple, sans aucun chiffre.
+  if (!hasPermission(permissions, "statistiques")) {
+    const shortcuts = [
+      ["/admin/commandes", "Commandes"],
+      ["/admin/produits", "Produits"],
+      ["/admin/stock", "Stock"],
+      ["/admin/clients", "Clients"],
+      ["/admin/avis", "Avis"],
+      ["/admin/codes-promo", "Codes promo"],
+      ["/admin/newsletter", "Newsletter"],
+      ["/admin/accueil", "Page d'accueil"],
+      ["/admin/parametres", "Paramètres"],
+    ].filter(([href]) => canSeeLink(permissions, href));
+    return (
+      <div>
+        <h1 className="font-display text-2xl uppercase text-paper">Bonjour{user.name ? ` ${user.name}` : ""}</h1>
+        {refused && <p className="mt-4 border border-paper/30 bg-paper/5 px-4 py-3 text-xs text-paper">{refused}</p>}
+        <p className="mt-4 text-sm text-paper/50">Vos accès :</p>
+        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+          {shortcuts.map(([href, label]) => (
+            <Link key={href} href={href} className="border border-line p-5 text-sm uppercase tracking-widest2 text-paper hover:border-paper/40">
+              {label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const period = parsePeriod(params.periode);
   const stats = await getStats(period);
 
   if (!stats.available) {
@@ -147,6 +185,7 @@ export default async function AdminDashboard({
     <div>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <h1 className="font-display text-2xl uppercase text-paper">Dashboard</h1>
+        {refused && <p className="w-full border border-paper/30 bg-paper/5 px-4 py-3 text-xs text-paper">{refused}</p>}
         <nav aria-label="Période" className="flex gap-2">
           {PERIODS.map((p) => (
             <Link

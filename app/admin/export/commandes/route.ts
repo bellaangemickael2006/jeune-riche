@@ -8,7 +8,7 @@ import { csvFilename, toCsv } from "@/lib/csv";
 // Export CSV des commandes (comptabilité, tableur), avec les mêmes filtres
 // que la liste Admin → Commandes, plus une période facultative.
 export async function GET(request: NextRequest) {
-  await requireAdmin();
+  await requireAdmin("commandes");
   const p = request.nextUrl.searchParams;
   const orders = await prisma.order.findMany({
     where: ordersWhere({

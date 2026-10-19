@@ -24,7 +24,7 @@ function toLocalInputValue(date: Date | null) {
 
 export default async function AdminDropDetailPage({ params }: { params: Promise<{ id: string }> }) {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("produits");
   const { id } = await params;
   const drop = await prisma.drop.findUnique({ where: { id }, include: { products: true } });
   if (!drop) notFound();

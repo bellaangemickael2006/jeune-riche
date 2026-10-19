@@ -7,7 +7,7 @@ import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 
 export default async function AdminPromoCodesPage() {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("promos");
   let codes: Awaited<ReturnType<typeof load>> = [];
   let available = true;
   try {

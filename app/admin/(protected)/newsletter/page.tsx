@@ -7,7 +7,7 @@ import { deleteSubscriber } from "@/lib/actions/newsletter";
 
 export default async function AdminNewsletterPage() {
   // Avant toute lecture en base — voir lib/auth.ts.
-  await requireAdmin();
+  await requireAdmin("newsletter");
   let subscribers: Awaited<ReturnType<typeof load>> = [];
   let available = true;
   try {
