@@ -126,7 +126,23 @@
     "completeTheLook": "Fullfør looken",
     "recentlyViewed": "Nylig sett",
     "starRating": "{{count}} stjerne",
-    "starRating_other": "{{count}} stjerner"
+    "starRating_other": "{{count}} stjerner",
+    "viewMode": "View mode",
+    "viewPhotos": "Photos",
+    "view3D": "3D 360°",
+    "dragToRotate": "Drag to rotate · 360°",
+    "reviewAddPhotos": "Photos",
+    "reviewPhotosHint": "Show the piece being worn — up to {{count}} photos.",
+    "reviewPhotoRemove": "Remove photo",
+    "reviewPhotoInvalid": "Unsupported photo format (JPEG, PNG or WebP).",
+    "reviewPhotoTooMany": "Too many photo uploads, please try again shortly.",
+    "reviewPhotoUploadError": "Couldn't upload the photo. Check your connection and try again.",
+    "reviewPhotoNotSaved": "The photos couldn't be saved.",
+    "reviewPhotoUploading": "Uploading photos…",
+    "reviewPhotoOpen": "Enlarge photo {{number}}",
+    "reviewPhotoAlt": "Customer photo",
+    "reviewsWithPhotos": "{{count}} review with photo",
+    "reviewsWithPhotos_other": "{{count}} reviews with photos"
   },
   "cart": {
     "title": "Handlekurv",
@@ -352,5 +368,41 @@
     "stepPiece": "Plagget",
     "seeFullPiece": "Se hele produktsiden",
     "unavailable": "Ingen plagg med personalisering er tilgjengelig nå."
+  },
+  "tracking": {
+    "eyebrow": "Service",
+    "title": "Track my order",
+    "intro": "Enter your order number and the email or phone number used to place it.",
+    "metaDescription": "Track your JEUNE RICHE order in real time: received, being prepared, shipped, delivered.",
+    "orderNumber": "Order number",
+    "contact": "Order email or phone",
+    "contactPlaceholder": "you@example.com or 07 00 00 00 00",
+    "submit": "Track",
+    "searching": "Searching…",
+    "cta": "Track my order",
+    "errors": {
+      "invalid": "Enter the order number and your email or phone.",
+      "notFound": "No matching order. Check the number and the email or phone you used.",
+      "rateLimited": "Too many attempts. Try again in a few minutes.",
+      "unavailable": "Tracking is temporarily unavailable. Please try again later."
+    },
+    "orderOf": "Order placed on {{date}}",
+    "cancelled": "This order was cancelled. Any questions? Message us on WhatsApp.",
+    "steps": {
+      "received": "Received",
+      "preparing": "Prepared",
+      "shipped": "Shipped",
+      "delivered": "Delivered"
+    },
+    "stepHint": {
+      "received": "We've received your order, it will be prepared very soon.",
+      "preparing": "Your order is being prepared in our workshop.",
+      "shipped": "Your order is on its way.",
+      "delivered": "Your order has been delivered. Thank you for your trust!"
+    },
+    "updatedOn": "Updated on {{date}}.",
+    "trackingNumber": "Tracking number:",
+    "help": "Any questions? Message us on WhatsApp",
+    "whatsappMessage": "Hello, I have a question about my order {{number}}."
   }
 }

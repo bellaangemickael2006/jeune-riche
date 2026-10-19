@@ -127,7 +127,23 @@
     "completeTheLook": "Compléter la tenue",
     "recentlyViewed": "Récemment consulté",
     "starRating": "{{count}} étoile",
-    "starRating_other": "{{count}} étoiles"
+    "starRating_other": "{{count}} étoiles",
+    "viewMode": "Mode d'affichage",
+    "viewPhotos": "Photos",
+    "view3D": "3D 360°",
+    "dragToRotate": "Glissez pour faire tourner · 360°",
+    "reviewAddPhotos": "Photos",
+    "reviewPhotosHint": "Montrez la pièce portée — jusqu'à {{count}} photos.",
+    "reviewPhotoRemove": "Retirer la photo",
+    "reviewPhotoInvalid": "Format de photo non pris en charge (JPEG, PNG ou WebP).",
+    "reviewPhotoTooMany": "Trop d'envois de photos, réessayez dans un moment.",
+    "reviewPhotoUploadError": "Impossible d'envoyer la photo. Vérifiez la connexion et réessayez.",
+    "reviewPhotoNotSaved": "Les photos n'ont pas pu être enregistrées.",
+    "reviewPhotoUploading": "Envoi des photos…",
+    "reviewPhotoOpen": "Agrandir la photo {{number}}",
+    "reviewPhotoAlt": "Photo d'un client",
+    "reviewsWithPhotos": "{{count}} avis avec photo",
+    "reviewsWithPhotos_other": "{{count}} avis avec photos"
   },
   "cart": {
     "title": "Panier",
@@ -357,5 +373,41 @@
     "seeFullPiece": "Voir la fiche complète",
     "unavailable": "Aucune pièce personnalisable n'est disponible pour le moment.",
     "sharedDescription": "{{nom}} sur une pièce JEUNE RICHE, à l'endroit exact où le nom sera imprimé. Compose le tien."
+  },
+  "tracking": {
+    "eyebrow": "Service",
+    "title": "Suivre ma commande",
+    "intro": "Entrez votre numéro de commande et l'email ou le téléphone utilisé pour la passer.",
+    "metaDescription": "Suivez votre commande JEUNE RICHE en temps réel : reçue, en préparation, expédiée, livrée.",
+    "orderNumber": "Numéro de commande",
+    "contact": "Email ou téléphone de la commande",
+    "contactPlaceholder": "vous@exemple.com ou 07 00 00 00 00",
+    "submit": "Suivre",
+    "searching": "Recherche…",
+    "cta": "Suivre ma commande",
+    "errors": {
+      "invalid": "Renseignez le numéro de commande et votre email ou téléphone.",
+      "notFound": "Aucune commande ne correspond. Vérifiez le numéro et l'email ou le téléphone utilisé.",
+      "rateLimited": "Trop de tentatives. Réessayez dans quelques minutes.",
+      "unavailable": "Le suivi est momentanément indisponible. Réessayez plus tard."
+    },
+    "orderOf": "Commande du {{date}}",
+    "cancelled": "Cette commande a été annulée. Une question ? Écrivez-nous sur WhatsApp.",
+    "steps": {
+      "received": "Reçue",
+      "preparing": "Préparée",
+      "shipped": "Expédiée",
+      "delivered": "Livrée"
+    },
+    "stepHint": {
+      "received": "Nous avons bien reçu votre commande, elle sera préparée très vite.",
+      "preparing": "Votre commande est en préparation dans notre atelier.",
+      "shipped": "Votre commande est en route.",
+      "delivered": "Votre commande a été livrée. Merci pour votre confiance !"
+    },
+    "updatedOn": "Mise à jour le {{date}}.",
+    "trackingNumber": "Numéro de suivi :",
+    "help": "Une question ? Écrire sur WhatsApp",
+    "whatsappMessage": "Bonjour, j'ai une question sur ma commande {{number}}."
   }
 }

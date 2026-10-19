@@ -31,6 +31,7 @@ export default function Footer() {
     {
       title: t("footer.columnService"),
       links: [
+        { label: t("tracking.title"), href: "/suivi" },
         { label: t("footer.shipping"), href: "/livraison" },
         { label: t("footer.returns"), href: "/retours" },
         { label: t("footer.contact"), href: "/contact" },

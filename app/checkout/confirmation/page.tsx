@@ -22,6 +22,14 @@ export default async function ConfirmationPage({
       <h1 className="font-editorial text-3xl text-paper md:text-4xl">{t("checkout.confirmation.title")}</h1>
       {numero && <p className="text-sm text-paper/60">{t("checkout.confirmation.reference", { number: numero })}</p>}
       <p className="max-w-sm text-sm text-paper/50">{t("checkout.confirmation.message")}</p>
+      {numero && (
+        <Link
+          href={`/suivi?commande=${encodeURIComponent(numero)}`}
+          className="mt-4 border border-paper px-6 py-3 text-xs uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
+        >
+          {t("tracking.cta")}
+        </Link>
+      )}
       <Link href="/catalogue" className="mt-4 text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 hover:text-paper/70">
         {t("checkout.confirmation.backToCatalogue")}
       </Link>

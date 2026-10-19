@@ -137,6 +137,8 @@ export function whatsappOrderLink(params: {
     `Nom : ${params.customerName}`,
     `Téléphone : ${params.phone}`,
     `Adresse : ${params.address.line1}, ${params.address.city}${params.address.postalCode ? " " + params.address.postalCode : ""}, ${params.address.country}`,
+    "",
+    `Suivi de ma commande : ${siteUrl()}/suivi?commande=${encodeURIComponent(params.orderNumber)}`,
   ];
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
@@ -180,9 +182,12 @@ export function whatsappStatusUpdateLink(
 ): string | null {
   const buildMessage = STATUS_MESSAGES[status];
   if (!buildMessage || !phone) return null;
+  // Le client peut ensuite suivre lui-même l'avancement, sans redemander.
+  const trackingLine =
+    status === "ANNULEE" ? "" : `\nSuivi en ligne : ${siteUrl()}/suivi?commande=${encodeURIComponent(orderNumber)}`;
   const number = sanitizePhoneForWhatsapp(phone);
   if (!number) return null;
-  return `https://wa.me/${number}?text=${encodeURIComponent(buildMessage(orderNumber, trackingNumber))}`;
+  return `https://wa.me/${number}?text=${encodeURIComponent(buildMessage(orderNumber, trackingNumber) + trackingLine)}`;
 }
 
 // `labelKey` plutôt qu'un libellé déjà en français : ce module n'a pas accès

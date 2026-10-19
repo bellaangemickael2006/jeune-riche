@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getPublishedProducts } from "@/lib/data/products";
 import { getTechnicalDetails } from "@/lib/data/product-details";
+import { getReviewPhotos } from "@/lib/data/reviewPhotos";
 import { createClient } from "@/lib/supabase/server";
 import ProductViewer from "@/components/product/ProductViewer";
 import ProductCard from "@/components/catalogue/ProductCard";
@@ -50,6 +51,9 @@ export default async function ProductPage({
   } catch {
     // pas connecté : formulaire d'avis affiche l'invite de connexion
   }
+
+  const reviewPhotos = await getReviewPhotos(product.reviews.map((r) => r.id));
+  const reviews = product.reviews.map((r) => ({ ...r, photos: reviewPhotos[r.id] ?? [] }));
 
   const images = product.images.map((i) => ({ url: i.url, alt: i.alt, type: i.type, color: i.color }));
   const details = getTechnicalDetails(product.category.slug);
@@ -121,6 +125,7 @@ export default async function ProductPage({
         productName={product.name}
         productSlug={product.slug}
         categoryName={product.category.name}
+        categorySlug={product.category.slug}
         description={product.description}
         price={product.price ? Number(product.price) : null}
         variants={product.variants.map((v) => ({
@@ -133,7 +138,7 @@ export default async function ProductPage({
         personalizationMaxLen={product.personalizationMaxLen}
         sizeGuideRows={product.sizeGuide?.rows}
         details={details}
-        reviews={product.reviews}
+        reviews={reviews}
         isLoggedIn={isLoggedIn}
         drop={product.drop}
       />

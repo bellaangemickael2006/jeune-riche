@@ -256,8 +256,25 @@ model Review {
   status        ReviewStatus @default(PENDING)
   verifiedOrder Boolean      @default(false) // vrai uniquement si commande livrée liée
   createdAt     DateTime     @default(now())
+  // Table à part plutôt qu'une colonne : les requêtes existantes sur les avis
+  // n'y touchent pas, donc rien ne casse tant que la migration n'est pas
+  // appliquée en production (voir lib/data/reviewPhotos.ts).
+  photos        ReviewPhoto[]
 
   @@map("reviews")
+}
+
+model ReviewPhoto {
+  id        String   @id @default(cuid())
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  url       String
+  path      String // chemin Supabase Storage, pour supprimer le fichier avec l'avis
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([reviewId])
+  @@map("review_photos")
 }
 
 model WishlistItem {

@@ -5,11 +5,11 @@ import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { MEDIA_BUCKET, REVIEW_PHOTOS_PREFIX } from "@/lib/storage";
 import { ActionError, readAmount, runAction, type ActionResult } from "@/lib/actions/result";
 import { RESET_CONFIRMATION, isResetConfirmed } from "@/lib/demoReset";
 
 const SETTINGS_ID = "default";
-const MEDIA_BUCKET = "product-media";
 
 export async function updateStoreSettings(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
@@ -105,6 +105,15 @@ export async function resetStoreData(formData: FormData): Promise<ActionResult> 
     // clients et fichiers médias des produits supprimés. Les données sont
     // déjà effacées à ce stade, donc rien ici ne doit faire échouer l'action.
     let authFailures = 0;
+    if (wipeActivity) {
+      try {
+        const bucket = createAdminClient().storage.from(MEDIA_BUCKET);
+        const { data: files } = await bucket.list(REVIEW_PHOTOS_PREFIX, { limit: 1000 });
+        if (files?.length) await bucket.remove(files.map((f) => `${REVIEW_PHOTOS_PREFIX}/${f.name}`));
+      } catch (error) {
+        console.error("[admin] formatage photos d'avis:", error);
+      }
+    }
     if (clientAccounts.length > 0 || productIds.length > 0) {
       try {
         const supabase = createAdminClient();

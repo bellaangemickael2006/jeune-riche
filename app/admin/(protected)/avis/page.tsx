@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import { getReviewPhotos } from "@/lib/data/reviewPhotos";
 import { requireAdmin } from "@/lib/auth";
 import { moderateReview, deleteReview } from "@/lib/actions/reviews";
 import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
@@ -16,6 +18,7 @@ export default async function AdminReviewsPage() {
     console.error("[admin/avis]", err);
     available = false;
   }
+  const photos = await getReviewPhotos(reviews.map((r) => r.id));
 
   return (
     <div>
@@ -43,6 +46,21 @@ export default async function AdminReviewsPage() {
                     {r.verifiedOrder ? "Client vérifié" : "Non vérifié"} · {REVIEW_STATUS_LABEL[r.status]}
                   </p>
                   <p className="mt-2 max-w-xl text-sm text-paper/70">{r.comment}</p>
+                  {photos[r.id]?.length ? (
+                    <div className="mt-3 flex gap-2">
+                      {photos[r.id].map((p) => (
+                        <a
+                          key={p.url}
+                          href={p.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="relative block h-20 w-20 overflow-hidden border border-line hover:border-paper"
+                        >
+                          <Image src={p.url} alt="Photo jointe à l'avis" fill sizes="80px" className="object-cover" />
+                        </a>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
                 <div className="flex shrink-0 flex-wrap items-center gap-2">
                   {r.status !== "APPROVED" && (

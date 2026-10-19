@@ -17,25 +17,9 @@ import {
   type DataResult,
 } from "@/lib/actions/result";
 import type { ImageType } from "@prisma/client";
+import { ensureMediaBucket, MAX_MEDIA_BYTES, MEDIA_BUCKET } from "@/lib/storage";
 
-const MEDIA_BUCKET = "product-media";
-const MAX_MEDIA_BYTES = 25 * 1024 * 1024; // 25 Mo, suffisant pour photo/courte vidéo produit
 const IMAGE_TYPES: ImageType[] = ["FRONT", "BACK", "DETAIL", "LIFESTYLE", "MOCKUP"];
-
-let bucketEnsured = false;
-
-async function ensureMediaBucket() {
-  if (bucketEnsured) return;
-  const supabase = createAdminClient();
-  const { data: buckets } = await supabase.storage.listBuckets();
-  if (!buckets?.some((b) => b.name === MEDIA_BUCKET)) {
-    await supabase.storage.createBucket(MEDIA_BUCKET, {
-      public: true,
-      fileSizeLimit: MAX_MEDIA_BYTES,
-    });
-  }
-  bucketEnsured = true;
-}
 
 // Extension prise depuis le nom de fichier fourni par le client, jamais fiable
 // telle quelle : un nom sans point (ext = le nom entier) ou contenant "/"
