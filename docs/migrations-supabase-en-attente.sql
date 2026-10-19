@@ -31,6 +31,11 @@ BEGIN
     END IF;
 END $$;
 
+-- Comme toutes les tables de la boutique : RLS actif, sans règle. L'API
+-- publique Supabase (clé anon) n'y a donc aucun accès ; le site passe par
+-- Prisma (rôle propriétaire), qui n'est pas concerné.
+ALTER TABLE "review_photos" ENABLE ROW LEVEL SECURITY;
+
 -- ===== 20261019120000_add_product_models =====
 -- Modèles 3D (.glb) des produits, exportés depuis VirtualThreads.
 -- Rejouable sans erreur (IF NOT EXISTS) : peut être collée telle quelle dans
@@ -59,6 +64,11 @@ BEGIN
             FOREIGN KEY ("productId") REFERENCES "products"("id") ON DELETE CASCADE ON UPDATE CASCADE;
     END IF;
 END $$;
+
+-- Comme toutes les tables de la boutique : RLS actif, sans règle. L'API
+-- publique Supabase (clé anon) n'y a donc aucun accès ; le site passe par
+-- Prisma (rôle propriétaire), qui n'est pas concerné.
+ALTER TABLE "product_models" ENABLE ROW LEVEL SECURITY;
 
 -- ===== 20261020000000_add_stock_movements =====
 -- Historique des mouvements de stock.
@@ -94,6 +104,11 @@ BEGIN
     END IF;
 END $$;
 
+-- Comme toutes les tables de la boutique : RLS actif, sans règle. L'API
+-- publique Supabase (clé anon) n'y a donc aucun accès ; le site passe par
+-- Prisma (rôle propriétaire), qui n'est pas concerné.
+ALTER TABLE "stock_movements" ENABLE ROW LEVEL SECURITY;
+
 -- ===== 20261020010000_add_admin_permissions =====
 -- Droits des employés de l'administration.
 -- Rejouable sans erreur (IF NOT EXISTS) : peut être collée telle quelle dans
@@ -118,3 +133,8 @@ BEGIN
             FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
     END IF;
 END $$;
+
+-- Comme toutes les tables de la boutique : RLS actif, sans règle. L'API
+-- publique Supabase (clé anon) n'y a donc aucun accès ; le site passe par
+-- Prisma (rôle propriétaire), qui n'est pas concerné.
+ALTER TABLE "admin_permissions" ENABLE ROW LEVEL SECURITY;

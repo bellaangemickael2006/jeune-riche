@@ -21,3 +21,8 @@ BEGIN
             FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
     END IF;
 END $$;
+
+-- Comme toutes les tables de la boutique : RLS actif, sans règle. L'API
+-- publique Supabase (clé anon) n'y a donc aucun accès ; le site passe par
+-- Prisma (rôle propriétaire), qui n'est pas concerné.
+ALTER TABLE "admin_permissions" ENABLE ROW LEVEL SECURITY;
