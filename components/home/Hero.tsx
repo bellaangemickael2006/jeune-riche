@@ -7,6 +7,7 @@ import WordPullUp from "@/components/ui/WordPullUp";
 import TextScramble from "@/components/ui/TextScramble";
 import Magnetic from "@/components/ui/Magnetic";
 import FadeIn from "@/components/ui/FadeIn";
+import type { HomeContent } from "@/lib/home/content";
 
 // La vidéo de showroom a été retirée du hero sur décision du client. Le fond
 // est maintenant une vraie photo de la marque (portant d'atelier) plutôt que
@@ -15,18 +16,20 @@ import FadeIn from "@/components/ui/FadeIn";
 // dégrader. Le cadrage privilégie le haut de l'image — le portant et la
 // pièce — parce qu'en format paysage le bas se retrouve rogné.
 // Le fichier vidéo reste dans public/video/ pour un usage ultérieur.
-export default function Hero() {
+// Photo, cadrage et assombrissement se règlent dans Admin → Page d'accueil.
+export default function Hero({ content }: { content: HomeContent["hero"] }) {
   const { t } = useTranslation();
 
   return (
     <section className="relative flex h-[100svh] w-full items-end overflow-hidden bg-ink">
       <Image
-        src="/images/campagne/portant-atelier.jpg"
-        alt="T-shirt JEUNE RICHE noir sur un portant d'atelier"
+        src={content.url}
+        alt={content.alt || "T-shirt JEUNE RICHE noir sur un portant d'atelier"}
         fill
         priority
         sizes="100vw"
-        className="object-cover object-[center_38%]"
+        className="object-cover"
+        style={{ objectPosition: `${content.focusX}% ${content.focusY}%` }}
       />
 
       {/* Superposée à une photo réelle, pas au fond de page : reste toujours
@@ -34,7 +37,12 @@ export default function Hero() {
           choisi (bg-ink/text-paper suivraient le thème et casseraient la
           lisibilité en mode clair). Assombrissement concentré en bas, là où
           le texte se pose — le haut de la photo reste lisible. */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/25 to-black/20" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `linear-gradient(to top, #000 0%, rgba(0,0,0,${content.overlay / 100}) 50%, rgba(0,0,0,${(content.overlay * 0.8) / 100}) 100%)`,
+        }}
+      />
 
       <div className="relative z-10 flex w-full flex-col gap-8 px-5 pb-14 md:px-10 md:pb-20">
         <TextScramble

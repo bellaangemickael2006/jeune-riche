@@ -11,6 +11,7 @@ import { useScrollLock } from "@/lib/scrollLock";
 
 const LINKS = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/accueil", label: "Page d'accueil" },
   { href: "/admin/produits", label: "Produits" },
   { href: "/admin/categories", label: "Catégories" },
   { href: "/admin/commandes", label: "Commandes" },

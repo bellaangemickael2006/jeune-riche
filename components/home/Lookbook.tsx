@@ -3,26 +3,24 @@ import Link from "next/link";
 import WordPullUp from "@/components/ui/WordPullUp";
 import FadeIn from "@/components/ui/FadeIn";
 import { getServerTranslation } from "@/lib/i18n/server";
+import { DEFAULT_LOOKBOOK_TEXT, RATIOS, type HomeContent } from "@/lib/home/content";
+import { cn } from "@/lib/utils";
 
-// Deux vraies photos portées fournies par la marque. Elles sont affichées à
-// deux colonnes sur grand écran et non en pleine largeur : les fichiers font
-// ~700px de large, les étirer davantage les rendrait floues. Les légendes ne
-// décrivent que ce qui est visible à l'image (impression au dos, crest
-// poitrine) — rien n'est affirmé sur la matière ou la coupe.
-const SHOTS = [
-  {
-    src: "/images/campagne/porte-dos-ciel.jpg",
-    altKey: "home.wornAltBack",
-    captionKey: "home.wornCaptionBack",
-  },
-  {
-    src: "/images/campagne/porte-voiture.jpg",
-    altKey: "home.wornAltFront",
-    captionKey: "home.wornCaptionFront",
-  },
-] as const;
+// Photos portées de la marque, réglées dans Admin → Page d'accueil (ajout,
+// ordre, format, cadrage, légende, lien). Les deux photos d'origine gardent
+// leurs textes traduits tant que l'admin n'en saisit pas d'autres.
+const GRID: Record<1 | 2 | 3, string> = {
+  1: "md:grid-cols-1",
+  2: "md:grid-cols-2",
+  3: "md:grid-cols-3",
+};
+const SIZES: Record<1 | 2 | 3, string> = {
+  1: "100vw",
+  2: "(max-width: 768px) 100vw, 45vw",
+  3: "(max-width: 768px) 100vw, 30vw",
+};
 
-export default async function Lookbook() {
+export default async function Lookbook({ content }: { content: HomeContent["lookbook"] }) {
   const { t } = await getServerTranslation();
 
   return (
@@ -41,23 +39,36 @@ export default async function Lookbook() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-x-6 gap-y-10 px-5 md:grid-cols-2 md:px-10">
-        {SHOTS.map((shot, i) => (
-          <FadeIn key={shot.src} y={20} delay={i * 0.08}>
-            <div className="relative aspect-square overflow-hidden bg-ink">
+      <div className={cn("grid grid-cols-1 gap-x-6 gap-y-10 px-5 md:px-10", GRID[content.columns])}>
+        {content.items.map((shot, i) => {
+          const defaults = DEFAULT_LOOKBOOK_TEXT[shot.id];
+          const alt = shot.alt || (defaults ? t(defaults.altKey) : "JEUNE RICHE");
+          const caption = shot.caption || (defaults ? t(defaults.captionKey) : "");
+          const picture = (
+            <div className="relative overflow-hidden bg-ink" style={{ aspectRatio: RATIOS[shot.ratio] }}>
               <Image
-                src={shot.src}
-                alt={t(shot.altKey)}
+                src={shot.url}
+                alt={alt}
                 fill
-                sizes="(max-width: 768px) 100vw, 45vw"
-                className="object-cover"
+                sizes={SIZES[content.columns]}
+                className={cn("object-cover", shot.href && "transition-transform duration-700 ease-editorial group-hover:scale-[1.03]")}
+                style={{ objectPosition: `${shot.focusX}% ${shot.focusY}%` }}
               />
             </div>
-            <p className="mt-3 text-xs uppercase tracking-widest2 text-paper/40">
-              {t(shot.captionKey)}
-            </p>
-          </FadeIn>
-        ))}
+          );
+          return (
+            <FadeIn key={shot.id} y={20} delay={Math.min(i, 5) * 0.08}>
+              {shot.href ? (
+                <Link href={shot.href} className="group block">
+                  {picture}
+                </Link>
+              ) : (
+                picture
+              )}
+              {caption && <p className="mt-3 text-xs uppercase tracking-widest2 text-paper/40">{caption}</p>}
+            </FadeIn>
+          );
+        })}
       </div>
     </section>
   );
