@@ -253,7 +253,13 @@
     "confirmationSuccess": "تم تفعيل حسابك. مرحبًا بك في JEUNE RICHE.",
     "confirmationInvalid": "رابط التأكيد هذا غير صالح أو منتهي الصلاحية.",
     "confirmationCta": "الذهاب إلى حسابي",
-    "phone": "الهاتف"
+    "phone": "الهاتف",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "المفضلة",

@@ -1,11 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import GoogleSignInButton from "@/components/account/GoogleSignInButton";
+
+// Codes posés par app/auth/callback/route.ts quand la connexion Google échoue.
+const GOOGLE_ERRORS: Record<string, string> = {
+  google: "account.googleError",
+  google_annule: "account.googleCancelled",
+  google_compte: "account.googleAccountError",
+};
 
 const CONFIG_MISSING =
   !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -21,6 +29,17 @@ export default function AuthForms() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+
+  // Retour d'une connexion Google ratée : message clair, puis l'URL est
+  // nettoyée pour qu'un rechargement ne réaffiche pas l'erreur.
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const key = GOOGLE_ERRORS[url.searchParams.get("erreur") ?? ""];
+    if (!key) return;
+    setError(t(key));
+    url.searchParams.delete("erreur");
+    window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+  }, [t]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -137,6 +156,8 @@ export default function AuthForms() {
           {t("account.supabaseNotConfiguredHint")}
         </p>
       )}
+      {mode !== "forgot" && !CONFIG_MISSING && <GoogleSignInButton onError={setError} />}
+
       {error && <p className="mb-4 mt-4 text-xs font-medium text-paper">{error}</p>}
       {message && <p className="mb-4 mt-4 text-xs text-paper/70">{message}</p>}
 

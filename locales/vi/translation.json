@@ -253,7 +253,13 @@
     "confirmationSuccess": "Tài khoản của bạn đã được kích hoạt. Chào mừng đến với JEUNE RICHE.",
     "confirmationInvalid": "Liên kết xác nhận này không hợp lệ hoặc đã hết hạn.",
     "confirmationCta": "Đến tài khoản của tôi",
-    "phone": "Số điện thoại"
+    "phone": "Số điện thoại",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "Yêu thích",

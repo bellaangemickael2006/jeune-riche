@@ -253,7 +253,13 @@
     "confirmationSuccess": "您的账户已激活。欢迎加入 JEUNE RICHE。",
     "confirmationInvalid": "此确认链接无效或已过期。",
     "confirmationCta": "前往我的账户",
-    "phone": "电话"
+    "phone": "电话",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "收藏",

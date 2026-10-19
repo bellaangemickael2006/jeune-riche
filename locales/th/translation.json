@@ -253,7 +253,13 @@
     "confirmationSuccess": "บัญชีของคุณเปิดใช้งานแล้ว ยินดีต้อนรับสู่ JEUNE RICHE",
     "confirmationInvalid": "ลิงก์ยืนยันนี้ไม่ถูกต้องหรือหมดอายุแล้ว",
     "confirmationCta": "ไปที่บัญชีของฉัน",
-    "phone": "โทรศัพท์"
+    "phone": "โทรศัพท์",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "รายการโปรด",

@@ -253,7 +253,13 @@
     "confirmationSuccess": "Sua conta está ativada. Bem-vindo à JEUNE RICHE.",
     "confirmationInvalid": "Este link de confirmação é inválido ou expirou.",
     "confirmationCta": "Acessar minha conta",
-    "phone": "Telefone"
+    "phone": "Telefone",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "Favoritos",

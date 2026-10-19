@@ -253,7 +253,13 @@
     "confirmationSuccess": "Din konto er nu aktiveret. Velkommen til JEUNE RICHE.",
     "confirmationInvalid": "Dette bekræftelseslink er ugyldigt eller udløbet.",
     "confirmationCta": "Gå til min konto",
-    "phone": "Telefon"
+    "phone": "Telefon",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "Favoritter",

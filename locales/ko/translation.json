@@ -253,7 +253,13 @@
     "confirmationSuccess": "계정이 활성화되었습니다. JEUNE RICHE에 오신 것을 환영합니다.",
     "confirmationInvalid": "이 확인 링크는 유효하지 않거나 만료되었습니다.",
     "confirmationCta": "내 계정으로 이동",
-    "phone": "전화번호"
+    "phone": "전화번호",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "즐겨찾기",

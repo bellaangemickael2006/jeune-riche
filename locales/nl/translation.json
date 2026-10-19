@@ -253,7 +253,13 @@
     "confirmationSuccess": "Je account is geactiveerd. Welkom bij JEUNE RICHE.",
     "confirmationInvalid": "Deze bevestigingslink is ongeldig of verlopen.",
     "confirmationCta": "Naar mijn account",
-    "phone": "Telefoon"
+    "phone": "Telefoon",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "Favorieten",

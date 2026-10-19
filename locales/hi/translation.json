@@ -253,7 +253,13 @@
     "confirmationSuccess": "आपका खाता सक्रिय कर दिया गया है। JEUNE RICHE में आपका स्वागत है।",
     "confirmationInvalid": "यह पुष्टिकरण लिंक अमान्य है या समाप्त हो चुका है।",
     "confirmationCta": "मेरे खाते पर जाएं",
-    "phone": "फ़ोन"
+    "phone": "फ़ोन",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "पसंदीदा",

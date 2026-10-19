@@ -253,7 +253,13 @@
     "confirmationSuccess": "アカウントが有効になりました。JEUNE RICHEへようこそ。",
     "confirmationInvalid": "この確認リンクは無効か、有効期限が切れています。",
     "confirmationCta": "マイアカウントへ",
-    "phone": "電話番号"
+    "phone": "電話番号",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "お気に入り",

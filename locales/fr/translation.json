@@ -254,7 +254,13 @@
     "confirmationSuccess": "Votre compte est activé. Bienvenue chez JEUNE RICHE.",
     "confirmationInvalid": "Ce lien de confirmation est invalide ou a expiré.",
     "confirmationCta": "Accéder à mon compte",
-    "phone": "Téléphone"
+    "phone": "Téléphone",
+    "continueWithGoogle": "Continuer avec Google",
+    "googleRedirecting": "Redirection vers Google…",
+    "orWithEmail": "ou avec votre email",
+    "googleError": "La connexion avec Google a échoué. Réessayez ou utilisez votre email.",
+    "googleCancelled": "Connexion avec Google annulée.",
+    "googleAccountError": "Impossible d'ouvrir votre compte avec Google. Contactez-nous sur WhatsApp si le problème continue."
   },
   "wishlist": {
     "title": "Favoris",

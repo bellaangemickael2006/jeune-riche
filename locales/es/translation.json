@@ -253,7 +253,13 @@
     "confirmationSuccess": "Tu cuenta está activada. Bienvenido a JEUNE RICHE.",
     "confirmationInvalid": "Este enlace de confirmación no es válido o ha caducado.",
     "confirmationCta": "Ir a mi cuenta",
-    "phone": "Teléfono"
+    "phone": "Teléfono",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "Favoritos",

@@ -84,6 +84,22 @@ l'activité, les abonnés, les comptes clients, le catalogue, ou remet les stock
 admin, les catégories et les paramètres ne sont jamais touchés. Il faut taper `FORMATER` pour
 confirmer : l'action est définitive.
 
+### Connexion avec Google
+
+Le bouton « Continuer avec Google » (page /compte) n'apparaît qu'une fois Google activé dans
+Supabase :
+
+1. Google Cloud Console → API et services → Écran de consentement OAuth : type « Externe », nom
+   de l'application JEUNE RICHE, logo, email d'assistance, domaine du site.
+2. Identifiants → Créer un ID client OAuth → « Application Web ». URI de redirection autorisé :
+   `https://<projet>.supabase.co/auth/v1/callback`.
+3. Supabase → Authentication → Providers → Google : activer, coller l'ID client et le secret.
+4. Supabase → Authentication → URL Configuration : Site URL = le domaine du site ; Redirect URLs :
+   `https://<domaine>/auth/callback` (et `http://localhost:3000/auth/callback` pour le dev).
+
+À la première connexion Google, `app/auth/callback` crée la fiche client (ou la rattache au
+compte client existant ayant le même email). Un compte administrateur ne s'ouvre jamais par Google.
+
 Les vidéos (`public/video/*.mp4`, ~20 Mo et ~11 Mo) sont servies comme assets statiques Next.js —
 elles ne transitent jamais par une fonction serverless. Pour un trafic important, migrer vers un
 stockage/CDN dédié (Supabase Storage ou équivalent) est recommandé — voir TODO.md.

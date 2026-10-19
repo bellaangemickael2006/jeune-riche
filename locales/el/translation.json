@@ -253,7 +253,13 @@
     "confirmationSuccess": "Ο λογαριασμός σας είναι ενεργός. Καλώς ήρθατε στη JEUNE RICHE.",
     "confirmationInvalid": "Αυτός ο σύνδεσμος επιβεβαίωσης δεν είναι έγκυρος ή έχει λήξει.",
     "confirmationCta": "Μετάβαση στον λογαριασμό μου",
-    "phone": "Τηλέφωνο"
+    "phone": "Τηλέφωνο",
+    "continueWithGoogle": "Continue with Google",
+    "googleRedirecting": "Redirecting to Google…",
+    "orWithEmail": "or with your email",
+    "googleError": "Google sign-in failed. Try again or use your email.",
+    "googleCancelled": "Google sign-in cancelled.",
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
   },
   "wishlist": {
     "title": "Αγαπημένα",

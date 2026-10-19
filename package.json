@@ -14,7 +14,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
-    "test": "node --import tsx --test lib/email.test.ts lib/orders/pricing.test.ts lib/actions/result.test.ts lib/demoReset.test.ts lib/orders/tracking.test.ts lib/orders/stats.test.ts",
+    "test": "node --import tsx --test lib/email.test.ts lib/orders/pricing.test.ts lib/actions/result.test.ts lib/demoReset.test.ts lib/orders/tracking.test.ts lib/orders/stats.test.ts lib/account/safeNext.test.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {
