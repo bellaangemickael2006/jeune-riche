@@ -22,7 +22,7 @@ export default async function HomePage() {
       <WelcomeToast />
       <LoginWelcome />
       <Hero content={content.hero} />
-      <CategoryGrid items={showcaseItems} />
+      <CategoryGrid items={showcaseItems} content={content.pieces} />
       {content.lookbook.visible && content.lookbook.items.length > 0 && <Lookbook content={content.lookbook} />}
       <ManifesteTeaser content={content.manifeste} />
     </>

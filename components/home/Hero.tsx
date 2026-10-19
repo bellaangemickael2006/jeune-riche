@@ -46,12 +46,12 @@ export default function Hero({ content }: { content: HomeContent["hero"] }) {
 
       <div className="relative z-10 flex w-full flex-col gap-8 px-5 pb-14 md:px-10 md:pb-20">
         <TextScramble
-          text={t("home.tagline")}
+          text={content.tagline || t("home.tagline")}
           immediate
           className="font-body text-xs uppercase tracking-widest2 text-white/70"
         />
         <WordPullUp
-          text="Jeune Riche"
+          text={content.title || "Jeune Riche"}
           as="h1"
           immediate
           className="font-display max-w-3xl text-[13vw] uppercase leading-[0.92] text-white md:text-[7vw]"
@@ -62,14 +62,14 @@ export default function Hero({ content }: { content: HomeContent["hero"] }) {
               href="/catalogue"
               className="inline-block bg-paper px-8 py-4 text-xs uppercase tracking-widest2 text-ink transition-transform duration-300 ease-editorial hover:scale-[1.02]"
             >
-              {t("home.viewCatalogue")}
+              {content.ctaPrimary || t("home.viewCatalogue")}
             </Link>
           </Magnetic>
           <Link
             href="/manifeste"
             className="text-xs uppercase tracking-widest2 text-white/80 underline underline-offset-4 transition-colors hover:text-white"
           >
-            {t("home.readManifesto")}
+            {content.ctaSecondary || t("home.readManifesto")}
           </Link>
         </FadeIn>
       </div>

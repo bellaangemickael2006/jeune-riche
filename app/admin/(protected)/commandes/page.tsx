@@ -2,7 +2,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, cn } from "@/lib/utils";
-import type { OrderStatus } from "@prisma/client";
+import { ORDER_STATUSES as STATUSES, ordersWhere } from "@/lib/admin/filters";
 
 const STATUS_LABEL: Record<string, string> = {
   NOUVELLE: "Nouvelle",
@@ -12,8 +12,6 @@ const STATUS_LABEL: Record<string, string> = {
   LIVREE: "Livrée",
   ANNULEE: "Annulée",
 };
-
-const STATUSES: OrderStatus[] = ["NOUVELLE", "CONFIRMEE", "PREPARATION", "EXPEDIEE", "LIVREE", "ANNULEE"];
 
 export default async function AdminOrdersPage({
   searchParams,
@@ -79,6 +77,35 @@ export default async function AdminOrdersPage({
         </div>
       </div>
 
+      {/* Export CSV : mêmes filtres que la liste, période facultative. */}
+      <form action="/admin/export/commandes" className="mt-4 flex flex-wrap items-end gap-3 text-xs">
+        {q && <input type="hidden" name="q" value={q} />}
+        {statut && <input type="hidden" name="statut" value={statut} />}
+        <label className="flex flex-col gap-1">
+          <span className="text-[10px] uppercase tracking-widest2 text-paper/40">Du</span>
+          <input type="date" name="du" className="border border-line bg-transparent px-2 py-1.5 text-paper [color-scheme:dark]" />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-[10px] uppercase tracking-widest2 text-paper/40">Au</span>
+          <input type="date" name="au" className="border border-line bg-transparent px-2 py-1.5 text-paper [color-scheme:dark]" />
+        </label>
+        <button type="submit" className="border border-paper px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink">
+          Exporter en CSV
+        </button>
+        {/* Même formulaire, autre destination : les bons de l'atelier. */}
+        <button
+          type="submit"
+          formAction="/admin/bons"
+          formTarget="_blank"
+          className="border border-line px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper/80 hover:border-paper hover:text-paper"
+        >
+          Imprimer les bons
+        </button>
+        <span className="text-[11px] text-paper/35">
+          {statut || q ? "Avec les filtres affichés ci-dessus." : "Toutes les commandes (ou la période choisie)."}
+        </span>
+      </form>
+
       {!available && (
         <p className="mt-4 border border-paper/30 bg-paper/5 px-4 py-3 text-xs text-paper">
           Base de données indisponible.
@@ -134,18 +161,7 @@ export default async function AdminOrdersPage({
 
 function load(q?: string, statut?: string) {
   return prisma.order.findMany({
-    where: {
-      ...(statut ? { status: statut as OrderStatus } : {}),
-      ...(q
-        ? {
-            OR: [
-              { orderNumber: { contains: q, mode: "insensitive" } },
-              { customerName: { contains: q, mode: "insensitive" } },
-              { customerEmail: { contains: q, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-    },
+    where: ordersWhere({ q, statut }),
     include: { items: true },
     orderBy: { createdAt: "desc" },
   });

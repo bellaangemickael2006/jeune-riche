@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { formatPrice } from "@/lib/utils";
+import { clientsWhere } from "@/lib/admin/filters";
 
 export default async function AdminClientsPage({
   searchParams,
@@ -24,14 +25,22 @@ export default async function AdminClientsPage({
     <div>
       <h1 className="font-display text-2xl uppercase text-paper">Clients</h1>
 
-      <form className="mt-6 max-w-xs">
-        <input
-          name="q"
-          defaultValue={q ?? ""}
-          placeholder="Rechercher un nom ou un email…"
-          className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/30"
-        />
-      </form>
+      <div className="mt-6 flex flex-wrap items-center gap-4">
+        <form className="w-full max-w-xs">
+          <input
+            name="q"
+            defaultValue={q ?? ""}
+            placeholder="Rechercher un nom ou un email…"
+            className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/30"
+          />
+        </form>
+        <a
+          href={`/admin/export/clients${q ? `?q=${encodeURIComponent(q)}` : ""}`}
+          className="border border-paper px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
+        >
+          Exporter en CSV
+        </a>
+      </div>
 
       {!available && (
         <p className="mt-4 border border-paper/30 bg-paper/5 px-4 py-3 text-xs text-paper">
@@ -82,17 +91,7 @@ export default async function AdminClientsPage({
 
 function load(q?: string) {
   return prisma.user.findMany({
-    where: {
-      role: "CLIENT",
-      ...(q
-        ? {
-            OR: [
-              { name: { contains: q, mode: "insensitive" } },
-              { email: { contains: q, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-    },
+    where: clientsWhere({ q }),
     include: { orders: true },
     orderBy: { createdAt: "desc" },
   });

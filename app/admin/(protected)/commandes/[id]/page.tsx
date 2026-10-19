@@ -41,7 +41,17 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
       <Link href="/admin/commandes" className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
         ← Commandes
       </Link>
-      <h1 className="mt-3 font-display text-2xl uppercase text-paper">{order.orderNumber}</h1>
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+        <h1 className="font-display text-2xl uppercase text-paper">{order.orderNumber}</h1>
+        <a
+          href={`/admin/bons?ids=${order.id}&imprimer=1`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border border-paper px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
+        >
+          Imprimer le bon
+        </a>
+      </div>
       <p className="mt-1 text-xs text-paper/40">{order.createdAt.toLocaleString("fr-FR")}</p>
 
       <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">

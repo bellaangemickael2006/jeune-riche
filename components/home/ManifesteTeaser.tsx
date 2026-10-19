@@ -30,14 +30,14 @@ export default async function ManifesteTeaser({ content }: { content: HomeConten
       <FadeIn className="relative z-10 flex max-w-2xl flex-col items-center gap-8" y={20}>
         <p className="text-xs uppercase tracking-widest2 text-paper/50">{t("navigation.manifesto")}</p>
         <p className="font-editorial text-2xl italic leading-snug text-paper md:text-4xl">
-          {t("home.manifestoQuote")}
+          {content.quote || t("home.manifestoQuote")}
         </p>
         <Magnetic strength={0.3}>
           <Link
             href="/manifeste"
             className="inline-block text-xs uppercase tracking-widest2 text-paper underline underline-offset-4 transition-opacity hover:opacity-70"
           >
-            {t("home.enterUniverse")}
+            {content.cta || t("home.enterUniverse")}
           </Link>
         </Magnetic>
       </FadeIn>

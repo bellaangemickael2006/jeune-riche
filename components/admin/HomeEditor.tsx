@@ -117,6 +117,41 @@ function ImageSlot({
   );
 }
 
+/** Texte facultatif : vide = texte traduit par défaut (affiché en gris). */
+function TextField({
+  label,
+  value,
+  placeholder,
+  max,
+  multiline,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  placeholder: string;
+  max: number;
+  multiline?: boolean;
+  onChange: (v: string) => void;
+}) {
+  return (
+    <label className="block">
+      <span className={labelClass}>{label}</span>
+      {multiline ? (
+        <textarea
+          value={value}
+          maxLength={max}
+          rows={3}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={inputClass}
+        />
+      ) : (
+        <input value={value} maxLength={max} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} className={inputClass} />
+      )}
+    </label>
+  );
+}
+
 function Range({
   label,
   value,
@@ -228,7 +263,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
     });
   }
 
-  const { hero, lookbook, manifeste } = content;
+  const { hero, pieces, lookbook, manifeste } = content;
 
   return (
     <div className="pb-28">
@@ -254,7 +289,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
                   background: `linear-gradient(to top, #000 0%, rgba(0,0,0,${hero.overlay / 100}) 50%, rgba(0,0,0,${(hero.overlay * 0.8) / 100}) 100%)`,
                 }}
               >
-                <span className="font-display text-2xl uppercase leading-none text-white">Jeune Riche</span>
+                <span className="font-display text-2xl uppercase leading-none text-white">{hero.title || "Jeune Riche"}</span>
               </div>
             }
           />
@@ -278,6 +313,62 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
             </label>
           </div>
         </div>
+        <p className="mt-6 text-[11px] text-paper/35">
+          Textes : laissés vides, ils restent traduits automatiquement dans chaque langue. Un texte saisi
+          s&apos;affiche tel quel dans toutes les langues.
+        </p>
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          <TextField
+            label="Slogan (au-dessus du titre)"
+            value={hero.tagline}
+            max={80}
+            placeholder="LUXE STREETWEAR — IDENTITÉ TRIBALE"
+            onChange={(v) => update((c) => ({ ...c, hero: { ...c.hero, tagline: v } }))}
+          />
+          <TextField
+            label="Grand titre"
+            value={hero.title}
+            max={60}
+            placeholder="Jeune Riche"
+            onChange={(v) => update((c) => ({ ...c, hero: { ...c.hero, title: v } }))}
+          />
+          <TextField
+            label="Bouton principal (vers le catalogue)"
+            value={hero.ctaPrimary}
+            max={40}
+            placeholder="Voir le catalogue"
+            onChange={(v) => update((c) => ({ ...c, hero: { ...c.hero, ctaPrimary: v } }))}
+          />
+          <TextField
+            label="Lien secondaire (vers le manifeste)"
+            value={hero.ctaSecondary}
+            max={40}
+            placeholder="Le manifeste"
+            onChange={(v) => update((c) => ({ ...c, hero: { ...c.hero, ctaSecondary: v } }))}
+          />
+        </div>
+      </section>
+
+      {/* ---------- Nos pièces ---------- */}
+      <section className="mt-8 border border-line p-5">
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Section « Nos pièces »</h2>
+        <p className="mt-1 text-[11px] text-paper/35">Les photos viennent des fiches produits (menu Produits).</p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <TextField
+            label="Titre de la section"
+            value={pieces.title}
+            max={60}
+            placeholder="Nos pièces"
+            onChange={(v) => update((c) => ({ ...c, pieces: { ...c.pieces, title: v } }))}
+          />
+          <TextField
+            label="Texte défilant"
+            value={pieces.marquee}
+            max={60}
+            placeholder="Jeune Riche"
+            onChange={(v) => update((c) => ({ ...c, pieces: { ...c.pieces, marquee: v } }))}
+          />
+        </div>
       </section>
 
       {/* ---------- Lookbook ---------- */}
@@ -286,6 +377,15 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
           <div>
             <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Lookbook — photos portées</h2>
             <p className="mt-1 text-[11px] text-paper/35">Ajoutez, retirez, réordonnez. Texte vide = texte traduit par défaut.</p>
+            <div className="mt-3 max-w-xs">
+              <TextField
+                label="Titre de la section"
+                value={lookbook.title}
+                max={60}
+                placeholder="Porté"
+                onChange={(v) => update((c) => ({ ...c, lookbook: { ...c.lookbook, title: v } }))}
+              />
+            </div>
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <label className="flex items-center gap-2 text-xs text-paper/70">
@@ -438,8 +538,25 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
 
       {/* ---------- Manifeste ---------- */}
       <section className="mt-8 border border-line p-5">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Fond de la section Manifeste</h2>
-        <p className="mt-1 text-[11px] text-paper/35">Image en filigrane derrière la citation du manifeste.</p>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Section Manifeste</h2>
+        <p className="mt-1 text-[11px] text-paper/35">Citation, lien et image en filigrane derrière la citation.</p>
+        <div className="mt-4 grid gap-4 sm:grid-cols-[2fr_1fr]">
+          <TextField
+            label="Citation"
+            value={manifeste.quote}
+            max={300}
+            multiline
+            placeholder="Une couronne gravée, un visage tribal — le luxe qui ne s'excuse pas d'où il vient."
+            onChange={(v) => update((c) => ({ ...c, manifeste: { ...c.manifeste, quote: v } }))}
+          />
+          <TextField
+            label="Lien vers le manifeste"
+            value={manifeste.cta}
+            max={40}
+            placeholder="Entrer dans l'univers"
+            onChange={(v) => update((c) => ({ ...c, manifeste: { ...c.manifeste, cta: v } }))}
+          />
+        </div>
         <div className="mt-5 grid gap-6 md:grid-cols-[1fr_1fr]">
           {manifeste.url ? (
             <ImageSlot
@@ -493,7 +610,9 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
                   style={{ opacity: manifeste.opacity / 100 }}
                 />
               )}
-              <p className="relative px-6 text-center font-editorial text-sm italic text-paper">Aperçu derrière la citation</p>
+              <p className="relative px-6 text-center font-editorial text-sm italic text-paper">
+                {manifeste.quote || "Une couronne gravée, un visage tribal — le luxe qui ne s'excuse pas d'où il vient."}
+              </p>
             </div>
           </div>
         </div>

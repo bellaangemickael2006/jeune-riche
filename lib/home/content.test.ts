@@ -38,3 +38,17 @@ test("parseHomeContent retombe sur les valeurs d'origine si le fichier est abîm
   custom.hero.overlay = 60;
   assert.deepEqual(parseHomeContent(custom), custom);
 });
+
+test("un réglage enregistré avant l'ajout des textes reste valable (textes vides)", () => {
+  const ancien = {
+    hero: { url: SITE_IMG, alt: "", focusX: 50, focusY: 40, overlay: 30 },
+    lookbook: { visible: true, columns: 2, items: [] },
+    manifeste: { url: null, opacity: 0 },
+  };
+  const parsed = parseHomeContent(ancien);
+  assert.equal(parsed.hero.url, SITE_IMG);
+  assert.equal(parsed.hero.tagline, "");
+  assert.deepEqual(parsed.pieces, { title: "", marquee: "" });
+  assert.equal(parsed.lookbook.title, "");
+  assert.equal(parsed.manifeste.quote, "");
+});

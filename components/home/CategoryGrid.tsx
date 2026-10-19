@@ -3,8 +3,9 @@ import Marquee from "@/components/ui/Marquee";
 import WordPullUp from "@/components/ui/WordPullUp";
 import ProductShowcase, { type ShowcaseItem } from "@/components/home/ProductShowcase";
 import { getServerTranslation } from "@/lib/i18n/server";
+import type { HomeContent } from "@/lib/home/content";
 
-export default async function CategoryGrid({ items }: { items: ShowcaseItem[] }) {
+export default async function CategoryGrid({ items, content }: { items: ShowcaseItem[]; content: HomeContent["pieces"] }) {
   const { t } = await getServerTranslation();
 
   return (
@@ -15,14 +16,14 @@ export default async function CategoryGrid({ items }: { items: ShowcaseItem[] })
             key={i}
             className="font-display flex items-center gap-6 whitespace-nowrap text-sm uppercase tracking-widest2 text-paper/30"
           >
-            Jeune Riche <span className="text-paper/50">•</span>
+            {content.marquee || "Jeune Riche"} <span className="text-paper/50">•</span>
           </span>
         ))}
       </Marquee>
 
       <div className="mb-10 flex items-end justify-between px-5 md:px-10">
         <WordPullUp
-          text={t("home.ourPieces")}
+          text={content.title || t("home.ourPieces")}
           as="h2"
           className="font-display text-3xl uppercase text-paper md:text-5xl"
         />

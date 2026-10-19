@@ -8,8 +8,11 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:3000",
     trace: "on-first-retry",
+    // Le site choisit sa langue d'après le navigateur : les tests vérifient
+    // les textes français, la langue par défaut de la boutique.
+    locale: "fr-FR",
   },
-  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"], locale: "fr-FR" } }],
   webServer: {
     // En CI, on sert le build de production (déjà fait par l'étape Build) :
     // le premier rendu de `next dev` compile chaque page à la demande et peut

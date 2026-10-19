@@ -27,7 +27,7 @@ export default async function Lookbook({ content }: { content: HomeContent["look
     <section className="py-20 md:py-32">
       <div className="mb-10 flex items-end justify-between px-5 md:px-10">
         <WordPullUp
-          text={t("home.wornTitle")}
+          text={content.title || t("home.wornTitle")}
           as="h2"
           className="font-display text-3xl uppercase text-paper md:text-5xl"
         />

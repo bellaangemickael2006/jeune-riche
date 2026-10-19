@@ -13,7 +13,7 @@ test("la homepage affiche le hero et les CTA principaux", async ({ page }) => {
 
 test("la navigation principale mène aux bonnes pages", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("navigation").getByRole("link", { name: "Catalogue" }).click();
+  await page.getByRole("navigation").getByRole("link", { name: "Collection", exact: true }).first().click();
   await expect(page).toHaveURL(/\/catalogue$/);
   await expect(page.getByRole("heading", { name: "Toute la collection" })).toBeVisible();
 });
@@ -29,8 +29,22 @@ test("le catalogue affiche les 6 catégories réelles et un état vide honnête"
 
 test("une fiche produit inexistante affiche un 404 propre", async ({ page }) => {
   const response = await page.goto("/catalogue/produit-inexistant");
-  expect(response?.status()).toBe(404);
   await expect(page.getByRole("heading", { name: "Page introuvable" })).toBeVisible();
+  // Pour un navigateur, Next.js diffuse la page en continu (écran de
+  // chargement) : le code reste 200 mais la page porte « noindex ». Les robots
+  // des moteurs de recherche reçoivent, eux, un vrai 404.
+  const robots = await page.locator('meta[name="robots"]').first().getAttribute("content").catch(() => null);
+  expect(response?.status() === 404 || /noindex/.test(robots ?? "")).toBe(true);
+});
+
+test("un robot de recherche reçoit un vrai 404 pour une fiche inexistante", async ({ browser }) => {
+  const context = await browser.newContext({
+    userAgent: "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
+    locale: "fr-FR",
+  });
+  const response = await (await context.newPage()).goto("/catalogue/produit-inexistant");
+  expect(response?.status()).toBe(404);
+  await context.close();
 });
 
 test("le manifeste affiche le texte éditorial", async ({ page }) => {

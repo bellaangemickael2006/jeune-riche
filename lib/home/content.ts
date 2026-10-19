@@ -20,6 +20,8 @@ export function isAllowedImageUrl(url: string) {
 const imageUrl = z.string().trim().max(500).refine(isAllowedImageUrl, "Image non autorisée.");
 const percent = z.number().int().min(0).max(100);
 const text = (max: number) => z.string().trim().max(max);
+// Texte facultatif : absent des anciens réglages enregistrés → vide (= texte traduit).
+const optionalText = (max: number) => text(max).default("");
 
 export const RATIOS = { square: "1 / 1", portrait: "4 / 5", landscape: "3 / 2" } as const;
 export type Ratio = keyof typeof RATIOS;
@@ -43,8 +45,19 @@ export const homeContentSchema = z.object({
     focusX: percent,
     focusY: percent,
     overlay: z.number().int().min(0).max(90), // assombrissement derrière le texte, en %
+    tagline: optionalText(80),
+    title: optionalText(60),
+    ctaPrimary: optionalText(40),
+    ctaSecondary: optionalText(40),
   }),
+  pieces: z
+    .object({
+      title: optionalText(60),
+      marquee: optionalText(60),
+    })
+    .default({ title: "", marquee: "" }),
   lookbook: z.object({
+    title: optionalText(60),
     visible: z.boolean(),
     columns: z.union([z.literal(1), z.literal(2), z.literal(3)]),
     items: z.array(lookbookItem).max(24),
@@ -52,10 +65,12 @@ export const homeContentSchema = z.object({
   manifeste: z.object({
     url: imageUrl.nullable(), // null = pas d'image de fond
     opacity: z.number().int().min(0).max(30),
+    quote: optionalText(300),
+    cta: optionalText(40),
   }),
 });
 
-export type HomeContent = z.infer<typeof homeContentSchema>;
+export type HomeContent = z.output<typeof homeContentSchema>;
 export type LookbookItem = z.infer<typeof lookbookItem>;
 
 /**
@@ -70,8 +85,14 @@ export const DEFAULT_HOME_CONTENT: HomeContent = {
     focusX: 50,
     focusY: 38,
     overlay: 25,
+    tagline: "",
+    title: "",
+    ctaPrimary: "",
+    ctaSecondary: "",
   },
+  pieces: { title: "", marquee: "" },
   lookbook: {
+    title: "",
     visible: true,
     columns: 2,
     items: [
@@ -82,6 +103,8 @@ export const DEFAULT_HOME_CONTENT: HomeContent = {
   manifeste: {
     url: "/images/badge/badge-black-on-white.png",
     opacity: 4,
+    quote: "",
+    cta: "",
   },
 };
 
