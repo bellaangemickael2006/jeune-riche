@@ -123,6 +123,7 @@ model Product {
   reviews    Review[]
   wishlist   WishlistItem[]
   sizeGuide  SizeGuide?
+  models     ProductModel[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -142,6 +143,24 @@ model ProductImage {
   isPrimary Boolean   @default(false)
 
   @@map("product_images")
+}
+
+// Modèle 3D (.glb) exporté depuis VirtualThreads, affiché en 360° sur la
+// fiche produit. Un par couleur (le studio exporte une couleur à la fois) ;
+// color null = valable pour toutes les couleurs. Table à part : les requêtes
+// produit n'y touchent pas, rien ne casse avant la migration en production
+// (voir lib/data/productModels.ts).
+model ProductModel {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  color     String?
+  url       String
+  path      String
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@map("product_models")
 }
 
 model ProductVariant {

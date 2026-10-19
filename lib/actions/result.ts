@@ -31,6 +31,9 @@ function toErrorResult(error: unknown): { ok: false; error: string } {
       return { ok: false, error: "Impossible : cet élément est encore utilisé ailleurs (commande, alerte de stock…)." };
     }
     if (error.code === "P2025") return { ok: false, error: "Élément introuvable — il a peut-être déjà été supprimé." };
+    if (error.code === "P2021") {
+      return { ok: false, error: "Table absente de la base : appliquez d'abord la dernière migration dans Supabase." };
+    }
   }
   console.error("[admin action]", error);
   return { ok: false, error: "Une erreur inattendue est survenue. Réessayez." };

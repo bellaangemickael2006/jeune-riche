@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import Gallery from "@/components/product/Gallery";
 import AddToCart from "@/components/product/AddToCart";
@@ -8,7 +9,7 @@ import SizeGuide from "@/components/product/SizeGuide";
 import Reviews from "@/components/product/Reviews";
 import ReviewForm from "@/components/product/ReviewForm";
 import WishlistButton from "@/components/product/WishlistButton";
-import { formatPrice, getDropCountdown } from "@/lib/utils";
+import { cn, formatPrice, getDropCountdown } from "@/lib/utils";
 import { trackProductView } from "@/lib/recentlyViewed";
 import type { TechnicalDetail } from "@/lib/data/product-details";
 import CountdownTimer from "@/components/ui/CountdownTimer";
@@ -19,6 +20,13 @@ import type { DropSummary } from "@/types";
 type Img = { url: string; alt: string; type: string; color: string | null };
 type Variant = { id: string; size: string; color: string; stock: number };
 type ReviewType = Parameters<typeof Reviews>[0]["reviews"];
+type Model3D = { color: string | null; url: string };
+
+// Chargée seulement à l'ouverture de l'onglet 3D (voir ModelViewer3D).
+const ModelViewer3D = dynamic(() => import("@/components/product/ModelViewer3D"), {
+  ssr: false,
+  loading: () => <div className="h-full w-full animate-pulse bg-studio" />,
+});
 
 export default function ProductViewer({
   images,
@@ -36,6 +44,7 @@ export default function ProductViewer({
   reviews,
   isLoggedIn,
   drop,
+  models = [],
 }: {
   images: Img[];
   productId: string;
@@ -52,6 +61,8 @@ export default function ProductViewer({
   reviews: ReviewType;
   isLoggedIn: boolean;
   drop?: DropSummary | null;
+  /** Modèles 3D VirtualThreads : un par couleur, ou un seul sans couleur. */
+  models?: Model3D[];
 }) {
   const { t } = useTranslation();
   const { locale } = useLocale();
@@ -74,6 +85,10 @@ export default function ProductViewer({
   }));
   const primaryImage = galleryImages[0]?.url ?? "";
 
+  const model = models.find((m) => m.color === color) ?? models.find((m) => !m.color) ?? null;
+  const [view, setView] = useState<"photos" | "3d">("photos");
+  const show3D = view === "3d" && model !== null;
+
   useEffect(() => {
     trackProductView({ slug: productSlug, name: productName, image: primaryImage || null, price });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- une seule fois par visite de la fiche, pas à chaque changement de couleur
@@ -85,12 +100,47 @@ export default function ProductViewer({
 
       <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-start md:gap-16 lg:grid-cols-[1.35fr_1fr]">
         <div className="md:sticky md:top-32">
-          <Gallery
-            key={color}
-            images={galleryImages}
-            productName={productName}
-            personalization={personalization}
-          />
+          {model && (
+            <div role="tablist" aria-label={t("product.viewMode")} className="mb-3 flex gap-2">
+              {(["photos", "3d"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  role="tab"
+                  type="button"
+                  aria-selected={(mode === "3d") === show3D}
+                  onClick={() => setView(mode)}
+                  className={cn(
+                    "border px-4 py-2 text-label uppercase transition-colors",
+                    (mode === "3d") === show3D ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
+                  )}
+                >
+                  {mode === "photos" ? t("product.viewPhotos") : t("product.view3D")}
+                </button>
+              ))}
+            </div>
+          )}
+          {show3D && model ? (
+            <div className="relative aspect-[4/5] overflow-hidden bg-studio">
+              <ModelViewer3D
+                src={model.url}
+                alt={`${productName} — ${color}`}
+                poster={primaryImage || undefined}
+                labels={{
+                  hint: t("product.dragToRotate"),
+                  loading: t("product.model3DLoading"),
+                  error: t("product.model3DError"),
+                  ar: t("product.viewInAR"),
+                }}
+              />
+            </div>
+          ) : (
+            <Gallery
+              key={color}
+              images={galleryImages}
+              productName={productName}
+              personalization={personalization}
+            />
+          )}
         </div>
 
         <div className="max-w-md">

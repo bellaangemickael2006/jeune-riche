@@ -139,7 +139,14 @@
     "reviewPhotoOpen": "Agrandir la photo {{number}}",
     "reviewPhotoAlt": "Photo d'un client",
     "reviewsWithPhotos": "{{count}} avis avec photo",
-    "reviewsWithPhotos_other": "{{count}} avis avec photos"
+    "reviewsWithPhotos_other": "{{count}} avis avec photos",
+    "viewMode": "Mode d'affichage",
+    "viewPhotos": "Photos",
+    "view3D": "3D 360°",
+    "dragToRotate": "Glissez pour faire tourner · 360°",
+    "model3DLoading": "Chargement de la vue 3D…",
+    "model3DError": "La vue 3D n'a pas pu se charger. Les photos restent disponibles.",
+    "viewInAR": "Voir chez moi"
   },
   "cart": {
     "title": "Panier",

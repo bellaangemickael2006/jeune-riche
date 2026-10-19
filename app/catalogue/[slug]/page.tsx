@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getProductBySlug, getPublishedProducts } from "@/lib/data/products";
 import { getTechnicalDetails } from "@/lib/data/product-details";
 import { getReviewPhotos } from "@/lib/data/reviewPhotos";
+import { getProductModels } from "@/lib/data/productModels";
 import { createClient } from "@/lib/supabase/server";
 import ProductViewer from "@/components/product/ProductViewer";
 import ProductCard from "@/components/catalogue/ProductCard";
@@ -52,6 +53,7 @@ export default async function ProductPage({
     // pas connecté : formulaire d'avis affiche l'invite de connexion
   }
 
+  const models = await getProductModels(product.id);
   const reviewPhotos = await getReviewPhotos(product.reviews.map((r) => r.id));
   const reviews = product.reviews.map((r) => ({ ...r, photos: reviewPhotos[r.id] ?? [] }));
 
@@ -140,6 +142,7 @@ export default async function ProductPage({
         reviews={reviews}
         isLoggedIn={isLoggedIn}
         drop={product.drop}
+        models={models.map((m) => ({ color: m.color, url: m.url }))}
       />
 
       {crossSell.length > 0 && (

@@ -10,8 +10,10 @@ import {
   deleteVariant,
   deleteProductImage,
   deleteProduct,
+  deleteProductModel,
 } from "@/lib/actions/products";
-import { ImageUploadForm, VideoUploadForm } from "@/components/admin/MediaUploadForm";
+import { ImageUploadForm, ModelUploadForm, VideoUploadForm } from "@/components/admin/MediaUploadForm";
+import { getProductModels } from "@/lib/data/productModels";
 import ConfirmButton from "@/components/admin/ConfirmButton";
 import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 
@@ -25,6 +27,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
   });
   if (!product) notFound();
   const categories = await prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
+  const models = await getProductModels(product.id);
+  const colors = Array.from(new Set(product.variants.map((v) => v.color)));
 
   return (
     <div className="max-w-3xl">
@@ -247,7 +251,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
         <ImageUploadForm
           productId={product.id}
-          colors={Array.from(new Set(product.variants.map((v) => v.color)))}
+          colors={colors}
         />
         <p className="mt-2 text-[11px] text-paper/30">
           Le fichier est envoyé vers Supabase Storage ; l&apos;aperçu ci-dessus montre le rendu réel
@@ -258,6 +262,42 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       <section className="mt-12">
         <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Vidéo de présentation</h2>
         <VideoUploadForm productId={product.id} currentVideoUrl={product.videoUrl} />
+      </section>
+
+      <section className="mt-12">
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Modèle 3D — vue 360° (VirtualThreads)</h2>
+        <p className="mt-2 max-w-xl text-[11px] leading-relaxed text-paper/40">
+          Sur virtualthreads.io, placez votre design sur le T-shirt, choisissez la couleur, puis exportez le
+          modèle 3D au format .glb (offre Pro). Envoyez un fichier par couleur : il remplace l&apos;ancien de la
+          même couleur. L&apos;onglet « 3D 360° » apparaît sur la fiche dès qu&apos;un modèle existe pour la
+          couleur choisie par le client.
+        </p>
+        {models.length > 0 && (
+          <ul className="mt-4 divide-y divide-line border-y border-line">
+            {models.map((m) => (
+              <li key={m.id} className="flex items-center justify-between gap-3 py-3 text-sm">
+                <span className="text-paper">{m.color ?? "Toutes couleurs"}</span>
+                <a
+                  href={m.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-paper/50 underline underline-offset-4 hover:text-paper"
+                >
+                  Fichier .glb
+                </a>
+                <ActionForm action={deleteProductModel.bind(null, m.id, product.id)}>
+                  <ConfirmButton
+                    confirmMessage="Supprimer ce modèle 3D ?"
+                    className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                  >
+                    Supprimer
+                  </ConfirmButton>
+                </ActionForm>
+              </li>
+            ))}
+          </ul>
+        )}
+        <ModelUploadForm productId={product.id} colors={colors} />
       </section>
     </div>
   );

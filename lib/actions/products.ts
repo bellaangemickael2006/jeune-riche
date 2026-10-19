@@ -17,7 +17,7 @@ import {
   type DataResult,
 } from "@/lib/actions/result";
 import type { ImageType } from "@prisma/client";
-import { ensureMediaBucket, MAX_MEDIA_BYTES, MEDIA_BUCKET } from "@/lib/storage";
+import { ensureMediaBucket, MAX_MEDIA_BYTES, MEDIA_BUCKET, removeMediaFiles } from "@/lib/storage";
 
 const IMAGE_TYPES: ImageType[] = ["FRONT", "BACK", "DETAIL", "LIFESTYLE", "MOCKUP"];
 
@@ -27,6 +27,15 @@ const IMAGE_TYPES: ImageType[] = ["FRONT", "BACK", "DETAIL", "LIFESTYLE", "MOCKU
 // On ne garde que l'extension si elle correspond à un type réellement permis.
 const ALLOWED_IMAGE_EXT = new Set(["jpg", "jpeg", "png", "webp", "avif", "gif"]);
 const ALLOWED_VIDEO_EXT = new Set(["mp4", "webm", "mov"]);
+// .glb seulement : un .gltf référence des fichiers à côté (textures, .bin)
+// qu'un envoi unique ne transporterait pas.
+const ALLOWED_MODEL_EXT = new Set(["glb"]);
+const MEDIA_KIND = {
+  image: { allowed: ALLOWED_IMAGE_EXT, fallback: "jpg", prefix: "" },
+  video: { allowed: ALLOWED_VIDEO_EXT, fallback: "mp4", prefix: "video-" },
+  model: { allowed: ALLOWED_MODEL_EXT, fallback: "glb", prefix: "model-" },
+} as const;
+type MediaKind = keyof typeof MEDIA_KIND;
 
 function safeExtension(filename: string, allowed: Set<string>, fallback: string) {
   const ext = filename.split(".").pop()?.toLowerCase() ?? "";
@@ -235,7 +244,7 @@ export async function deleteVariant(variantId: string, productId: string): Promi
 // Supabase Storage, puis l'action d'enregistrement ci-dessous le rattache.
 export async function prepareMediaUpload(
   productId: string,
-  kind: "image" | "video",
+  kind: MediaKind,
   file: { name: string; type: string; size: number }
 ): Promise<DataResult<{ path: string; token: string }>> {
   return runDataAction(async () => {
@@ -246,6 +255,11 @@ export async function prepareMediaUpload(
     if (kind === "video" && !file.type.startsWith("video/")) {
       throw new ActionError("Le fichier sélectionné n'est pas une vidéo.");
     }
+    // Le navigateur ne connaît souvent aucun type MIME pour un .glb : seule
+    // l'extension fait foi ici.
+    if (kind === "model" && !file.name.toLowerCase().endsWith(".glb")) {
+      throw new ActionError("Choisissez le fichier .glb exporté depuis VirtualThreads.");
+    }
     if (file.size <= 0) throw new ActionError("Fichier vide.");
     if (file.size > MAX_MEDIA_BYTES) throw new ActionError("Fichier trop volumineux (25 Mo max).");
     if (!(await prisma.product.findUnique({ where: { id: productId }, select: { id: true } }))) {
@@ -253,11 +267,8 @@ export async function prepareMediaUpload(
     }
 
     await ensureMediaBucket();
-    const ext =
-      kind === "image"
-        ? safeExtension(file.name, ALLOWED_IMAGE_EXT, "jpg")
-        : safeExtension(file.name, ALLOWED_VIDEO_EXT, "mp4");
-    const prefix = kind === "video" ? "video-" : "";
+    const { allowed, fallback, prefix } = MEDIA_KIND[kind];
+    const ext = safeExtension(file.name, allowed, fallback);
     const path = `${productId}/${prefix}${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
 
     const { data, error } = await createAdminClient().storage.from(MEDIA_BUCKET).createSignedUploadUrl(path);
@@ -267,9 +278,8 @@ export async function prepareMediaUpload(
 }
 
 /** Chemin de stockage produit par prepareMediaUpload pour ce produit, jamais un autre. */
-function checkUploadedPath(productId: string, path: string, kind: "image" | "video") {
-  const allowed = kind === "image" ? ALLOWED_IMAGE_EXT : ALLOWED_VIDEO_EXT;
-  const prefix = kind === "video" ? "video-" : "";
+function checkUploadedPath(productId: string, path: string, kind: MediaKind) {
+  const { allowed, prefix } = MEDIA_KIND[kind];
   const match = new RegExp(`^${productId}/${prefix}\\d+-[a-z0-9]+\\.([a-z0-9]+)$`).exec(path);
   if (!match || !allowed.has(match[1])) throw new ActionError("Fichier envoyé invalide. Recommencez l'envoi.");
 }
@@ -360,6 +370,39 @@ export async function removeProductVideo(productId: string): Promise<ActionResul
     const previous = await prisma.product.findUnique({ where: { id: productId }, select: { videoUrl: true } });
     await prisma.product.update({ where: { id: productId }, data: { videoUrl: null } });
     await removeStoredFile(previous?.videoUrl ?? null);
+    revalidateProduct(productId);
+  });
+}
+
+/**
+ * Rattache un modèle 3D (.glb VirtualThreads) au produit. Un seul par
+ * couleur : envoyer un nouveau fichier pour la même couleur remplace l'ancien.
+ */
+export async function addProductModel(productId: string, formData: FormData): Promise<ActionResult> {
+  return runAction(async () => {
+    await requireAdmin();
+    const path = String(formData.get("path") ?? "");
+    const color = String(formData.get("color") ?? "").trim() || null;
+    checkUploadedPath(productId, path, "model");
+
+    const { data } = createAdminClient().storage.from(MEDIA_BUCKET).getPublicUrl(path);
+    const previous = await prisma.productModel.findMany({ where: { productId, color }, select: { id: true, path: true } });
+    await prisma.$transaction([
+      prisma.productModel.deleteMany({ where: { id: { in: previous.map((m) => m.id) } } }),
+      prisma.productModel.create({ data: { productId, color, url: data.publicUrl, path } }),
+    ]);
+    await removeMediaFiles(previous.map((m) => m.path));
+
+    revalidateProduct(productId);
+    return previous.length > 0 ? "Modèle 3D remplacé." : "Modèle 3D ajouté.";
+  });
+}
+
+export async function deleteProductModel(modelId: string, productId: string): Promise<ActionResult> {
+  return runAction(async () => {
+    await requireAdmin();
+    const model = await prisma.productModel.delete({ where: { id: modelId } });
+    await removeMediaFiles([model.path]);
     revalidateProduct(productId);
   });
 }
