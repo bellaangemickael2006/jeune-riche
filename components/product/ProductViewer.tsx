@@ -1,26 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import Gallery from "@/components/product/Gallery";
-import { garmentColor, garmentKindFor } from "@/lib/tryOn";
-import { cn } from "@/lib/utils";
-
-// Three.js (~600 Ko) n'est chargé qu'au clic sur « 3D », jamais avec la fiche.
-const TryOn3D = dynamic(() => import("@/components/product/TryOn3D"), {
-  ssr: false,
-  loading: () => <div className="h-full w-full animate-pulse bg-studio" />,
-});
-
-function supportsWebGL() {
-  try {
-    const canvas = document.createElement("canvas");
-    return Boolean(canvas.getContext("webgl2") ?? canvas.getContext("webgl"));
-  } catch {
-    return false;
-  }
-}
 import AddToCart from "@/components/product/AddToCart";
 import SizeGuide from "@/components/product/SizeGuide";
 import Reviews from "@/components/product/Reviews";
@@ -44,7 +26,6 @@ export default function ProductViewer({
   productName,
   productSlug,
   categoryName,
-  categorySlug,
   description,
   price,
   variants,
@@ -61,7 +42,6 @@ export default function ProductViewer({
   productName: string;
   productSlug: string;
   categoryName: string;
-  categorySlug: string;
   description: string | null;
   price: number | null;
   variants: Variant[];
@@ -79,11 +59,6 @@ export default function ProductViewer({
   const colors = useMemo(() => Array.from(new Set(variants.map((v) => v.color))), [variants]);
   const [color, setColor] = useState(colors[0] ?? "");
   const [personalization, setPersonalization] = useState("");
-  const garmentKind = garmentKindFor(categorySlug);
-  const [view, setView] = useState<"photos" | "3d">("photos");
-  const [webgl, setWebgl] = useState(false);
-  useEffect(() => setWebgl(supportsWebGL()), []);
-  const show3D = Boolean(garmentKind) && webgl;
 
   // Ne filtrer que si au moins une image porte réellement une couleur : la
   // plupart des produits n'ont qu'un seul coloris et leurs images ne sont
@@ -110,42 +85,12 @@ export default function ProductViewer({
 
       <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:items-start md:gap-16 lg:grid-cols-[1.35fr_1fr]">
         <div className="md:sticky md:top-32">
-          {show3D && (
-            <div role="tablist" aria-label={t("product.viewMode")} className="mb-3 flex gap-2">
-              {(["photos", "3d"] as const).map((mode) => (
-                <button
-                  key={mode}
-                  role="tab"
-                  type="button"
-                  aria-selected={view === mode}
-                  onClick={() => setView(mode)}
-                  className={cn(
-                    "border px-4 py-2 text-label uppercase transition-colors",
-                    view === mode ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
-                  )}
-                >
-                  {mode === "photos" ? t("product.viewPhotos") : t("product.view3D")}
-                </button>
-              ))}
-            </div>
-          )}
-          {show3D && view === "3d" && garmentKind ? (
-            <div className="relative aspect-[4/5] overflow-hidden bg-studio">
-              <TryOn3D
-                kind={garmentKind}
-                color={garmentColor(color)}
-                personalization={personalizationEnabled ? personalization : ""}
-                hint={t("product.dragToRotate")}
-              />
-            </div>
-          ) : (
-            <Gallery
-              key={color}
-              images={galleryImages}
-              productName={productName}
-              personalization={personalization}
-            />
-          )}
+          <Gallery
+            key={color}
+            images={galleryImages}
+            productName={productName}
+            personalization={personalization}
+          />
         </div>
 
         <div className="max-w-md">

@@ -125,7 +125,6 @@ export default async function ProductPage({
         productName={product.name}
         productSlug={product.slug}
         categoryName={product.category.name}
-        categorySlug={product.category.slug}
         description={product.description}
         price={product.price ? Number(product.price) : null}
         variants={product.variants.map((v) => ({
