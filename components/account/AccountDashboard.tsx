@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
 import { formatPrice } from "@/lib/utils";
 import { useLocale } from "@/components/providers/I18nProvider";
+import PhoneForm from "@/components/account/PhoneForm";
 
 type Order = {
   id: string;
@@ -55,6 +56,16 @@ export default function AccountDashboard({
           {t("account.logout")}
         </button>
       </div>
+
+      {!address.addressPhone && (
+        // WhatsApp est le canal de suivi des commandes : rappel tant que le
+        // numéro manque (fréquent après une inscription avec Google).
+        <div className="mt-8 border border-paper/40 p-5">
+          <p className="text-xs uppercase tracking-widest2 text-paper">{t("account.phoneMissingTitle")}</p>
+          <p className="mb-4 mt-1 text-xs text-paper/50">{t("account.phoneStepText")}</p>
+          <PhoneForm onSaved={() => router.refresh()} />
+        </div>
+      )}
 
       <div className="mt-10">
         <p className="text-xs uppercase tracking-widest2 text-paper/50">{t("account.myOrders")}</p>

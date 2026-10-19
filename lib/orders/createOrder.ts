@@ -2,8 +2,8 @@ import "server-only";
 import { prisma } from "@/lib/prisma";
 import { getStoreSettings } from "@/lib/data/settings";
 import { resolvePromoCode } from "@/lib/data/promoCodes";
-import { LOW_STOCK_THRESHOLD } from "@/lib/utils";
-import { sendEmail, lowStockAlertEmail } from "@/lib/email";
+import { LOW_STOCK_THRESHOLD, whatsappStatusUpdateLink } from "@/lib/utils";
+import { sendEmail, lowStockAlertEmail, newOrderAdminEmail } from "@/lib/email";
 import { subtotalOf, totalOf } from "@/lib/orders/pricing";
 
 /**
@@ -198,6 +198,49 @@ export async function createOrder(input: CreateOrderInput) {
   });
 
   return { order, resolvedLines, discountCode, discountAmount };
+}
+
+/**
+ * Prévient la boutique de la nouvelle commande par email : à l'email de
+ * contact des Paramètres, sinon à tous les administrateurs. Ne lève jamais
+ * d'erreur (la commande est déjà enregistrée).
+ */
+export async function notifyNewOrder(params: {
+  order: { id: string; orderNumber: string; total: unknown };
+  customerName: string;
+  customerEmail: string;
+  shippingAddress: ShippingAddress;
+  resolvedLines: ResolvedLine[];
+  discount: { code: string; amount: number } | null;
+}) {
+  try {
+    const settings = await getStoreSettings().catch(() => null);
+    const recipients = settings?.contactEmail
+      ? [settings.contactEmail]
+      : (await prisma.user.findMany({ where: { role: "ADMIN" }, select: { email: true } })).map((u) => u.email);
+    if (recipients.length === 0) return;
+
+    const { order, shippingAddress } = params;
+    const result = await sendEmail({
+      to: recipients.join(","),
+      subject: `Nouvelle commande ${order.orderNumber} — ${params.customerName}`,
+      html: newOrderAdminEmail({
+        orderNumber: order.orderNumber,
+        orderId: order.id,
+        customerName: params.customerName,
+        customerEmail: params.customerEmail,
+        phone: shippingAddress.phone,
+        address: shippingAddress,
+        items: params.resolvedLines,
+        discount: params.discount,
+        total: Number(order.total),
+        whatsappUrl: whatsappStatusUpdateLink("CONFIRMEE", order.orderNumber, shippingAddress.phone),
+      }),
+    });
+    if (!result.sent) console.error("[orders] notification nouvelle commande non envoyée:", order.orderNumber);
+  } catch (error) {
+    console.error("[orders] notifyNewOrder:", error);
+  }
 }
 
 /**

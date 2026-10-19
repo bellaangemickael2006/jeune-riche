@@ -260,7 +260,14 @@
     "orWithEmail": "ou avec votre email",
     "googleError": "La connexion avec Google a échoué. Réessayez ou utilisez votre email.",
     "googleCancelled": "Connexion avec Google annulée.",
-    "googleAccountError": "Impossible d'ouvrir votre compte avec Google. Contactez-nous sur WhatsApp si le problème continue."
+    "googleAccountError": "Impossible d'ouvrir votre compte avec Google. Contactez-nous sur WhatsApp si le problème continue.",
+    "phoneStepEyebrow": "Dernière étape",
+    "phoneStepTitle": "Votre numéro WhatsApp",
+    "phoneStepText": "C'est par WhatsApp que nous confirmons vos commandes et organisons la livraison. Il n'est jamais partagé.",
+    "phoneSave": "Enregistrer mon numéro",
+    "phoneLater": "Plus tard",
+    "phoneInvalid": "Numéro invalide. Exemple : +225 07 00 00 00 00",
+    "phoneMissingTitle": "Ajoutez votre numéro WhatsApp"
   },
   "wishlist": {
     "title": "Favoris",

@@ -259,7 +259,14 @@
     "orWithEmail": "or with your email",
     "googleError": "Google sign-in failed. Try again or use your email.",
     "googleCancelled": "Google sign-in cancelled.",
-    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening."
+    "googleAccountError": "We couldn't open your account with Google. Contact us on WhatsApp if this keeps happening.",
+    "phoneStepEyebrow": "Last step",
+    "phoneStepTitle": "Your WhatsApp number",
+    "phoneStepText": "We use WhatsApp to confirm your orders and arrange delivery. It is never shared.",
+    "phoneSave": "Save my number",
+    "phoneLater": "Later",
+    "phoneInvalid": "Invalid number. Example: +225 07 00 00 00 00",
+    "phoneMissingTitle": "Add your WhatsApp number"
   },
   "wishlist": {
     "title": "Unavyopenda",

@@ -25,8 +25,11 @@ export async function GET(request: NextRequest) {
     return fail("google");
   }
 
+  let needsPhone = false;
   try {
-    await ensureClientUser(data.user);
+    const user = await ensureClientUser(data.user);
+    // Google ne fournit pas le numéro WhatsApp : on le demande tout de suite.
+    needsPhone = !user.addressPhone;
   } catch (err) {
     // Sans fiche client, le compte serait inutilisable (commandes, avis) :
     // on ne laisse pas une session à moitié ouverte.
@@ -35,5 +38,8 @@ export async function GET(request: NextRequest) {
     return fail("google_compte");
   }
 
+  if (needsPhone) {
+    return NextResponse.redirect(new URL(`/compte/telephone?next=${encodeURIComponent(next)}`, origin));
+  }
   return NextResponse.redirect(new URL(next, origin));
 }

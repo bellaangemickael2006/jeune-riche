@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { after, NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { whatsappOrderLink } from "@/lib/utils";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
-import { createOrder, afterOrderCreated, CheckoutError } from "@/lib/orders/createOrder";
+import { createOrder, afterOrderCreated, notifyNewOrder, CheckoutError } from "@/lib/orders/createOrder";
 
 const lineSchema = z.object({
   variantId: z.string(),
@@ -72,6 +72,19 @@ export async function POST(req: NextRequest) {
     // termine avant la réponse : sur Vercel, le travail après la réponse peut
     // être interrompu. Les envois d'email restent non bloquants.
     await afterOrderCreated({ customerEmail, resolvedLines });
+
+    // Après la réponse au client : il n'attend pas l'envoi de l'email, et
+    // Vercel garde la fonction en vie jusqu'à la fin de l'envoi.
+    after(() =>
+      notifyNewOrder({
+        order,
+        customerName,
+        customerEmail,
+        shippingAddress,
+        resolvedLines,
+        discount: discountCode ? { code: discountCode, amount: discountAmount } : null,
+      })
+    );
 
     // WhatsApp (numéro renseigné, obligatoire) est le canal de contact
     // principal — construit côté serveur à partir des lignes résolues en

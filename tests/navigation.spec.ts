@@ -1,9 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-// Smoke tests fonctionnant sans base de données provisionnée : ils vérifient
-// la navigation et les états vides honnêtes, pas les parcours nécessitant
-// des données réelles (voir tests/commerce.spec.ts pour ceux-là, à activer
-// une fois Supabase provisionné — voir TODO.md).
+// Smoke tests de navigation et d'états vides honnêtes. En CI, ils tournent sur
+// une base PostgreSQL jetable migrée puis remplie par le seed (catégories et
+// produits en brouillon, aucun produit publié) — voir .github/workflows/ci.yml.
 
 test("la homepage affiche le hero et les CTA principaux", async ({ page }) => {
   await page.goto("/");

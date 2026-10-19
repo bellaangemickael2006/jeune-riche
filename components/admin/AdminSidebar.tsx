@@ -23,7 +23,7 @@ const LINKS = [
   { href: "/admin/parametres", label: "Paramètres" },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ badges = {} }: { badges?: Record<string, number> }) {
   const pathname = usePathname();
   const router = useRouter();
   // La sidebar était en `fixed w-56` permanent, y compris sur mobile, où
@@ -84,7 +84,20 @@ export default function AdminSidebar() {
                     active ? "bg-paper text-ink" : "text-paper/50 hover:text-paper"
                   )}
                 >
-                  {link.label}
+                  <span className="flex items-center justify-between gap-2">
+                    {link.label}
+                    {badges[link.href] ? (
+                      <span
+                        className={cn(
+                          "min-w-5 rounded-full px-1.5 py-0.5 text-center text-[10px] leading-none tracking-normal",
+                          active ? "bg-ink text-paper" : "bg-paper text-ink"
+                        )}
+                        aria-label={`${badges[link.href]} à traiter`}
+                      >
+                        {badges[link.href]}
+                      </span>
+                    ) : null}
+                  </span>
                 </Link>
               );
             })}

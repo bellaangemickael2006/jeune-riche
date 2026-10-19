@@ -187,6 +187,57 @@ export function abandonedCartEmail(params: {
   `);
 }
 
+/** Prévient la boutique d'une nouvelle commande, avec tout pour la traiter tout de suite. */
+export function newOrderAdminEmail(params: {
+  orderNumber: string;
+  orderId: string;
+  customerName: string;
+  customerEmail: string;
+  phone: string;
+  address: { line1: string; city: string; postalCode?: string; country: string };
+  items: { productName: string; color: string; size: string; quantity: number; unitPrice: number; personalization: string | null }[];
+  discount: { code: string; amount: number } | null;
+  total: number;
+  whatsappUrl: string | null;
+}) {
+  const formatXof = (n: number) =>
+    new Intl.NumberFormat("fr-FR", { style: "currency", currency: "XOF", maximumFractionDigits: 0 }).format(n);
+  const rows = params.items
+    .map(
+      (i) => `
+      <tr>
+        <td style="padding:8px 0;border-bottom:1px solid #262626;">
+          ${escapeHtml(i.productName)} — ${escapeHtml(i.color)} / ${escapeHtml(i.size)} × ${Number(i.quantity)}
+          ${i.personalization ? `<br><span style="color:#f5f4f1;">Personnalisation : « ${escapeHtml(i.personalization)} »</span>` : ""}
+        </td>
+        <td style="padding:8px 0;border-bottom:1px solid #262626;text-align:right;white-space:nowrap;">
+          ${formatXof(i.unitPrice * i.quantity)}
+        </td>
+      </tr>`
+    )
+    .join("");
+  const a = params.address;
+  const address = `${escapeHtml(a.line1)}, ${escapeHtml(a.city)}${a.postalCode ? ` ${escapeHtml(a.postalCode)}` : ""}, ${escapeHtml(a.country)}`;
+  const button = (href: string, label: string, light: boolean) =>
+    `<a href="${escapeHtml(href)}" style="display:inline-block;margin:0 8px 8px 0;${
+      light ? "background:#f5f4f1;color:#0b0b0c;" : "border:1px solid #f5f4f1;color:#f5f4f1;"
+    }text-decoration:none;padding:12px 20px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">${label}</a>`;
+
+  return emailShell(`
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Nouvelle commande</p>
+    <p style="margin:0 0 4px;font-size:18px;color:#f5f4f1;"><strong>${escapeHtml(params.orderNumber)}</strong> — ${formatXof(params.total)}</p>
+    <p style="margin:0 0 20px;color:#9a9a9a;">
+      ${escapeHtml(params.customerName)} · ${escapeHtml(params.phone)}${params.customerEmail ? ` · ${escapeHtml(params.customerEmail)}` : ""}<br>
+      ${address}
+    </p>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin:0 0 12px;">${rows}</table>
+    ${params.discount ? `<p style="margin:0 0 4px;color:#9a9a9a;">Code ${escapeHtml(params.discount.code)} : −${formatXof(params.discount.amount)}</p>` : ""}
+    <p style="margin:0 0 24px;">Total : <strong style="color:#f5f4f1;">${formatXof(params.total)}</strong> (livraison à communiquer au client)</p>
+    ${button(`${siteUrl()}/admin/commandes/${encodeURIComponent(params.orderId)}`, "Ouvrir la commande", true)}
+    ${params.whatsappUrl ? button(params.whatsappUrl, "Confirmer au client sur WhatsApp", false) : ""}
+  `);
+}
+
 export function campaignEmail(bodyText: string) {
   const paragraphs = bodyText
     .split("\n")
