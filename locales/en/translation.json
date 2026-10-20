@@ -298,7 +298,32 @@
       "hoursShort": "h",
       "minutesShort": "min"
     },
-    "metaDescription": "JEUNE RICHE releases are announced on this page: limited-run pieces, dates and availability."
+    "metaDescription": "JEUNE RICHE releases are announced on this page: limited-run pieces, dates and availability.",
+    "lockedUntilOpen": "Available when the drop opens",
+    "live": {
+      "phase": {
+        "upcoming": "Coming soon",
+        "live": "Live",
+        "ended": "Ended",
+        "soldout": "Sold out"
+      },
+      "viewers": "{{count}} person is watching this drop",
+      "viewers_other": "{{count}} people are watching this drop",
+      "opensIn": "Opens in",
+      "openNow": "It's open",
+      "ended": "This drop has ended. The next one will be announced here.",
+      "allGone": "Everything's gone. Thank you all.",
+      "pieces": "The pieces",
+      "revealedAtOpening": "Revealed at opening",
+      "justSold": "“{{name}}” just sold",
+      "agoNow": "just now",
+      "agoMinutes": "{{count}} min ago",
+      "notifyPlaceholder": "Your email to get notified",
+      "notifyButton": "Notify me",
+      "notifyDone": "Done: you're on the list for this drop.",
+      "notifyError": "Couldn't sign you up right now, please try again.",
+      "allDrops": "All drops"
+    }
   },
   "footer": {
     "newsletter": "Newsletter — stay informed about upcoming drops.",

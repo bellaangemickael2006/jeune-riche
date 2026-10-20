@@ -298,7 +298,32 @@
       "hoursShort": "h",
       "minutesShort": "min"
     },
-    "metaDescription": "Les sorties JEUNE RICHE sont annoncées sur cette page : pièces en série limitée, dates et disponibilités."
+    "metaDescription": "Les sorties JEUNE RICHE sont annoncées sur cette page : pièces en série limitée, dates et disponibilités.",
+    "lockedUntilOpen": "Disponible à l'ouverture du drop",
+    "live": {
+      "phase": {
+        "upcoming": "Bientôt",
+        "live": "En direct",
+        "ended": "Terminé",
+        "soldout": "Épuisé"
+      },
+      "viewers": "{{count}} personne regarde ce drop",
+      "viewers_other": "{{count}} personnes regardent ce drop",
+      "opensIn": "Ouverture dans",
+      "openNow": "C'est ouvert",
+      "ended": "Ce drop est terminé. Le prochain sera annoncé ici.",
+      "allGone": "Tout est parti. Merci à tous.",
+      "pieces": "Les pièces",
+      "revealedAtOpening": "Révélée à l'ouverture",
+      "justSold": "« {{name}} » vient de partir",
+      "agoNow": "à l'instant",
+      "agoMinutes": "il y a {{count}} min",
+      "notifyPlaceholder": "Votre email pour être prévenu·e",
+      "notifyButton": "Me prévenir",
+      "notifyDone": "C'est noté : vous êtes sur la liste de ce drop.",
+      "notifyError": "Inscription impossible pour le moment, réessayez.",
+      "allDrops": "Tous les drops"
+    }
   },
   "footer": {
     "newsletter": "Newsletter — soyez informé des prochains drops.",

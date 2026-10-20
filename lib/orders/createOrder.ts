@@ -5,6 +5,7 @@ import { resolvePromoCode } from "@/lib/data/promoCodes";
 import { LOW_STOCK_THRESHOLD, whatsappStatusUpdateLink } from "@/lib/utils";
 import { sendEmail, lowStockAlertEmail, newOrderAdminEmail } from "@/lib/email";
 import { subtotalOf, totalOf } from "@/lib/orders/pricing";
+import { isDropLocked } from "@/lib/drops/live";
 import { recordMovements } from "@/lib/stock/movements";
 
 /**
@@ -63,11 +64,16 @@ async function resolveLines(lines: CheckoutLineInput[]): Promise<ResolvedLine[]>
   for (const line of lines) {
     const variant = await prisma.productVariant.findUnique({
       where: { id: line.variantId },
-      include: { product: true },
+      include: { product: { include: { drop: true } } },
     });
 
     if (!variant || !variant.product.published || variant.product.price === null) {
       throw new CheckoutError("Un des articles du panier n'est plus disponible à la commande.");
+    }
+    // Pièce d'un drop pas encore ouvert : rien ne s'achète avant l'heure,
+    // même en appelant l'API directement (sauf drop en précommande).
+    if (isDropLocked(variant.product.drop)) {
+      throw new CheckoutError(`${variant.product.name} n'est pas encore disponible : le drop n'est pas ouvert.`);
     }
     if (variant.stock < line.quantity) {
       throw new CheckoutError(`Stock insuffisant pour ${variant.product.name} (${variant.size}/${variant.color}).`);

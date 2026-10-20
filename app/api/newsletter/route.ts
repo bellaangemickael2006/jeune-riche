@@ -5,7 +5,11 @@ import { sendEmail, newsletterWelcomeEmail } from "@/lib/email";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 
 // En minuscules : « Awa@Mail.com » et « awa@mail.com » sont le même abonné.
-const schema = z.object({ email: z.string().trim().toLowerCase().email().max(254) });
+// `source` : « drop » quand l'inscription vient de « Me prévenir à l'ouverture ».
+const schema = z.object({
+  email: z.string().trim().toLowerCase().email().max(254),
+  source: z.enum(["newsletter", "drop"]).optional(),
+});
 
 export async function POST(req: NextRequest) {
   if (!(await rateLimit(`newsletter:${clientIp(req)}`, 10, 15 * 60_000))) {
@@ -32,7 +36,7 @@ export async function POST(req: NextRequest) {
 
     if (!existing) {
       await prisma.newsletterSubscriber.create({
-        data: { email: parsed.data.email, source: "newsletter" },
+        data: { email: parsed.data.email, source: parsed.data.source ?? "newsletter" },
       });
       await sendEmail({
         to: parsed.data.email,

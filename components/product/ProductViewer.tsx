@@ -10,6 +10,7 @@ import Reviews from "@/components/product/Reviews";
 import ReviewForm from "@/components/product/ReviewForm";
 import WishlistButton from "@/components/product/WishlistButton";
 import { cn, formatPrice, getDropCountdown } from "@/lib/utils";
+import { isDropLocked } from "@/lib/drops/live";
 import { trackProductView } from "@/lib/recentlyViewed";
 import type { TechnicalDetail } from "@/lib/data/product-details";
 import CountdownTimer from "@/components/ui/CountdownTimer";
@@ -67,6 +68,17 @@ export default function ProductViewer({
   const { t } = useTranslation();
   const { locale } = useLocale();
   const countdown = getDropCountdown(drop);
+  // Verrouillé jusqu'à l'ouverture du drop, puis débloqué pile à l'heure,
+  // sans recharger la page (même règle que la commande côté serveur).
+  const [locked, setLocked] = useState(() => isDropLocked(drop));
+  useEffect(() => {
+    if (!drop || !isDropLocked(drop)) return;
+    const delay = new Date(drop.startsAt).getTime() - Date.now();
+    // setTimeout plafonne à ~24,8 jours : au-delà, la page sera rechargée d'ici là.
+    if (delay > 2_000_000_000) return;
+    const id = setTimeout(() => setLocked(false), Math.max(0, delay));
+    return () => clearTimeout(id);
+  }, [drop]);
   const colors = useMemo(() => Array.from(new Set(variants.map((v) => v.color))), [variants]);
   const [color, setColor] = useState(colors[0] ?? "");
   const [personalization, setPersonalization] = useState("");
@@ -168,6 +180,7 @@ export default function ProductViewer({
               onColorChange={setColor}
               personalization={personalization}
               onPersonalizationChange={setPersonalization}
+              locked={locked}
             />
           </div>
 

@@ -4,6 +4,8 @@ import EmptyState from "@/components/ui/EmptyState";
 import CountdownTimer from "@/components/ui/CountdownTimer";
 import { getDropCountdown } from "@/lib/utils";
 import { getServerTranslation } from "@/lib/i18n/server";
+import Link from "next/link";
+import { dropPhase } from "@/lib/drops/live";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
@@ -43,10 +45,22 @@ export default async function DropsPage() {
         <ul className="mt-12 divide-y divide-line">
           {drops.map((d) => {
             const countdown = getDropCountdown(d);
+            const isLive = dropPhase(d) === "live";
             return (
               <li key={d.id} className="flex flex-col gap-4 py-6 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <p className="font-display text-xl uppercase text-paper">{d.name}</p>
+                  <Link href={`/drops/${d.slug}`} className="group flex items-center gap-3">
+                    <p className="font-display text-xl uppercase text-paper group-hover:underline">{d.name}</p>
+                    {isLive && (
+                      <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest2 text-paper">
+                        <span className="relative flex h-2 w-2">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
+                          <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
+                        </span>
+                        {t("drops.live.phase.live")}
+                      </span>
+                    )}
+                  </Link>
                   {d.description && <p className="mt-1 max-w-md text-sm text-paper/50">{d.description}</p>}
                 </div>
                 <div className="flex items-center gap-4">

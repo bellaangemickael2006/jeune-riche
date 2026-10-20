@@ -19,6 +19,7 @@ export default function AddToCart({
   onColorChange,
   personalization: controlledPersonalization,
   onPersonalizationChange,
+  locked = false,
 }: {
   productSlug: string;
   productName: string;
@@ -34,6 +35,8 @@ export default function AddToCart({
   /** Idem pour la personnalisation, pour l'afficher en direct sur la galerie. */
   personalization?: string;
   onPersonalizationChange?: (value: string) => void;
+  /** Pièce d'un drop pas encore ouvert : visible, mais pas encore achetable. */
+  locked?: boolean;
 }) {
   const { t } = useTranslation();
   const colors = useMemo(() => Array.from(new Set(variants.map((v) => v.color))), [variants]);
@@ -56,7 +59,7 @@ export default function AddToCart({
 
   const selectedVariant = variants.find((v) => v.color === color && v.size === size);
   const inStock = (selectedVariant?.stock ?? 0) > 0;
-  const canAdd = Boolean(selectedVariant) && inStock && price !== null;
+  const canAdd = Boolean(selectedVariant) && inStock && price !== null && !locked;
 
   function handleAdd() {
     if (!selectedVariant || price === null) return;
@@ -161,7 +164,9 @@ export default function AddToCart({
               canAdd ? "bg-paper text-ink hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
             )}
           >
-            {price === null
+            {locked
+              ? t("drops.lockedUntilOpen")
+              : price === null
               ? t("product.priceUndefined")
               : !selectedVariant || !inStock
                 ? t("product.unavailable")
