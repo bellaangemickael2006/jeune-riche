@@ -9,7 +9,7 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  if (!rateLimit(`restock:${clientIp(req)}`, 15, 15 * 60_000)) {
+  if (!(await rateLimit(`restock:${clientIp(req)}`, 15, 15 * 60_000))) {
     return NextResponse.json({ error: "Trop de tentatives, réessayez plus tard." }, { status: 429 });
   }
 

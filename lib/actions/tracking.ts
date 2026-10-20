@@ -28,7 +28,7 @@ export async function trackOrder(_prev: TrackOrderState, formData: FormData): Pr
   if (rawNumber.length < 4 || !contact) return { ok: false, error: "invalid" };
 
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  if (!rateLimit(`track:${ip}`, 12, 10 * 60_000)) return { ok: false, error: "rateLimited" };
+  if (!(await rateLimit(`track:${ip}`, 12, 10 * 60_000))) return { ok: false, error: "rateLimited" };
 
   try {
     const order = await prisma.order.findUnique({

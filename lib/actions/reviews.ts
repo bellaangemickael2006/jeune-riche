@@ -42,7 +42,7 @@ export async function prepareReviewPhotoUpload(file: { type: string; size: numbe
     if (!ext || file.size <= 0 || file.size > MAX_REVIEW_PHOTO_BYTES) {
       return { ok: false, message: t("product.reviewPhotoInvalid") };
     }
-    if (!rateLimit(`review-photo:${dbUser.id}`, 12, 60 * 60_000)) {
+    if (!(await rateLimit(`review-photo:${dbUser.id}`, 12, 60 * 60_000))) {
       return { ok: false, message: t("product.reviewPhotoTooMany") };
     }
 

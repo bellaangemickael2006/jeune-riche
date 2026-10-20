@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   // Réponse identique (ok:true) qu'on soit rate-limité ou non : sinon la
   // différence de comportement deviendrait elle-même un moyen de sonder le
   // système, à l'opposé de la protection anti-énumération ci-dessous.
-  if (!rateLimit(`forgot-password:${clientIp(req)}`, 5, 15 * 60_000)) {
+  if (!(await rateLimit(`forgot-password:${clientIp(req)}`, 5, 15 * 60_000))) {
     return NextResponse.json({ ok: true });
   }
 

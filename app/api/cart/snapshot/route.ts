@@ -22,7 +22,7 @@ const schema = z.object({
 // checkout (email connu) — sans bloquer sa progression si cet appel échoue.
 // Une commande passée avec succès annule ce snapshot (voir /api/checkout).
 export async function POST(req: NextRequest) {
-  if (!rateLimit(`cart-snapshot:${clientIp(req)}`, 30, 10 * 60_000)) {
+  if (!(await rateLimit(`cart-snapshot:${clientIp(req)}`, 30, 10 * 60_000))) {
     return NextResponse.json({ ok: true });
   }
 

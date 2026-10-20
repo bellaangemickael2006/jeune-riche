@@ -10,7 +10,7 @@ const schema = z.object({ code: z.string().min(1), subtotal: z.number().nonnegat
 export async function POST(req: NextRequest) {
   // Endpoint public sans compte requis : sans limite, un script pourrait
   // essayer des codes en boucle jusqu'à en trouver un valide.
-  if (!rateLimit(`promo-validate:${clientIp(req)}`, 20, 5 * 60_000)) {
+  if (!(await rateLimit(`promo-validate:${clientIp(req)}`, 20, 5 * 60_000))) {
     return NextResponse.json({ valid: false, message: "Trop de tentatives, réessayez dans un instant." }, { status: 429 });
   }
 

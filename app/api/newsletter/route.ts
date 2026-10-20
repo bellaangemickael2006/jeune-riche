@@ -8,7 +8,7 @@ import { rateLimit, clientIp } from "@/lib/rateLimit";
 const schema = z.object({ email: z.string().trim().toLowerCase().email().max(254) });
 
 export async function POST(req: NextRequest) {
-  if (!rateLimit(`newsletter:${clientIp(req)}`, 10, 15 * 60_000)) {
+  if (!(await rateLimit(`newsletter:${clientIp(req)}`, 10, 15 * 60_000))) {
     return NextResponse.json({ error: "Trop de tentatives, réessayez plus tard." }, { status: 429 });
   }
 

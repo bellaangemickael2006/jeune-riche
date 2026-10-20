@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
   // Généreux exprès : ne doit jamais gêner un client qui retente après une
   // erreur réseau, seulement freiner un script qui viderait le stock en
   // boucle.
-  if (!rateLimit(`checkout:${clientIp(req)}`, 20, 10 * 60_000)) {
+  if (!(await rateLimit(`checkout:${clientIp(req)}`, 20, 10 * 60_000))) {
     return NextResponse.json({ error: "Trop de tentatives, réessayez dans quelques minutes." }, { status: 429 });
   }
 

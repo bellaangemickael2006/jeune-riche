@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });
   }
 
-  if (!rateLimit(`signup:${clientIp(req)}`, 5, 15 * 60_000)) {
+  if (!(await rateLimit(`signup:${clientIp(req)}`, 5, 15 * 60_000))) {
     return NextResponse.json({ error: "Trop de tentatives. Réessayez plus tard." }, { status: 429 });
   }
 
