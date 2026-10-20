@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
@@ -43,7 +43,7 @@ function safeExtension(filename: string, allowed: Set<string>, fallback: string)
 }
 
 function revalidateProduct(productId: string) {
-  revalidateTag("products");
+  updateTag("products");
   revalidatePath("/admin/produits");
   revalidatePath(`/admin/produits/${productId}`);
   revalidatePath("/catalogue");
@@ -75,7 +75,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult> {
       },
     });
 
-    revalidateTag("products");
+    updateTag("products");
     revalidatePath("/admin/produits");
     redirect(`/admin/produits/${product.id}`);
   });
@@ -141,7 +141,7 @@ export async function deleteProduct(productId: string): Promise<ActionResult> {
       prisma.product.delete({ where: { id: productId } }),
     ]);
 
-    revalidateTag("products");
+    updateTag("products");
     revalidatePath("/admin/produits");
     revalidatePath("/catalogue");
     redirect("/admin/produits");

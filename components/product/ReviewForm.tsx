@@ -50,7 +50,9 @@ export default function ReviewForm({
 
   // Libère les aperçus blob: au démontage.
   const photosRef = useRef(photos);
-  photosRef.current = photos;
+  useEffect(() => {
+    photosRef.current = photos;
+  }, [photos]);
   useEffect(() => () => photosRef.current.forEach((p) => URL.revokeObjectURL(p.preview)), []);
 
   if (!isLoggedIn) {

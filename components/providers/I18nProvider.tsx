@@ -30,7 +30,7 @@ function persistLocale(locale: LanguageCode) {
     // ci-dessous reste la source de vérité pour le rendu serveur
   }
   // 1 an, accessible sur tout le site — c'est le cookie que lisent
-  // middleware.ts et lib/i18n/server.ts pour le rendu serveur.
+  // proxy.ts et lib/i18n/server.ts pour le rendu serveur.
   document.cookie = `${LANGUAGE_COOKIE}=${locale}; path=/; max-age=31536000; samesite=lax`;
 }
 

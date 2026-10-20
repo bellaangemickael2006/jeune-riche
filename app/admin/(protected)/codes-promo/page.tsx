@@ -10,8 +10,11 @@ export default async function AdminPromoCodesPage() {
   await requireAdmin("promos");
   let codes: Awaited<ReturnType<typeof load>> = [];
   let available = true;
+  // Heure de référence pour « expiré », lue une fois au chargement de la liste.
+  let now = 0;
   try {
     codes = await load();
+    now = loadedAt();
   } catch (err) {
     console.error("[admin/codes-promo]", err);
     available = false;
@@ -31,7 +34,7 @@ export default async function AdminPromoCodesPage() {
         <ul className="mt-8 divide-y divide-line">
           {codes.length === 0 && <p className="py-4 text-sm text-paper/40">Aucun code promo pour le moment.</p>}
           {codes.map((c) => {
-            const expired = c.expiresAt ? c.expiresAt.getTime() < Date.now() : false;
+            const expired = c.expiresAt ? c.expiresAt.getTime() < now : false;
             const exhausted = c.maxUses !== null && c.usedCount >= c.maxUses;
             return (
               <li key={c.id} className="flex flex-wrap items-center justify-between gap-4 py-4">
@@ -149,6 +152,10 @@ export default async function AdminPromoCodesPage() {
       </ActionForm>
     </div>
   );
+}
+
+function loadedAt() {
+  return Date.now();
 }
 
 function load() {

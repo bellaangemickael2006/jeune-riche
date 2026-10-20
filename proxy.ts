@@ -22,7 +22,7 @@ const PATHNAME_HEADER = "x-pathname";
 
 // Rafraîchit la session Supabase à chaque requête (nécessaire pour @supabase/ssr).
 // N'agit que si les variables d'environnement Supabase sont présentes.
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set(PATHNAME_HEADER, request.nextUrl.pathname);
 

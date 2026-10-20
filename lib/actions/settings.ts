@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
@@ -33,7 +33,7 @@ export async function updateStoreSettings(formData: FormData): Promise<ActionRes
       update: data,
     });
 
-    revalidateTag("store-settings");
+    updateTag("store-settings");
     revalidatePath("/admin/parametres");
     return "Paramètres enregistrés.";
   });
@@ -135,8 +135,8 @@ export async function resetStoreData(formData: FormData): Promise<ActionResult> 
       }
     }
 
-    revalidateTag("products");
-    revalidateTag("categories");
+    updateTag("products");
+    updateTag("categories");
     revalidatePath("/", "layout");
 
     const parts = [

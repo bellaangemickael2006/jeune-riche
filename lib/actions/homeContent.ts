@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { requireAdminAction } from "@/lib/auth";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ensureMediaBucket, MAX_MEDIA_BYTES, MEDIA_BUCKET } from "@/lib/storage";
@@ -62,7 +62,7 @@ async function removeUnusedSiteImages(content: HomeContent | null) {
 }
 
 function refreshHome() {
-  revalidateTag(HOME_CONTENT_TAG);
+  updateTag(HOME_CONTENT_TAG);
   revalidatePath("/");
   revalidatePath("/admin/accueil");
 }

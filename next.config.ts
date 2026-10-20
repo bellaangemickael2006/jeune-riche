@@ -19,9 +19,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
   // Durcissement de base, sans CSP : le site utilise déjà des <script>
   // inline (init du thème, JSON-LD) qu'une CSP stricte casserait sans un
   // vrai système de nonce — à traiter séparément plutôt qu'en aveugle.

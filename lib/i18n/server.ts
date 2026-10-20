@@ -12,7 +12,7 @@ import { LANGUAGE_COOKIE } from "./config";
 // jamais traduit et jamais pensé pour un layout RTL — <html lang/dir> doit y
 // rester fr/ltr quel que soit le cookie de langue du visiteur (ex. resté sur
 // arabe après avoir testé le site public dans le même navigateur). Le chemin
-// vient d'un en-tête posé par le middleware, `headers()` seul ne l'expose pas.
+// vient d'un en-tête posé par le proxy (proxy.ts), `headers()` seul ne l'expose pas.
 async function isAdminPath(): Promise<boolean> {
   const headerStore = await headers();
   const pathname = headerStore.get("x-pathname") ?? "";

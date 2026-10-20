@@ -1,4 +1,4 @@
-// Constantes partagées entre le middleware, le helper serveur et le
+// Constantes partagées entre le proxy (proxy.ts), le helper serveur et le
 // provider client — un seul endroit à changer si le nom du cookie doit
 // évoluer un jour.
 export const LANGUAGE_COOKIE = "jr_lang";

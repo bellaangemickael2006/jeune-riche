@@ -22,7 +22,7 @@ import { prisma } from "@/lib/prisma";
 // Segment de version glissé dans chaque clé de cache produit. Le TTL de 120 s
 // ne suffit pas toujours : sur Vercel, une entrée peut rester figée quand la
 // donnée change en dehors des actions d'administration — seules celles-ci
-// appellent revalidateTag("products") (voir lib/actions/products.ts). Changer
+// appellent updateTag("products") (voir lib/actions/products.ts). Changer
 // cette valeur fabrique de nouvelles clés et écarte les anciennes d'un coup.
 // À incrémenter après toute écriture en base faite hors admin.
 //

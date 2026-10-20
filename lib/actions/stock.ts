@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
 import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
@@ -74,7 +74,7 @@ export async function bulkUpdateStock(productId: string, input: BulkStockInput):
     );
     const notified = await notifyRestock(effective.filter((p) => p.variant.stock <= 0 && p.after > 0).map((p) => p.variant.id));
 
-    revalidateTag("products");
+    updateTag("products");
     revalidatePath(`/admin/produits/${productId}`);
     revalidatePath(`/admin/produits/${productId}/stock`);
     revalidatePath("/admin/stock");

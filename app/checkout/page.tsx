@@ -32,6 +32,15 @@ export default function CheckoutPage() {
   const [promo, setPromo] = useState<{ code: string; discountAmount: number } | null>(null);
   const [promoMessage, setPromoMessage] = useState<string | null>(null);
   const [checkingPromo, setCheckingPromo] = useState(false);
+  const [form, setForm] = useState({
+    customerName: "",
+    customerEmail: "",
+    line1: "",
+    city: "",
+    postalCode: "",
+    country: "Côte d'Ivoire",
+    phone: "",
+  });
 
   useEffect(() => {
     fetch("/api/shipping")
@@ -112,16 +121,6 @@ export default function CheckoutPage() {
       setCheckingPromo(false);
     }
   }
-
-  const [form, setForm] = useState({
-    customerName: "",
-    customerEmail: "",
-    line1: "",
-    city: "",
-    postalCode: "",
-    country: "Côte d'Ivoire",
-    phone: "",
-  });
 
   // Restaure le brouillon AVANT le préremplissage compte (effet ci-dessus) :
   // celui-ci ne remplit jamais un champ déjà rempli (`f.x || compte`), donc

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
@@ -32,7 +32,7 @@ function revalidateDrops(dropId?: string) {
   revalidatePath("/admin/drops");
   if (dropId) revalidatePath(`/admin/drops/${dropId}`);
   revalidatePath("/drops");
-  revalidateTag("products");
+  updateTag("products");
 }
 
 export async function createDrop(formData: FormData): Promise<ActionResult> {

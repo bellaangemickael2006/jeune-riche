@@ -1,12 +1,12 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
 import { ActionError, readInt, runAction, uniqueSlug, type ActionResult } from "@/lib/actions/result";
 
 function revalidateCategories() {
-  revalidateTag("categories");
+  updateTag("categories");
   revalidatePath("/admin/categories");
   revalidatePath("/catalogue");
 }

@@ -1,11 +1,17 @@
-import { FlatCompat } from "@eslint/eslintrc";
-
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...nextVitals,
+  ...nextTs,
+  {
+    // Règle ajoutée par eslint-config-next 16 (préparation au React
+    // Compiler, non activé ici). Le site lit volontairement des valeurs
+    // propres au navigateur (thème, langue, panier, localStorage) juste
+    // après le montage, pour un rendu serveur et client identiques : un
+    // avertissement suffit, à revoir si le React Compiler est activé.
+    rules: { "react-hooks/set-state-in-effect": "warn" },
+  },
   {
     // jeune-riche-v2 / v3 sont des refontes exploratoires posées dans le
     // dossier du projet : elles ont leur propre stack et leurs propres alias.
