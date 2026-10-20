@@ -3,21 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
-
-// Le fournisseur Google n'est actif qu'une fois configuré dans Supabase
-// (Authentication → Providers). Avant ça, un clic mènerait le client sur une
-// page d'erreur brute de Supabase : on lit donc les réglages publics du
-// projet et le bouton n'apparaît que si Google est réellement activé.
-let googleEnabled: Promise<boolean> | null = null;
-function isGoogleEnabled() {
-  googleEnabled ??= fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/settings`, {
-    headers: { apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "" },
-  })
-    .then((res) => (res.ok ? res.json() : null))
-    .then((settings: { external?: { google?: boolean } } | null) => Boolean(settings?.external?.google))
-    .catch(() => false);
-  return googleEnabled;
-}
+import { getAuthProviders } from "@/lib/account/authProviders";
 
 /** Logo « G » officiel, aux couleurs exigées par la charte Google. */
 function GoogleLogo() {
@@ -31,14 +17,21 @@ function GoogleLogo() {
   );
 }
 
-export default function GoogleSignInButton({ onError }: { onError: (message: string) => void }) {
+export default function GoogleSignInButton({
+  onError,
+  dividerLabel,
+}: {
+  onError: (message: string) => void;
+  /** Texte du séparateur sous le bouton (« ou avec votre numéro »…). */
+  dividerLabel: string;
+}) {
   const { t } = useTranslation();
   const [available, setAvailable] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     let active = true;
-    isGoogleEnabled().then((enabled) => active && setAvailable(enabled));
+    getAuthProviders().then(({ google }) => active && setAvailable(google));
     return () => {
       active = false;
     };
@@ -78,7 +71,7 @@ export default function GoogleSignInButton({ onError }: { onError: (message: str
       </button>
       <div className="mt-6 flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-paper/30" aria-hidden="true">
         <span className="h-px flex-1 bg-line" />
-        {t("account.orWithEmail")}
+        {dividerLabel}
         <span className="h-px flex-1 bg-line" />
       </div>
     </>

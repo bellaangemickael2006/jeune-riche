@@ -138,3 +138,8 @@ END $$;
 -- publique Supabase (clé anon) n'y a donc aucun accès ; le site passe par
 -- Prisma (rôle propriétaire), qui n'est pas concerné.
 ALTER TABLE "admin_permissions" ENABLE ROW LEVEL SECURITY;
+
+-- ===== 20261020120000_users_email_optional =====
+-- Connexion par téléphone (code SMS) : un client peut n'avoir aucun email.
+-- À exécuter AVANT d'activer « Phone » dans Supabase → Authentication.
+ALTER TABLE "users" ALTER COLUMN "email" DROP NOT NULL;

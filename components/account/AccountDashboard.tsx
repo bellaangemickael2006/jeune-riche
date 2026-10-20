@@ -31,7 +31,7 @@ export default function AccountDashboard({
   address,
 }: {
   name: string | null;
-  email: string;
+  email: string | null;
   orders: Order[];
   address: Address;
 }) {
@@ -50,7 +50,7 @@ export default function AccountDashboard({
       <div className="flex items-center justify-between">
         <div>
           <p className="text-xs uppercase tracking-widest2 text-paper/40">{t("navigation.account")}</p>
-          <p className="mt-1 font-display text-2xl uppercase text-paper">{name || email}</p>
+          <p className="mt-1 font-display text-2xl uppercase text-paper">{name || email || address.addressPhone}</p>
         </div>
         <button onClick={logout} className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
           {t("account.logout")}

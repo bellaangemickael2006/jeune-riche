@@ -64,7 +64,8 @@ export async function addTeamMember(formData: FormData): Promise<ActionResult> {
     const name = String(formData.get("name") ?? "").trim().slice(0, 80) || null;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new ActionError("Email invalide.");
     const access = readAccess(formData);
-    const invitedBy = me.name || me.email;
+    // Un administrateur a toujours un email (invité par email) ; repli par sécurité.
+    const invitedBy = me.name || me.email || "Administrateur";
 
     // La table des droits doit exister AVANT de donner le rôle admin : sans
     // elle, l'employé aurait accès à tout.
@@ -140,7 +141,7 @@ export async function updateTeamMember(userId: string, formData: FormData): Prom
     if (!access.owner && owners.includes(userId) && owners.length <= 1) {
       throw new ActionError("Il doit rester au moins un propriétaire.");
     }
-    await prisma.$transaction(accessWrites(userId, access, me.name || me.email));
+    await prisma.$transaction(accessWrites(userId, access, me.name || me.email || "Administrateur"));
     revalidatePath("/admin/equipe");
     return "Accès mis à jour.";
   });

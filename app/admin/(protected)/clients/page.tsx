@@ -74,7 +74,7 @@ export default async function AdminClientsPage({
                       {c.name ?? "—"}
                     </Link>
                   </td>
-                  <td className="py-2 text-paper/60">{c.email}</td>
+                  <td className="py-2 text-paper/60">{c.email ?? c.addressPhone ?? "—"}</td>
                   <td className="py-2 text-paper/60">{c.orders.length}</td>
                   <td className="py-2 text-paper/60">{formatPrice(spent)}</td>
                   <td className="py-2 text-paper/40">{c.createdAt.toLocaleDateString("fr-FR")}</td>
