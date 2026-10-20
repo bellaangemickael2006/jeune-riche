@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
-import GoogleSignInButton from "@/components/account/GoogleSignInButton";
+import GoogleSignInButton, { isGoogleEnabled } from "@/components/account/GoogleSignInButton";
 
 // Codes posés par app/auth/callback/route.ts quand la connexion Google échoue.
 const GOOGLE_ERRORS: Record<string, string> = {
@@ -29,6 +29,20 @@ export default function AuthForms() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  // Inscription et connexion uniquement avec Google. Le formulaire email ne
+  // sert plus qu'aux comptes créés avant (lien discret), ou de secours si
+  // Google n'est pas activé dans Supabase. null = vérification en cours.
+  const [googleOnly, setGoogleOnly] = useState<boolean | null>(CONFIG_MISSING ? false : null);
+  const [legacyEmail, setLegacyEmail] = useState(false);
+
+  useEffect(() => {
+    if (CONFIG_MISSING) return;
+    let active = true;
+    isGoogleEnabled().then((enabled) => active && setGoogleOnly(enabled));
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Retour d'une connexion Google ratée : message clair, puis l'URL est
   // nettoyée pour qu'un rechargement ne réaffiche pas l'erreur.
@@ -103,6 +117,39 @@ export default function AuthForms() {
     router.push("/?login=1");
   }
 
+  if (googleOnly !== false && !legacyEmail) {
+    return (
+      <div className="mx-auto w-full max-w-sm border border-line px-8 py-10">
+        <Image
+          src="/images/logo/logo-transparent.png"
+          alt="JEUNE RICHE"
+          width={120}
+          height={120}
+          className="jr-logo mx-auto h-12 w-12 object-contain"
+        />
+        <h1 className="mt-4 text-center font-editorial text-2xl text-paper">{t("account.googleOnlyTitle")}</h1>
+        <p className="mt-1 text-center text-xs leading-relaxed text-paper/40">{t("account.googleOnlySubtitle")}</p>
+        {error && <p className="mt-4 text-xs font-medium text-paper">{error}</p>}
+        {googleOnly ? (
+          <GoogleSignInButton onError={setError} withDivider={false} />
+        ) : (
+          <div className="mt-6 h-11 w-full animate-pulse bg-line/40" aria-hidden="true" />
+        )}
+        <button
+          type="button"
+          onClick={() => {
+            setLegacyEmail(true);
+            setMode("login");
+            setError(null);
+          }}
+          className="mx-auto mt-8 block text-[11px] text-paper/35 underline underline-offset-4 hover:text-paper/60"
+        >
+          {t("account.legacyEmailLogin")}
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto w-full max-w-sm border border-line px-8 py-10">
       <Image
@@ -123,7 +170,18 @@ export default function AuthForms() {
             : t("account.forgotSubtitle")}
       </p>
 
-      {mode === "forgot" ? (
+      {legacyEmail && mode === "login" ? (
+        <button
+          onClick={() => {
+            setLegacyEmail(false);
+            setError(null);
+            setMessage(null);
+          }}
+          className="mt-8 text-xs uppercase tracking-widest2 text-paper/50 underline underline-offset-4 hover:text-paper"
+        >
+          ← {t("account.backToGoogle")}
+        </button>
+      ) : mode === "forgot" ? (
         <button
           onClick={() => {
             setMode("login");
@@ -156,7 +214,7 @@ export default function AuthForms() {
           {t("account.supabaseNotConfiguredHint")}
         </p>
       )}
-      {mode !== "forgot" && !CONFIG_MISSING && <GoogleSignInButton onError={setError} />}
+      {mode !== "forgot" && !CONFIG_MISSING && !legacyEmail && <GoogleSignInButton onError={setError} />}
 
       {error && <p className="mb-4 mt-4 text-xs font-medium text-paper">{error}</p>}
       {message && <p className="mb-4 mt-4 text-xs text-paper/70">{message}</p>}

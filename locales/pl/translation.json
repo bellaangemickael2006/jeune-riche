@@ -266,7 +266,11 @@
     "phoneSave": "Save my number",
     "phoneLater": "Later",
     "phoneInvalid": "Invalid number. Example: +225 07 00 00 00 00",
-    "phoneMissingTitle": "Add your WhatsApp number"
+    "phoneMissingTitle": "Add your WhatsApp number",
+    "googleOnlyTitle": "My JEUNE RICHE account",
+    "googleOnlySubtitle": "Sign in or sign up in one click with your Google account. No password to remember.",
+    "legacyEmailLogin": "Account created with an email? Sign in",
+    "backToGoogle": "Back to Google sign-in"
   },
   "wishlist": {
     "title": "Ulubione",

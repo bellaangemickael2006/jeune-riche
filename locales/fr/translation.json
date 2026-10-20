@@ -267,7 +267,11 @@
     "phoneSave": "Enregistrer mon numéro",
     "phoneLater": "Plus tard",
     "phoneInvalid": "Numéro invalide. Exemple : +225 07 00 00 00 00",
-    "phoneMissingTitle": "Ajoutez votre numéro WhatsApp"
+    "phoneMissingTitle": "Ajoutez votre numéro WhatsApp",
+    "googleOnlyTitle": "Mon compte JEUNE RICHE",
+    "googleOnlySubtitle": "Connexion et inscription en un clic avec votre compte Google. Aucun mot de passe à retenir.",
+    "legacyEmailLogin": "Ancien compte créé avec un email ? Se connecter",
+    "backToGoogle": "Retour à la connexion Google"
   },
   "wishlist": {
     "title": "Favoris",
