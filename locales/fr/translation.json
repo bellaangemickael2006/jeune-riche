@@ -196,7 +196,8 @@
       "message": "Un email de confirmation vous sera envoyé. Notre équipe vous recontactera pour finaliser le règlement et l'expédition.",
       "backToCatalogue": "Retour au catalogue"
     },
-    "shippingTBD": "Communiqués par message"
+    "shippingTBD": "Communiqués par message",
+    "reminderConsent": "M'envoyer un rappel par email si je ne termine pas ma commande."
   },
   "account": {
     "login": "Connexion",
@@ -454,5 +455,27 @@
     "trackingNumber": "Numéro de suivi :",
     "help": "Une question ? Écrire sur WhatsApp",
     "whatsappMessage": "Bonjour, j'ai une question sur ma commande {{number}}."
+  },
+  "unsubscribe": {
+    "eyebrow": "Emails",
+    "confirmTitle": {
+      "rappel": "Ne plus recevoir de rappel",
+      "newsletter": "Se désinscrire des annonces"
+    },
+    "confirm": {
+      "rappel": "Confirmez pour ne plus recevoir de rappel concernant votre panier.",
+      "newsletter": "Confirmez pour ne plus recevoir les annonces de drops et les nouvelles de JEUNE RICHE."
+    },
+    "button": "Confirmer",
+    "doneTitle": "C'est fait",
+    "done": {
+      "rappel": "Vous ne recevrez plus de rappel pour ce panier.",
+      "newsletter": "Vous êtes désinscrit·e. Vous pourrez vous réinscrire à tout moment en bas du site."
+    },
+    "invalidTitle": "Lien invalide",
+    "invalid": "Ce lien de désinscription est incomplet ou a été modifié. Utilisez le lien reçu par email.",
+    "errorTitle": "Un problème est survenu",
+    "error": "La désinscription n'a pas pu être enregistrée. Réessayez dans un instant.",
+    "backHome": "Retour à l'accueil"
   }
 }

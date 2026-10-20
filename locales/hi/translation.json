@@ -195,7 +195,8 @@
       "message": "आपको एक पुष्टिकरण ईमेल भेजा जाएगा। भुगतान और शिपिंग पूरा करने के लिए हमारी टीम आपसे फिर से संपर्क करेगी।",
       "backToCatalogue": "कैटलॉग पर वापस जाएं"
     },
-    "shippingTBD": "संदेश द्वारा बताया जाएगा"
+    "shippingTBD": "संदेश द्वारा बताया जाएगा",
+    "reminderConsent": "Send me an email reminder if I don't finish my order."
   },
   "account": {
     "login": "लॉग इन करें",
@@ -449,5 +450,27 @@
     "trackingNumber": "Tracking number:",
     "help": "Any questions? Message us on WhatsApp",
     "whatsappMessage": "Hello, I have a question about my order {{number}}."
+  },
+  "unsubscribe": {
+    "eyebrow": "Emails",
+    "confirmTitle": {
+      "rappel": "Stop cart reminders",
+      "newsletter": "Unsubscribe from announcements"
+    },
+    "confirm": {
+      "rappel": "Confirm to stop receiving reminders about your cart.",
+      "newsletter": "Confirm to stop receiving drop announcements and news from JEUNE RICHE."
+    },
+    "button": "Confirm",
+    "doneTitle": "Done",
+    "done": {
+      "rappel": "You won't receive any more reminders for this cart.",
+      "newsletter": "You're unsubscribed. You can sign up again any time at the bottom of the site."
+    },
+    "invalidTitle": "Invalid link",
+    "invalid": "This unsubscribe link is incomplete or has been altered. Please use the link from your email.",
+    "errorTitle": "Something went wrong",
+    "error": "We couldn't save your request. Please try again shortly.",
+    "backHome": "Back to home"
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, abandonedCartEmail } from "@/lib/email";
+import { unsubscribeUrl } from "@/lib/unsubscribe";
 
 // Déclenché une fois par jour par Vercel Cron (voir vercel.json — le plan
 // gratuit "Hobby" n'autorise pas plus d'une exécution/jour, toute fréquence
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest) {
       const result = await sendEmail({
         to: cart.email,
         subject: "Votre sélection JEUNE RICHE vous attend",
-        html: abandonedCartEmail({ items, total: Number(cart.total) }),
+        html: abandonedCartEmail({ items, total: Number(cart.total), unsubscribeUrl: unsubscribeUrl("rappel", cart.email) }),
       });
       if (result.sent) sent++;
       // Marqué même en cas d'échec d'envoi : on ne veut pas retenter en

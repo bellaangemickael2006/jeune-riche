@@ -157,6 +157,8 @@ export function lowStockAlertEmail(params: {
 export function abandonedCartEmail(params: {
   items: { productName: string; size: string; color: string; quantity: number }[];
   total: number;
+  /** Lien « Ne plus recevoir de rappel » (voir lib/unsubscribe.ts). */
+  unsubscribeUrl?: string | null;
 }) {
   const formatXof = (n: number) =>
     new Intl.NumberFormat("fr-FR", { style: "currency", currency: "XOF", maximumFractionDigits: 0 }).format(n);
@@ -185,6 +187,10 @@ export function abandonedCartEmail(params: {
     <a href="${siteUrl()}/panier" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
       Reprendre ma commande
     </a>
+    <p style="margin:28px 0 0;font-size:11px;color:#6b6b6b;">
+      Vous recevez ce rappel car vous l'avez demandé lors de votre commande.
+      ${params.unsubscribeUrl ? `<a href="${escapeHtml(params.unsubscribeUrl)}" style="color:#9a9a9a;">Ne plus recevoir de rappel</a>` : ""}
+    </p>
   `);
 }
 
@@ -265,11 +271,39 @@ export function newOrderAdminEmail(params: {
   `);
 }
 
-export function campaignEmail(bodyText: string) {
+/** Pied d'email des envois à la liste : lien de désinscription signé. */
+function newsletterFooter(unsubscribeUrl?: string | null) {
+  if (!unsubscribeUrl) return "";
+  return `<p style="margin:28px 0 0;font-size:11px;color:#6b6b6b;">
+      Vous recevez cet email car vous êtes inscrit·e aux annonces JEUNE RICHE.
+      <a href="${escapeHtml(unsubscribeUrl)}" style="color:#9a9a9a;">Se désinscrire</a>
+    </p>`;
+}
+
+export function campaignEmail(bodyText: string, unsubscribeUrl?: string | null) {
   const paragraphs = bodyText
     .split("\n")
     .filter((line) => line.trim().length > 0)
     .map((line) => `<p style="margin:0 0 14px;">${escapeHtml(line)}</p>`)
     .join("");
-  return emailShell(paragraphs);
+  return emailShell(paragraphs + newsletterFooter(unsubscribeUrl));
+}
+
+/** Annonce automatique de l'ouverture d'un drop (voir lib/drops/announce.ts). */
+export function dropOpenEmail(params: {
+  name: string;
+  description: string | null;
+  url: string;
+  unsubscribeUrl?: string | null;
+}) {
+  return emailShell(`
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Le drop est ouvert</p>
+    <p style="margin:0 0 12px;font-size:22px;text-transform:uppercase;letter-spacing:0.04em;color:#f5f4f1;">${escapeHtml(params.name)}</p>
+    ${params.description ? `<p style="margin:0 0 20px;color:#9a9a9a;">${escapeHtml(params.description)}</p>` : ""}
+    <p style="margin:0 0 28px;">Les pièces sont en série limitée : une fois parties, elles ne reviennent pas.</p>
+    <a href="${escapeHtml(params.url)}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+      Voir le drop
+    </a>
+    ${newsletterFooter(params.unsubscribeUrl)}
+  `);
 }

@@ -100,6 +100,18 @@ Supabase :
 À la première connexion Google, `app/auth/callback` crée la fiche client (ou la rattache au
 compte client existant ayant le même email). Un compte administrateur ne s'ouvre jamais par Google.
 
+### Emails automatiques
+
+- **Rappel de panier** : uniquement si le client coche « M'envoyer un rappel » au checkout
+  (décochée par défaut, vérifié aussi côté serveur). Chaque rappel contient un lien signé
+  « Ne plus recevoir de rappel ».
+- **Ouverture d'un drop** : à l'heure de début, le drop passe tout seul en « Disponible » et
+  la liste newsletter reçoit une annonce, une seule fois. Déclenché par le premier visiteur
+  présent (page /drops, page du drop) et au plus tard par le cron quotidien `/api/cron/drops`.
+- Les campagnes et annonces contiennent un lien « Se désinscrire » signé (`AUTH_SECRET`).
+- Gmail limite l'envoi à environ 500 emails par jour : au-delà, passer à un service d'envoi
+  (Resend, Brevo…).
+
 Les vidéos (`public/video/*.mp4`, ~20 Mo et ~11 Mo) sont servies comme assets statiques Next.js —
 elles ne transitent jamais par une fonction serverless. Pour un trafic important, migrer vers un
 stockage/CDN dédié (Supabase Storage ou équivalent) est recommandé — voir TODO.md.

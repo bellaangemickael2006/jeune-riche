@@ -32,6 +32,9 @@ export default function CheckoutPage() {
   const [promo, setPromo] = useState<{ code: string; discountAmount: number } | null>(null);
   const [promoMessage, setPromoMessage] = useState<string | null>(null);
   const [checkingPromo, setCheckingPromo] = useState(false);
+  // Rappel par email si la commande n'est pas terminée : uniquement si le
+  // client le demande (case décochée par défaut).
+  const [reminderConsent, setReminderConsent] = useState(false);
   const [form, setForm] = useState({
     customerName: "",
     customerEmail: "",
@@ -261,6 +264,17 @@ export default function CheckoutPage() {
               onChange={(v) => update("customerEmail", v)}
               required={false}
             />
+            {form.customerEmail && (
+              <label className="flex items-start gap-3 text-xs leading-relaxed text-paper/60">
+                <input
+                  type="checkbox"
+                  checked={reminderConsent}
+                  onChange={(e) => setReminderConsent(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0"
+                />
+                {t("checkout.reminderConsent")}
+              </label>
+            )}
             <button
               onClick={() => {
                 setStep("livraison");
@@ -268,7 +282,7 @@ export default function CheckoutPage() {
                 // ne doit jamais bloquer ni perturber le passage à l'étape
                 // suivante si l'appel échoue. Sans email, rien à relancer :
                 // inutile d'appeler une route qui rejettera la requête.
-                if (form.customerEmail) {
+                if (form.customerEmail && reminderConsent) {
                   fetch("/api/cart/snapshot", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -276,6 +290,7 @@ export default function CheckoutPage() {
                     // on n'envoie que les identifiants et les quantités.
                     body: JSON.stringify({
                       email: form.customerEmail,
+                      consent: true,
                       items: lines.map((l) => ({
                         variantId: l.variantId,
                         quantity: l.quantity,

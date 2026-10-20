@@ -14,8 +14,11 @@ const lineSchema = z.object({
 });
 
 const schema = z.object({
-  email: z.string().email().max(254),
+  email: z.string().trim().toLowerCase().email().max(254),
   items: z.array(lineSchema).min(1).max(50),
+  // Case « M'envoyer un rappel » cochée au checkout. Sans elle, rien n'est
+  // enregistré, même si la route est appelée directement.
+  consent: z.literal(true),
 });
 
 // Appelé en tâche de fond dès que le client passe l'étape "informations" du

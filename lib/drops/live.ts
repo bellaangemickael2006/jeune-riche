@@ -26,3 +26,8 @@ export function isDropLocked(drop: DropDates | null | undefined, now = Date.now(
 export function minutesAgo(iso: string, now = Date.now()): number {
   return Math.max(0, Math.round((now - new Date(iso).getTime()) / 60_000));
 }
+
+/** L'heure d'ouverture est passée mais le drop n'est pas encore passé « Disponible ». */
+export function isDueToOpen(drop: DropDates, now = Date.now()): boolean {
+  return (drop.status === "COMING_SOON" || drop.status === "PRE_ORDER") && dropPhase(drop, now) === "live";
+}

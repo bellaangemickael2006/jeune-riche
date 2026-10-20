@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import DropLive, { type DropPiece } from "@/components/drops/DropLive";
 import { getDropBySlug, getDropLive } from "@/lib/data/drops";
-import { dropPhase } from "@/lib/drops/live";
+import { after } from "next/server";
+import { dropPhase, isDueToOpen } from "@/lib/drops/live";
+import { announceOpenedDropsSafely } from "@/lib/drops/announce";
 
 // Toujours rendu à la demande : le stock et la phase changent en direct.
 export const dynamic = "force-dynamic";
@@ -22,6 +24,7 @@ export default async function DropPage({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const drop = await getDropBySlug(slug);
   if (!drop) notFound();
+  if (isDueToOpen(drop)) after(announceOpenedDropsSafely);
   const live = await getDropLive(slug).catch(() => null);
 
   const pieces: DropPiece[] = drop.products.map((p) => {

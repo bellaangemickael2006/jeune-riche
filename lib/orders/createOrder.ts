@@ -313,7 +313,12 @@ export async function afterOrderCreated(params: { customerEmail: string; resolve
   // No-op si customerEmail est vide (rien à retrouver).
   if (customerEmail) {
     prisma.abandonedCart
-      .updateMany({ where: { email: customerEmail, convertedAt: null }, data: { convertedAt: new Date() } })
+      // Insensible à la casse : le panier est enregistré en minuscules,
+      // l'email de la commande tel que tapé (« Awa@… »).
+      .updateMany({
+        where: { email: { equals: customerEmail.trim(), mode: "insensitive" }, convertedAt: null },
+        data: { convertedAt: new Date() },
+      })
       .catch((error) => console.error("[orders] abandonedCart.updateMany:", error));
   }
 }

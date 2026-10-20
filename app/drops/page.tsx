@@ -5,7 +5,9 @@ import CountdownTimer from "@/components/ui/CountdownTimer";
 import { getDropCountdown } from "@/lib/utils";
 import { getServerTranslation } from "@/lib/i18n/server";
 import Link from "next/link";
-import { dropPhase } from "@/lib/drops/live";
+import { after } from "next/server";
+import { dropPhase, isDueToOpen } from "@/lib/drops/live";
+import { announceOpenedDropsSafely } from "@/lib/drops/announce";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
@@ -26,6 +28,7 @@ async function getDrops() {
 export default async function DropsPage() {
   const { t, locale } = await getServerTranslation();
   const drops = await getDrops();
+  if (drops.some((d) => isDueToOpen(d))) after(announceOpenedDropsSafely);
 
   const STATUS_LABEL: Record<string, string> = {
     COMING_SOON: t("drops.status.COMING_SOON"),
