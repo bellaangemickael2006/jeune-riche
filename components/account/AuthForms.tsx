@@ -7,8 +7,6 @@ import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import GoogleSignInButton from "@/components/account/GoogleSignInButton";
-import PhoneAuthForm from "@/components/account/PhoneAuthForm";
-import { getAuthProviders } from "@/lib/account/authProviders";
 
 // Codes posés par app/auth/callback/route.ts quand la connexion Google échoue.
 const GOOGLE_ERRORS: Record<string, string> = {
@@ -31,20 +29,6 @@ export default function AuthForms() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
-  // Dès que l'envoi de SMS est activé dans Supabase, le numéro de téléphone
-  // remplace l'email. Les anciens comptes email gardent un accès discret.
-  const [phoneAuth, setPhoneAuth] = useState(false);
-  const [legacyEmail, setLegacyEmail] = useState(false);
-  const usePhone = phoneAuth && !legacyEmail && mode !== "forgot";
-
-  useEffect(() => {
-    if (CONFIG_MISSING) return;
-    let active = true;
-    getAuthProviders().then(({ phone: enabled }) => active && setPhoneAuth(enabled));
-    return () => {
-      active = false;
-    };
-  }, []);
 
   // Retour d'une connexion Google ratée : message clair, puis l'URL est
   // nettoyée pour qu'un rechargement ne réaffiche pas l'erreur.
@@ -159,10 +143,7 @@ export default function AuthForms() {
             {t("account.login")}
           </button>
           <button
-            onClick={() => {
-              setMode("signup");
-              setLegacyEmail(false);
-            }}
+            onClick={() => setMode("signup")}
             className={cn("pb-3 transition-colors", mode === "signup" ? "border-b border-paper text-paper" : "text-paper/40 hover:text-paper/70")}
           >
             {t("account.signup")}
@@ -175,33 +156,11 @@ export default function AuthForms() {
           {t("account.supabaseNotConfiguredHint")}
         </p>
       )}
-      {mode !== "forgot" && !CONFIG_MISSING && (
-        <GoogleSignInButton
-          onError={setError}
-          dividerLabel={usePhone ? t("account.orWithPhone") : t("account.orWithEmail")}
-        />
-      )}
+      {mode !== "forgot" && !CONFIG_MISSING && <GoogleSignInButton onError={setError} />}
 
       {error && <p className="mb-4 mt-4 text-xs font-medium text-paper">{error}</p>}
       {message && <p className="mb-4 mt-4 text-xs text-paper/70">{message}</p>}
 
-      {usePhone ? (
-        <>
-          <PhoneAuthForm mode={mode === "signup" ? "signup" : "login"} />
-          {mode === "login" && (
-            <button
-              type="button"
-              onClick={() => {
-                setLegacyEmail(true);
-                setError(null);
-              }}
-              className="mx-auto mt-6 block text-[11px] text-paper/35 underline underline-offset-4 hover:text-paper/60"
-            >
-              {t("account.legacyEmailLogin")}
-            </button>
-          )}
-        </>
-      ) : (
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
         {mode === "signup" && (
           <label className="block">
@@ -276,7 +235,6 @@ export default function AuthForms() {
                 : t("account.sendLink")}
         </button>
       </form>
-      )}
     </div>
   );
 }

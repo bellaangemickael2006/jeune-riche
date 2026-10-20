@@ -100,20 +100,6 @@ Supabase :
 À la première connexion Google, `app/auth/callback` crée la fiche client (ou la rattache au
 compte client existant ayant le même email). Un compte administrateur ne s'ouvre jamais par Google.
 
-### Connexion par téléphone (code SMS)
-
-Tant que « Phone » n'est pas activé dans Supabase, la page /compte garde le formulaire email.
-Dès qu'il l'est, l'email disparaît : le client entre son numéro et reçoit un code à 6 chiffres
-par SMS (inscription et connexion). Les anciens comptes email gardent un lien discret
-« Ancien compte créé avec un email ? ».
-
-1. Appliquer d'abord la migration `20261020120000_users_email_optional` (voir
-   `docs/migrations-supabase-en-attente.sql`) : un client inscrit par téléphone n'a pas d'email.
-2. Créer un compte chez un fournisseur SMS pris en charge par Supabase (Twilio, MessageBird,
-   Vonage, Textlocal). Les SMS sont payants.
-3. Supabase → Authentication → Sign In / Providers → Phone : activer, choisir le fournisseur,
-   coller ses identifiants, enregistrer.
-
 Les vidéos (`public/video/*.mp4`, ~20 Mo et ~11 Mo) sont servies comme assets statiques Next.js —
 elles ne transitent jamais par une fonction serverless. Pour un trafic important, migrer vers un
 stockage/CDN dédié (Supabase Storage ou équivalent) est recommandé — voir TODO.md.

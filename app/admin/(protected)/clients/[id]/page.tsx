@@ -28,8 +28,8 @@ export default async function AdminClientDetailPage({ params }: { params: Promis
       <Link href="/admin/clients" className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
         ← Clients
       </Link>
-      <h1 className="mt-3 font-display text-2xl uppercase text-paper">{client.name ?? client.email ?? client.addressPhone}</h1>
-      <p className="mt-1 text-sm text-paper/60">{client.email ?? `Inscrit par téléphone — ${client.addressPhone ?? ""}`}</p>
+      <h1 className="mt-3 font-display text-2xl uppercase text-paper">{client.name ?? client.email}</h1>
+      <p className="mt-1 text-sm text-paper/60">{client.email}</p>
       <p className="text-xs text-paper/30">Inscrit le {client.createdAt.toLocaleDateString("fr-FR")}</p>
 
       <div className="mt-8 grid grid-cols-3 gap-4 border-y border-line py-6">

@@ -43,7 +43,6 @@ export function clientsWhere(params: { q?: string }): Prisma.UserWhereInput {
           OR: [
             { name: { contains: q, mode: "insensitive" } },
             { email: { contains: q, mode: "insensitive" } },
-            { addressPhone: { contains: q } },
           ],
         }
       : {}),

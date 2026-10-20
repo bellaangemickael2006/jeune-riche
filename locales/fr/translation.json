@@ -267,22 +267,7 @@
     "phoneSave": "Enregistrer mon numéro",
     "phoneLater": "Plus tard",
     "phoneInvalid": "Numéro invalide. Exemple : +225 07 00 00 00 00",
-    "phoneMissingTitle": "Ajoutez votre numéro WhatsApp",
-    "orWithPhone": "ou avec votre numéro",
-    "legacyEmailLogin": "Ancien compte créé avec un email ? Se connecter",
-    "phoneSmsHint": "Vous recevrez un code à 6 chiffres par SMS.",
-    "phoneSendCode": "Recevoir le code",
-    "phoneInvalidIntl": "Numéro invalide. Exemple : 07 00 00 00 00, ou +33 6… pour l'étranger.",
-    "phoneNoAccount": "Aucun compte avec ce numéro. Créez votre compte dans l'onglet « Créer un compte ».",
-    "phoneTooMany": "Trop de demandes de code. Patientez une minute puis réessayez.",
-    "phoneSendError": "Impossible d'envoyer le SMS pour le moment. Réessayez dans un instant.",
-    "phoneCodeSent": "Code envoyé par SMS au {{phone}}.",
-    "phoneCode": "Code reçu par SMS",
-    "phoneVerify": "Valider",
-    "phoneCodeInvalid": "Code incorrect ou expiré.",
-    "phoneChange": "Changer de numéro",
-    "phoneResend": "Renvoyer le code",
-    "phoneResendIn": "Renvoyer ({{seconds}} s)"
+    "phoneMissingTitle": "Ajoutez votre numéro WhatsApp"
   },
   "wishlist": {
     "title": "Favoris",

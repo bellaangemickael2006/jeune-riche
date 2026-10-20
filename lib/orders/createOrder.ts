@@ -244,7 +244,7 @@ export async function notifyNewOrder(params: {
     const settings = await getStoreSettings().catch(() => null);
     const recipients = settings?.contactEmail
       ? [settings.contactEmail]
-      : (await prisma.user.findMany({ where: { role: "ADMIN" }, select: { email: true } })).flatMap((u) => (u.email ? [u.email] : []));
+      : (await prisma.user.findMany({ where: { role: "ADMIN" }, select: { email: true } })).map((u) => u.email);
     if (recipients.length === 0) return;
 
     const { order, shippingAddress } = params;

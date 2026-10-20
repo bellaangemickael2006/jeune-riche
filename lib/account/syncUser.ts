@@ -1,7 +1,6 @@
 import "server-only";
 import type { User as AuthUser } from "@supabase/supabase-js";
 import { prisma } from "@/lib/prisma";
-import { displayPhone } from "@/lib/account/phone";
 
 /** Nom affichable fourni par Google (full_name) ou par l'inscription (name). */
 function displayName(authUser: AuthUser): string | null {
@@ -24,30 +23,16 @@ function displayName(authUser: AuthUser): string | null {
  * - Sinon : nouveau client.
  */
 export async function ensureClientUser(authUser: AuthUser) {
-  const email = authUser.email?.trim().toLowerCase() || null;
-  // Numéro vérifié par le code SMS : devient directement le numéro WhatsApp.
-  const phone = authUser.phone ? displayPhone(authUser.phone) : null;
-  if (!email && !phone) throw new Error("Compte sans email ni téléphone");
+  const email = authUser.email?.trim().toLowerCase();
+  if (!email) throw new Error("Compte sans email");
   const name = displayName(authUser);
 
   const bySupabaseId = await prisma.user.findUnique({ where: { supabaseId: authUser.id } });
   if (bySupabaseId) {
-    const missing = {
-      ...(!bySupabaseId.name && name ? { name } : {}),
-      ...(!bySupabaseId.addressPhone && phone ? { addressPhone: phone } : {}),
-    };
-    return Object.keys(missing).length > 0
-      ? prisma.user.update({ where: { id: bySupabaseId.id }, data: missing })
-      : bySupabaseId;
-  }
-
-  // Inscription par téléphone : jamais de rattachement à un compte existant
-  // sur la seule base du numéro — celui saisi à la livraison n'a jamais été
-  // vérifié, quelqu'un d'autre a pu le taper.
-  if (!email) {
-    return prisma.user.create({
-      data: { supabaseId: authUser.id, email: null, name, role: "CLIENT", addressPhone: phone },
-    });
+    if (!bySupabaseId.name && name) {
+      return prisma.user.update({ where: { id: bySupabaseId.id }, data: { name } });
+    }
+    return bySupabaseId;
   }
 
   const byEmail = await prisma.user.findUnique({ where: { email } });

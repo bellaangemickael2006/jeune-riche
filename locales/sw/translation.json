@@ -266,22 +266,7 @@
     "phoneSave": "Save my number",
     "phoneLater": "Later",
     "phoneInvalid": "Invalid number. Example: +225 07 00 00 00 00",
-    "phoneMissingTitle": "Add your WhatsApp number",
-    "orWithPhone": "or with your phone number",
-    "legacyEmailLogin": "Account created with an email? Sign in",
-    "phoneSmsHint": "You'll receive a 6-digit code by text message.",
-    "phoneSendCode": "Get the code",
-    "phoneInvalidIntl": "Invalid number. Example: 07 00 00 00 00, or +33 6… for other countries.",
-    "phoneNoAccount": "No account with this number. Create one in the “Create an account” tab.",
-    "phoneTooMany": "Too many code requests. Wait a minute and try again.",
-    "phoneSendError": "Couldn't send the text message right now. Please try again shortly.",
-    "phoneCodeSent": "Code sent by text message to {{phone}}.",
-    "phoneCode": "Code received by text",
-    "phoneVerify": "Confirm",
-    "phoneCodeInvalid": "Incorrect or expired code.",
-    "phoneChange": "Change number",
-    "phoneResend": "Resend code",
-    "phoneResendIn": "Resend ({{seconds}} s)"
+    "phoneMissingTitle": "Add your WhatsApp number"
   },
   "wishlist": {
     "title": "Unavyopenda",
