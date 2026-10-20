@@ -2,6 +2,14 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { isSupportedLanguage, resolveAcceptLanguage } from "@/lib/i18n/languages";
 import { LANGUAGE_COOKIE } from "@/lib/i18n/config";
+import {
+  ADMIN_GATE_COOKIE,
+  ADMIN_GATE_MAX_AGE,
+  adminEntryKey,
+  adminNext,
+  gateCookieValue,
+  safeEqual,
+} from "@/lib/admin/gate";
 
 // Langue à poser sur la réponse si absente — calculée une fois en haut de la
 // fonction, mais appliquée tout en bas (voir la fin de la fonction) : le bloc
@@ -20,24 +28,72 @@ function detectLanguageCookie(request: NextRequest): string | null {
 // le cookie de langue du visiteur (ex. testé en arabe juste avant).
 const PATHNAME_HEADER = "x-pathname";
 
+// Page admin cachée (servie en 404 par les réécritures de next.config.ts) :
+// marquée pour les Server Components, par un en-tête de requête jamais
+// renvoyé au navigateur — défense en profondeur dans lib/auth.ts.
+const ADMIN_HIDDEN_HEADER = "x-jr-admin-hidden";
+const HIDDEN_PATH = "/introuvable";
+
 // Rafraîchit la session Supabase à chaque requête (nécessaire pour @supabase/ssr).
 // N'agit que si les variables d'environnement Supabase sont présentes.
 export async function proxy(request: NextRequest) {
-  const requestHeaders = new Headers(request.headers);
-  requestHeaders.set(PATHNAME_HEADER, request.nextUrl.pathname);
+  const { pathname } = request.nextUrl;
 
-  let response = NextResponse.next({ request: { headers: requestHeaders } });
+  // Porte secrète de l'admin (voir lib/admin/gate.ts). Passer par
+  // /<ADMIN_ENTRY_KEY> dépose le cookie signé puis ouvre l'admin ; sans ce
+  // cookie, /admin et tout ce qu'il contient répondent exactement comme une
+  // adresse qui n'existe pas — rien n'indique qu'une administration existe.
+  const gateKey = adminEntryKey();
+  let hidden = false;
+  if (gateKey) {
+    if (pathname === `/${gateKey}`) {
+      const target = request.nextUrl.clone();
+      const [nextPath, nextQuery = ""] = adminNext(request.nextUrl.searchParams.get("next")).split("?");
+      target.pathname = nextPath;
+      target.search = nextQuery ? `?${nextQuery}` : "";
+      const entry = NextResponse.redirect(target);
+      entry.cookies.set(ADMIN_GATE_COOKIE, gateCookieValue(gateKey), {
+        httpOnly: true,
+        secure: request.nextUrl.protocol === "https:",
+        sameSite: "lax",
+        path: "/",
+        maxAge: ADMIN_GATE_MAX_AGE,
+      });
+      entry.headers.set("X-Robots-Tag", "noindex, nofollow");
+      // L'adresse secrète ne doit jamais partir dans l'en-tête Referer.
+      entry.headers.set("Referrer-Policy", "no-referrer");
+      return entry;
+    }
+    if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+      const cookie = request.cookies.get(ADMIN_GATE_COOKIE)?.value ?? "";
+      // Même règle que les réécritures de next.config.ts, qui servent le 404.
+      hidden = !safeEqual(cookie, gateCookieValue(gateKey));
+    }
+  }
+
+  const requestHeaders = new Headers(request.headers);
+  // Page cachée : traitée de bout en bout comme une adresse inexistante
+  // (même 404, même langue, mêmes cookies), jamais comme une page admin.
+  // L'en-tête est toujours retiré d'abord : impossible de le forger.
+  requestHeaders.delete(ADMIN_HIDDEN_HEADER);
+  if (hidden) requestHeaders.set(ADMIN_HIDDEN_HEADER, "1");
+  requestHeaders.set(PATHNAME_HEADER, hidden ? HIDDEN_PATH : pathname);
+  const passThrough = () => NextResponse.next({ request: { headers: requestHeaders } });
+
+  let response = passThrough();
   const detectedLanguage = detectLanguageCookie(request);
 
   // Les pages admin doivent être bloquées AVANT tout rendu : le contrôle du
   // layout (requireAdmin) s'exécute en parallèle de la page, qui avait déjà
   // lu la base et envoyé son contenu (commandes, clients…) au moment où la
   // redirection vers la connexion arrivait.
-  const { pathname } = request.nextUrl;
   // /admin/activer : un nouvel employé n'est pas encore connecté quand il
   // ouvre son lien d'invitation (voir lib/actions/team.ts).
   const isProtectedAdmin =
-    pathname.startsWith("/admin") && !pathname.startsWith("/admin/login") && !pathname.startsWith("/admin/activer");
+    !hidden &&
+    pathname.startsWith("/admin") &&
+    !pathname.startsWith("/admin/login") &&
+    !pathname.startsWith("/admin/activer");
   const toLogin = (query = "") => {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
@@ -63,7 +119,7 @@ export async function proxy(request: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-          response = NextResponse.next({ request: { headers: requestHeaders } });
+          response = passThrough();
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options)
           );

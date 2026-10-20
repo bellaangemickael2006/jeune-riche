@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Anton, Fraunces, Inter } from "next/font/google";
 import { MotionConfig } from "framer-motion";
 import "./globals.css";
@@ -151,6 +152,9 @@ const WEBSITE_JSON_LD = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const locale = await getLocale();
+  // Posé par proxy.ts : vaut « /introuvable » pour une page admin cachée,
+  // qui doit alors s'afficher comme n'importe quelle page 404 du site.
+  const adminShell = ((await headers()).get("x-pathname") ?? "").startsWith("/admin");
   const dir = getDirection(locale);
   const initialResource = await loadResource(locale);
 
@@ -182,7 +186,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <PWARegister />
           <SplashScreen />
           <MotionConfig reducedMotion="user">
-            <SiteChrome>{children}</SiteChrome>
+            <SiteChrome adminShell={adminShell}>{children}</SiteChrome>
           </MotionConfig>
         </I18nProvider>
       </body>

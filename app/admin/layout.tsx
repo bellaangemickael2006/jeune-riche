@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 
-// Couvre /admin/login ET /admin/(protected)/* — robots.txt (disallow /admin)
-// empêche déjà un robot bien élevé de explorer ces pages, mais n'empêche pas
-// Google d'indexer une URL découverte via un lien externe sans jamais la
-// crawler. Cette balise est la seconde ligne de défense qui couvre ce cas.
+// Couvre /admin/login ET /admin/(protected)/* : une URL d'admin découverte
+// via un lien externe ne doit jamais être indexée par Google. Sans le cookie
+// de l'entrée secrète, ces pages ne sont même pas servies (next.config.ts).
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };

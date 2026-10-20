@@ -3,7 +3,7 @@
 import { Suspense, useState } from "react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
+import { adminSignIn } from "@/lib/actions/adminAuth";
 
 export default function AdminLoginPage() {
   return (
@@ -48,10 +48,10 @@ function AdminLoginForm() {
         return;
       }
 
-      const supabase = createClient();
-      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-      if (signInError) {
-        setError("Identifiants invalides.");
+      // Côté serveur, avec limite d'essais (voir lib/actions/adminAuth.ts).
+      const result = await adminSignIn(email, password);
+      if (!result.ok) {
+        setError(result.error);
         return;
       }
       router.push("/admin");

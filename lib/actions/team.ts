@@ -9,6 +9,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail, teamAccessEmail } from "@/lib/email";
 import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
 import { cleanPermissions, PERMISSIONS, type Permission } from "@/lib/admin/permissions";
+import { adminLink } from "@/lib/admin/gate";
 import { siteUrl } from "@/lib/utils";
 
 // Gestion de l'équipe d'administration — réservée aux propriétaires (accès
@@ -86,7 +87,7 @@ export async function addTeamMember(formData: FormData): Promise<ActionResult> {
       await sendEmail({
         to: email,
         subject: "Accès à l'administration JEUNE RICHE",
-        html: teamAccessEmail({ actionLink: `${await origin()}/admin/login`, isNewAccount: false, invitedBy, sections: sectionLabels(access) }),
+        html: teamAccessEmail({ actionLink: adminLink(await origin(), "/admin/login"), isNewAccount: false, invitedBy, sections: sectionLabels(access) }),
       });
       revalidatePath("/admin/equipe");
       return `${email} fait maintenant partie de l'équipe (compte existant) — email envoyé.`;
@@ -115,7 +116,10 @@ export async function addTeamMember(formData: FormData): Promise<ActionResult> {
       throw err;
     }
 
-    const link = `${await origin()}/admin/activer?token_hash=${encodeURIComponent(data.properties.hashed_token)}&type=invite`;
+    const link = adminLink(
+      await origin(),
+      `/admin/activer?token_hash=${encodeURIComponent(data.properties.hashed_token)}&type=invite`
+    );
     const sent = await sendEmail({
       to: email,
       subject: "Invitation à l'administration JEUNE RICHE",

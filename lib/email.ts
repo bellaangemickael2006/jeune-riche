@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { adminLink } from "@/lib/admin/gate";
 import { siteUrl } from "@/lib/utils";
 
 // Toute valeur variable insérée dans le HTML d'un email doit passer ici : les
@@ -259,7 +260,7 @@ export function newOrderAdminEmail(params: {
     <table style="width:100%;border-collapse:collapse;font-size:13px;margin:0 0 12px;">${rows}</table>
     ${params.discount ? `<p style="margin:0 0 4px;color:#9a9a9a;">Code ${escapeHtml(params.discount.code)} : −${formatXof(params.discount.amount)}</p>` : ""}
     <p style="margin:0 0 24px;">Total : <strong style="color:#f5f4f1;">${formatXof(params.total)}</strong> (livraison à communiquer au client)</p>
-    ${button(`${siteUrl()}/admin/commandes/${encodeURIComponent(params.orderId)}`, "Ouvrir la commande", true)}
+    ${button(adminLink(siteUrl(), `/admin/commandes/${encodeURIComponent(params.orderId)}`), "Ouvrir la commande", true)}
     ${params.whatsappUrl ? button(params.whatsappUrl, "Confirmer au client sur WhatsApp", false) : ""}
   `);
 }

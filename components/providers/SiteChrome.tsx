@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -17,9 +18,16 @@ import InstallPrompt from "@/components/providers/InstallPrompt";
 // clics ("nouveau produit" ouvrait le panier). Le curseur personnalisé, le
 // grain et le smooth-scroll éditorial n'ont pas non plus leur place dans un
 // tableau de bord de gestion.
-export default function SiteChrome({ children }: { children: React.ReactNode }) {
+//
+// `adminShell` vient du serveur (proxy.ts → layout) : une page admin cachée
+// par la porte secrète (lib/admin/gate.ts) doit ressembler en tout point à
+// une page 404 ordinaire, header et footer compris — impossible à décider
+// d'après la seule adresse du navigateur, qui reste /admin. Pour la page
+// chargée, on suit donc le serveur ; après une navigation, l'adresse.
+export default function SiteChrome({ children, adminShell }: { children: React.ReactNode; adminShell: boolean }) {
   const pathname = usePathname();
-  const isAdmin = pathname?.startsWith("/admin");
+  const [firstPathname] = useState(pathname);
+  const isAdmin = pathname === firstPathname ? adminShell : pathname?.startsWith("/admin");
 
   if (isAdmin) return <>{children}</>;
 

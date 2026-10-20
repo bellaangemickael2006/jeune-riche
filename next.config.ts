@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import { adminGateRewrites } from "./lib/admin/gate";
 
 const nextConfig: NextConfig = {
   // Les fichiers de police lus au runtime par /api/og ne sont pas détectés
@@ -18,6 +19,10 @@ const nextConfig: NextConfig = {
         pathname: "/storage/v1/object/public/**",
       },
     ],
+  },
+  // Administration cachée derrière une entrée secrète (lib/admin/gate.ts).
+  async rewrites() {
+    return { beforeFiles: adminGateRewrites(), afterFiles: [], fallback: [] };
   },
   // Durcissement de base, sans CSP : le site utilise déjà des <script>
   // inline (init du thème, JSON-LD) qu'une CSP stricte casserait sans un

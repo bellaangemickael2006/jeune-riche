@@ -1,5 +1,6 @@
 import { cache } from "react";
-import { redirect } from "next/navigation";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { ActionError } from "@/lib/actions/result";
@@ -18,6 +19,10 @@ import { cleanPermissions, hasPermission, PERMISSIONS, type AdminPermissions, ty
  * requêtes quand le layout et la page l'appellent dans la même requête.
  */
 export const getAdminAccess = cache(async () => {
+  // Admin caché par l'entrée secrète (proxy.ts) : 404 ordinaire, jamais une
+  // redirection vers la connexion qui trahirait l'existence de l'admin.
+  if ((await headers()).get("x-jr-admin-hidden") === "1") notFound();
+
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
     redirect("/admin/login?erreur=config_manquante");
   }
