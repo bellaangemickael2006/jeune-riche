@@ -20,13 +20,19 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    // Les pages sont rendues à chaque visite (CSP à jeton unique, voir
+    // lib/security/csp.ts) : le navigateur garde 30 s les pages déjà vues ou
+    // préchargées, pour que revenir en arrière ou rouvrir le catalogue soit
+    // instantané. Prix et stock restent revérifiés au panier et au paiement.
+    staleTimes: { dynamic: 30, static: 180 },
+  },
   // Administration cachée derrière une entrée secrète (lib/admin/gate.ts).
   async rewrites() {
     return { beforeFiles: adminGateRewrites(), afterFiles: [], fallback: [] };
   },
-  // Durcissement de base, sans CSP : le site utilise déjà des <script>
-  // inline (init du thème, JSON-LD) qu'une CSP stricte casserait sans un
-  // vrai système de nonce — à traiter séparément plutôt qu'en aveugle.
+  // Durcissement de base. La CSP, elle, est posée par proxy.ts : elle porte
+  // un jeton différent à chaque visite.
   async headers() {
     return [
       {
@@ -40,6 +46,14 @@ const nextConfig: NextConfig = {
           // explicite ici pour ne pas en dépendre silencieusement.
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
         ],
+      },
+      // Vidéos, images et icônes du dossier public : sans cela, Vercel les sert
+      // en « max-age=0 » et le navigateur redemande chaque fichier (dont les
+      // 20 Mo de la vidéo d'accueil) à chaque visite. Un jour de cache, puis
+      // une semaine où l'ancienne version reste servie pendant la mise à jour.
+      {
+        source: "/:dir(video|images|icons)/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],
       },
     ];
   },

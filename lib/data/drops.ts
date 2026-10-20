@@ -2,23 +2,55 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
-/** Drop et ses pièces publiées, pour la page /drops/[slug]. */
+// unstable_cache stocke du JSON : les dates en ressortent en texte.
+function withDates<T extends { startsAt: Date | string; endsAt: Date | string | null }>(drop: T) {
+  return { ...drop, startsAt: new Date(drop.startsAt), endsAt: drop.endsAt ? new Date(drop.endsAt) : null };
+}
+
+/** Tous les drops, pour la page /drops (cache vidé avec le tag « products »). */
+export async function getDrops() {
+  try {
+    const drops = await unstable_cache(() => prisma.drop.findMany({ orderBy: { startsAt: "asc" } }), ["drops-list"], {
+      tags: ["products"],
+      revalidate: 60,
+    })();
+    return drops.map(withDates);
+  } catch (error) {
+    console.error("[data] getDrops:", error);
+    return [];
+  }
+}
+
+/**
+ * Drop et ses pièces publiées, pour la page /drops/[slug]. En cache (tag
+ * « products », vidé à chaque modification en admin et à chaque ouverture
+ * automatique) : la page est lue deux fois par visite (métadonnées + page),
+ * et le stock en direct passe de toute façon par getDropLive.
+ */
 export async function getDropBySlug(slug: string) {
   try {
-    return await prisma.drop.findUnique({
-      where: { slug },
-      include: {
-        products: {
-          where: { published: true, status: "PUBLISHED" },
-          include: { images: { orderBy: { sortOrder: "asc" } }, variants: { select: { stock: true } } },
-          orderBy: { createdAt: "asc" },
-        },
-      },
-    });
+    const drop = await unstable_cache(() => findDropBySlug(slug), ["drop-by-slug", slug], {
+      tags: ["products"],
+      revalidate: 60,
+    })();
+    return drop ? withDates(drop) : null;
   } catch (error) {
     console.error("[data] getDropBySlug:", error);
     return null;
   }
+}
+
+function findDropBySlug(slug: string) {
+  return prisma.drop.findUnique({
+    where: { slug },
+    include: {
+      products: {
+        where: { published: true, status: "PUBLISHED" },
+        include: { images: { orderBy: { sortOrder: "asc" } }, variants: { select: { stock: true } } },
+        orderBy: { createdAt: "asc" },
+      },
+    },
+  });
 }
 
 export type DropLiveData = {

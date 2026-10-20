@@ -144,9 +144,12 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // getClaims vérifie le jeton de session sur place (clé publique du projet)
+  // au lieu d'interroger le serveur Supabase à chaque page comme getUser :
+  // un aller-retour réseau en moins par visite d'un client connecté. Le
+  // jeton est toujours rafraîchi quand il expire.
+  const { data: claimsData } = await supabase.auth.getClaims();
+  const user = claimsData?.claims ?? null;
 
   if (isProtectedAdmin && !user) {
     const redirect = NextResponse.redirect(toLogin());
@@ -162,6 +165,18 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
+// Les préchargements de liens (next/link) ne passent pas par le proxy : ce
+// ne sont pas des pages affichées (pas de CSP à poser) et la session sera
+// rafraîchie à la vraie visite. Chaque lien visible à l'écran déclenchait
+// sinon un passage complet, vérification de session comprise.
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|mp4|webp)$).*)"],
+  matcher: [
+    {
+      source: "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|mp4|webp)$).*)",
+      missing: [
+        { type: "header", key: "next-router-prefetch" },
+        { type: "header", key: "purpose", value: "prefetch" },
+      ],
+    },
+  ],
 };

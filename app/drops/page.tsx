@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
+import { getDrops } from "@/lib/data/drops";
 import EmptyState from "@/components/ui/EmptyState";
 import CountdownTimer from "@/components/ui/CountdownTimer";
 import { getDropCountdown } from "@/lib/utils";
@@ -15,14 +15,6 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t("drops.title"),
     description: t("drops.metaDescription"),
   };
-}
-
-async function getDrops() {
-  try {
-    return await prisma.drop.findMany({ orderBy: { startsAt: "asc" } });
-  } catch {
-    return [];
-  }
 }
 
 export default async function DropsPage() {
