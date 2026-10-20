@@ -2,6 +2,7 @@
 
 import { revalidatePath, updateTag } from "next/cache";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ensureMediaBucket, MAX_MEDIA_BYTES, MEDIA_BUCKET } from "@/lib/storage";
 import { HOME_CONTENT_PATH, HOME_CONTENT_TAG } from "@/lib/data/homeContent";
@@ -69,7 +70,7 @@ function refreshHome() {
 
 export async function saveHomeContent(content: unknown): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("accueil");
+    const admin = await requireAdminAction("accueil");
     const parsed = homeContentSchema.safeParse(content);
     if (!parsed.success) {
       const issue = parsed.error.issues[0];
@@ -86,6 +87,7 @@ export async function saveHomeContent(content: unknown): Promise<ActionResult> {
     if (error) throw new ActionError(`Enregistrement impossible : ${error.message}.`);
 
     await removeUnusedSiteImages(parsed.data);
+    await logAdmin(admin, "accueil.modification", "Images et textes de la page d'accueil");
     refreshHome();
     return "Page d'accueil mise à jour.";
   });
@@ -93,10 +95,11 @@ export async function saveHomeContent(content: unknown): Promise<ActionResult> {
 
 export async function resetHomeContent(): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("accueil");
+    const admin = await requireAdminAction("accueil");
     const { error } = await createAdminClient().storage.from(MEDIA_BUCKET).remove([HOME_CONTENT_PATH]);
     if (error) throw new ActionError(`Réinitialisation impossible : ${error.message}.`);
     await removeUnusedSiteImages(null);
+    await logAdmin(admin, "accueil.reinitialisation", "Images d'origine rétablies");
     refreshHome();
     return "Images d'origine rétablies.";
   });

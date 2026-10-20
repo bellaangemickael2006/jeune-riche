@@ -4,8 +4,9 @@ import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { ActionError, runAction, uniqueSlug, type ActionResult } from "@/lib/actions/result";
-import type { DropStatus } from "@prisma/client";
+import type { DropStatus } from "@/lib/generated/prisma/client";
 
 const STATUSES: DropStatus[] = ["COMING_SOON", "PRE_ORDER", "AVAILABLE", "SOLD_OUT", "ENDED"];
 
@@ -37,7 +38,7 @@ function revalidateDrops(dropId?: string) {
 
 export async function createDrop(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const name = String(formData.get("name") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
     if (!name) throw new ActionError("Nom requis.");
@@ -58,6 +59,7 @@ export async function createDrop(formData: FormData): Promise<ActionResult> {
       },
     });
 
+    await logAdmin(admin, "drops.creation", `Drop « ${name} » (début ${startsAt.toISOString().slice(0, 16).replace("T", " ")} UTC)`);
     revalidateDrops();
     return `Drop « ${name} » créé.`;
   });
@@ -65,7 +67,7 @@ export async function createDrop(formData: FormData): Promise<ActionResult> {
 
 export async function updateDrop(dropId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const name = String(formData.get("name") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
     const status = String(formData.get("status") ?? "") as DropStatus;
@@ -78,6 +80,7 @@ export async function updateDrop(dropId: string, formData: FormData): Promise<Ac
       data: { name, startsAt, endsAt, description: description || null, status },
     });
 
+    await logAdmin(admin, "drops.modification", `Drop « ${name} » — statut ${status}`, dropId);
     revalidateDrops(dropId);
     return "Drop enregistré.";
   });
@@ -85,13 +88,14 @@ export async function updateDrop(dropId: string, formData: FormData): Promise<Ac
 
 export async function deleteDrop(dropId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     // Détache les produits plutôt que de les supprimer — un drop qui se
     // termine ne doit jamais entraîner la disparition des produits eux-mêmes.
-    await prisma.$transaction([
+    const [, drop] = await prisma.$transaction([
       prisma.product.updateMany({ where: { dropId }, data: { dropId: null } }),
       prisma.drop.delete({ where: { id: dropId } }),
     ]);
+    await logAdmin(admin, "drops.suppression", `Drop « ${drop.name} »`, dropId);
     revalidateDrops();
     redirect("/admin/drops");
   });
@@ -99,19 +103,21 @@ export async function deleteDrop(dropId: string): Promise<ActionResult> {
 
 export async function assignProductToDrop(dropId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const productId = String(formData.get("productId") ?? "");
     if (!productId) throw new ActionError("Choisissez un produit.");
 
-    await prisma.product.update({ where: { id: productId }, data: { dropId } });
+    const product = await prisma.product.update({ where: { id: productId }, data: { dropId } });
+    await logAdmin(admin, "drops.produits", `« ${product.name} » ajouté au drop`, dropId);
     revalidateDrops(dropId);
   });
 }
 
 export async function removeProductFromDrop(dropId: string, productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
-    await prisma.product.update({ where: { id: productId }, data: { dropId: null } });
+    const admin = await requireAdminAction("produits");
+    const product = await prisma.product.update({ where: { id: productId }, data: { dropId: null } });
+    await logAdmin(admin, "drops.produits", `« ${product.name} » retiré du drop`, dropId);
     revalidateDrops(dropId);
   });
 }

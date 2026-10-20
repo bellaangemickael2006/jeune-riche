@@ -14,13 +14,14 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
-    "test": "node --import tsx --test lib/email.test.ts lib/orders/pricing.test.ts lib/actions/result.test.ts lib/demoReset.test.ts lib/orders/tracking.test.ts lib/orders/stats.test.ts lib/account/safeNext.test.ts lib/home/content.test.ts lib/account/phone.test.ts lib/csv.test.ts lib/admin/filters.test.ts lib/stock/labels.test.ts lib/admin/permissions.test.ts lib/rateLimit.test.ts lib/drops/live.test.ts lib/admin/gate.test.ts lib/unsubscribe.test.ts lib/security/csp.test.ts",
+    "test": "node --import tsx --test lib/email.test.ts lib/orders/pricing.test.ts lib/actions/result.test.ts lib/demoReset.test.ts lib/orders/tracking.test.ts lib/orders/stats.test.ts lib/account/safeNext.test.ts lib/home/content.test.ts lib/account/phone.test.ts lib/csv.test.ts lib/admin/filters.test.ts lib/stock/labels.test.ts lib/admin/permissions.test.ts lib/rateLimit.test.ts lib/drops/live.test.ts lib/admin/gate.test.ts lib/unsubscribe.test.ts lib/security/csp.test.ts lib/admin/auditLabels.test.ts lib/prismaPool.test.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {
     "@google/model-viewer": "4.3.1",
     "@gsap/react": "2.1.2",
-    "@prisma/client": "6.16.3",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
     "@react-three/drei": "10.7.6",
     "@react-three/fiber": "9.3.0",
     "@react-three/postprocessing": "3.0.4",
@@ -53,21 +54,21 @@
     "@types/react-dom": "19.3.0",
     "@types/three": "0.183.1",
     "autoprefixer": "10.4.21",
+    "dotenv": "18.0.8",
     "eslint": "9.37.0",
     "eslint-config-next": "^16.4.2",
-    "postcss": "8.5.6",
-    "prisma": "6.16.3",
+    "postcss": "8.5.31",
+    "prisma": "7.10.1",
     "tailwindcss": "3.4.18",
     "tsx": "4.20.6",
     "typescript": "5.9.3"
   },
   "allowScripts": {
     "esbuild@0.25.12": true,
-    "prisma@6.16.3": true,
+    "prisma@7.10.1": true,
     "sharp@0.34.5": true,
     "unrs-resolver@1.12.2": true,
-    "@prisma/engines@6.16.3": true,
-    "@prisma/client@6.16.3": true,
+    "@prisma/engines@7.10.1": true,
     "@sentry/cli@2.58.6": true
   }
 }

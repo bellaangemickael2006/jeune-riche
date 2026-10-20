@@ -47,6 +47,7 @@ export const LINK_PERMISSION: Record<string, Permission | "proprietaire"> = {
   "/admin/newsletter": "newsletter",
   "/admin/parametres": "parametres",
   "/admin/equipe": "proprietaire",
+  "/admin/journal": "proprietaire",
 };
 
 export function canSeeLink(permissions: AdminPermissions, href: string) {

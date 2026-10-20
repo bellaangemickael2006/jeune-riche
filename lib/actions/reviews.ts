@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { createClient } from "@/lib/supabase/server";
 import { getServerTranslation } from "@/lib/i18n/server";
 import { randomUUID } from "node:crypto";
@@ -71,13 +72,14 @@ async function verifiedPhotoPaths(userId: string, raw: FormDataEntryValue[]) {
 
 export async function moderateReview(reviewId: string, status: "APPROVED" | "REJECTED"): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("avis");
+    const admin = await requireAdminAction("avis");
     if (status !== "APPROVED" && status !== "REJECTED") throw new ActionError("Statut inconnu.");
     const review = await prisma.review.update({
       where: { id: reviewId },
       data: { status },
-      include: { product: { select: { slug: true } } },
+      include: { product: { select: { slug: true, name: true } } },
     });
+    await logAdmin(admin, "avis.moderation", `Avis sur « ${review.product.name} » ${status === "APPROVED" ? "approuvé" : "refusé"}`, reviewId);
     revalidatePath("/admin/avis");
     // Un avis approuvé doit apparaître sur la fiche produit sans attendre.
     revalidatePath(`/catalogue/${review.product.slug}`);
@@ -86,7 +88,7 @@ export async function moderateReview(reviewId: string, status: "APPROVED" | "REJ
 
 export async function deleteReview(reviewId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("avis");
+    const admin = await requireAdminAction("avis");
     let photoPaths: string[] = [];
     try {
       photoPaths = (await prisma.reviewPhoto.findMany({ where: { reviewId }, select: { path: true } })).map((p) => p.path);
@@ -95,9 +97,10 @@ export async function deleteReview(reviewId: string): Promise<ActionResult> {
     }
     const review = await prisma.review.delete({
       where: { id: reviewId },
-      include: { product: { select: { slug: true } } },
+      include: { product: { select: { slug: true, name: true } } },
     });
     await removeMediaFiles(photoPaths);
+    await logAdmin(admin, "avis.suppression", `Avis ${review.rating}/5 sur « ${review.product.name} »`, reviewId);
     revalidatePath("/admin/avis");
     revalidatePath(`/catalogue/${review.product.slug}`);
   });

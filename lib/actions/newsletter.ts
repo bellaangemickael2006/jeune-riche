@@ -3,13 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { sendEmail, campaignEmail } from "@/lib/email";
 import { unsubscribeUrl } from "@/lib/unsubscribe";
 import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
 
 export async function sendCampaign(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("newsletter");
+    const admin = await requireAdminAction("newsletter");
 
     const subject = String(formData.get("subject") ?? "").trim();
     const body = String(formData.get("body") ?? "").trim();
@@ -32,6 +33,7 @@ export async function sendCampaign(formData: FormData): Promise<ActionResult> {
       sent += results.filter((r) => r.sent).length;
     }
 
+    await logAdmin(admin, "newsletter.campagne", `« ${subject} » envoyée à ${sent}/${subscribers.length} abonné(s)`);
     revalidatePath("/admin/newsletter");
     return `Envoyé à ${sent}/${subscribers.length} abonné(s).`;
   });
@@ -39,8 +41,9 @@ export async function sendCampaign(formData: FormData): Promise<ActionResult> {
 
 export async function deleteSubscriber(id: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("newsletter");
-    await prisma.newsletterSubscriber.delete({ where: { id } });
+    const admin = await requireAdminAction("newsletter");
+    const subscriber = await prisma.newsletterSubscriber.delete({ where: { id } });
+    await logAdmin(admin, "newsletter.suppression", subscriber.email, id);
     revalidatePath("/admin/newsletter");
   });
 }

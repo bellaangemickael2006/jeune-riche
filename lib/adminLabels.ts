@@ -1,4 +1,4 @@
-import type { DropStatus, OrderStatus, ReviewStatus } from "@prisma/client";
+import type { DropStatus, OrderStatus, ReviewStatus } from "@/lib/generated/prisma/client";
 
 // Libellés affichés dans l'admin à la place des valeurs brutes de la base
 // (« COMING_SOON », « PREPARATION »…).

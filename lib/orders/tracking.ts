@@ -1,7 +1,7 @@
 // Suivi de commande public : étapes affichées au client et vérification de
 // son identité. Sans dépendance serveur (testé unitairement).
 
-import type { OrderStatus } from "@prisma/client";
+import type { OrderStatus } from "@/lib/generated/prisma/client";
 
 export const TRACKING_STEPS = ["received", "preparing", "shipped", "delivered"] as const;
 export type TrackingStep = (typeof TRACKING_STEPS)[number];

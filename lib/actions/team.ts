@@ -1,10 +1,11 @@
 "use server";
 
 import { headers } from "next/headers";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/lib/generated/prisma/client";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail, teamAccessEmail } from "@/lib/email";
 import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
@@ -89,6 +90,7 @@ export async function addTeamMember(formData: FormData): Promise<ActionResult> {
         subject: "Accès à l'administration JEUNE RICHE",
         html: teamAccessEmail({ actionLink: adminLink(await origin(), "/admin/login"), isNewAccount: false, invitedBy, sections: sectionLabels(access) }),
       });
+      await logAdmin(me, "equipe.ajout", `${email} (compte existant) — ${sectionLabels(access).join(", ")}`, existing.id);
       revalidatePath("/admin/equipe");
       return `${email} fait maintenant partie de l'équipe (compte existant) — email envoyé.`;
     }
@@ -125,6 +127,7 @@ export async function addTeamMember(formData: FormData): Promise<ActionResult> {
       subject: "Invitation à l'administration JEUNE RICHE",
       html: teamAccessEmail({ actionLink: link, isNewAccount: true, invitedBy, sections: sectionLabels(access) }),
     });
+    await logAdmin(me, "equipe.ajout", `${email} (invitation) — ${sectionLabels(access).join(", ")}`);
     revalidatePath("/admin/equipe");
     return sent.sent
       ? `Invitation envoyée à ${email}.`
@@ -136,7 +139,7 @@ export async function updateTeamMember(userId: string, formData: FormData): Prom
   return runAction(async () => {
     const me = await requireAdminAction("proprietaire");
     if (userId === me.id) throw new ActionError("Vous ne pouvez pas modifier vos propres accès.");
-    const target = await prisma.user.findUnique({ where: { id: userId }, select: { role: true } });
+    const target = await prisma.user.findUnique({ where: { id: userId }, select: { role: true, email: true } });
     if (target?.role !== "ADMIN") throw new ActionError("Membre introuvable.");
     const access = readAccess(formData);
 
@@ -145,6 +148,7 @@ export async function updateTeamMember(userId: string, formData: FormData): Prom
       throw new ActionError("Il doit rester au moins un propriétaire.");
     }
     await prisma.$transaction(accessWrites(userId, access, me.name || me.email));
+    await logAdmin(me, "equipe.modification", `${target.email} — ${sectionLabels(access).join(", ")}`, userId);
     revalidatePath("/admin/equipe");
     return "Accès mis à jour.";
   });
@@ -159,8 +163,9 @@ export async function removeTeamMember(userId: string): Promise<ActionResult> {
 
     // L'accès admin est retiré ; le compte reste utilisable comme client.
     // Le rôle d'abord : c'est lui qui ferme l'accès, même sans table de droits.
-    await prisma.user.update({ where: { id: userId }, data: { role: "CLIENT" } });
+    const removed = await prisma.user.update({ where: { id: userId }, data: { role: "CLIENT" } });
     await prisma.adminPermission.deleteMany({ where: { userId } }).catch(() => undefined);
+    await logAdmin(me, "equipe.retrait", removed.email, userId);
     revalidatePath("/admin/equipe");
     return "Accès à l'administration retiré.";
   });

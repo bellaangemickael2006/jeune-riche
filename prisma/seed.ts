@@ -7,9 +7,12 @@
  * non publiés : ils n'apparaissent pas dans le catalogue tant qu'un admin ne les publie
  * pas explicitement après avoir vérifié prix et stock.
  */
-import { PrismaClient, ImageType } from "@prisma/client";
+import "dotenv/config";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient, ImageType } from "../lib/generated/prisma/client";
+import { poolConfig } from "../lib/prismaPool";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({ adapter: new PrismaPg(poolConfig(process.env.DIRECT_URL || process.env.DATABASE_URL)) });
 
 const CATEGORIES = [
   { name: "T-shirt", slug: "t-shirt" },

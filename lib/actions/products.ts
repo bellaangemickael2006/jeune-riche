@@ -4,6 +4,7 @@ import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { notifyRestock, recordMovements } from "@/lib/stock/movements";
 import {
@@ -16,7 +17,7 @@ import {
   type ActionResult,
   type DataResult,
 } from "@/lib/actions/result";
-import type { ImageType } from "@prisma/client";
+import type { ImageType } from "@/lib/generated/prisma/client";
 import { ensureMediaBucket, MAX_MEDIA_BYTES, MEDIA_BUCKET, removeMediaFiles } from "@/lib/storage";
 
 const IMAGE_TYPES: ImageType[] = ["FRONT", "BACK", "DETAIL", "LIFESTYLE", "MOCKUP"];
@@ -42,6 +43,12 @@ function safeExtension(filename: string, allowed: Set<string>, fallback: string)
   return allowed.has(ext) ? ext : fallback;
 }
 
+/** « Nom du produit » pour le journal de l'admin. */
+async function productLabel(productId: string) {
+  const product = await prisma.product.findUnique({ where: { id: productId }, select: { name: true } }).catch(() => null);
+  return product ? `« ${product.name} »` : "Produit";
+}
+
 function revalidateProduct(productId: string) {
   updateTag("products");
   revalidatePath("/admin/produits");
@@ -51,7 +58,7 @@ function revalidateProduct(productId: string) {
 
 export async function createProduct(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
 
     const name = String(formData.get("name") ?? "").trim();
     const categoryId = String(formData.get("categoryId") ?? "");
@@ -75,6 +82,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult> {
       },
     });
 
+    await logAdmin(admin, "produits.creation", `« ${name} »`, product.id);
     updateTag("products");
     revalidatePath("/admin/produits");
     redirect(`/admin/produits/${product.id}`);
@@ -83,7 +91,7 @@ export async function createProduct(formData: FormData): Promise<ActionResult> {
 
 export async function updateProduct(productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
 
     const name = String(formData.get("name") ?? "").trim();
     const categoryId = String(formData.get("categoryId") ?? "").trim();
@@ -117,6 +125,12 @@ export async function updateProduct(productId: string, formData: FormData): Prom
       },
     });
 
+    await logAdmin(
+      admin,
+      "produits.modification",
+      `« ${name} » — ${published ? "publié" : "brouillon"}, prix ${price === null ? "non renseigné" : `${price} XOF`}`,
+      productId
+    );
     revalidateProduct(productId);
     return "Produit enregistré.";
   });
@@ -124,7 +138,7 @@ export async function updateProduct(productId: string, formData: FormData): Prom
 
 export async function deleteProduct(productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
 
     const orderCount = await prisma.orderItem.count({ where: { variant: { productId } } });
     if (orderCount > 0) {
@@ -135,12 +149,13 @@ export async function deleteProduct(productId: string): Promise<ActionResult> {
 
     // Les alertes de stock et les paniers ne sont pas supprimés en cascade
     // avec les variantes : on les retire d'abord, sinon la suppression échoue.
-    await prisma.$transaction([
+    const [, , product] = await prisma.$transaction([
       prisma.restockRequest.deleteMany({ where: { variant: { productId } } }),
       prisma.cartItem.deleteMany({ where: { variant: { productId } } }),
       prisma.product.delete({ where: { id: productId } }),
     ]);
 
+    await logAdmin(admin, "produits.suppression", `« ${product.name} »`, productId);
     updateTag("products");
     revalidatePath("/admin/produits");
     revalidatePath("/catalogue");
@@ -173,6 +188,7 @@ export async function addVariant(productId: string, formData: FormData): Promise
       { variantId: variant.id, productId, delta: stock, stockAfter: stock, reason: "creation", actorEmail: admin.email },
     ]);
 
+    await logAdmin(admin, "produits.variante", `${await productLabel(productId)} : ${color} / ${size}, stock ${stock}`, productId);
     revalidateProduct(productId);
     return `Variante ${color} / ${size} ajoutée.`;
   });
@@ -186,13 +202,19 @@ export async function updateVariantStock(variantId: string, productId: string, f
 
     const previous = await prisma.productVariant.findUnique({
       where: { id: variantId },
-      select: { stock: true },
+      select: { stock: true, color: true, size: true },
     });
     await prisma.productVariant.update({ where: { id: variantId }, data: { stock } });
     if (previous) {
       await recordMovements([
         { variantId, productId, delta: stock - previous.stock, stockAfter: stock, reason: "ajustement", actorEmail: admin.email },
       ]);
+      await logAdmin(
+        admin,
+        "stock.modification",
+        `${await productLabel(productId)} ${previous.color} / ${previous.size} : ${previous.stock} → ${stock}`,
+        productId
+      );
     }
 
     // "Nous vous préviendrons dès le retour en stock" (voir NotifyMe dans
@@ -206,16 +228,17 @@ export async function updateVariantStock(variantId: string, productId: string, f
 
 export async function deleteVariant(variantId: string, productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const used = await prisma.orderItem.count({ where: { variantId } });
     if (used > 0) {
       throw new ActionError("Impossible de retirer cette variante : elle figure dans une commande. Mettez son stock à 0.");
     }
-    await prisma.$transaction([
+    const [, , variant] = await prisma.$transaction([
       prisma.restockRequest.deleteMany({ where: { variantId } }),
       prisma.cartItem.deleteMany({ where: { variantId } }),
       prisma.productVariant.delete({ where: { id: variantId } }),
     ]);
+    await logAdmin(admin, "produits.variante_suppression", `${await productLabel(productId)} : ${variant.color} / ${variant.size}`, productId);
     revalidateProduct(productId);
   });
 }
@@ -275,7 +298,7 @@ function storagePathFromUrl(url: string) {
 
 export async function addProductImage(productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const path = String(formData.get("path") ?? "");
     const alt = String(formData.get("alt") ?? "").trim();
     const color = String(formData.get("color") ?? "").trim();
@@ -298,6 +321,7 @@ export async function addProductImage(productId: string, formData: FormData): Pr
       },
     });
 
+    await logAdmin(admin, "produits.media", `${await productLabel(productId)} : image ajoutée`, productId);
     revalidateProduct(productId);
     return "Image ajoutée.";
   });
@@ -305,7 +329,7 @@ export async function addProductImage(productId: string, formData: FormData): Pr
 
 export async function deleteProductImage(imageId: string, productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const image = await prisma.productImage.delete({ where: { id: imageId } });
 
     // Supprimer l'image principale laissait le produit sans visuel principal
@@ -316,6 +340,7 @@ export async function deleteProductImage(imageId: string, productId: string): Pr
     }
 
     await removeStoredFile(image.url);
+    await logAdmin(admin, "produits.media", `${await productLabel(productId)} : image supprimée`, productId);
     revalidateProduct(productId);
   });
 }
@@ -333,7 +358,7 @@ async function removeStoredFile(url: string | null) {
 
 export async function setProductVideo(productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const path = String(formData.get("path") ?? "");
     checkUploadedPath(productId, path, "video");
 
@@ -342,6 +367,7 @@ export async function setProductVideo(productId: string, formData: FormData): Pr
     await prisma.product.update({ where: { id: productId }, data: { videoUrl: data.publicUrl } });
     await removeStoredFile(previous?.videoUrl ?? null);
 
+    await logAdmin(admin, "produits.media", `${await productLabel(productId)} : vidéo enregistrée`, productId);
     revalidateProduct(productId);
     return "Vidéo enregistrée.";
   });
@@ -349,10 +375,11 @@ export async function setProductVideo(productId: string, formData: FormData): Pr
 
 export async function removeProductVideo(productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const previous = await prisma.product.findUnique({ where: { id: productId }, select: { videoUrl: true } });
     await prisma.product.update({ where: { id: productId }, data: { videoUrl: null } });
     await removeStoredFile(previous?.videoUrl ?? null);
+    await logAdmin(admin, "produits.media", `${await productLabel(productId)} : vidéo retirée`, productId);
     revalidateProduct(productId);
   });
 }
@@ -363,7 +390,7 @@ export async function removeProductVideo(productId: string): Promise<ActionResul
  */
 export async function addProductModel(productId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const path = String(formData.get("path") ?? "");
     const color = String(formData.get("color") ?? "").trim() || null;
     checkUploadedPath(productId, path, "model");
@@ -376,6 +403,12 @@ export async function addProductModel(productId: string, formData: FormData): Pr
     ]);
     await removeMediaFiles(previous.map((m) => m.path));
 
+    await logAdmin(
+      admin,
+      "produits.media",
+      `${await productLabel(productId)} : modèle 3D ${previous.length > 0 ? "remplacé" : "ajouté"}${color ? ` (${color})` : ""}`,
+      productId
+    );
     revalidateProduct(productId);
     return previous.length > 0 ? "Modèle 3D remplacé." : "Modèle 3D ajouté.";
   });
@@ -383,9 +416,10 @@ export async function addProductModel(productId: string, formData: FormData): Pr
 
 export async function deleteProductModel(modelId: string, productId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const model = await prisma.productModel.delete({ where: { id: modelId } });
     await removeMediaFiles([model.path]);
+    await logAdmin(admin, "produits.media", `${await productLabel(productId)} : modèle 3D supprimé`, productId);
     revalidateProduct(productId);
   });
 }

@@ -3,8 +3,9 @@
 import { revalidatePath, updateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
-import { MANUAL_REASONS, nextStock, type MovementReason, type StockMode } from "@/lib/stock/labels";
+import { MANUAL_REASONS, MOVEMENT_REASONS, nextStock, type MovementReason, type StockMode } from "@/lib/stock/labels";
 import { notifyRestock, recordMovements } from "@/lib/stock/movements";
 
 type BulkStockInput = {
@@ -74,6 +75,14 @@ export async function bulkUpdateStock(productId: string, input: BulkStockInput):
     );
     const notified = await notifyRestock(effective.filter((p) => p.variant.stock <= 0 && p.after > 0).map((p) => p.variant.id));
 
+    const product = await prisma.product.findUnique({ where: { id: productId }, select: { name: true } }).catch(() => null);
+    await logAdmin(
+      admin,
+      "stock.modification",
+      `« ${product?.name ?? "Produit"} » (${MOVEMENT_REASONS[input.reason]}) : ` +
+        effective.map(({ variant, after }) => `${variant.color} / ${variant.size} ${variant.stock} → ${after}`).join(", "),
+      productId
+    );
     updateTag("products");
     revalidatePath(`/admin/produits/${productId}`);
     revalidatePath(`/admin/produits/${productId}/stock`);

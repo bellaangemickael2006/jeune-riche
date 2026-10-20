@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { rateLimit } from "@/lib/rateLimit";
+import { logAdmin } from "@/lib/admin/audit";
 
 export type AdminSignInResult = { ok: true } | { ok: false; error: string };
 
@@ -39,17 +40,20 @@ export async function adminSignIn(email: string, password: string): Promise<Admi
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({ email: normalized, password: secret });
   if (error || !data.user) {
+    await logAdmin({ id: null, email: normalized }, "connexion.refusee", "Mauvais mot de passe ou compte inconnu");
     await pause();
     return { ok: false, error: INVALID };
   }
 
   const dbUser = await prisma.user
-    .findUnique({ where: { supabaseId: data.user.id }, select: { role: true } })
+    .findUnique({ where: { supabaseId: data.user.id }, select: { id: true, role: true } })
     .catch(() => null);
   if (dbUser?.role !== "ADMIN") {
     await supabase.auth.signOut();
+    await logAdmin({ id: null, email: normalized }, "connexion.refusee", "Compte sans accès à l’administration");
     await pause();
     return { ok: false, error: INVALID };
   }
+  await logAdmin({ id: dbUser.id, email: normalized }, "connexion.reussie", "Connexion à l’administration");
   return { ok: true };
 }

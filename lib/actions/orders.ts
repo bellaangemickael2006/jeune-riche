@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
-import type { OrderStatus } from "@prisma/client";
+import type { OrderStatus } from "@/lib/generated/prisma/client";
 import { recordMovements } from "@/lib/stock/movements";
 
 const STATUSES: OrderStatus[] = ["NOUVELLE", "CONFIRMEE", "PREPARATION", "EXPEDIEE", "LIVREE", "ANNULEE"];
@@ -78,6 +79,7 @@ export async function updateOrderStatus(orderId: string, formData: FormData): Pr
       revalidatePath("/admin/stock");
     }
 
+    await logAdmin(admin, "commandes.statut", `${order.orderNumber} : ${order.status} → ${status}`, orderId);
     revalidatePath("/admin");
     revalidatePath("/admin/commandes");
     revalidatePath(`/admin/commandes/${orderId}`);
@@ -89,11 +91,11 @@ export async function updateOrderStatus(orderId: string, formData: FormData): Pr
 
 export async function updateOrderFulfillment(orderId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("commandes");
+    const admin = await requireAdminAction("commandes");
     const trackingNumber = String(formData.get("trackingNumber") ?? "").trim();
     const notes = String(formData.get("notes") ?? "").trim();
 
-    await prisma.order.update({
+    const order = await prisma.order.update({
       where: { id: orderId },
       data: {
         trackingNumber: trackingNumber || null,
@@ -101,6 +103,12 @@ export async function updateOrderFulfillment(orderId: string, formData: FormData
       },
     });
 
+    await logAdmin(
+      admin,
+      "commandes.suivi",
+      `${order.orderNumber}${trackingNumber ? ` — n° de suivi ${trackingNumber}` : ""}${notes ? " — notes modifiées" : ""}`,
+      orderId
+    );
     revalidatePath(`/admin/commandes/${orderId}`);
     return "Enregistré.";
   });

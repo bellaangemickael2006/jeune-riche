@@ -1,5 +1,5 @@
 import { unstable_rethrow } from "next/navigation";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/lib/generated/prisma/client";
 
 // En production, Next.js masque le message des erreurs levées dans une server
 // action : l'admin ne voyait qu'« Une erreur est survenue », jamais la raison

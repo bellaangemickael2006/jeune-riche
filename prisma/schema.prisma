@@ -1,14 +1,16 @@
 // JEUNE RICHE — schéma Prisma
 // Base : Supabase PostgreSQL. Voir ART_DIRECTION.md pour le contexte produit.
 
+// Client généré dans lib/generated/prisma (non versionné, recréé par
+// `prisma generate` à chaque installation). Connexion : voir lib/prisma.ts
+// (site) et prisma.config.ts (migrations).
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
 
 // ---------- Enums ----------
@@ -424,4 +426,25 @@ model StoreSettings {
   updatedAt             DateTime @updatedAt
 
   @@map("store_settings")
+}
+
+// Journal d'activité de l'administration : qui a fait quoi, quand, depuis
+// quelle adresse IP. Écrit en best-effort APRÈS chaque action (voir
+// lib/admin/audit.ts) : sans la table (avant migration), l'admin fonctionne
+// normalement, seul le journal manque. Jamais modifié ni effacé depuis l'admin
+// (pas même par le formatage) : c'est une trace, pas une donnée de la boutique.
+model AdminLog {
+  id         String   @id @default(cuid())
+  actorId    String? // null pour une tentative de connexion refusée
+  actorEmail String
+  action     String // voir lib/admin/auditLabels.ts
+  summary    String
+  target     String? // id de l'élément concerné (commande, produit…)
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([action, createdAt])
+  @@index([actorEmail, createdAt])
+  @@map("admin_logs")
 }

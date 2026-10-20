@@ -4,7 +4,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, whatsappStatusUpdateLink } from "@/lib/utils";
 import { updateOrderStatus, updateOrderFulfillment } from "@/lib/actions/orders";
-import type { OrderStatus } from "@prisma/client";
+import type { OrderStatus } from "@/lib/generated/prisma/client";
 import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 import { ORDER_STATUS_LABEL } from "@/lib/adminLabels";
 

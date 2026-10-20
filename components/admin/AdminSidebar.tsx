@@ -24,6 +24,7 @@ const LINKS = [
   { href: "/admin/newsletter", label: "Newsletter" },
   { href: "/admin/parametres", label: "Paramètres" },
   { href: "/admin/equipe", label: "Équipe" },
+  { href: "/admin/journal", label: "Journal" },
 ];
 
 export default function AdminSidebar({

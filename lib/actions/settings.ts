@@ -1,9 +1,10 @@
 "use server";
 
 import { revalidatePath, updateTag } from "next/cache";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/lib/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { MEDIA_BUCKET, REVIEW_PHOTOS_PREFIX } from "@/lib/storage";
 import { ActionError, readAmount, runAction, type ActionResult } from "@/lib/actions/result";
@@ -13,7 +14,7 @@ const SETTINGS_ID = "default";
 
 export async function updateStoreSettings(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("parametres");
+    const admin = await requireAdminAction("parametres");
 
     const freeShippingThreshold = readAmount(formData, "freeShippingThreshold", "Livraison gratuite");
     const contactEmail = String(formData.get("contactEmail") ?? "").trim();
@@ -33,6 +34,11 @@ export async function updateStoreSettings(formData: FormData): Promise<ActionRes
       update: data,
     });
 
+    await logAdmin(
+      admin,
+      "parametres.modification",
+      `Livraison gratuite ${freeShippingThreshold === null ? "désactivée" : `dès ${freeShippingThreshold} XOF`}, contact ${contactEmail || "—"} / ${contactPhone || "—"}`
+    );
     updateTag("store-settings");
     revalidatePath("/admin/parametres");
     return "Paramètres enregistrés.";
@@ -46,7 +52,7 @@ export async function updateStoreSettings(formData: FormData): Promise<ActionRes
  */
 export async function resetStoreData(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("proprietaire");
+    const admin = await requireAdminAction("proprietaire");
 
     if (!isResetConfirmed(formData.get("confirmation"))) {
       throw new ActionError(`Tapez ${RESET_CONFIRMATION} pour confirmer le formatage.`);
@@ -146,6 +152,7 @@ export async function resetStoreData(formData: FormData): Promise<ActionResult> 
       wipeNewsletter && `${counts.subscribers} abonné(s) newsletter`,
       zeroStock && "stocks remis à 0",
     ].filter(Boolean);
+    await logAdmin(admin, "parametres.formatage", `Formatage : ${parts.join(", ") || "rien de coché"}`);
     const warning = authFailures > 0 ? ` (${authFailures} connexion(s) client n'ont pas pu être supprimées côté Supabase)` : "";
     return `Formatage terminé : ${parts.join(", ")}.${warning}`;
   });

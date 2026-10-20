@@ -3,12 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { ActionError, readAmount, readInt, runAction, type ActionResult } from "@/lib/actions/result";
-import type { PromoType } from "@prisma/client";
+import type { PromoType } from "@/lib/generated/prisma/client";
 
 export async function createPromoCode(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("promos");
+    const admin = await requireAdminAction("promos");
 
     const code = String(formData.get("code") ?? "").trim().toUpperCase().replace(/\s+/g, "");
     const type = String(formData.get("type") ?? "") as PromoType;
@@ -38,6 +39,7 @@ export async function createPromoCode(formData: FormData): Promise<ActionResult>
       data: { code, type, value, expiresAt, minSubtotal, maxUses },
     });
 
+    await logAdmin(admin, "promos.creation", `Code ${code} (${type === "PERCENT" ? `${value} %` : `${value} XOF`})`);
     revalidatePath("/admin/codes-promo");
     return `Code ${code} créé.`;
   });
@@ -45,16 +47,18 @@ export async function createPromoCode(formData: FormData): Promise<ActionResult>
 
 export async function togglePromoCode(id: string, active: boolean): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("promos");
-    await prisma.promoCode.update({ where: { id }, data: { active } });
+    const admin = await requireAdminAction("promos");
+    const promo = await prisma.promoCode.update({ where: { id }, data: { active } });
+    await logAdmin(admin, "promos.activation", `Code ${promo.code} ${active ? "activé" : "désactivé"}`, id);
     revalidatePath("/admin/codes-promo");
   });
 }
 
 export async function deletePromoCode(id: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("promos");
-    await prisma.promoCode.delete({ where: { id } });
+    const admin = await requireAdminAction("promos");
+    const promo = await prisma.promoCode.delete({ where: { id } });
+    await logAdmin(admin, "promos.suppression", `Code ${promo.code}`, id);
     revalidatePath("/admin/codes-promo");
   });
 }

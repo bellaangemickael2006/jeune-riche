@@ -1,4 +1,4 @@
-import type { OrderStatus, Prisma } from "@prisma/client";
+import type { OrderStatus, Prisma } from "@/lib/generated/prisma/client";
 
 // Filtres partagés entre les listes admin et leurs exports CSV : le fichier
 // exporté contient exactement ce que la liste affiche.

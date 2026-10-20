@@ -18,7 +18,7 @@ const eslintConfig = [
     // Sans cette exclusion, `eslint .` et `tsc` les analysent avec la config
     // d'ici et le build de production échoue (voir aussi tsconfig.json).
     ignores: [".next/**", "node_modules/**", "next-env.d.ts", "scripts/**",
-      "jeune-riche-v2/**", "jeune-riche-v3/**"],
+      "jeune-riche-v2/**", "jeune-riche-v3/**", "lib/generated/**"],
   },
 ];
 

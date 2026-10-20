@@ -1,40 +1,21 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "@/lib/generated/prisma/client";
+import { poolConfig } from "@/lib/prismaPool";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Supabase's connection pooler (PgBouncer, transaction mode) ne supporte pas
-// le pool interne de Prisma tel quel : sans connection_limit, chaque
-// instance serverless (Vercel) peut ouvrir trop de connexions sur le pooler
-// et laisser des sessions "idle in transaction" bloquées, gelant
-// silencieusement les requêtes suivantes (observé le 07/09 — toutes les
-// fiches produit renvoyaient "introuvable" alors que la base et les données
-// étaient intactes). pgbouncer=true est déjà nécessaire pour désactiver les
-// prepared statements. connection_limit=1 a stoppé le blocage mais cassait
-// les pages faisant deux requêtes en parallèle (Promise.all) faute de
-// connexion disponible pour la seconde — 3 laisse une marge pour ce cas
-// sans revenir au comportement non borné qui posait problème.
-function poolerSafeUrl(url: string | undefined) {
-  if (!url) return url;
-  try {
-    const parsed = new URL(url);
-    if (!parsed.searchParams.has("pgbouncer")) parsed.searchParams.set("pgbouncer", "true");
-    if (!parsed.searchParams.has("connection_limit")) parsed.searchParams.set("connection_limit", "3");
-    if (!parsed.searchParams.has("pool_timeout")) parsed.searchParams.set("pool_timeout", "15");
-    return parsed.toString();
-  } catch {
-    return url;
-  }
+// Prisma 7 : la connexion passe par le pilote PostgreSQL de Node (pg) au lieu
+// du moteur Rust de Prisma. Réglages du pool (taille, délais, SSL) : voir
+// lib/prismaPool.ts.
+function createPrisma() {
+  return new PrismaClient({
+    adapter: new PrismaPg(poolConfig(process.env.DATABASE_URL)),
+    log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+  });
 }
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
-    datasources: {
-      db: { url: poolerSafeUrl(process.env.DATABASE_URL) },
-    },
-  });
+export const prisma = globalForPrisma.prisma ?? createPrisma();
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

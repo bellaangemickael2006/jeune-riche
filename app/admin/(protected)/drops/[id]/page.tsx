@@ -8,7 +8,7 @@ import {
   assignProductToDrop,
   removeProductFromDrop,
 } from "@/lib/actions/drops";
-import type { DropStatus } from "@prisma/client";
+import type { DropStatus } from "@/lib/generated/prisma/client";
 import ConfirmButton from "@/components/admin/ConfirmButton";
 import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 import { DROP_STATUS_LABEL } from "@/lib/adminLabels";

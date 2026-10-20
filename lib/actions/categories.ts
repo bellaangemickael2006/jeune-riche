@@ -3,6 +3,7 @@
 import { revalidatePath, updateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
 import { ActionError, readInt, runAction, uniqueSlug, type ActionResult } from "@/lib/actions/result";
 
 function revalidateCategories() {
@@ -13,7 +14,7 @@ function revalidateCategories() {
 
 export async function createCategory(formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const name = String(formData.get("name") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
     const sortOrder = readInt(formData, "sortOrder", "Ordre d'affichage") ?? 0;
@@ -27,6 +28,7 @@ export async function createCategory(formData: FormData): Promise<ActionResult> 
       data: { name, slug, description: description || null, sortOrder },
     });
 
+    await logAdmin(admin, "categories.creation", `Catégorie « ${name} »`);
     revalidateCategories();
     return `Catégorie « ${name} » créée.`;
   });
@@ -34,7 +36,7 @@ export async function createCategory(formData: FormData): Promise<ActionResult> 
 
 export async function updateCategory(categoryId: string, formData: FormData): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
     const name = String(formData.get("name") ?? "").trim();
     const description = String(formData.get("description") ?? "").trim();
     const sortOrder = readInt(formData, "sortOrder", "Ordre d'affichage") ?? 0;
@@ -48,6 +50,7 @@ export async function updateCategory(categoryId: string, formData: FormData): Pr
       data: { name, description: description || null, sortOrder },
     });
 
+    await logAdmin(admin, "categories.modification", `Catégorie « ${name} »`, categoryId);
     revalidateCategories();
     return "Enregistré.";
   });
@@ -55,14 +58,15 @@ export async function updateCategory(categoryId: string, formData: FormData): Pr
 
 export async function deleteCategory(categoryId: string): Promise<ActionResult> {
   return runAction(async () => {
-    await requireAdminAction("produits");
+    const admin = await requireAdminAction("produits");
 
     const productCount = await prisma.product.count({ where: { categoryId } });
     if (productCount > 0) {
       throw new ActionError(`Impossible de supprimer : ${productCount} produit(s) utilisent encore cette catégorie.`);
     }
 
-    await prisma.category.delete({ where: { id: categoryId } });
+    const category = await prisma.category.delete({ where: { id: categoryId } });
+    await logAdmin(admin, "categories.suppression", `Catégorie « ${category.name} »`, categoryId);
     revalidateCategories();
   });
 }
