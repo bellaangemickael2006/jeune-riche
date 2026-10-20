@@ -154,7 +154,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const locale = await getLocale();
   // Posé par proxy.ts : vaut « /introuvable » pour une page admin cachée,
   // qui doit alors s'afficher comme n'importe quelle page 404 du site.
-  const adminShell = ((await headers()).get("x-pathname") ?? "").startsWith("/admin");
+  const requestHeaders = await headers();
+  const adminShell = (requestHeaders.get("x-pathname") ?? "").startsWith("/admin");
+  // Jeton CSP de la requête (proxy.ts) : sans lui, le navigateur bloque ces scripts.
+  const nonce = requestHeaders.get("x-nonce") ?? undefined;
   const dir = getDirection(locale);
   const initialResource = await loadResource(locale);
 
@@ -170,13 +173,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ORGANIZATION_JSON_LD).replace(/</g, "\\u003c") }}
         />
         <script
           type="application/ld+json"
+          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(WEBSITE_JSON_LD).replace(/</g, "\\u003c") }}
         />
       </head>

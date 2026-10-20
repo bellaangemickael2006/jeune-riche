@@ -10,6 +10,7 @@ import {
   gateCookieValue,
   safeEqual,
 } from "@/lib/admin/gate";
+import { buildCsp, makeNonce } from "@/lib/security/csp";
 
 // Langue à poser sur la réponse si absente — calculée une fois en haut de la
 // fonction, mais appliquée tout en bas (voir la fin de la fonction) : le bloc
@@ -78,7 +79,22 @@ export async function proxy(request: NextRequest) {
   requestHeaders.delete(ADMIN_HIDDEN_HEADER);
   if (hidden) requestHeaders.set(ADMIN_HIDDEN_HEADER, "1");
   requestHeaders.set(PATHNAME_HEADER, hidden ? HIDDEN_PATH : pathname);
-  const passThrough = () => NextResponse.next({ request: { headers: requestHeaders } });
+
+  // CSP à jeton unique (voir lib/security/csp.ts). Next.js lit le nonce dans
+  // l'en-tête de requête pour l'ajouter à ses propres scripts ; le layout le
+  // lit via x-nonce pour le script du thème.
+  const nonce = makeNonce();
+  const csp = buildCsp(nonce, {
+    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+    dev: process.env.NODE_ENV === "development",
+  });
+  requestHeaders.set("x-nonce", nonce);
+  requestHeaders.set("Content-Security-Policy", csp);
+  const passThrough = () => {
+    const next = NextResponse.next({ request: { headers: requestHeaders } });
+    next.headers.set("Content-Security-Policy", csp);
+    return next;
+  };
 
   let response = passThrough();
   const detectedLanguage = detectLanguageCookie(request);
