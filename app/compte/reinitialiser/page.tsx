@@ -124,7 +124,7 @@ export default function ResetPasswordPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={8}
-                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
               />
             </label>
             <label className="block">
@@ -137,7 +137,7 @@ export default function ResetPasswordPage() {
                 onChange={(e) => setConfirm(e.target.value)}
                 required
                 minLength={8}
-                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
               />
             </label>
             {error && <p className="text-xs font-medium text-paper">{error}</p>}

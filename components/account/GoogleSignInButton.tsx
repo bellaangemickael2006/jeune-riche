@@ -77,7 +77,7 @@ export default function GoogleSignInButton({
         type="button"
         onClick={signIn}
         disabled={redirecting}
-        className="mt-6 flex h-11 w-full items-center justify-center gap-3 rounded-[4px] border border-[#747775] bg-white px-4 text-sm font-medium text-[#1f1f1f] transition-colors hover:bg-[#f2f2f2] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper disabled:opacity-60"
+        className="mt-6 flex h-11 w-full items-center justify-center gap-3 rounded-[4px] border border-[#747775] bg-white px-4 text-sm font-medium text-[#1f1f1f] transition-colors hover:bg-[#f2f2f2] focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper disabled:opacity-60"
         style={{ fontFamily: "Roboto, Arial, sans-serif" }}
       >
         <GoogleLogo />

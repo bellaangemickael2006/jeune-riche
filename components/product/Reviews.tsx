@@ -79,7 +79,7 @@ export default function Reviews({ reviews }: { reviews: Review[] }) {
           aria-label={t("product.reviewPhotoAlt")}
           onClick={() => setOpen(null)}
           data-lenis-prevent
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink/90 p-5 backdrop-blur-sm"
+          className="fixed inset-0 z-100 flex items-center justify-center bg-ink/90 p-5 backdrop-blur-xs"
         >
           <div className="relative h-[80vh] w-full max-w-3xl">
             <Image src={open} alt={t("product.reviewPhotoAlt")} fill sizes="(max-width: 768px) 100vw, 768px" className="object-contain" />

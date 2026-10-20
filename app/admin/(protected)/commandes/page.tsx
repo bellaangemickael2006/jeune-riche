@@ -83,11 +83,11 @@ export default async function AdminOrdersPage({
         {statut && <input type="hidden" name="statut" value={statut} />}
         <label className="flex flex-col gap-1">
           <span className="text-[10px] uppercase tracking-widest2 text-paper/40">Du</span>
-          <input type="date" name="du" className="border border-line bg-transparent px-2 py-1.5 text-paper [color-scheme:dark]" />
+          <input type="date" name="du" className="border border-line bg-transparent px-2 py-1.5 text-paper scheme-dark" />
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-[10px] uppercase tracking-widest2 text-paper/40">Au</span>
-          <input type="date" name="au" className="border border-line bg-transparent px-2 py-1.5 text-paper [color-scheme:dark]" />
+          <input type="date" name="au" className="border border-line bg-transparent px-2 py-1.5 text-paper scheme-dark" />
         </label>
         <button type="submit" className="border border-paper px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink">
           Exporter en CSV

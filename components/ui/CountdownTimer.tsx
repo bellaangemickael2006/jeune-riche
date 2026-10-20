@@ -72,7 +72,7 @@ export default function CountdownTimer({
       {labelKey && <p className="mb-2 text-label text-paper/50">{t(`drops.countdown.${labelKey}`)}</p>}
       <div className="flex gap-2">
         {units.map((u) => (
-          <div key={u.caption} className="flex min-w-[3.25rem] flex-col items-center border border-line px-2 py-2">
+          <div key={u.caption} className="flex min-w-13 flex-col items-center border border-line px-2 py-2">
             <span className="font-display text-lg tabular-nums text-paper">{String(u.value).padStart(2, "0")}</span>
             <span className="text-[9px] uppercase tracking-widest2 text-paper/40">{u.caption}</span>
           </div>

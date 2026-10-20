@@ -132,7 +132,7 @@ export default function ProductViewer({
             </div>
           )}
           {show3D && model ? (
-            <div className="relative aspect-[4/5] overflow-hidden bg-studio">
+            <div className="relative aspect-4/5 overflow-hidden bg-studio">
               <ModelViewer3D
                 src={model.url}
                 alt={`${productName} — ${color}`}

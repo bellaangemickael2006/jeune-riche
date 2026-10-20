@@ -400,7 +400,7 @@ export default function CheckoutPage() {
                     value={promoInput}
                     onChange={(e) => setPromoInput(e.target.value)}
                     placeholder={t("checkout.promoCodePlaceholder")}
-                    className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 placeholder:normal-case focus:border-paper focus:outline-none"
+                    className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 placeholder:normal-case focus:border-paper focus:outline-hidden"
                   />
                   <button
                     onClick={applyPromoCode}
@@ -460,7 +460,7 @@ function Field({
         required={required}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
       />
     </label>
   );

@@ -146,7 +146,7 @@ export default function ReviewForm({
         minLength={5}
         rows={3}
         placeholder={t("product.reviewPlaceholder")}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
       />
 
       <div className="flex flex-wrap items-center gap-2">

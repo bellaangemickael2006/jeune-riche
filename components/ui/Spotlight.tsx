@@ -41,10 +41,10 @@ export default function Spotlight({
           active ? "opacity-100" : "opacity-0"
         )}
         style={{
-          // rgb(var(--color-paper) / .08) plutôt qu'un blanc figé : en mode
+          // rgb(var(--rgb-paper) / .08) plutôt qu'un blanc figé : en mode
           // clair, le halo doit rester la couleur du texte (sombre), pas
           // rester blanc sur un fond déjà clair où il deviendrait invisible.
-          background: `radial-gradient(${size}px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgb(var(--color-paper) / 0.08), transparent 70%)`,
+          background: `radial-gradient(${size}px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), rgb(var(--rgb-paper) / 0.08), transparent 70%)`,
         }}
       />
     </Tag>

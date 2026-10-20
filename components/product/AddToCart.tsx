@@ -143,7 +143,7 @@ export default function AddToCart({
                   onClick={() => setSize(v.size)}
                   title={soldOut ? t("product.outOfStock") : undefined}
                   className={cn(
-                    "min-w-[3.5rem] flex-1 px-4 py-3.5 font-display text-[11px] uppercase tracking-widest2 transition-colors",
+                    "min-w-14 flex-1 px-4 py-3.5 font-display text-[11px] uppercase tracking-widest2 transition-colors",
                     isSelected && !soldOut && "bg-paper text-ink",
                     !isSelected && !soldOut && "text-paper/60 hover:bg-paper/5 hover:text-paper",
                     soldOut && "text-paper/25 line-through",
@@ -215,7 +215,7 @@ export default function AddToCart({
             }
             maxLength={personalizationMaxLen}
             placeholder={t("product.personalizationPlaceholder")}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
           />
           <div className="mt-2 flex items-center justify-between text-[11px] text-paper/40">
             <span>{t("product.personalizationHint")}</span>
@@ -292,7 +292,7 @@ function NotifyMe({ variantId }: { variantId: string }) {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder={t("product.notifyMePlaceholder")}
-        className="min-w-0 flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+        className="min-w-0 flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
       />
       <button
         disabled={pending}

@@ -55,7 +55,7 @@ export default function ActivateAdminPage() {
             onChange={(e) => setPassword(e.target.value)}
             minLength={8}
             required
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
           />
         </label>
         <label className="mt-4 block">
@@ -66,7 +66,7 @@ export default function ActivateAdminPage() {
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             required
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
           />
         </label>
         {error && (

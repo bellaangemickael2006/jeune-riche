@@ -2,7 +2,7 @@ import { clsx, type ClassValue } from "clsx";
 import { extendTailwindMerge } from "tailwind-merge";
 
 // tailwind-merge ne connaît pas l'échelle typographique custom déclarée dans
-// tailwind.config.ts (text-label, text-heading, ...) : sans cette extension,
+// app/globals.css (@theme : text-label, text-heading, ...) : sans cette extension,
 // il les classe par défaut comme des couleurs de texte et supprime donc
 // silencieusement tout text-{couleur} combiné avec elles dans un même cn()
 // (ex. text-white text-heading -> seul text-heading survivait, texte rendu

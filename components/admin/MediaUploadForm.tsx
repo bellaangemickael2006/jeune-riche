@@ -376,7 +376,7 @@ export function ModelUploadForm({ productId, colors }: { productId: string; colo
         </button>
       </div>
       {preview && (
-        <div className="relative aspect-[4/5] w-full max-w-xs overflow-hidden border border-line bg-studio">
+        <div className="relative aspect-4/5 w-full max-w-xs overflow-hidden border border-line bg-studio">
           <ModelPreview src={preview} alt="Aperçu du modèle 3D" labels={PREVIEW_LABELS} />
         </div>
       )}

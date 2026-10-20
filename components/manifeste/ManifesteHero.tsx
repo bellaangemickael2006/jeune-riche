@@ -23,7 +23,7 @@ export default function ManifesteHero() {
   }, []);
 
   return (
-    <section className="relative flex h-[100svh] items-center justify-center overflow-hidden">
+    <section className="relative flex h-svh items-center justify-center overflow-hidden">
       {!failed ? (
         <video
           ref={videoRef}

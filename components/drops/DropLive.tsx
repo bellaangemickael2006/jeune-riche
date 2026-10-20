@@ -262,7 +262,7 @@ function PieceCard({
 
   const card = (
     <>
-      <div className="relative aspect-[4/5] overflow-hidden bg-studio">
+      <div className="relative aspect-4/5 overflow-hidden bg-studio">
         {piece.image && (
           <motion.div
             className="absolute inset-0"
@@ -348,7 +348,7 @@ function NotifyForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder={t("drops.live.notifyPlaceholder")}
         aria-label={t("drops.live.notifyPlaceholder")}
-        className="flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+        className="flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
       />
       <button
         type="submit"
@@ -385,7 +385,7 @@ function RecentSaleToast({ sales, now }: { sales: DropLiveData["recentSales"]; n
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="fixed bottom-24 left-5 z-40 max-w-[18rem] border border-line bg-ink/95 px-4 py-3 text-xs text-paper shadow-lg backdrop-blur"
+          className="fixed bottom-24 left-5 z-40 max-w-[18rem] border border-line bg-ink/95 px-4 py-3 text-xs text-paper shadow-lg backdrop-blur-sm"
         >
           <span className="mr-1">🔥</span>
           {t("drops.live.justSold", { name: latest.name })}

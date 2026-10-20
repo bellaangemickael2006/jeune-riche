@@ -51,7 +51,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
           onMouseMove={handleMouseMove}
           onMouseLeave={handleLeave}
           style={{ rotateX, rotateY, transformPerspective: 800 }}
-          className="relative aspect-[4/5] overflow-hidden bg-studio"
+          className="relative aspect-4/5 overflow-hidden bg-studio"
         >
           {primary && (
             <motion.div

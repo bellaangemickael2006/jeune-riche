@@ -75,7 +75,7 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               placeholder={t("common.search")}
-              className="w-full border border-line bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
             />
           </div>
           <ul className="max-h-72 overflow-y-auto py-1">

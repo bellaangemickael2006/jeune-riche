@@ -14,7 +14,7 @@ export default async function Loading() {
       </div>
       <div className="grid grid-cols-2 gap-x-5 gap-y-16 sm:grid-cols-2 md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="aspect-[4/5] bg-line/20" />
+          <div key={i} className="aspect-4/5 bg-line/20" />
         ))}
       </div>
     </div>

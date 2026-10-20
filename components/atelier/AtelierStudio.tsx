@@ -112,7 +112,7 @@ export default function AtelierStudio({
     <div className="grid gap-10 md:grid-cols-[1.15fr_1fr] md:items-start md:gap-16">
       {/* La pièce, en grand, sur son fond studio. */}
       <div className="md:sticky md:top-28">
-        <div className="relative aspect-[4/5] overflow-hidden bg-studio">
+        <div className="relative aspect-4/5 overflow-hidden bg-studio">
           <PersonalizedPiece
             src={activeImage.url}
             alt={activeImage.alt}
@@ -156,7 +156,7 @@ export default function AtelierStudio({
             maxLength={piece.personalizationMaxLen}
             placeholder={t("product.personalizationPlaceholder")}
             autoComplete="off"
-            className="mt-3 w-full border border-line bg-transparent px-4 py-4 font-display text-lg uppercase tracking-widest2 text-paper placeholder:font-body placeholder:text-sm placeholder:normal-case placeholder:tracking-normal placeholder:text-paper/25 focus:border-paper focus:outline-none"
+            className="mt-3 w-full border border-line bg-transparent px-4 py-4 font-display text-lg uppercase tracking-widest2 text-paper placeholder:font-body placeholder:text-sm placeholder:normal-case placeholder:tracking-normal placeholder:text-paper/25 focus:border-paper focus:outline-hidden"
           />
           <span className="mt-2 flex items-center justify-between text-[11px] text-paper/40">
             <span>{t("product.personalizationHint")}</span>
@@ -221,7 +221,7 @@ export default function AtelierStudio({
                     disabled={soldOut}
                     onClick={() => setSize(v.size)}
                     className={cn(
-                      "min-w-[3.5rem] flex-1 px-4 py-3.5 font-display text-[11px] uppercase tracking-widest2 transition-colors",
+                      "min-w-14 flex-1 px-4 py-3.5 font-display text-[11px] uppercase tracking-widest2 transition-colors",
                       size === v.size && !soldOut && "bg-paper text-ink",
                       size !== v.size && !soldOut && "text-paper/60 hover:bg-paper/5 hover:text-paper",
                       soldOut && "cursor-not-allowed text-paper/20 line-through"

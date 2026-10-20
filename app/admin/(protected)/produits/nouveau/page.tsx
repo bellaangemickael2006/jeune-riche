@@ -42,7 +42,7 @@ export default async function NewProductPage() {
             <select
               name="categoryId"
               required
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
             >
               {categories.map((c) => (
                 <option key={c.id} value={c.id} className="bg-ink">
@@ -57,7 +57,7 @@ export default async function NewProductPage() {
             <textarea
               name="description"
               rows={4}
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
             />
           </label>
           <label className="flex items-center gap-2 text-sm text-paper/70">
@@ -92,7 +92,7 @@ function Field({
         name={name}
         required={required}
         {...(type === "number" ? { min: 0, step: 1 } : {})}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
       />
     </label>
   );

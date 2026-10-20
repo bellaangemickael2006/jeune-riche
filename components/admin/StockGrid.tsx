@@ -165,7 +165,7 @@ export default function StockGrid({ productId, variants }: { productId: string; 
                         placeholder={mode === "set" ? String(v.stock) : "+0"}
                         aria-label={`${color} ${size}`}
                         className={cn(
-                          "w-20 border bg-transparent px-2 py-1.5 text-center text-paper placeholder:text-paper/30 focus:outline-none",
+                          "w-20 border bg-transparent px-2 py-1.5 text-center text-paper placeholder:text-paper/30 focus:outline-hidden",
                           after === null ? "border-paper bg-paper/10" : changed ? "border-paper" : "border-line focus:border-paper"
                         )}
                       />

@@ -31,7 +31,7 @@ export default async function ManifesteBody() {
           <p className="font-editorial text-heading text-paper">{t("manifesto.section2Title")}</p>
           <p className="mt-6 max-w-sm text-body leading-relaxed text-paper/50">{t("manifesto.section2Body")}</p>
         </FadeIn>
-        <FadeIn delay={0.1} x={24} className="relative aspect-[4/5] overflow-hidden bg-studio">
+        <FadeIn delay={0.1} x={24} className="relative aspect-4/5 overflow-hidden bg-studio">
           <Image
             src="/images/products/tshirt-noir/mockup-1-neutral.jpg"
             alt={t("manifesto.imageAlt1")}

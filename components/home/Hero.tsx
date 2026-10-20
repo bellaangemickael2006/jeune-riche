@@ -21,7 +21,7 @@ export default function Hero({ content }: { content: HomeContent["hero"] }) {
   const { t } = useTranslation();
 
   return (
-    <section className="relative flex h-[100svh] w-full items-end overflow-hidden bg-ink">
+    <section className="relative flex h-svh w-full items-end overflow-hidden bg-ink">
       <Image
         src={content.url}
         alt={content.alt || "T-shirt JEUNE RICHE noir sur un portant d'atelier"}

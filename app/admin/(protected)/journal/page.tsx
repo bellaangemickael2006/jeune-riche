@@ -120,7 +120,7 @@ export default async function AdminJournalPage({
                       {sensitive && "● "}
                       {auditLabel(log.action)}
                     </span>
-                    <span className="break-words">{log.summary}</span>
+                    <span className="wrap-break-word">{log.summary}</span>
                   </p>
                   <p className="mt-0.5 text-xs text-paper/40">
                     {log.actorEmail}

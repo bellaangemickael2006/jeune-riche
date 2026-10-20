@@ -35,7 +35,7 @@ export default function WelcomeToast() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed left-1/2 top-6 z-[100] w-[calc(100%-2.5rem)] max-w-sm -translate-x-1/2 border border-line bg-ink px-6 py-4 text-center shadow-xl"
+          className="fixed left-1/2 top-6 z-100 w-[calc(100%-2.5rem)] max-w-sm -translate-x-1/2 border border-line bg-ink px-6 py-4 text-center shadow-xl"
         >
           <p className="text-[10px] uppercase tracking-widest2 text-paper/50">{t("home.welcomeToastTitle")}</p>
           <p className="mt-1 font-editorial text-base text-paper">{t("home.welcomeToastMessage")}</p>

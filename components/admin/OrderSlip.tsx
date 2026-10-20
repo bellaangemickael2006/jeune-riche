@@ -87,13 +87,13 @@ export default function OrderSlip({ order }: { order: SlipOrder }) {
               <td className="py-3">
                 <p className="font-bold">{i.productName}</p>
                 {i.personalization && (
-                  <p className="mt-2 inline-block max-w-full break-words border-2 border-black px-3 py-1.5 text-[17px] font-bold uppercase tracking-wide">
+                  <p className="mt-2 inline-block max-w-full wrap-break-word border-2 border-black px-3 py-1.5 text-[17px] font-bold uppercase tracking-wide">
                     Personnalisation : « {i.personalization} »
                   </p>
                 )}
               </td>
-              <td className="break-words py-3 pr-2">{i.color}</td>
-              <td className="break-words py-3 pr-2 text-[15px] font-bold">{i.size}</td>
+              <td className="wrap-break-word py-3 pr-2">{i.color}</td>
+              <td className="wrap-break-word py-3 pr-2 text-[15px] font-bold">{i.size}</td>
               <td className="py-3 text-center text-[15px] font-bold">{i.quantity}</td>
               <td className="whitespace-nowrap py-3 text-right text-[12px]">{formatPrice(Number(i.unitPrice) * i.quantity)}</td>
             </tr>

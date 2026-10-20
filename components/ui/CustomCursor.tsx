@@ -70,7 +70,7 @@ export default function CustomCursor() {
       ref={dotRef}
       aria-hidden
       style={{ opacity: 0 }}
-      className="pointer-events-none fixed left-0 top-0 z-[100] hidden h-4 w-4 transition-opacity duration-200 will-change-transform md:block"
+      className="pointer-events-none fixed left-0 top-0 z-100 hidden h-4 w-4 transition-opacity duration-200 will-change-transform md:block"
     >
       <div
         ref={scaleRef}

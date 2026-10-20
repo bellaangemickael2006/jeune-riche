@@ -67,7 +67,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
               name="name"
               required
               defaultValue={product.name}
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
             />
           </label>
           <label className="block">
@@ -75,7 +75,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
             <select
               name="categoryId"
               defaultValue={product.categoryId}
-              className="w-full border border-line bg-ink px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-ink px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
             >
               {categories.map((c) => (
                 <option key={c.id} value={c.id} className="bg-ink">
@@ -93,7 +93,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
               step={1}
               defaultValue={product.price !== null ? Number(product.price) : ""}
               placeholder="Laisser vide si à définir"
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
             />
           </label>
           <label className="block">
@@ -102,7 +102,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
               name="description"
               defaultValue={product.description ?? ""}
               rows={3}
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
             />
           </label>
           <label className="flex items-center gap-2 text-sm text-paper/70">
@@ -119,7 +119,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
               min={1}
               max={60}
               defaultValue={product.personalizationMaxLen}
-              className="w-32 border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-32 border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
             />
           </label>
           <label className="flex items-center gap-2 text-sm text-paper/70">

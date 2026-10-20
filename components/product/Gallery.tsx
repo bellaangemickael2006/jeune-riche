@@ -50,7 +50,7 @@ export default function Gallery({
 
   if (images.length === 0) {
     return (
-      <div className="flex aspect-[4/5] items-center justify-center bg-studio text-sm text-ink/40">
+      <div className="flex aspect-4/5 items-center justify-center bg-studio text-sm text-ink/40">
         {t("product.noImage")}
       </div>
     );
@@ -63,7 +63,7 @@ export default function Gallery({
         onMouseMove={handleMouseMove}
         onMouseLeave={handleLeave}
         style={{ rotateX, rotateY, transformPerspective: 1000 }}
-        className="relative aspect-[4/5] overflow-hidden bg-studio will-change-transform"
+        className="relative aspect-4/5 overflow-hidden bg-studio will-change-transform"
       >
         <AnimatePresence mode="wait">
           <motion.div

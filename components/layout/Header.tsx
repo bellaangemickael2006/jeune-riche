@@ -306,7 +306,7 @@ function SearchPanel({ onClose }: { onClose: () => void }) {
             value={value}
             onChange={(e) => setValue(e.target.value)}
             placeholder={t("navigation.searchPlaceholder")}
-            className="mt-2 w-full border-b border-line bg-transparent py-2 font-editorial text-heading text-paper placeholder:text-paper/25 focus:border-paper focus:outline-none"
+            className="mt-2 w-full border-b border-line bg-transparent py-2 font-editorial text-heading text-paper placeholder:text-paper/25 focus:border-paper focus:outline-hidden"
           />
         </div>
         <button

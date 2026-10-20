@@ -20,7 +20,7 @@ async function uploadSiteImage(file: File): Promise<string> {
   return prepared.data.publicUrl;
 }
 
-const inputClass = "w-full border border-line bg-transparent px-3 py-2 text-sm text-paper placeholder:text-paper/25 focus:border-paper focus:outline-none";
+const inputClass = "w-full border border-line bg-transparent px-3 py-2 text-sm text-paper placeholder:text-paper/25 focus:border-paper focus:outline-hidden";
 const labelClass = "mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40";
 
 /**
@@ -176,7 +176,7 @@ function Range({
         max={max}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full accent-[rgb(var(--color-paper))]"
+        className="w-full accent-[rgb(var(--rgb-paper))]"
       />
     </label>
   );
@@ -600,7 +600,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
               max={30}
               onChange={(v) => update((c) => ({ ...c, manifeste: { ...c.manifeste, opacity: v } }))}
             />
-            <div className="relative flex aspect-[16/9] items-center justify-center overflow-hidden border border-line bg-ink">
+            <div className="relative flex aspect-video items-center justify-center overflow-hidden border border-line bg-ink">
               {manifeste.url && (
                 // eslint-disable-next-line @next/next/no-img-element -- aperçu de la transparence réelle
                 <img
@@ -638,7 +638,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
       </div>
 
       {/* ---------- Barre d'enregistrement : compacte, toujours visible ---------- */}
-      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-ink/95 px-4 py-3 backdrop-blur lg:left-56 lg:px-5">
+      <div className="fixed inset-x-0 bottom-0 z-10 border-t border-line bg-ink/95 px-4 py-3 backdrop-blur-sm lg:left-56 lg:px-5">
         <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"

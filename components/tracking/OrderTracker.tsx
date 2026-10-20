@@ -23,7 +23,7 @@ export default function OrderTracker({ initialNumber }: { initialNumber: string 
             autoComplete="off"
             spellCheck={false}
             placeholder="JR-…"
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
           />
         </label>
         <label className="block">
@@ -33,7 +33,7 @@ export default function OrderTracker({ initialNumber }: { initialNumber: string 
             required
             autoComplete="email"
             placeholder={t("tracking.contactPlaceholder")}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
           />
         </label>
         <button

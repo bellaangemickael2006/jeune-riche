@@ -227,7 +227,7 @@ export default function AuthForms() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
             />
           </label>
         )}
@@ -238,7 +238,7 @@ export default function AuthForms() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
           />
         </label>
         {mode === "signup" && (
@@ -249,7 +249,7 @@ export default function AuthForms() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
             />
           </label>
         )}
@@ -262,7 +262,7 @@ export default function AuthForms() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={8}
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
             />
           </label>
         )}

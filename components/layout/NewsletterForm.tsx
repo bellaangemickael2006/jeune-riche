@@ -50,7 +50,7 @@ export default function NewsletterForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder={t("footer.newsletterPlaceholder")}
           disabled={status === "submitting"}
-          className="w-full bg-transparent text-body text-paper placeholder:text-paper/40 focus:outline-none disabled:opacity-50"
+          className="w-full bg-transparent text-body text-paper placeholder:text-paper/40 focus:outline-hidden disabled:opacity-50"
         />
         <button
           type="submit"

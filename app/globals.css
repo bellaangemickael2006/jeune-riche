@@ -1,29 +1,85 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Le code des anciennes versions du site (jeune-riche-v2/v3, non publiées)
+   n'est pas à analyser : Tailwind 4 parcourt tout le projet. */
+@source not "../jeune-riche-v2";
+@source not "../jeune-riche-v3";
+
+/* Thème Tailwind 4 (remplace tailwind.config.ts). « inline » : les classes
+   lisent directement les variables du thème clair/sombre (--rgb-*, plus
+   bas), qui changent avec [data-theme] — bg-ink, text-paper/60… suivent
+   donc le thème sans toucher un seul composant. */
+@theme inline {
+  --color-ink: rgb(var(--rgb-ink));
+  --color-paper: rgb(var(--rgb-paper));
+  --color-navy: rgb(var(--rgb-navy));
+  --color-line: rgb(var(--rgb-line));
+  --color-studio: rgb(var(--rgb-studio)); /* fond photo produit — identique dans les deux thèmes */
+
+  --font-display: var(--font-anton), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
+
+  /* Échelle typographique du design system (voir ART_DIRECTION.md §3bis). */
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: 0.22em;
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.4;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.65;
+  --text-heading: 1.75rem;
+  --text-heading--line-height: 1.15;
+  --text-heading-lg: 2.75rem;
+  --text-heading-lg--line-height: 1.05;
+  --text-display: 3.5rem;
+  --text-display--line-height: 0.95;
+
+  --tracking-widest2: 0.22em;
+
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Réglages par défaut de Tailwind 3 que la version 4 a changés : on les
+   garde pour que le site reste identique (bordures grises, curseur main
+   sur les boutons, texte d'exemple des champs en gris). */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: #e5e7eb; /* gris 200 de Tailwind 3 */
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  input::placeholder,
+  textarea::placeholder {
+    color: #9ca3af; /* gris 400 de Tailwind 3 */
+  }
+}
 
 :root {
-  --font-display: var(--font-anton);
-  --font-body: var(--font-inter);
   --font-editorial: var(--font-fraunces);
 
   /* Triplets RGB (pas hex) pour permettre les modificateurs d'opacité
-     Tailwind (text-paper/60, border-line/50, ...) via rgb(var(--x) / <a>).
+     Tailwind (text-paper/60, border-line/50, ...) et rgb(var(--rgb-x) / a).
      Sombre par défaut : c'est l'identité native de la marque (voir
      ART_DIRECTION.md) — le clair est une option, pas le point de départ. */
-  --color-ink: 11 11 12; /* #0B0B0C */
-  --color-paper: 245 244 241; /* #F5F4F1 */
-  --color-navy: 19 27 46; /* #131B2E */
-  --color-line: 38 37 42; /* #26252A */
-  --color-studio: 225 222 216; /* #E1DED8 — fond photo produit, identique dans les deux thèmes */
+  --rgb-ink: 11 11 12; /* #0B0B0C */
+  --rgb-paper: 245 244 241; /* #F5F4F1 */
+  --rgb-navy: 19 27 46; /* #131B2E */
+  --rgb-line: 38 37 42; /* #26252A */
+  --rgb-studio: 225 222 216; /* #E1DED8 — fond photo produit, identique dans les deux thèmes */
   color-scheme: dark;
 }
 
 [data-theme="light"] {
-  --color-ink: 245 244 241; /* = ancien --color-paper : vrai miroir, pas une nouvelle teinte */
-  --color-paper: 11 11 12; /* = ancien --color-ink */
-  --color-navy: 19 27 46;
-  --color-line: 214 211 205;
+  --rgb-ink: 245 244 241; /* = ancien --rgb-paper : vrai miroir, pas une nouvelle teinte */
+  --rgb-paper: 11 11 12; /* = ancien --rgb-ink */
+  --rgb-navy: 19 27 46;
+  --rgb-line: 214 211 205;
   color-scheme: light;
 }
 
@@ -66,20 +122,17 @@ html.lenis body {
 }
 
 body {
-  background-color: rgb(var(--color-ink));
-  color: rgb(var(--color-paper));
-  font-family: var(--font-body);
+  background-color: rgb(var(--rgb-ink));
+  color: rgb(var(--rgb-paper));
+  font-family: var(--font-inter), sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
-  background-color: rgb(var(--color-paper));
-  color: rgb(var(--color-ink));
+  background-color: rgb(var(--rgb-paper));
+  color: rgb(var(--rgb-ink));
 }
 
-.font-display {
-  font-family: var(--font-display);
-}
 .font-editorial {
   font-family: var(--font-editorial);
 }
@@ -90,7 +143,7 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid rgb(var(--color-paper));
+  outline: 2px solid rgb(var(--rgb-paper));
   outline-offset: 3px;
 }
 

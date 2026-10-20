@@ -25,7 +25,7 @@ export default function ProductShowcase({ items }: { items: ShowcaseItem[] }) {
       <FadeIn className="col-span-2 md:col-span-3 md:row-span-2">
         <Tile
           item={feature}
-          aspect="aspect-[4/5] md:aspect-auto md:h-full"
+          aspect="aspect-4/5 md:aspect-auto md:h-full"
           textSize="text-heading md:text-heading-lg"
           sizes="(max-width: 768px) 100vw, 45vw"
           priority
@@ -36,7 +36,7 @@ export default function ProductShowcase({ items }: { items: ShowcaseItem[] }) {
         <FadeIn key={item.slug} delay={0.08 * (i + 1)} className="col-span-1 md:col-span-3">
           <Tile
             item={item}
-            aspect="aspect-[4/5] md:aspect-[16/10]"
+            aspect="aspect-4/5 md:aspect-16/10"
             textSize="text-body md:text-heading"
             sizes="(max-width: 768px) 50vw, 30vw"
           />
@@ -47,7 +47,7 @@ export default function ProductShowcase({ items }: { items: ShowcaseItem[] }) {
         <FadeIn key={item.slug} delay={0.08 * (i + 3)} className="col-span-1 md:col-span-2">
           <Tile
             item={item}
-            aspect="aspect-[4/5]"
+            aspect="aspect-4/5"
             textSize="text-caption md:text-body"
             sizes="(max-width: 768px) 50vw, 20vw"
           />
@@ -89,7 +89,7 @@ function Tile({
       )}
       {/* Superposé à la photo produit, pas au fond de page : reste toujours
           sombre pour que le nom en blanc reste lisible en mode clair. */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
       <p className={cn("absolute bottom-4 left-4 font-editorial md:bottom-6 md:left-6", textSize, "text-white")}>
         {item.name}
       </p>

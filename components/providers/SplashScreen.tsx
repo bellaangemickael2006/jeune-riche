@@ -62,7 +62,7 @@ export default function SplashScreen() {
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex flex-col items-center justify-center gap-8 bg-ink transition-opacity ease-editorial"
+      className="fixed inset-0 z-200 flex flex-col items-center justify-center gap-8 bg-ink transition-opacity ease-editorial"
       style={{ transitionDuration: `${FADE_MS}ms`, opacity: phase === "closing" ? 0 : 1 }}
     >
       <Image

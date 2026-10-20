@@ -43,7 +43,7 @@ export default function PhoneForm({ onSaved, autoFocus }: { onSaved: () => void;
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
         aria-label={t("account.phone")}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-none"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"
       />
       {error && (
         <p role="alert" className="text-xs text-paper">

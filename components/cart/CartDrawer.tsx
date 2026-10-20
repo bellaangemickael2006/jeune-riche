@@ -35,7 +35,7 @@ export default function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[90] bg-ink/70"
+            className="fixed inset-0 z-90 bg-ink/70"
             onClick={close}
           />
           <motion.aside
@@ -43,7 +43,7 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed right-0 top-0 z-[95] flex h-full w-full max-w-md flex-col bg-paper text-ink"
+            className="fixed right-0 top-0 z-95 flex h-full w-full max-w-md flex-col bg-paper text-ink"
             role="dialog"
             aria-label={t("cart.title")}
           >

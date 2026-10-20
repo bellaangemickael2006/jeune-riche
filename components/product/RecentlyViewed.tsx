@@ -28,7 +28,7 @@ export default function RecentlyViewed({ excludeSlug }: { excludeSlug?: string }
       <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 md:grid-cols-4">
         {items.map((item) => (
           <Link key={item.slug} href={`/catalogue/${item.slug}`} className="group block">
-            <div className="relative aspect-[4/5] overflow-hidden bg-studio">
+            <div className="relative aspect-4/5 overflow-hidden bg-studio">
               {item.image && (
                 <Image
                   src={item.image}
