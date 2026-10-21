@@ -14,7 +14,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
-    "test": "node --import tsx --test lib/email.test.ts lib/orders/pricing.test.ts lib/actions/result.test.ts lib/demoReset.test.ts lib/orders/tracking.test.ts lib/orders/stats.test.ts lib/account/safeNext.test.ts lib/home/content.test.ts lib/account/phone.test.ts lib/csv.test.ts lib/admin/filters.test.ts lib/stock/labels.test.ts lib/admin/permissions.test.ts lib/rateLimit.test.ts lib/drops/live.test.ts lib/admin/gate.test.ts lib/unsubscribe.test.ts lib/security/csp.test.ts lib/admin/auditLabels.test.ts lib/prismaPool.test.ts",
+    "test": "node --import tsx --test lib/email.test.ts lib/orders/pricing.test.ts lib/actions/result.test.ts lib/demoReset.test.ts lib/orders/tracking.test.ts lib/orders/stats.test.ts lib/account/safeNext.test.ts lib/home/content.test.ts lib/account/phone.test.ts lib/csv.test.ts lib/admin/filters.test.ts lib/stock/labels.test.ts lib/admin/permissions.test.ts lib/rateLimit.test.ts lib/drops/live.test.ts lib/admin/gate.test.ts lib/unsubscribe.test.ts lib/security/csp.test.ts lib/admin/auditLabels.test.ts lib/prismaPool.test.ts lib/account/googleOAuth.test.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {

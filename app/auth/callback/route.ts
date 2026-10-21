@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { ensureClientUser } from "@/lib/account/syncUser";
+import { finishGoogleLogin } from "@/lib/account/finishLogin";
 import { safeNext } from "@/lib/account/safeNext";
 
 // Retour de Google (via Supabase) après « Continuer avec Google ». Supabase
@@ -25,21 +25,5 @@ export async function GET(request: NextRequest) {
     return fail("google");
   }
 
-  let needsPhone = false;
-  try {
-    const user = await ensureClientUser(data.user);
-    // Google ne fournit pas le numéro WhatsApp : on le demande tout de suite.
-    needsPhone = !user.addressPhone;
-  } catch (err) {
-    // Sans fiche client, le compte serait inutilisable (commandes, avis) :
-    // on ne laisse pas une session à moitié ouverte.
-    console.error("[auth/callback] ensureClientUser:", err);
-    await supabase.auth.signOut();
-    return fail("google_compte");
-  }
-
-  if (needsPhone) {
-    return NextResponse.redirect(new URL(`/compte/telephone?next=${encodeURIComponent(next)}`, origin));
-  }
-  return NextResponse.redirect(new URL(next, origin));
+  return finishGoogleLogin(supabase, data.user, next, origin);
 }

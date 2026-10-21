@@ -55,6 +55,14 @@ export default function GoogleSignInButton({
 
   async function signIn() {
     setRedirecting(true);
+    // Connexion en direct par le site (app/auth/google) dès que l'identifiant
+    // Google est configuré : l'écran Google affiche alors JEUNE RICHE au lieu
+    // de l'adresse technique <projet>.supabase.co.
+    if (process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
+      // Rechargement complet voulu : la route repart aussitôt vers Google.
+      window.location.assign(`${window.location.origin}/auth/google`);
+      return;
+    }
     const { error } = await createClient().auth.signInWithOAuth({
       provider: "google",
       options: {
