@@ -29,8 +29,25 @@ export async function GET(request: NextRequest) {
   };
   const fail = (reason: string) => clearState(NextResponse.redirect(new URL(`/compte?erreur=${reason}`, origin)));
 
+  // Réglage incomplet (code secret absent) : plutôt qu'un échec, on repasse
+  // par la connexion via Supabase, comme avant.
   const config = googleDirectConfig();
-  if (!config) return fail("google");
+  if (!config) {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${origin}/auth/callback`,
+        queryParams: { prompt: "select_account" },
+        skipBrowserRedirect: true,
+      },
+    });
+    if (error || !data.url) {
+      console.error("[auth/google] repli Supabase:", error);
+      return fail("google");
+    }
+    return NextResponse.redirect(data.url);
+  }
 
   // 1. Départ vers Google.
   if (!searchParams.has("code") && !searchParams.has("error")) {
