@@ -7,6 +7,7 @@ import { sendEmail, lowStockAlertEmail, newOrderAdminEmail } from "@/lib/email";
 import { subtotalOf, totalOf } from "@/lib/orders/pricing";
 import { isDropLocked } from "@/lib/drops/live";
 import { recordMovements } from "@/lib/stock/movements";
+import { acceptedPersonalization } from "@/lib/orders/personalization";
 
 /**
  * Erreur métier à renvoyer telle quelle au client (article indisponible,
@@ -86,7 +87,7 @@ async function resolveLines(lines: CheckoutLineInput[]): Promise<ResolvedLine[]>
       color: variant.color,
       quantity: line.quantity,
       unitPrice: Number(variant.product.price),
-      personalization: line.personalization,
+      personalization: acceptedPersonalization(line.personalization, variant.product),
       stockBefore: variant.stock,
     });
   }

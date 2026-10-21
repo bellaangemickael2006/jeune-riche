@@ -11,7 +11,7 @@ import { ActionError, runAction, type ActionResult } from "@/lib/actions/result"
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ensureMediaBucket, MEDIA_BUCKET, removeMediaFiles, REVIEW_PHOTOS_PREFIX } from "@/lib/storage";
 import { rateLimit } from "@/lib/rateLimit";
-import { MAX_REVIEW_PHOTOS } from "@/lib/reviewPhotosConfig";
+import { MAX_REVIEW_LENGTH, MAX_REVIEW_PHOTOS } from "@/lib/reviewPhotosConfig";
 
 const MAX_REVIEW_PHOTO_BYTES = 8 * 1024 * 1024; // le navigateur réduit déjà la photo avant l'envoi
 const REVIEW_PHOTO_TYPES: Record<string, string> = { "image/jpeg": "jpg", "image/png": "png", "image/webp": "webp" };
@@ -113,7 +113,9 @@ export type CreateReviewState = { ok: boolean; message: string } | null;
 // n'importe qui pourrait s'auto-attribuer le badge "client vérifié".
 export async function createReview(
   productId: string,
-  productSlug: string,
+  // Gardé pour la signature du formulaire ; jamais utilisé : le slug est
+  // relu en base (un argument lié reste modifiable par le navigateur).
+  _productSlug: string,
   _prevState: CreateReviewState,
   formData: FormData
 ): Promise<CreateReviewState> {
@@ -124,7 +126,7 @@ export async function createReview(
   }
 
   const rating = Number(formData.get("rating"));
-  const comment = String(formData.get("comment") ?? "").trim();
+  const comment = String(formData.get("comment") ?? "").trim().slice(0, MAX_REVIEW_LENGTH);
 
   if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
     return { ok: false, message: t("product.reviewInvalidRating") };
@@ -132,6 +134,13 @@ export async function createReview(
   if (comment.length < 5) {
     return { ok: false, message: t("product.reviewTooShort") };
   }
+
+  // Uniquement sur un produit en vente : l'identifiant vient du navigateur.
+  const product = await prisma.product.findFirst({
+    where: { id: String(productId), published: true, status: "PUBLISHED" },
+    select: { slug: true },
+  });
+  if (!product) return { ok: false, message: t("errors.generic.title") };
 
   const existing = await prisma.review.findFirst({
     where: { productId, userId: dbUser.id },
@@ -171,7 +180,7 @@ export async function createReview(
     photosSaved = false;
   }
 
-  revalidatePath(`/catalogue/${productSlug}`);
+  revalidatePath(`/catalogue/${product.slug}`);
   revalidatePath("/admin/avis");
   return {
     ok: true,

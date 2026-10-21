@@ -3,12 +3,13 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
+// Mêmes limites que l'adresse de livraison du checkout (api/checkout).
 const schema = z.object({
-  addressLine1: z.string().min(1),
-  addressCity: z.string().min(1),
-  addressPostalCode: z.string().optional(),
-  addressCountry: z.string().min(1),
-  addressPhone: z.string().optional(),
+  addressLine1: z.string().trim().min(1).max(200),
+  addressCity: z.string().trim().min(1).max(100),
+  addressPostalCode: z.string().trim().max(20).optional(),
+  addressCountry: z.string().trim().min(1).max(60),
+  addressPhone: z.string().trim().max(30).optional(),
 });
 
 async function currentUser() {

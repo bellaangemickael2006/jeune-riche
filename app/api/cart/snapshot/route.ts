@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
+import { MAX_CART_LINES, MAX_LINE_QUANTITY } from "@/lib/orders/limits";
 
 // Le navigateur n'envoie que des identifiants et des quantités : nom, taille,
 // couleur et prix sont relus en base. Sans ça, un appel direct à cette route
@@ -9,13 +10,13 @@ import { rateLimit, clientIp } from "@/lib/rateLimit";
 // client, et fixer un total de son choix.
 const lineSchema = z.object({
   variantId: z.string().min(1),
-  quantity: z.number().int().positive().max(99),
-  personalization: z.string().max(200).nullable().optional(),
+  quantity: z.number().int().positive().max(MAX_LINE_QUANTITY),
+  personalization: z.string().max(100).nullable().optional(),
 });
 
 const schema = z.object({
   email: z.string().trim().toLowerCase().email().max(254),
-  items: z.array(lineSchema).min(1).max(50),
+  items: z.array(lineSchema).min(1).max(MAX_CART_LINES),
   // Case « M'envoyer un rappel » cochée au checkout. Sans elle, rien n'est
   // enregistré, même si la route est appelée directement.
   consent: z.literal(true),

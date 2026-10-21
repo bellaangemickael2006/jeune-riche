@@ -36,7 +36,7 @@ export default function NewsletterForm() {
   }
 
   if (status === "success") {
-    return <p className="mt-5 max-w-xs text-body text-paper/80">{t("footer.newsletterSuccess")}</p>;
+    return <p className="mt-5 max-w-xs text-body text-paper/80">{t("footer.newsletterCheckEmail")}</p>;
   }
 
   return (

@@ -49,6 +49,9 @@ test("adminNext ne renvoie que vers l'admin", () => {
   assert.equal(adminNext("//pirate.example"), "/admin");
   assert.equal(adminNext("/catalogue"), "/admin");
   assert.equal(adminNext(null), "/admin");
+  assert.equal(adminNext("/admin\t/x"), "/admin/x");
+  assert.equal(adminNext("/\t/pirate.example/admin"), "/admin");
+  assert.equal(adminNext("/administrateurs"), "/admin");
 });
 
 test("adminLink passe par l'entrée secrète quand elle est active", () => {

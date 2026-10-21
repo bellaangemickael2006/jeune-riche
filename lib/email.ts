@@ -75,6 +75,21 @@ function emailShell(bodyHtml: string) {
   </div>`;
 }
 
+/** Lien de confirmation d'inscription (voir lib/newsletter/confirm.ts). */
+export function newsletterConfirmEmail(confirmUrl: string) {
+  return emailShell(`
+    <p style="text-transform:uppercase;letter-spacing:0.1em;font-size:11px;color:#9a9a9a;margin:0 0 16px;">Une dernière étape</p>
+    <p style="margin:0 0 16px;">Confirmez votre inscription aux annonces JEUNE RICHE (drops, nouvelles pièces).</p>
+    <p style="margin:0 0 28px;color:#9a9a9a;">
+      Vous n'avez rien demandé ? Ignorez simplement cet email : sans confirmation, vous ne recevrez rien.
+    </p>
+    <a href="${escapeHtml(confirmUrl)}" style="display:inline-block;background:#f5f4f1;color:#0b0b0c;text-decoration:none;padding:12px 24px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;">
+      Confirmer mon inscription
+    </a>
+    <p style="margin:24px 0 0;font-size:11px;color:#6b6b6b;">Ce lien est valable 7 jours.</p>
+  `);
+}
+
 export function newsletterWelcomeEmail() {
   const catalogueUrl = `${siteUrl()}/catalogue`;
   return emailShell(`

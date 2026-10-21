@@ -4,7 +4,7 @@ import Link from "next/link";
 import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { createReview, prepareReviewPhotoUpload, type CreateReviewState } from "@/lib/actions/reviews";
-import { MAX_REVIEW_PHOTOS } from "@/lib/reviewPhotosConfig";
+import { MAX_REVIEW_LENGTH, MAX_REVIEW_PHOTOS } from "@/lib/reviewPhotosConfig";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -144,6 +144,7 @@ export default function ReviewForm({
         name="comment"
         required
         minLength={5}
+        maxLength={MAX_REVIEW_LENGTH}
         rows={3}
         placeholder={t("product.reviewPlaceholder")}
         className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"

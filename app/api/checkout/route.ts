@@ -5,28 +5,32 @@ import { createClient } from "@/lib/supabase/server";
 import { whatsappOrderLink } from "@/lib/utils";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 import { createOrder, afterOrderCreated, notifyNewOrder, CheckoutError } from "@/lib/orders/createOrder";
+import { MAX_CART_LINES, MAX_LINE_QUANTITY } from "@/lib/orders/limits";
 
+// Longueurs maximales : sans elles, un appel direct pouvait enregistrer des
+// mégaoctets de texte par commande (et les recopier dans l'email admin).
 const lineSchema = z.object({
-  variantId: z.string(),
-  quantity: z.number().int().positive(),
-  personalization: z.string().nullable(),
+  variantId: z.string().min(1).max(64),
+  quantity: z.number().int().positive().max(MAX_LINE_QUANTITY),
+  // Contrôlée et coupée ensuite selon le produit (lib/orders/personalization.ts).
+  personalization: z.string().max(100).nullable(),
 });
 
 const schema = z.object({
-  customerName: z.string().min(1),
+  customerName: z.string().trim().min(1).max(100),
   // WhatsApp (numéro obligatoire ci-dessous) est le canal de contact
   // principal désormais — l'email reste utile pour l'historique du compte
   // mais ne doit jamais bloquer la commande s'il est laissé vide.
-  customerEmail: z.union([z.literal(""), z.string().email()]),
+  customerEmail: z.union([z.literal(""), z.string().trim().email().max(254)]),
   shippingAddress: z.object({
-    line1: z.string().min(1),
-    city: z.string().min(1),
-    postalCode: z.string().optional(),
-    country: z.string().min(1),
-    phone: z.string().min(1, "Le numéro de téléphone est requis."),
+    line1: z.string().trim().min(1).max(200),
+    city: z.string().trim().min(1).max(100),
+    postalCode: z.string().trim().max(20).optional(),
+    country: z.string().trim().min(1).max(60),
+    phone: z.string().trim().min(1, "Le numéro de téléphone est requis.").max(30),
   }),
-  lines: z.array(lineSchema).min(1),
-  promoCode: z.string().optional(),
+  lines: z.array(lineSchema).min(1).max(MAX_CART_LINES),
+  promoCode: z.string().trim().max(40).optional(),
 });
 
 // Résolu côté serveur depuis le cookie de session — jamais depuis un champ
@@ -57,7 +61,7 @@ export async function POST(req: NextRequest) {
 
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
-    return NextResponse.json({ error: "Requête invalide.", details: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json({ error: "Requête invalide.", details: parsed.error.flatten().fieldErrors }, { status: 400 });
   }
 
   const { customerName, customerEmail, shippingAddress } = parsed.data;

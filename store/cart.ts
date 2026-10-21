@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { CartLine } from "@/types";
+import { MAX_CART_LINES, MAX_LINE_QUANTITY } from "@/lib/orders/limits";
 
 type CartState = {
   lines: CartLine[];
@@ -37,13 +38,15 @@ export const useCart = create<CartState>()(
             return {
               lines: state.lines.map((l) =>
                 sameLine(l, line.variantId, line.personalization)
-                  ? { ...l, quantity: l.quantity + line.quantity }
+                  ? { ...l, quantity: Math.min(l.quantity + line.quantity, MAX_LINE_QUANTITY) }
                   : l
               ),
               isOpen: true,
             };
           }
-          return { lines: [...state.lines, line], isOpen: true };
+          // Au-delà, le serveur refuserait la commande : on garde le panier tel quel.
+          if (state.lines.length >= MAX_CART_LINES) return { isOpen: true };
+          return { lines: [...state.lines, { ...line, quantity: Math.min(line.quantity, MAX_LINE_QUANTITY) }], isOpen: true };
         }),
       removeLine: (variantId, personalization) =>
         set((state) => ({
@@ -53,7 +56,7 @@ export const useCart = create<CartState>()(
         set((state) => ({
           lines: state.lines
             .map((l) =>
-              sameLine(l, variantId, personalization) ? { ...l, quantity } : l
+              sameLine(l, variantId, personalization) ? { ...l, quantity: Math.min(quantity, MAX_LINE_QUANTITY) } : l
             )
             .filter((l) => l.quantity > 0),
         })),

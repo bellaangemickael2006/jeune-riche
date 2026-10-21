@@ -323,7 +323,8 @@
       "notifyButton": "Me prévenir",
       "notifyDone": "C'est noté : vous êtes sur la liste de ce drop.",
       "notifyError": "Inscription impossible pour le moment, réessayez.",
-      "allDrops": "Tous les drops"
+      "allDrops": "Tous les drops",
+      "notifyCheckEmail": "Presque fini : confirmez avec le lien reçu par email pour être prévenu·e de ce drop."
     }
   },
   "footer": {
@@ -340,7 +341,8 @@
     "terms": "Conditions générales",
     "privacy": "Confidentialité",
     "copyright": "© {{year}} Jeune Riche.",
-    "location": "Côte d'Ivoire — Afrique de l'Ouest"
+    "location": "Côte d'Ivoire — Afrique de l'Ouest",
+    "newsletterCheckEmail": "Presque fini : confirmez votre inscription avec le lien reçu par email."
   },
   "legal": {
     "contact": {
@@ -476,6 +478,19 @@
     "invalid": "Ce lien de désinscription est incomplet ou a été modifié. Utilisez le lien reçu par email.",
     "errorTitle": "Un problème est survenu",
     "error": "La désinscription n'a pas pu être enregistrée. Réessayez dans un instant.",
+    "backHome": "Retour à l'accueil"
+  },
+  "subscribe": {
+    "eyebrow": "Newsletter",
+    "confirmTitle": "Confirmer votre inscription",
+    "confirm": "Cliquez pour recevoir les annonces de drops et les nouvelles pièces JEUNE RICHE.",
+    "button": "Confirmer",
+    "doneTitle": "C'est confirmé",
+    "done": "Vous êtes inscrit·e. Vous pourrez vous désinscrire à tout moment avec le lien présent dans chaque email.",
+    "invalidTitle": "Lien invalide ou expiré",
+    "invalid": "Ce lien de confirmation est incomplet ou a plus de 7 jours. Inscrivez-vous de nouveau en bas du site.",
+    "errorTitle": "Un problème est survenu",
+    "error": "L'inscription n'a pas pu être enregistrée. Réessayez dans un instant.",
     "backHome": "Retour à l'accueil"
   }
 }

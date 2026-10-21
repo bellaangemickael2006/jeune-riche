@@ -256,13 +256,14 @@ export default function CheckoutPage() {
           <div className="flex flex-col gap-4">
             <BackButton label={t("product.back")} fallbackHref="/catalogue" className="mb-2 inline-block" />
             <h1 className="font-editorial text-2xl text-paper">{t("checkout.yourInformation")}</h1>
-            <Field label={t("checkout.fullName")} value={form.customerName} onChange={(v) => update("customerName", v)} />
+            <Field label={t("checkout.fullName")} value={form.customerName} onChange={(v) => update("customerName", v)} maxLength={100} />
             <Field
               label={t("checkout.emailOptional")}
               type="email"
               value={form.customerEmail}
               onChange={(v) => update("customerEmail", v)}
               required={false}
+              maxLength={254}
             />
             {form.customerEmail && (
               <label className="flex items-start gap-3 text-xs leading-relaxed text-paper/60">
@@ -316,13 +317,14 @@ export default function CheckoutPage() {
               type="tel"
               value={form.phone}
               onChange={(v) => update("phone", v)}
+              maxLength={30}
             />
-            <Field label={t("checkout.address")} value={form.line1} onChange={(v) => update("line1", v)} />
+            <Field label={t("checkout.address")} value={form.line1} onChange={(v) => update("line1", v)} maxLength={200} />
             <div className="grid grid-cols-2 gap-4">
-              <Field label={t("checkout.city")} value={form.city} onChange={(v) => update("city", v)} />
-              <Field label={t("checkout.postalCode")} value={form.postalCode} onChange={(v) => update("postalCode", v)} required={false} />
+              <Field label={t("checkout.city")} value={form.city} onChange={(v) => update("city", v)} maxLength={100} />
+              <Field label={t("checkout.postalCode")} value={form.postalCode} onChange={(v) => update("postalCode", v)} required={false} maxLength={20} />
             </div>
-            <Field label={t("checkout.country")} value={form.country} onChange={(v) => update("country", v)} />
+            <Field label={t("checkout.country")} value={form.country} onChange={(v) => update("country", v)} maxLength={60} />
             <div className="mt-4 flex gap-3">
               <button onClick={() => setStep("informations")} className="border border-line px-6 py-4 text-xs uppercase tracking-widest2 text-paper/70">
                 {t("common.back")}
@@ -398,6 +400,7 @@ export default function CheckoutPage() {
                 <div className="flex gap-3">
                   <input
                     value={promoInput}
+                    maxLength={40}
                     onChange={(e) => setPromoInput(e.target.value)}
                     placeholder={t("checkout.promoCodePlaceholder")}
                     className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 placeholder:normal-case focus:border-paper focus:outline-hidden"
@@ -445,12 +448,15 @@ function Field({
   onChange,
   type = "text",
   required = true,
+  maxLength,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
   required?: boolean;
+  /** Mêmes limites que le serveur (app/api/checkout). */
+  maxLength: number;
 }) {
   return (
     <label className="block">
@@ -458,6 +464,7 @@ function Field({
       <input
         type={type}
         required={required}
+        maxLength={maxLength}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper focus:border-paper focus:outline-hidden"

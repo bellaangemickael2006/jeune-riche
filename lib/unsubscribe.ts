@@ -11,7 +11,8 @@ import { siteUrl } from "@/lib/utils";
 export type UnsubscribeKind = "rappel" | "newsletter";
 export const UNSUBSCRIBE_KINDS: UnsubscribeKind[] = ["rappel", "newsletter"];
 
-function secret(): string | null {
+/** Clé des liens signés envoyés par email (désinscription, confirmation d'inscription). */
+export function emailTokenSecret(): string | null {
   return process.env.AUTH_SECRET || process.env.CRON_SECRET || null;
 }
 
@@ -20,7 +21,7 @@ function sign(kind: UnsubscribeKind, email: string, key: string) {
 }
 
 export function makeUnsubscribeToken(kind: UnsubscribeKind, email: string): string | null {
-  const key = secret();
+  const key = emailTokenSecret();
   if (!key) return null;
   const normalized = email.trim().toLowerCase();
   return `${Buffer.from(normalized).toString("base64url")}.${sign(kind, normalized, key)}`;
@@ -28,7 +29,7 @@ export function makeUnsubscribeToken(kind: UnsubscribeKind, email: string): stri
 
 /** Email contenu dans le jeton, ou null si le jeton est faux ou altéré. */
 export function readUnsubscribeToken(kind: UnsubscribeKind, token: string): string | null {
-  const key = secret();
+  const key = emailTokenSecret();
   const [encoded, signature] = token.split(".");
   if (!key || !encoded || !signature) return null;
   const email = Buffer.from(encoded, "base64url").toString("utf8");

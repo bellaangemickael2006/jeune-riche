@@ -3,7 +3,7 @@ import { z } from "zod";
 import { resolvePromoCode } from "@/lib/data/promoCodes";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 
-const schema = z.object({ code: z.string().min(1), subtotal: z.number().nonnegative() });
+const schema = z.object({ code: z.string().trim().min(1).max(40), subtotal: z.number().nonnegative().max(100_000_000) });
 
 // Aperçu uniquement — la remise réellement appliquée est recalculée et
 // verrouillée côté serveur dans /api/checkout, jamais depuis cette réponse.

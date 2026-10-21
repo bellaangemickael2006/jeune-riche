@@ -337,7 +337,7 @@ function NotifyForm() {
     setState(res?.ok ? "done" : "error");
   }
 
-  if (state === "done") return <p className="mt-10 text-sm text-paper/70">{t("drops.live.notifyDone")}</p>;
+  if (state === "done") return <p className="mt-10 text-sm text-paper/70">{t("drops.live.notifyCheckEmail")}</p>;
 
   return (
     <form onSubmit={submit} className="mx-auto mt-10 flex w-full max-w-md flex-col gap-2 sm:flex-row">

@@ -321,7 +321,8 @@
       "notifyButton": "Notify me",
       "notifyDone": "Done: you're on the list for this drop.",
       "notifyError": "Couldn't sign you up right now, please try again.",
-      "allDrops": "All drops"
+      "allDrops": "All drops",
+      "notifyCheckEmail": "Almost done: confirm with the link we just emailed you to be notified about this drop."
     }
   },
   "footer": {
@@ -338,7 +339,8 @@
     "terms": "Obchodní podmínky",
     "privacy": "Ochrana soukromí",
     "copyright": "© {{year}} Jeune Riche.",
-    "location": "Pobřeží slonoviny — Západní Afrika"
+    "location": "Pobřeží slonoviny — Západní Afrika",
+    "newsletterCheckEmail": "Almost done: confirm your subscription with the link we just emailed you."
   },
   "legal": {
     "contact": {
@@ -471,6 +473,19 @@
     "invalid": "This unsubscribe link is incomplete or has been altered. Please use the link from your email.",
     "errorTitle": "Something went wrong",
     "error": "We couldn't save your request. Please try again shortly.",
+    "backHome": "Back to home"
+  },
+  "subscribe": {
+    "eyebrow": "Newsletter",
+    "confirmTitle": "Confirm your subscription",
+    "confirm": "Click to receive JEUNE RICHE drop announcements and new pieces.",
+    "button": "Confirm",
+    "doneTitle": "You're confirmed",
+    "done": "You're subscribed. You can unsubscribe at any time with the link in every email.",
+    "invalidTitle": "Invalid or expired link",
+    "invalid": "This confirmation link is incomplete or more than 7 days old. Sign up again at the bottom of the site.",
+    "errorTitle": "Something went wrong",
+    "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
   }
 }

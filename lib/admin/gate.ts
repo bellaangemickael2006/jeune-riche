@@ -17,6 +17,7 @@
 // les emails ; testée unitairement.
 
 import { createHmac } from "node:crypto";
+import { internalPath } from "@/lib/account/safeNext";
 
 export const ADMIN_GATE_COOKIE = "jr_ag";
 export const ADMIN_GATE_MAX_AGE = 30 * 24 * 3600; // 30 jours
@@ -61,8 +62,8 @@ export function safeEqual(a: string, b: string): boolean {
 
 /** Destination après l'entrée secrète : uniquement une page de l'admin. */
 export function adminNext(raw: string | null): string {
-  if (!raw || !raw.startsWith("/admin") || raw.startsWith("//") || raw.includes("\\")) return "/admin";
-  return raw;
+  const path = internalPath(raw);
+  return path && (path === "/admin" || path.startsWith("/admin/") || path.startsWith("/admin?")) ? path : "/admin";
 }
 
 /**
