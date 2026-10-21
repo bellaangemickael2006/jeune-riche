@@ -11,6 +11,7 @@ import SplashScreen from "@/components/providers/SplashScreen";
 import { getLocale, getServerTranslation, loadResource } from "@/lib/i18n/server";
 import { getDirection } from "@/lib/i18n/languages";
 import { siteUrl } from "@/lib/utils";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 
 // Couleur de la barre d'adresse mobile / de la barre de statut en mode
 // standalone (PWA installée) — même teinte que le fond de l'app (--color-ink)
@@ -18,7 +19,11 @@ import { siteUrl } from "@/lib/utils";
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0B0B0C",
+  // Barre du navigateur mobile assortie au thème de l'appareil (voir lib/theme.ts).
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#F5F4F1" },
+    { media: "(prefers-color-scheme: dark)", color: "#0B0B0C" },
+  ],
 };
 
 const anton = Anton({
@@ -111,20 +116,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-// Doit s'exécuter avant l'hydratation React pour éviter un flash du mauvais
-// thème (le choix de l'utilisateur ne vit que dans localStorage, inconnu du
-// rendu serveur) — voir ThemeToggle.tsx pour la même logique côté clic. La
-// langue n'a pas besoin de cet artifice : elle est résolue via cookie donc
-// déjà correcte dès le premier rendu serveur (voir getLocale ci-dessous).
-const THEME_INIT_SCRIPT = `
-  (function () {
-    try {
-      var stored = localStorage.getItem("theme");
-      if (stored === "light") document.documentElement.setAttribute("data-theme", "light");
-    } catch (e) {}
-  })();
-`;
-
 // Organization + WebSite schema.org sur chaque page — sert de base à la
 // carte de connaissance Google et à la sitelinks search box, sans dépendre
 // d'une page précise pour être présent.
@@ -166,8 +157,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       lang={locale}
       dir={dir}
       className={`${anton.variable} ${fraunces.variable} ${inter.variable}`}
-      // Le script ci-dessous pose data-theme AVANT l'hydratation (lu depuis
-      // localStorage, inconnu du rendu serveur) — un avertissement
+      // Le script ci-dessous pose data-theme AVANT l'hydratation (thème de
+      // l'appareil ou choix mémorisé, inconnus du rendu serveur, voir lib/theme.ts) — un avertissement
       // d'hydratation sur CET attribut précis est donc attendu, pas un vrai
       // bug ; suppressHydrationWarning ne masque rien d'autre dans l'arbre.
       suppressHydrationWarning

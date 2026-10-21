@@ -1,52 +1,47 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useTranslation } from "react-i18next";
+import { THEME_CHANGE_EVENT, THEME_STORAGE_KEY, type Theme } from "@/lib/theme";
 
-// Lit l'attribut déjà posé par le script inline de app/layout.tsx (avant
-// hydratation) plutôt que de recalculer depuis localStorage ici — évite
-// toute divergence entre les deux et un flash au montage de ce composant.
-function currentTheme(): "dark" | "light" {
-  if (typeof document === "undefined") return "dark";
-  return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+// Le thème affiché est celui posé par le script de app/layout.tsx (thème de
+// l'appareil, ou choix forcé) : on le lit sur la page plutôt que de le
+// recalculer, et on suit ses changements (y compris quand l'appareil change
+// de thème tout seul).
+function subscribe(onChange: () => void) {
+  window.addEventListener(THEME_CHANGE_EVENT, onChange);
+  return () => window.removeEventListener(THEME_CHANGE_EVENT, onChange);
 }
+const currentTheme = (): Theme => (document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+// Le rendu serveur ne connaît pas le thème : icône neutre (lune), corrigée au montage.
+const serverTheme = (): Theme | null => null;
 
 export default function ThemeToggle({ className }: { className?: string }) {
   const { t } = useTranslation();
-  // Le rendu serveur ne connaît jamais le thème (choix client uniquement,
-  // voir layout.tsx) — un premier rendu neutre évite un mismatch
-  // d'hydratation, corrigé au montage juste après.
-  const [mounted, setMounted] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    setTheme(currentTheme());
-    setMounted(true);
-  }, []);
+  const theme = useSyncExternalStore<Theme | null>(subscribe, currentTheme, serverTheme);
 
   function toggle() {
-    const next = theme === "dark" ? "light" : "dark";
-    setTheme(next);
-    if (next === "light") {
-      document.documentElement.setAttribute("data-theme", "light");
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-    }
+    const next: Theme = currentTheme() === "dark" ? "light" : "dark";
+    const deviceTheme: Theme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
     try {
-      localStorage.setItem("theme", next);
+      // Revenir au thème de l'appareil efface le choix : le suivi automatique reprend.
+      if (next === deviceTheme) localStorage.removeItem(THEME_STORAGE_KEY);
+      else localStorage.setItem(THEME_STORAGE_KEY, next);
     } catch {
-      // stockage indisponible (navigation privée, quota...) : le thème
-      // s'applique quand même pour cette visite, juste pas mémorisé
+      // Stockage indisponible (navigation privée…) : le thème s'applique quand même pour cette visite.
     }
+    if (next === "light") document.documentElement.setAttribute("data-theme", "light");
+    else document.documentElement.removeAttribute("data-theme");
+    window.dispatchEvent(new Event(THEME_CHANGE_EVENT));
   }
 
   return (
     <button
       onClick={toggle}
-      aria-label={mounted && theme === "dark" ? t("common.switchToLightMode") : t("common.switchToDarkMode")}
+      aria-label={theme === "light" ? t("common.switchToDarkMode") : t("common.switchToLightMode")}
       className={className ?? "text-paper/80 transition-colors hover:text-paper"}
     >
-      {mounted && theme === "light" ? <SunIcon /> : <MoonIcon />}
+      {theme === "light" ? <SunIcon /> : <MoonIcon />}
     </button>
   );
 }
