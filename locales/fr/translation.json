@@ -280,7 +280,8 @@
     "googleOnlyTitle": "Mon compte JEUNE RICHE",
     "googleOnlySubtitle": "Connexion et inscription en un clic avec votre compte Google. Aucun mot de passe à retenir.",
     "legacyEmailLogin": "Ancien compte créé avec un email ? Se connecter",
-    "backToGoogle": "Retour à la connexion Google"
+    "backToGoogle": "Retour à la connexion Google",
+    "ordersLiveUpdated": "Une de vos commandes vient d'être mise à jour."
   },
   "wishlist": {
     "title": "Favoris",

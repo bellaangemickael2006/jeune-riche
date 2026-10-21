@@ -1,6 +1,6 @@
 import { test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
-import { makeTrackingToken, readTrackingToken, trackingChannel } from "./liveTracking";
+import { accountChannel, makeTrackingToken, readTrackingToken, trackingChannel } from "./liveTracking";
 
 const NOW = Date.UTC(2026, 9, 21, 12);
 const HOUR = 3_600_000;
@@ -41,4 +41,11 @@ test("sans clé configurée : ni jeton ni canal", () => {
   delete process.env.CRON_SECRET;
   assert.equal(makeTrackingToken("cmd_123", NOW), null);
   assert.equal(trackingChannel("cmd_123"), null);
+});
+
+test("canal du compte : propre au client, distinct de celui d'une commande", () => {
+  assert.equal(accountChannel("user_1"), accountChannel("user_1"));
+  assert.notEqual(accountChannel("user_1"), accountChannel("user_2"));
+  assert.notEqual(accountChannel("x"), trackingChannel("x"));
+  assert.ok(!accountChannel("user_1")!.includes("user_1"));
 });

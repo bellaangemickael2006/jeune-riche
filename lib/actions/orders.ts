@@ -9,16 +9,17 @@ import type { OrderStatus } from "@/lib/generated/prisma/client";
 import { recordMovements } from "@/lib/stock/movements";
 import { after } from "next/server";
 import { broadcast } from "@/lib/realtime/broadcast";
-import { trackingChannel } from "@/lib/orders/liveTracking";
+import { accountChannel, trackingChannel } from "@/lib/orders/liveTracking";
 
 /**
- * Prévient en temps réel la page Suivi du client, si elle est ouverte, que
- * sa commande vient de changer (voir lib/orders/liveTracking.ts). Après la
- * réponse : l'admin n'attend jamais ce signal.
+ * Prévient en temps réel les pages du client ouvertes sur cette commande —
+ * page Suivi et liste « Mes commandes » de son compte — qu'elle vient de
+ * changer (voir lib/orders/liveTracking.ts). Après la réponse : l'admin
+ * n'attend jamais ces signaux.
  */
-function notifyTracking(orderId: string) {
-  const channel = trackingChannel(orderId);
-  if (channel) after(() => broadcast(channel, "update"));
+function notifyTracking(orderId: string, userId: string | null) {
+  const channels = [trackingChannel(orderId), userId ? accountChannel(userId) : null].filter((c): c is string => Boolean(c));
+  if (channels.length) after(() => Promise.all(channels.map((channel) => broadcast(channel, "update"))));
 }
 
 const STATUSES: OrderStatus[] = ["NOUVELLE", "CONFIRMEE", "PREPARATION", "EXPEDIEE", "LIVREE", "ANNULEE"];
@@ -95,7 +96,7 @@ export async function updateOrderStatus(orderId: string, formData: FormData): Pr
     await logAdmin(admin, "commandes.statut", `${order.orderNumber} : ${order.status} → ${status}`, orderId);
     revalidatePath("/admin");
     revalidatePath("/admin/commandes");
-    notifyTracking(orderId);
+    notifyTracking(orderId, order.userId);
     revalidatePath(`/admin/commandes/${orderId}`);
     if (isCancelling) return "Commande annulée — stock remis en rayon.";
     if (isRestoring) return "Commande réactivée — stock repris.";
@@ -123,7 +124,7 @@ export async function updateOrderFulfillment(orderId: string, formData: FormData
       `${order.orderNumber}${trackingNumber ? ` — n° de suivi ${trackingNumber}` : ""}${notes ? " — notes modifiées" : ""}`,
       orderId
     );
-    notifyTracking(orderId);
+    notifyTracking(orderId, order.userId);
     revalidatePath(`/admin/commandes/${orderId}`);
     return "Enregistré.";
   });

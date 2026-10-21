@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import AuthForms from "@/components/account/AuthForms";
 import AccountDashboard from "@/components/account/AccountDashboard";
 import { getServerTranslation } from "@/lib/i18n/server";
+import { accountChannel } from "@/lib/orders/liveTracking";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
@@ -42,6 +43,8 @@ export default async function ComptePage() {
         <AccountDashboard
           name={user.name}
           email={user.email}
+          // Liste « Mes commandes » mise à jour en direct (voir lib/orders/liveTracking.ts).
+          liveChannel={accountChannel(user.id)}
           orders={user.orders.map((o) => ({
             id: o.id,
             orderNumber: o.orderNumber,

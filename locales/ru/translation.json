@@ -279,7 +279,8 @@
     "googleOnlyTitle": "My JEUNE RICHE account",
     "googleOnlySubtitle": "Sign in or sign up in one click with your Google account. No password to remember.",
     "legacyEmailLogin": "Account created with an email? Sign in",
-    "backToGoogle": "Back to Google sign-in"
+    "backToGoogle": "Back to Google sign-in",
+    "ordersLiveUpdated": "One of your orders has just been updated."
   },
   "wishlist": {
     "title": "Избранное",

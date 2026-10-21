@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
@@ -27,17 +27,46 @@ type Address = {
 export default function AccountDashboard({
   name,
   email,
+  liveChannel,
   orders,
   address,
 }: {
   name: string | null;
   email: string;
+  /** Canal temps réel du compte, ou null si aucune clé n'est configurée. */
+  liveChannel: string | null;
   orders: Order[];
   address: Address;
 }) {
   const { t } = useTranslation();
   const { locale } = useLocale();
   const router = useRouter();
+  const [liveUpdate, setLiveUpdate] = useState<number | null>(null);
+
+  // Quand l'équipe change une commande dans l'admin, un signal arrive sur le
+  // canal du compte : la page relit les commandes avec la session du client
+  // (rien d'autre ne transite). Relecture aussi au retour sur l'onglet.
+  useEffect(() => {
+    if (!liveChannel) return;
+    const supabase = createClient();
+    const channel = supabase
+      .channel(liveChannel)
+      .on("broadcast", { event: "update" }, () => {
+        setLiveUpdate(Date.now());
+        router.refresh();
+      })
+      .subscribe();
+    function onVisible() {
+      if (document.visibilityState === "visible") router.refresh();
+    }
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("online", onVisible);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("online", onVisible);
+      supabase.removeChannel(channel);
+    };
+  }, [liveChannel, router]);
 
   async function logout() {
     const supabase = createClient();
@@ -69,6 +98,11 @@ export default function AccountDashboard({
 
       <div className="mt-10">
         <p className="text-xs uppercase tracking-widest2 text-paper/50">{t("account.myOrders")}</p>
+        {liveUpdate && (
+          <p key={liveUpdate} role="status" className="mt-3 border border-paper/30 px-3 py-2 text-xs text-paper">
+            {t("account.ordersLiveUpdated")}
+          </p>
+        )}
         {orders.length === 0 ? (
           <p className="mt-3 text-sm text-paper/40">{t("account.noOrders")}</p>
         ) : (

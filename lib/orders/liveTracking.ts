@@ -45,3 +45,13 @@ export function trackingChannel(orderId: string): string | null {
   const key = emailTokenSecret();
   return key ? `suivi:${sign(`canal:${orderId}`, key).slice(0, 32)}` : null;
 }
+
+/**
+ * Canal temps réel du compte d'un client (liste « Mes commandes » de
+ * /compte). Le client y est déjà connecté : au signal, la page relit ses
+ * commandes avec sa propre session, aucun jeton n'est nécessaire.
+ */
+export function accountChannel(userId: string): string | null {
+  const key = emailTokenSecret();
+  return key ? `compte:${sign(`compte:${userId}`, key).slice(0, 32)}` : null;
+}
