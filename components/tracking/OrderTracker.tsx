@@ -1,11 +1,15 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { trackOrder, type TrackOrderState, type TrackedOrder } from "@/lib/actions/tracking";
 import { TRACKING_STEPS } from "@/lib/orders/tracking";
 import { useLocale } from "@/components/providers/I18nProvider";
 import { cn, formatPrice, WHATSAPP_NUMBER } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
+
+// Relecture de secours si un signal temps réel se perd (réseau mobile instable).
+const FALLBACK_REFRESH_MS = 60_000;
 
 export default function OrderTracker({ initialNumber }: { initialNumber: string }) {
   const { t } = useTranslation();
@@ -50,12 +54,91 @@ export default function OrderTracker({ initialNumber }: { initialNumber: string 
         )}
       </form>
 
-      {state?.ok && <TrackedOrderView order={state.order} />}
+      {state?.ok && (
+        <LiveTrackedOrder
+          // Nouvelle recherche = nouveau suivi (autre commande ou jeton renouvelé).
+          key={state.live?.token ?? state.order.orderNumber}
+          initial={state.order}
+          live={state.live}
+        />
+      )}
     </div>
   );
 }
 
-function TrackedOrderView({ order }: { order: TrackedOrder }) {
+type LiveStatus = "connecting" | "live" | "expired" | "off";
+
+/**
+ * Commande affichée en direct : quand l'équipe la modifie dans l'admin, un
+ * signal arrive sur le canal propre à cette commande et la page relit
+ * aussitôt son état (voir lib/orders/liveTracking.ts). Rien d'autre sur le
+ * site n'est concerné.
+ */
+function LiveTrackedOrder({ initial, live }: { initial: TrackedOrder; live: { token: string; channel: string } | null }) {
+  const [order, setOrder] = useState(initial);
+  const [status, setStatus] = useState<LiveStatus>(live ? "connecting" : "off");
+  const [updatedAt, setUpdatedAt] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!live) return;
+    let stopped = false;
+
+    async function refresh(fromSignal: boolean) {
+      if (stopped) return;
+      try {
+        const res = await fetch(`/api/suivi?t=${encodeURIComponent(live!.token)}`, { cache: "no-store" });
+        if (res.status === 401) {
+          stopped = true;
+          setStatus("expired");
+          return;
+        }
+        if (!res.ok) return;
+        const data = (await res.json()) as { order?: TrackedOrder };
+        if (!data.order || stopped) return;
+        setOrder((previous) => {
+          const changed = JSON.stringify(previous) !== JSON.stringify(data.order);
+          if (changed || fromSignal) setUpdatedAt(Date.now());
+          return changed ? data.order! : previous;
+        });
+      } catch {
+        // Hors connexion : la prochaine relecture ou le prochain signal rattrapera.
+      }
+    }
+
+    const supabase = createClient();
+    const channel = supabase
+      .channel(live.channel)
+      .on("broadcast", { event: "update" }, () => refresh(true))
+      .subscribe((s) => {
+        if (stopped) return;
+        if (s === "SUBSCRIBED") setStatus("live");
+        else if (s === "CHANNEL_ERROR" || s === "TIMED_OUT") setStatus("connecting");
+      });
+
+    // Secours : relecture régulière tant que la page est visible, et dès
+    // qu'on revient sur l'onglet (téléphone mis en veille, autre appli…).
+    const timer = setInterval(() => {
+      if (document.visibilityState === "visible") refresh(false);
+    }, FALLBACK_REFRESH_MS);
+    function onVisible() {
+      if (document.visibilityState === "visible") refresh(false);
+    }
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("online", onVisible);
+
+    return () => {
+      stopped = true;
+      clearInterval(timer);
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("online", onVisible);
+      supabase.removeChannel(channel);
+    };
+  }, [live]);
+
+  return <TrackedOrderView order={order} status={status} updatedAt={updatedAt} />;
+}
+
+function TrackedOrderView({ order, status, updatedAt }: { order: TrackedOrder; status: LiveStatus; updatedAt: number | null }) {
   const { t } = useTranslation();
   const { locale } = useLocale();
   const date = (iso: string) => new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(iso));
@@ -65,7 +148,21 @@ function TrackedOrderView({ order }: { order: TrackedOrder }) {
 
   return (
     <section aria-live="polite" className="mt-12 border-t border-line pt-10">
-      <p className="text-label text-paper/40">{t("tracking.orderOf", { date: date(order.createdAt) })}</p>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-label text-paper/40">{t("tracking.orderOf", { date: date(order.createdAt) })}</p>
+        {status === "live" && (
+          <p className="flex items-center gap-2 text-label text-paper/60">
+            <span aria-hidden className="h-1.5 w-1.5 animate-pulse rounded-full bg-paper" />
+            {t("tracking.live")}
+          </p>
+        )}
+      </div>
+      {updatedAt && (
+        <p key={updatedAt} role="status" className="mt-3 border border-paper/30 px-3 py-2 text-xs text-paper">
+          {t("tracking.liveUpdated")}
+        </p>
+      )}
+      {status === "expired" && <p className="mt-3 text-xs text-paper/50">{t("tracking.liveExpired")}</p>}
       <h2 className="mt-2 font-editorial text-heading text-paper">{order.orderNumber}</h2>
 
       {order.step === null ? (

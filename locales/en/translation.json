@@ -464,7 +464,10 @@
     "updatedOn": "Updated on {{date}}.",
     "trackingNumber": "Tracking number:",
     "help": "Any questions? Message us on WhatsApp",
-    "whatsappMessage": "Hello, I have a question about my order {{number}}."
+    "whatsappMessage": "Hello, I have a question about my order {{number}}.",
+    "live": "Live",
+    "liveUpdated": "Your order has just been updated.",
+    "liveExpired": "Live tracking stopped after 24 hours: search again to restart it."
   },
   "unsubscribe": {
     "eyebrow": "Emails",

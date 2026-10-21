@@ -464,7 +464,10 @@
     "updatedOn": "Mise à jour le {{date}}.",
     "trackingNumber": "Numéro de suivi :",
     "help": "Une question ? Écrire sur WhatsApp",
-    "whatsappMessage": "Bonjour, j'ai une question sur ma commande {{number}}."
+    "whatsappMessage": "Bonjour, j'ai une question sur ma commande {{number}}.",
+    "live": "En direct",
+    "liveUpdated": "Votre commande vient d'être mise à jour.",
+    "liveExpired": "Le suivi en direct s'est arrêté après 24 h : relancez la recherche pour le réactiver."
   },
   "unsubscribe": {
     "eyebrow": "Emails",
