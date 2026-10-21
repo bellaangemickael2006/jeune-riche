@@ -81,7 +81,7 @@ Personnalisation : les mockups portent des exemples baked-in (« BAISACHTE », �
 ## 5. Vidéos
 
 - `hero-production.mp4` (20 MB) : travelling showroom 3D. **Retiré du hero le 10/09 sur décision du client** — l'accueil s'ouvre désormais sur une vraie photo (`campagne/portant-atelier.jpg`). Le fichier est conservé pour un usage ultérieur, il n'est plus référencé par aucun composant.
-- `manifeste-motif.mp4` (11 MB) : motif mosaïque noir/blanc incliné avec badge, en fond de `/manifeste` uniquement.
+- `manifeste-motif-720.mp4` (1,9 MB) et `manifeste-motif-480.mp4` (1,1 MB, téléphones) : motif mosaïque noir/blanc incliné avec badge, en fond de `/manifeste` uniquement. Recompressés le 21/10 depuis l'original de 10,8 MB (H.264 CRF 26, sans son, faststart) ; écart à l'original imperceptible (SSIM 0,995 en 720p).
 
 Servies depuis `public/video/` (asset statique Next.js/Vercel, pas de fonction serverless). Poster image à générer plus tard pour le fallback (non disponible aujourd'hui — voir TODO).
 

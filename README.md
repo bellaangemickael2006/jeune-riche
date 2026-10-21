@@ -112,7 +112,7 @@ compte client existant ayant le même email). Un compte administrateur ne s'ouvr
 - Gmail limite l'envoi à environ 500 emails par jour : au-delà, passer à un service d'envoi
   (Resend, Brevo…).
 
-Les vidéos (`public/video/*.mp4`, ~20 Mo et ~11 Mo) sont servies comme assets statiques Next.js —
+Les vidéos (`public/video/*.mp4` : manifeste en 1,9 Mo / 1,1 Mo sur téléphone ; `hero-production.mp4`, 20 Mo, n'est plus affichée) sont servies comme assets statiques Next.js —
 elles ne transitent jamais par une fonction serverless. Pour un trafic important, migrer vers un
 stockage/CDN dédié (Supabase Storage ou équivalent) est recommandé — voir TODO.md.
 

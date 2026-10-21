@@ -11,9 +11,9 @@ export default function ManifesteHero() {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    // La vidéo pèse ~11 Mo : on ne la charge pas pour un visiteur qui a
-    // activé l'économie de données ou réduit les animations — l'image de
-    // repli suffit, et la page reste fluide sur une connexion mobile lente.
+    // Même allégée (1,1 Mo sur téléphone, 1,9 Mo sur ordinateur), la vidéo
+    // n'est pas chargée pour un visiteur qui a activé l'économie de données
+    // ou réduit les animations : l'image de repli suffit.
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
     if (connection?.saveData || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setFailed(true);
@@ -36,7 +36,12 @@ export default function ManifesteHero() {
           poster="/images/badge/badge-black-on-white.png"
           onError={() => setFailed(true)}
         >
-          <source src="/video/manifeste-motif.mp4" type="video/mp4" />
+          {/* Version 480p sur téléphone, 720p au-delà. Recompressées depuis
+              l'original de 10,8 Mo (H.264, sans piste son, lecture dès les
+              premiers octets). Un navigateur qui ignore `media` prend la
+              première : la plus légère. */}
+          <source src="/video/manifeste-motif-480.mp4" type="video/mp4" media="(max-width: 767px)" />
+          <source src="/video/manifeste-motif-720.mp4" type="video/mp4" />
         </video>
       ) : (
         <Image src="/images/badge/badge-black-on-white.png" alt="JEUNE RICHE" fill priority sizes="100vw" className="object-cover" />
