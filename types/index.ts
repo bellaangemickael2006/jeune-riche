@@ -5,7 +5,7 @@ import type {
   Category,
   SizeGuide,
   Drop,
-} from "@prisma/client";
+} from "@/lib/generated/prisma/client";
 
 export type ProductWithRelations = Product & {
   images: ProductImage[];
