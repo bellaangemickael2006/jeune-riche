@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { redisConfig, redisPipeline } from "@/lib/redis";
 
 // Limiteur anti-abus (spam, brute-force de code promo, inscriptions en rafale).
 //
@@ -10,9 +11,7 @@ import type { NextRequest } from "next/server";
 //   doit jamais bloquer une vraie commande : on laisse passer plutôt que de
 //   refuser à tort.
 //
-// Variables reconnues : UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN,
-// ou KV_REST_API_URL / KV_REST_API_TOKEN (noms posés automatiquement par
-// l'intégration Upstash du Marketplace Vercel).
+// Connexion à Upstash : voir lib/redis.ts.
 
 const buckets = new Map<string, { count: number; resetAt: number }>();
 
@@ -42,34 +41,23 @@ export function memoryRateLimit(key: string, limit: number, windowMs: number): b
   return true;
 }
 
-function redisConfig() {
-  const url = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
-  return url && token ? { url: url.replace(/\/$/, ""), token } : null;
-}
-
 /**
  * Fenêtre fixe dans Redis : INCR puis expiration posée au premier appel
  * seulement (PEXPIRE … NX). Renvoie le nombre d'appels dans la fenêtre, ou
  * null si Redis est indisponible.
  */
 async function redisCount(key: string, windowMs: number): Promise<number | null> {
-  const config = redisConfig();
-  if (!config) return null;
+  if (!redisConfig()) return null;
   try {
-    const res = await fetch(`${config.url}/pipeline`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${config.token}`, "Content-Type": "application/json" },
-      body: JSON.stringify([
+    // Un limiteur lent ne doit pas ralentir le site : au-delà, repli mémoire.
+    const replies = await redisPipeline(
+      [
         ["INCR", `jr:rl:${key}`],
         ["PEXPIRE", `jr:rl:${key}`, String(windowMs), "NX"],
-      ]),
-      // Un limiteur lent ne doit pas ralentir le site : au-delà, repli mémoire.
-      signal: AbortSignal.timeout(1500),
-      cache: "no-store",
-    });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const [incr] = (await res.json()) as { result?: unknown; error?: string }[];
+      ],
+      1500
+    );
+    const [incr] = replies;
     if (typeof incr?.result !== "number") throw new Error(incr?.error ?? "réponse inattendue");
     return incr.result;
   } catch (error) {

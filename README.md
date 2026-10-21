@@ -116,6 +116,28 @@ Les vidéos (`public/video/*.mp4` : manifeste en 1,9 Mo / 1,1 Mo sur téléphone
 elles ne transitent jamais par une fonction serverless. Pour un trafic important, migrer vers un
 stockage/CDN dédié (Supabase Storage ou équivalent) est recommandé — voir TODO.md.
 
+## Sauvegardes
+
+Chaque nuit à 3 h (UTC), `/api/cron/backup` copie toutes les données de la boutique (commandes,
+clients, produits, stock, avis, codes promo, newsletter, réglages, journal de l'admin) chez
+**Upstash**, un autre prestataire que Supabase. La copie est compressée puis chiffrée (AES-256-GCM,
+clé dérivée de `CRON_SECRET`) ; les 14 dernières sont gardées.
+
+- Admin → **Sauvegardes** (propriétaires) : liste, « Sauvegarder maintenant », téléchargement en JSON.
+- Pas inclus : les fichiers (photos, vidéos, modèles 3D, dans Supabase Storage) et les comptes de
+  connexion Supabase (un client Google se reconnecte simplement).
+- Changer `CRON_SECRET` rend les copies existantes illisibles : en refaire une juste après.
+
+Restauration dans une base **vide** (nouveau projet Supabase, schéma créé par `npm run db:deploy`) :
+
+```bash
+npx tsx scripts/restore-backup.ts jeune-riche-sauvegarde-AAAA-MM-JJ.json
+npx tsx scripts/restore-backup.ts jeune-riche-sauvegarde-AAAA-MM-JJ.json --confirmer
+```
+
+La première commande affiche seulement ce qui serait restauré ; la seconde écrit dans la base
+désignée par `DIRECT_URL` (fichier `.env`). Les lignes déjà présentes ne sont jamais écrasées.
+
 ## Structure
 
 ```text

@@ -25,6 +25,7 @@ const LINKS = [
   { href: "/admin/parametres", label: "Paramètres" },
   { href: "/admin/equipe", label: "Équipe" },
   { href: "/admin/journal", label: "Journal" },
+  { href: "/admin/sauvegardes", label: "Sauvegardes" },
 ];
 
 export default function AdminSidebar({

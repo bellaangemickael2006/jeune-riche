@@ -14,6 +14,7 @@ export const AUDIT_SECTIONS = {
   accueil: "Page d'accueil",
   parametres: "Paramètres",
   equipe: "Équipe",
+  sauvegardes: "Sauvegardes",
 } as const;
 
 export type AuditSection = keyof typeof AUDIT_SECTIONS;
@@ -51,6 +52,8 @@ export const AUDIT_ACTIONS = {
   "equipe.ajout": "Membre ajouté",
   "equipe.modification": "Accès modifiés",
   "equipe.retrait": "Membre retiré",
+  "sauvegardes.creation": "Sauvegarde faite",
+  "sauvegardes.telechargement": "Sauvegarde téléchargée",
 } as const;
 
 export type AuditAction = keyof typeof AUDIT_ACTIONS;
@@ -70,6 +73,7 @@ export function isSensitiveAction(action: string): boolean {
     action === "connexion.refusee" ||
     action === "parametres.formatage" ||
     action.startsWith("equipe.") ||
+    action === "sauvegardes.telechargement" ||
     action.endsWith("suppression")
   );
 }
