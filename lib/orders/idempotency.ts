@@ -12,6 +12,7 @@ import { redisConfig, redisPipeline } from "@/lib/redis";
 
 const TTL_SECONDS = 24 * 60 * 60;
 const PENDING = "en-cours";
+const PENDING_TTL_SECONDS = 120;
 const key = (id: string) => `jr:idem:checkout:${id}`;
 
 export function isIdempotencyKey(value: string | null): value is string {
@@ -29,7 +30,9 @@ export async function claimIdempotencyKey(id: string): Promise<IdempotencyClaim>
   try {
     const [set, get] = await redisPipeline(
       [
-        ["SET", key(id), PENDING, "NX", "EX", String(TTL_SECONDS)],
+        // Verrou court : si le traitement s'interrompt (délai dépassé), un nouvel
+        // essai redevient possible au bout de 2 minutes, pas de 24 h.
+        ["SET", key(id), PENDING, "NX", "EX", String(PENDING_TTL_SECONDS)],
         ["GET", key(id)],
       ],
       1500

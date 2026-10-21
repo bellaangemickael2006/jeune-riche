@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { announceOpenedDrops } from "@/lib/drops/announce";
+import { isCronAuthorized } from "@/lib/cronAuth";
 
 // Filet de sécurité quotidien (vercel.json) : ouvre et annonce un drop dont
 // l'heure est passée sans qu'aucun visiteur ne l'ait déclenché. Même
 // protection que le cron des paniers : réservé à Vercel (CRON_SECRET).
 export async function GET(req: NextRequest) {
-  const secret = process.env.CRON_SECRET;
-  if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
+  if (!isCronAuthorized(req.headers.get("authorization"))) {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
   try {

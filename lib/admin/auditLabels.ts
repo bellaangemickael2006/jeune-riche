@@ -22,6 +22,7 @@ export type AuditSection = keyof typeof AUDIT_SECTIONS;
 export const AUDIT_ACTIONS = {
   "connexion.reussie": "Connexion",
   "connexion.refusee": "Connexion refusée",
+  "connexion.2fa_activee": "Double vérification activée",
   "commandes.statut": "Statut de commande",
   "commandes.suivi": "Suivi / notes de commande",
   "produits.creation": "Produit créé",
@@ -52,6 +53,7 @@ export const AUDIT_ACTIONS = {
   "equipe.ajout": "Membre ajouté",
   "equipe.modification": "Accès modifiés",
   "equipe.retrait": "Membre retiré",
+  "equipe.2fa_reinitialisee": "Double vérification réinitialisée",
   "sauvegardes.creation": "Sauvegarde faite",
   "sauvegardes.telechargement": "Sauvegarde téléchargée",
 } as const;

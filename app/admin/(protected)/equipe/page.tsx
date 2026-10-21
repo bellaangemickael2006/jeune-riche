@@ -1,6 +1,7 @@
 import { getAdminAccess, requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { addTeamMember, removeTeamMember, updateTeamMember } from "@/lib/actions/team";
+import { resetMemberMfa } from "@/lib/actions/adminMfa";
 import { cleanPermissions, PERMISSIONS } from "@/lib/admin/permissions";
 import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 import ConfirmButton from "@/components/admin/ConfirmButton";
@@ -75,14 +76,25 @@ export default async function TeamPage() {
                     </p>
                   </div>
                   {!isMe && (
-                    <ActionForm action={removeTeamMember.bind(null, a.id)}>
-                      <ConfirmButton
-                        confirmMessage={`Retirer l'accès à l'administration de ${a.email} ? Son compte client éventuel est conservé.`}
-                        className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
-                      >
-                        Retirer de l&apos;équipe
-                      </ConfirmButton>
-                    </ActionForm>
+                    <div className="flex flex-col items-end gap-2">
+                      <ActionForm action={removeTeamMember.bind(null, a.id)}>
+                        <ConfirmButton
+                          confirmMessage={`Retirer l'accès à l'administration de ${a.email} ? Son compte client éventuel est conservé.`}
+                          className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                        >
+                          Retirer de l&apos;équipe
+                        </ConfirmButton>
+                      </ActionForm>
+                      {/* Téléphone perdu : un nouveau lui sera demandé à la prochaine connexion. */}
+                      <ActionForm action={resetMemberMfa.bind(null, a.id)}>
+                        <ConfirmButton
+                          confirmMessage={`Réinitialiser la double vérification de ${a.email} ? Un nouveau téléphone lui sera demandé à sa prochaine connexion.`}
+                          className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                        >
+                          Réinitialiser la double vérification
+                        </ConfirmButton>
+                      </ActionForm>
+                    </div>
                   )}
                 </div>
                 {!isMe && migrated && (

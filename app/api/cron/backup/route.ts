@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runBackup } from "@/lib/backup/run";
 import { ensureMediaBucket } from "@/lib/storage";
+import { isCronAuthorized } from "@/lib/cronAuth";
 
 // Entretien de nuit, déclenché par Vercel Cron (vercel.json) :
 //  - sauvegarde de la base (voir lib/backup/run.ts) ;
@@ -11,8 +12,7 @@ import { ensureMediaBucket } from "@/lib/storage";
 export const maxDuration = 60;
 
 export async function GET(req: NextRequest) {
-  const secret = process.env.CRON_SECRET;
-  if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
+  if (!isCronAuthorized(req.headers.get("authorization"))) {
     return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   }
 

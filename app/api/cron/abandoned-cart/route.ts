@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, abandonedCartEmail } from "@/lib/email";
 import { unsubscribeUrl } from "@/lib/unsubscribe";
+import { isCronAuthorized } from "@/lib/cronAuth";
 
 // Déclenché une fois par jour par Vercel Cron (voir vercel.json — le plan
 // gratuit "Hobby" n'autorise pas plus d'une exécution/jour, toute fréquence
@@ -10,9 +11,7 @@ import { unsubscribeUrl } from "@/lib/unsubscribe";
 // appels — ce contrôle empêche n'importe qui d'appeler cette route pour
 // spammer les paniers abandonnés à volonté.
 function isAuthorized(req: NextRequest) {
-  const secret = process.env.CRON_SECRET;
-  if (!secret) return false;
-  return req.headers.get("authorization") === `Bearer ${secret}`;
+  return isCronAuthorized(req.headers.get("authorization"));
 }
 
 type CartLineSnapshot = { productName: string; size: string; color: string; quantity: number };

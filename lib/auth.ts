@@ -5,20 +5,15 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { ActionError } from "@/lib/actions/result";
 import { cleanPermissions, hasPermission, PERMISSIONS, type AdminPermissions, type Permission } from "@/lib/admin/permissions";
+import { adminMfaStage, isAdminMfaDisabled, type AdminMfaStage } from "@/lib/admin/mfa";
 
 /**
- * Administrateur connecté et ses droits (null = propriétaire, accès total).
- * Redirige vers la connexion si personne n'est connecté ou si le compte
- * n'est pas administrateur.
- *
- * Le frontend n'est jamais considéré comme une protection suffisante (règle
- * #91) : à appeler en tout début de CHAQUE page admin et de chaque action,
- * avant la moindre lecture en base — le layout et la page s'exécutent en
- * parallèle, un contrôle placé seulement dans le layout laissait la page lire
- * et envoyer ses données avant la redirection. `cache` évite de refaire les
- * requêtes quand le layout et la page l'appellent dans la même requête.
+ * Administrateur connecté par mot de passe, et ses droits (null =
+ * propriétaire, accès total) — SANS la double vérification. Réservé aux
+ * pages qui la mettent en place (/admin/securite, /admin/verification) ;
+ * partout ailleurs, utiliser getAdminAccess.
  */
-export const getAdminAccess = cache(async () => {
+export const getAdminPasswordSession = cache(async () => {
   // Admin caché par l'entrée secrète (proxy.ts) : 404 ordinaire, jamais une
   // redirection vers la connexion qui trahirait l'existence de l'admin.
   if ((await headers()).get("x-jr-admin-hidden") === "1") notFound();
@@ -55,6 +50,41 @@ export const getAdminAccess = cache(async () => {
   }
 
   return { user: dbUser, permissions, isOwner: permissions === null };
+});
+
+/**
+ * Étape de double vérification de l'administrateur connecté : "ok" (code
+ * saisi pendant cette session), "verify" (appareil enregistré, code à
+ * saisir) ou "enroll" (aucun appareil : à enregistrer d'abord).
+ */
+export const getAdminMfaStage = cache(async (): Promise<AdminMfaStage> => {
+  if (isAdminMfaDisabled()) return "ok";
+  const supabase = await createClient();
+  const [{ data: level }, { data: factors }] = await Promise.all([
+    supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
+    supabase.auth.mfa.listFactors(),
+  ]);
+  return adminMfaStage(level?.currentLevel ?? null, factors?.totp?.length ?? 0);
+});
+
+/**
+ * Administrateur connecté ET passé par la double vérification, et ses
+ * droits. Redirige vers la connexion, l'enregistrement du téléphone ou la
+ * saisie du code selon le cas.
+ *
+ * Le frontend n'est jamais considéré comme une protection suffisante (règle
+ * #91) : à appeler en tout début de CHAQUE page admin et de chaque action,
+ * avant la moindre lecture en base — le layout et la page s'exécutent en
+ * parallèle, un contrôle placé seulement dans le layout laissait la page lire
+ * et envoyer ses données avant la redirection. `cache` évite de refaire les
+ * requêtes quand le layout et la page l'appellent dans la même requête.
+ */
+export const getAdminAccess = cache(async () => {
+  const access = await getAdminPasswordSession();
+  const stage = await getAdminMfaStage();
+  if (stage === "enroll") redirect("/admin/securite");
+  if (stage === "verify") redirect("/admin/verification");
+  return access;
 });
 
 /** Pour les pages et routes admin : redirige vers l'accueil admin si le droit manque. */

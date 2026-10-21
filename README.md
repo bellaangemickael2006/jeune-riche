@@ -116,6 +116,20 @@ Les vidéos (`public/video/*.mp4` : manifeste en 1,9 Mo / 1,1 Mo sur téléphone
 elles ne transitent jamais par une fonction serverless. Pour un trafic important, migrer vers un
 stockage/CDN dédié (Supabase Storage ou équivalent) est recommandé — voir TODO.md.
 
+## Double vérification de l'admin
+
+Après le mot de passe, chaque membre de l'équipe tape un code à 6 chiffres (Google Authenticator,
+Microsoft Authenticator…). À la première connexion, le site demande d'enregistrer un téléphone
+(QR code). Raison : la connexion par mot de passe de Supabase peut être appelée directement, sans
+passer par la page de connexion ni son frein anti-essais ; un mot de passe deviné ne suffit donc plus.
+
+- **Téléphone perdu (un membre)** : un propriétaire clique « Réinitialiser la double vérification »
+  dans Admin → Équipe ; un nouveau téléphone sera demandé à la prochaine connexion.
+- **Téléphone perdu (seul propriétaire)** : Supabase → Authentication → Users → le compte → supprimer
+  le facteur MFA. Ou réinstaller le code avec la clé texte notée lors de l'enregistrement.
+- **Secours** : `ADMIN_MFA=off` sur Vercel désactive la vérification (par exemple si l'option TOTP
+  était coupée dans Supabase → Authentication → Multi-Factor). À retirer aussitôt après.
+
 ## Sauvegardes
 
 Chaque nuit à 3 h (UTC), `/api/cron/backup` copie toutes les données de la boutique (commandes,
