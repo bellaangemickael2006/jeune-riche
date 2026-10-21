@@ -41,7 +41,10 @@
     "searchPlaceholder": "T-shirt, jogger, cap…",
     "closeSearch": "Close search",
     "menu": "Menu",
-    "atelier": "Atelier"
+    "atelier": "Atelier",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "LUXURY STREETWEAR — TRIBAL IDENTITY",
@@ -75,7 +78,10 @@
     "pieceCount_other": "{{count}} pieces",
     "empty": "No products available at the moment.",
     "emptyHint": "Products published from the admin panel will appear here.",
-    "metaDescription": "The six JEUNE RICHE pieces: t-shirt, polo, shirt, tank top, joggers and cap. Sizes S to XL, personalised with your name. Delivery in Abidjan."
+    "metaDescription": "The six JEUNE RICHE pieces: t-shirt, polo, shirt, tank top, joggers and cap. Sizes S to XL, personalised with your name. Delivery in Abidjan.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "Back",
@@ -197,7 +203,9 @@
       "backToCatalogue": "Back to catalogue"
     },
     "shippingTBD": "Sent to you by message",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "Log in",
@@ -492,5 +500,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

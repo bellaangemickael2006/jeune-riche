@@ -6,6 +6,12 @@ import { whatsappOrderLink } from "@/lib/utils";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 import { createOrder, afterOrderCreated, notifyNewOrder, CheckoutError } from "@/lib/orders/createOrder";
 import { MAX_CART_LINES, MAX_LINE_QUANTITY } from "@/lib/orders/limits";
+import {
+  claimIdempotencyKey,
+  completeIdempotencyKey,
+  isIdempotencyKey,
+  releaseIdempotencyKey,
+} from "@/lib/orders/idempotency";
 
 // Longueurs maximales : sans elles, un appel direct pouvait enregistrer des
 // mégaoctets de texte par commande (et les recopier dans l'email admin).
@@ -66,6 +72,16 @@ export async function POST(req: NextRequest) {
 
   const { customerName, customerEmail, shippingAddress } = parsed.data;
 
+  // Nouvel essai d'une commande déjà passée (voir lib/orders/idempotency.ts) :
+  // même réponse, aucune seconde commande.
+  const idempotencyKey = req.headers.get("idempotency-key");
+  const claim = isIdempotencyKey(idempotencyKey) ? await claimIdempotencyKey(idempotencyKey) : null;
+  if (claim?.state === "done") return NextResponse.json(claim.response);
+  if (claim?.state === "pending") {
+    return NextResponse.json({ error: "Votre commande est déjà en cours d'envoi, patientez un instant." }, { status: 409 });
+  }
+  const tracked = claim?.state === "new" ? idempotencyKey : null;
+
   try {
     const { order, resolvedLines, discountCode, discountAmount } = await createOrder({
       ...parsed.data,
@@ -104,8 +120,11 @@ export async function POST(req: NextRequest) {
       discount: discountCode ? { code: discountCode, amount: discountAmount } : null,
     });
 
-    return NextResponse.json({ ok: true, orderNumber: order.orderNumber, whatsappUrl });
+    const body = { ok: true, orderNumber: order.orderNumber, whatsappUrl };
+    if (tracked) await completeIdempotencyKey(tracked, body);
+    return NextResponse.json(body);
   } catch (error) {
+    if (tracked) await releaseIdempotencyKey(tracked);
     if (error instanceof CheckoutError) {
       return NextResponse.json({ error: error.message }, { status: error.status });
     }

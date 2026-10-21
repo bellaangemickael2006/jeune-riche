@@ -41,7 +41,10 @@
     "searchPlaceholder": "Maglietta, jogger, cappellino…",
     "closeSearch": "Chiudi ricerca",
     "menu": "Menu",
-    "atelier": "Atelier"
+    "atelier": "Atelier",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "STREETWEAR DI LUSSO — IDENTITÀ TRIBALE",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}} capo",
     "pieceCount_other": "{{count}} capi",
     "empty": "Nessun prodotto disponibile al momento.",
-    "emptyHint": "I prodotti pubblicati dall'amministrazione appariranno qui."
+    "emptyHint": "I prodotti pubblicati dall'amministrazione appariranno qui.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "Indietro",
@@ -196,7 +202,9 @@
       "backToCatalogue": "Torna al catalogo"
     },
     "shippingTBD": "Comunicate via messaggio",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "Accedi",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

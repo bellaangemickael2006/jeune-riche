@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { formatPrice, cn } from "@/lib/utils";
 import BackButton from "@/components/ui/BackButton";
 import { useLocale } from "@/components/providers/I18nProvider";
+import { useOnline } from "@/lib/useOnline";
 
 type Step = "informations" | "livraison" | "recapitulatif";
 
@@ -27,6 +28,12 @@ export default function CheckoutPage() {
   const [step, setStep] = useState<Step>("informations");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Commande lancée sans réseau : envoyée d'elle-même au retour de la
+  // connexion, avec le même identifiant (pas de doublon, voir
+  // lib/orders/idempotency.ts).
+  const [waitingNetwork, setWaitingNetwork] = useState(false);
+  const [orderKey] = useState(() => crypto.randomUUID());
+  const online = useOnline();
   const [shipping, setShipping] = useState({ freeShippingThreshold: null as number | null });
   const [promoInput, setPromoInput] = useState("");
   const [promo, setPromo] = useState<{ code: string; discountAmount: number } | null>(null);
@@ -153,6 +160,18 @@ export default function CheckoutPage() {
     }
   }, [form, step]);
 
+  // Retour du réseau : la commande en attente part toute seule.
+  useEffect(() => {
+    if (!waitingNetwork || !online) return;
+    const timer = setTimeout(() => {
+      setWaitingNetwork(false);
+      void submitOrder();
+    }, 1000); // laisse la connexion se stabiliser
+    return () => clearTimeout(timer);
+    // submitOrder lit le formulaire courant : seule la reconnexion doit relancer.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [waitingNetwork, online]);
+
   const steps: Step[] = ["informations", "livraison", "recapitulatif"];
   const stepIndex = steps.indexOf(step);
 
@@ -161,12 +180,16 @@ export default function CheckoutPage() {
   }
 
   async function submitOrder() {
-    setSubmitting(true);
     setError(null);
+    if (!navigator.onLine) {
+      setWaitingNetwork(true);
+      return;
+    }
+    setSubmitting(true);
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "Idempotency-Key": orderKey },
         body: JSON.stringify({
           customerName: form.customerName,
           customerEmail: form.customerEmail,
@@ -201,7 +224,9 @@ export default function CheckoutPage() {
       // amorcer la conversation, pas à valider la commande.
       window.location.href = data.whatsappUrl;
     } catch (e) {
-      setError(e instanceof Error ? e.message : t("checkout.genericError"));
+      // Échec réseau (connexion perdue en route) : on attend son retour.
+      if (e instanceof TypeError && !navigator.onLine) setWaitingNetwork(true);
+      else setError(e instanceof Error ? e.message : t("checkout.genericError"));
     } finally {
       setSubmitting(false);
     }
@@ -421,6 +446,11 @@ export default function CheckoutPage() {
               {t("checkout.noPaymentProvider")}
             </div>
 
+            {waitingNetwork && (
+              <p role="status" className="border border-paper/30 px-4 py-3 text-xs text-paper">
+                {t("checkout.waitingNetwork")}
+              </p>
+            )}
             {error && <p className="text-xs font-medium text-paper">{error}</p>}
 
             <div className="flex gap-3">
@@ -429,10 +459,10 @@ export default function CheckoutPage() {
               </button>
               <button
                 onClick={submitOrder}
-                disabled={submitting}
+                disabled={submitting || waitingNetwork}
                 className="flex-1 bg-paper py-4 text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90 disabled:opacity-50"
               >
-                {submitting ? t("checkout.sending") : t("checkout.confirmAndOpenWhatsapp")}
+                {submitting ? t("checkout.sending") : waitingNetwork ? t("checkout.waitingNetworkButton") : t("checkout.confirmAndOpenWhatsapp")}
               </button>
             </div>
           </div>

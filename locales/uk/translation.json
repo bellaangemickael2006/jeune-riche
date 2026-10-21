@@ -41,7 +41,10 @@
     "searchPlaceholder": "Футболка, джогери, кепка…",
     "closeSearch": "Закрити пошук",
     "menu": "Меню",
-    "atelier": "Ательє"
+    "atelier": "Ательє",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "ЛЮКСОВИЙ ВУЛИЧНИЙ ОДЯГ — ПЛЕМІННА ІДЕНТИЧНІСТЬ",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}} річ",
     "pieceCount_other": "{{count}} речей",
     "empty": "Наразі товари недоступні.",
-    "emptyHint": "Товари, опубліковані з адмін-панелі, з'являться тут."
+    "emptyHint": "Товари, опубліковані з адмін-панелі, з'являться тут.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "Назад",
@@ -196,7 +202,9 @@
       "backToCatalogue": "Повернутися до каталогу"
     },
     "shippingTBD": "Повідомляється в повідомленні",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "Увійти",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

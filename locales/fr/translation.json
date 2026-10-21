@@ -41,7 +41,10 @@
     "searchPlaceholder": "T-shirt, jogger, casquette…",
     "closeSearch": "Fermer la recherche",
     "menu": "Menu",
-    "atelier": "Atelier"
+    "atelier": "Atelier",
+    "searchNoResults": "Aucune pièce ne correspond à « {{query}} ».",
+    "searchSeeAll": "Voir tous les résultats",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "LUXE STREETWEAR — IDENTITÉ TRIBALE",
@@ -75,7 +78,10 @@
     "pieceCount_other": "{{count}} pièces",
     "empty": "Aucun produit disponible pour le moment.",
     "emptyHint": "Les produits publiés depuis l'administration apparaîtront ici.",
-    "metaDescription": "Les six pièces JEUNE RICHE : t-shirt, polo, chemise, débardeur, jogger et casquette. Du S au XL, personnalisables à votre nom. Livraison à Abidjan."
+    "metaDescription": "Les six pièces JEUNE RICHE : t-shirt, polo, chemise, débardeur, jogger et casquette. Du S au XL, personnalisables à votre nom. Livraison à Abidjan.",
+    "resultsFor": "Résultats pour « {{query}} »",
+    "clearSearch": "Effacer la recherche",
+    "noResults": "Aucune pièce ne correspond à « {{query}} »."
   },
   "product": {
     "back": "Retour",
@@ -197,7 +203,9 @@
       "backToCatalogue": "Retour au catalogue"
     },
     "shippingTBD": "Communiqués par message",
-    "reminderConsent": "M'envoyer un rappel par email si je ne termine pas ma commande."
+    "reminderConsent": "M'envoyer un rappel par email si je ne termine pas ma commande.",
+    "waitingNetwork": "Pas de connexion. Votre commande partira toute seule dès le retour du réseau : gardez cette page ouverte.",
+    "waitingNetworkButton": "En attente du réseau…"
   },
   "account": {
     "login": "Connexion",
@@ -492,5 +500,8 @@
     "errorTitle": "Un problème est survenu",
     "error": "L'inscription n'a pas pu être enregistrée. Réessayez dans un instant.",
     "backHome": "Retour à l'accueil"
+  },
+  "offline": {
+    "banner": "Hors connexion : vous voyez la dernière version enregistrée. Votre panier est gardé."
   }
 }

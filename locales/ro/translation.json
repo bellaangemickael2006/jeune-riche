@@ -41,7 +41,10 @@
     "searchPlaceholder": "Tricou, pantaloni jogger, șapcă…",
     "closeSearch": "Închide căutarea",
     "menu": "Meniu",
-    "atelier": "Atelier"
+    "atelier": "Atelier",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "STREETWEAR DE LUX — IDENTITATE TRIBALĂ",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}} piesă",
     "pieceCount_other": "{{count}} piese",
     "empty": "Niciun produs disponibil momentan.",
-    "emptyHint": "Produsele publicate din administrare vor apărea aici."
+    "emptyHint": "Produsele publicate din administrare vor apărea aici.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "Înapoi",
@@ -196,7 +202,9 @@
       "backToCatalogue": "Înapoi la catalog"
     },
     "shippingTBD": "Comunicate prin mesaj",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "Conectare",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

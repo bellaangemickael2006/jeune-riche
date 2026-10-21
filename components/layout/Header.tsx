@@ -12,6 +12,7 @@ import ThemeToggle from "@/components/ui/ThemeToggle";
 import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { cn } from "@/lib/utils";
 import { useScrollLock } from "@/lib/scrollLock";
+import SearchPanel from "@/components/layout/SearchPanel";
 
 export default function Header() {
   const { t } = useTranslation();
@@ -268,56 +269,5 @@ function SearchIcon() {
       <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.3" />
       <line x1="12.4" y1="12.4" x2="17" y2="17" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
     </svg>
-  );
-}
-
-function SearchPanel({ onClose }: { onClose: () => void }) {
-  const { t } = useTranslation();
-  const router = useRouter();
-  const [value, setValue] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const q = value.trim();
-    if (!q) return;
-    router.push(`/catalogue?q=${encodeURIComponent(q)}`);
-    onClose();
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-      className="border-t border-line bg-ink px-5 py-6 md:px-10 md:py-8"
-    >
-      <form onSubmit={handleSubmit} className="mx-auto flex max-w-2xl items-end gap-4">
-        <div className="flex-1">
-          <p className="text-label text-paper/40">{t("navigation.search")}</p>
-          <input
-            ref={inputRef}
-            type="text"
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            placeholder={t("navigation.searchPlaceholder")}
-            className="mt-2 w-full border-b border-line bg-transparent py-2 font-editorial text-heading text-paper placeholder:text-paper/25 focus:border-paper focus:outline-hidden"
-          />
-        </div>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label={t("navigation.closeSearch")}
-          className="pb-3 text-label text-paper/50 transition-colors hover:text-paper"
-        >
-          {t("common.close")}
-        </button>
-      </form>
-    </motion.div>
   );
 }

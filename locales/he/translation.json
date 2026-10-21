@@ -41,7 +41,10 @@
     "searchPlaceholder": "חולצה, מכנסי ג'וגר, כובע…",
     "closeSearch": "סגירת חיפוש",
     "menu": "תפריט",
-    "atelier": "אטלייה"
+    "atelier": "אטלייה",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "סטריטוור יוקרתי — זהות שבטית",
@@ -74,7 +77,10 @@
     "pieceCount_one": "פריט {{count}}",
     "pieceCount_other": "{{count}} פריטים",
     "empty": "אין כרגע מוצרים זמינים.",
-    "emptyHint": "מוצרים שיפורסמו מהניהול יופיעו כאן."
+    "emptyHint": "מוצרים שיפורסמו מהניהול יופיעו כאן.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "חזרה",
@@ -196,7 +202,9 @@
       "backToCatalogue": "חזרה לקטלוג"
     },
     "shippingTBD": "יימסר בהודעה",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "התחברות",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

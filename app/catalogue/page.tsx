@@ -6,6 +6,7 @@ import CategoryFilters from "@/components/catalogue/CategoryFilters";
 import { cn } from "@/lib/utils";
 import { getServerTranslation } from "@/lib/i18n/server";
 import type { ProductCardData } from "@/types";
+import { searchProducts, SEARCH_MAX_LENGTH } from "@/lib/catalogue/search";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
@@ -53,14 +54,15 @@ export default async function CataloguePage({
     ? await getProductsByCategory(activeCategory)
     : await getPublishedProducts();
 
-  const filtered = params.q
-    ? products.filter((p) => p.name.toLowerCase().includes(params.q!.toLowerCase()))
-    : products;
+  // Même recherche que les suggestions du header (lib/catalogue/search.ts) :
+  // sans accents, sur le nom, la catégorie et la couleur, triée par pertinence.
+  const query = params.q?.trim().slice(0, SEARCH_MAX_LENGTH) || "";
+  const filtered = query ? searchProducts(products, query) : products;
 
   const sorted = [...filtered].sort((a, b) => {
     if (activeSort === "prix-asc") return Number(a.price ?? 0) - Number(b.price ?? 0);
     if (activeSort === "prix-desc") return Number(b.price ?? 0) - Number(a.price ?? 0);
-    return 0;
+    return 0; // ordre conservé : pertinence pour une recherche, nouveautés sinon
   });
 
   const cardData: ProductCardData[] = sorted.map((p) => ({
@@ -80,7 +82,7 @@ export default async function CataloguePage({
   function sortHref(value: string) {
     const qs = new URLSearchParams();
     if (activeCategory) qs.set("categorie", activeCategory);
-    if (params.q) qs.set("q", params.q);
+    if (query) qs.set("q", query);
     if (value) qs.set("tri", value);
     const s = qs.toString();
     return s ? `/catalogue?${s}` : "/catalogue";
@@ -99,7 +101,26 @@ export default async function CataloguePage({
       </div>
 
       <div className="mb-12 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line pt-4">
-        <p className="text-caption text-paper/40">{t("catalogue.pieceCount", { count: cardData.length })}</p>
+        <p className="text-caption text-paper/40">
+          {query && (
+            <>
+              <span className="text-paper/70">{t("catalogue.resultsFor", { query })}</span>
+              {" · "}
+            </>
+          )}
+          {t("catalogue.pieceCount", { count: cardData.length })}
+          {query && (
+            <>
+              {" · "}
+              <Link
+                href={activeCategory ? `/catalogue?categorie=${encodeURIComponent(activeCategory)}` : "/catalogue"}
+                className="underline underline-offset-4 hover:text-paper/70"
+              >
+                {t("catalogue.clearSearch")}
+              </Link>
+            </>
+          )}
+        </p>
         <div className="flex flex-wrap items-center gap-4">
           <span className="hidden text-caption text-paper/30 sm:inline">{t("catalogue.sort")}</span>
           {SORTS.map((sort) => (
@@ -119,8 +140,8 @@ export default async function CataloguePage({
 
       {cardData.length === 0 ? (
         <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 border border-line py-24 text-center">
-          <p className="text-body text-paper/60">{t("catalogue.empty")}</p>
-          <p className="text-caption text-paper/30">{t("catalogue.emptyHint")}</p>
+          <p className="text-body text-paper/60">{query ? t("catalogue.noResults", { query }) : t("catalogue.empty")}</p>
+          {!query && <p className="text-caption text-paper/30">{t("catalogue.emptyHint")}</p>}
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-x-5 gap-y-16 sm:grid-cols-2 md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">

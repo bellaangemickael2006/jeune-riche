@@ -41,7 +41,10 @@
     "searchPlaceholder": "Kaos, celana jogger, topi…",
     "closeSearch": "Tutup pencarian",
     "menu": "Menu",
-    "atelier": "Atelier"
+    "atelier": "Atelier",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "STREETWEAR MEWAH — IDENTITAS SUKU",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}} produk",
     "pieceCount_other": "{{count}} produk",
     "empty": "Saat ini tidak ada produk yang tersedia.",
-    "emptyHint": "Produk yang dipublikasikan dari admin akan muncul di sini."
+    "emptyHint": "Produk yang dipublikasikan dari admin akan muncul di sini.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "Kembali",
@@ -196,7 +202,9 @@
       "backToCatalogue": "Kembali ke katalog"
     },
     "shippingTBD": "Diberitahukan lewat pesan",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "Masuk",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

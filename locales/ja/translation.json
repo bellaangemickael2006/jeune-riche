@@ -41,7 +41,10 @@
     "searchPlaceholder": "Tシャツ、ジョガー、キャップ…",
     "closeSearch": "検索を閉じる",
     "menu": "メニュー",
-    "atelier": "アトリエ"
+    "atelier": "アトリエ",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "ラグジュアリーストリートウェア — トライバルアイデンティティ",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}}点",
     "pieceCount_other": "{{count}}点",
     "empty": "現在利用可能な商品はありません。",
-    "emptyHint": "管理画面で公開された商品がここに表示されます。"
+    "emptyHint": "管理画面で公開された商品がここに表示されます。",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "戻る",
@@ -196,7 +202,9 @@
       "backToCatalogue": "カタログに戻る"
     },
     "shippingTBD": "メッセージでお知らせします",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "ログイン",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

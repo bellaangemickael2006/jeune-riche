@@ -41,7 +41,10 @@
     "searchPlaceholder": "티셔츠, 조거팬츠, 캡…",
     "closeSearch": "검색 닫기",
     "menu": "메뉴",
-    "atelier": "아틀리에"
+    "atelier": "아틀리에",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "럭셔리 스트리트웨어 — 트라이벌 아이덴티티",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}}개",
     "pieceCount_other": "{{count}}개",
     "empty": "현재 이용 가능한 제품이 없습니다.",
-    "emptyHint": "관리자에서 게시된 제품이 여기에 표시됩니다."
+    "emptyHint": "관리자에서 게시된 제품이 여기에 표시됩니다.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "뒤로",
@@ -196,7 +202,9 @@
       "backToCatalogue": "카탈로그로 돌아가기"
     },
     "shippingTBD": "메시지로 안내",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "로그인",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

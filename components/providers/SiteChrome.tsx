@@ -10,6 +10,7 @@ import WhatsappButton from "@/components/ui/WhatsappButton";
 import SmoothScroll from "@/components/providers/SmoothScroll";
 import GrainOverlay from "@/components/ui/GrainOverlay";
 import InstallPrompt from "@/components/providers/InstallPrompt";
+import OfflineSupport from "@/components/providers/OfflineSupport";
 
 // L'admin a son propre shell (AdminSidebar, voir app/admin/(protected)/layout.tsx)
 // et doit rester un outil de gestion sobre : le header fixe du site client
@@ -42,6 +43,7 @@ export default function SiteChrome({ children, adminShell }: { children: React.R
       <CartDrawer />
       <WhatsappButton />
       <InstallPrompt />
+      <OfflineSupport />
     </>
   );
 }

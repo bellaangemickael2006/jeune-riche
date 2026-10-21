@@ -84,7 +84,18 @@ export default function AdminSidebar({
         <div>
           <p className="hidden font-display text-sm uppercase tracking-wide text-paper lg:block">Jeune Riche</p>
           <p className="mb-8 hidden text-[10px] uppercase tracking-widest2 text-paper/30 lg:block">Administration</p>
-          <nav className="mt-16 flex flex-col gap-1 lg:mt-0">
+          {/* Recherche rapide (commandes, clients, produits, codes promo) : voir /admin/recherche. */}
+          <form action="/admin/recherche" role="search" className="mb-4 mt-16 lg:mt-0">
+            <input
+              type="search"
+              name="q"
+              maxLength={100}
+              placeholder="Rechercher…"
+              aria-label="Rechercher une commande, un client, un produit"
+              className="w-full border border-line bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+            />
+          </form>
+          <nav className="flex flex-col gap-1">
             {LINKS.filter((link) => canSeeLink(permissions, link.href)).map((link) => {
               const active = link.href === "/admin" ? pathname === "/admin" : pathname.startsWith(link.href);
               return (

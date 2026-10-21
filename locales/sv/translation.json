@@ -41,7 +41,10 @@
     "searchPlaceholder": "T-shirt, joggerbyxor, keps…",
     "closeSearch": "Stäng sökning",
     "menu": "Meny",
-    "atelier": "Ateljé"
+    "atelier": "Ateljé",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "LYXIG STREETWEAR — STAMIDENTITET",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}} plagg",
     "pieceCount_other": "{{count}} plagg",
     "empty": "Inga produkter tillgängliga just nu.",
-    "emptyHint": "Produkter som publiceras från administrationen visas här."
+    "emptyHint": "Produkter som publiceras från administrationen visas här.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "Tillbaka",
@@ -196,7 +202,9 @@
       "backToCatalogue": "Tillbaka till katalogen"
     },
     "shippingTBD": "Meddelas via meddelande",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "Logga in",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

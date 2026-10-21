@@ -41,7 +41,10 @@
     "searchPlaceholder": "T-shirt, jogger, pet…",
     "closeSearch": "Zoeken sluiten",
     "menu": "Menu",
-    "atelier": "Atelier"
+    "atelier": "Atelier",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "LUXE STREETWEAR — TRIBALE IDENTITEIT",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}} stuk",
     "pieceCount_other": "{{count}} stuks",
     "empty": "Momenteel geen producten beschikbaar.",
-    "emptyHint": "Producten die vanuit het beheer worden gepubliceerd, verschijnen hier."
+    "emptyHint": "Producten die vanuit het beheer worden gepubliceerd, verschijnen hier.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "Terug",
@@ -196,7 +202,9 @@
       "backToCatalogue": "Terug naar de catalogus"
     },
     "shippingTBD": "Doorgegeven per bericht",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "Inloggen",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

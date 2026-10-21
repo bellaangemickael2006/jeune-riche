@@ -41,7 +41,10 @@
     "searchPlaceholder": "Áo thun, quần jogger, mũ…",
     "closeSearch": "Đóng tìm kiếm",
     "menu": "Menu",
-    "atelier": "Xưởng"
+    "atelier": "Xưởng",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "THỜI TRANG ĐƯỜNG PHỐ CAO CẤP — BẢN SẮC BỘ LẠC",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}} sản phẩm",
     "pieceCount_other": "{{count}} sản phẩm",
     "empty": "Hiện không có sản phẩm nào khả dụng.",
-    "emptyHint": "Các sản phẩm được đăng từ trang quản trị sẽ hiển thị ở đây."
+    "emptyHint": "Các sản phẩm được đăng từ trang quản trị sẽ hiển thị ở đây.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "Quay lại",
@@ -196,7 +202,9 @@
       "backToCatalogue": "Quay lại danh mục"
     },
     "shippingTBD": "Thông báo qua tin nhắn",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "Đăng nhập",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

@@ -41,7 +41,10 @@
     "searchPlaceholder": "T-shirt, jogger, boné…",
     "closeSearch": "Fechar pesquisa",
     "menu": "Menu",
-    "atelier": "Atelier"
+    "atelier": "Atelier",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "STREETWEAR DE LUXO — IDENTIDADE TRIBAL",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}} peça",
     "pieceCount_other": "{{count}} peças",
     "empty": "Nenhum produto disponível no momento.",
-    "emptyHint": "Os produtos publicados a partir da administração aparecerão aqui."
+    "emptyHint": "Os produtos publicados a partir da administração aparecerão aqui.",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "Voltar",
@@ -196,7 +202,9 @@
       "backToCatalogue": "Voltar ao catálogo"
     },
     "shippingTBD": "Informados por mensagem",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "Iniciar sessão",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }

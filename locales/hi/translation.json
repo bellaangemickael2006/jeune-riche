@@ -41,7 +41,10 @@
     "searchPlaceholder": "टी-शर्ट, जॉगर, कैप…",
     "closeSearch": "खोज बंद करें",
     "menu": "मेनू",
-    "atelier": "एटेलियर"
+    "atelier": "एटेलियर",
+    "searchNoResults": "No piece matches “{{query}}”.",
+    "searchSeeAll": "See all results",
+    "searchSuggestions": "Suggestions"
   },
   "home": {
     "tagline": "लक्ज़री स्ट्रीटवियर — ट्राइबल पहचान",
@@ -74,7 +77,10 @@
     "pieceCount_one": "{{count}} उत्पाद",
     "pieceCount_other": "{{count}} उत्पाद",
     "empty": "फ़िलहाल कोई उत्पाद उपलब्ध नहीं है।",
-    "emptyHint": "एडमिन से प्रकाशित उत्पाद यहाँ दिखाई देंगे।"
+    "emptyHint": "एडमिन से प्रकाशित उत्पाद यहाँ दिखाई देंगे।",
+    "resultsFor": "Results for “{{query}}”",
+    "clearSearch": "Clear search",
+    "noResults": "No piece matches “{{query}}”."
   },
   "product": {
     "back": "वापस",
@@ -196,7 +202,9 @@
       "backToCatalogue": "कैटलॉग पर वापस जाएं"
     },
     "shippingTBD": "संदेश द्वारा बताया जाएगा",
-    "reminderConsent": "Send me an email reminder if I don't finish my order."
+    "reminderConsent": "Send me an email reminder if I don't finish my order.",
+    "waitingNetwork": "No connection. Your order will be sent automatically as soon as the network is back: keep this page open.",
+    "waitingNetworkButton": "Waiting for network…"
   },
   "account": {
     "login": "लॉग इन करें",
@@ -487,5 +495,8 @@
     "errorTitle": "Something went wrong",
     "error": "Your subscription could not be saved. Please try again in a moment.",
     "backHome": "Back to home"
+  },
+  "offline": {
+    "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
   }
 }
