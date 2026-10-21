@@ -17,7 +17,8 @@
 // les emails ; testée unitairement.
 
 import { createHmac } from "node:crypto";
-import { internalPath } from "@/lib/account/safeNext";
+// Chemin relatif : ce fichier est chargé par next.config.ts, qui ne connaît pas l'alias « @/ ».
+import { internalPath } from "../account/safeNext";
 
 export const ADMIN_GATE_COOKIE = "jr_ag";
 export const ADMIN_GATE_MAX_AGE = 30 * 24 * 3600; // 30 jours
