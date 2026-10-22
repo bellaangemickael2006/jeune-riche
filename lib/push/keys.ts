@@ -1,26 +1,23 @@
-// Clés VAPID des notifications (Web Push), lues prudemment : une valeur mal
-// collée dans Vercel (guillemets, espaces, deux lignes en une…) donnait une
-// clé invalide, et l'abonnement échouait sans explication. Fonctions pures,
-// testées ; utilisées côté navigateur (bouton) et côté serveur (envoi).
+// Clés VAPID des notifications (Web Push).
+//
+// La clé PUBLIQUE n'a rien de secret (chaque navigateur la reçoit pour
+// s'abonner) : elle est écrite ici, dans le code. Avant, elle venait d'une
+// variable Vercel ; une valeur mal collée (deux lignes en une) avait rendu
+// l'abonnement impossible ET publié la clé privée dans le code du site.
+//
+// La clé PRIVÉE reste un secret, uniquement côté serveur : variable Vercel
+// VAPID_PRIVATE_KEY, qui doit former une paire avec la clé ci-dessous.
+// Changer de paire : node -e "console.log(require('web-push').generateVAPIDKeys())",
+// remplacer cette constante et la variable Vercel, redéployer.
 
-// Clé publique : point P-256 non compressé (65 octets) en base64url = 87 caractères.
-const PUBLIC_KEY = /^[A-Za-z0-9_-]{87}$/;
+export const VAPID_PUBLIC_KEY = "BFBIIiEX121C8b0WblxfV6U_FRI1WguIOE_LnabkPjmPOzG7StkhASjVj_t_vu3XJ-BVJwbQZcIJVOdKVwd7oVI";
+
 // Clé privée : 32 octets en base64url = 43 caractères.
 const PRIVATE_KEY = /^[A-Za-z0-9_-]{43}$/;
 
-function firstValue(raw: string | undefined | null) {
-  const line = String(raw ?? "").split(/\r?\n/)[0] ?? "";
-  return line.trim().replace(/^["']|["']$/g, "").trim();
-}
-
-/** Clé publique utilisable, ou null (absente ou mal collée). */
-export function vapidPublicKey(raw: string | undefined | null): string | null {
-  const value = firstValue(raw);
-  return PUBLIC_KEY.test(value) ? value : null;
-}
-
-/** Clé privée utilisable, ou null. */
+/** Clé privée utilisable (espaces, guillemets ou lignes en trop retirés), ou null. */
 export function vapidPrivateKey(raw: string | undefined | null): string | null {
-  const value = firstValue(raw);
+  const line = String(raw ?? "").split(/\r?\n/)[0] ?? "";
+  const value = line.trim().replace(/^["']|["']$/g, "").trim();
   return PRIVATE_KEY.test(value) ? value : null;
 }

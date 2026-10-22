@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 import { readTrackingToken } from "@/lib/orders/liveTracking";
 import { isPushEndpoint, MAX_SUBSCRIPTIONS_PER_SCOPE, orderScope, userScope } from "@/lib/push/messages";
+import { vapidKeys } from "@/lib/push/send";
 
 // Abonnement d'un appareil aux notifications d'une commande (page Suivi,
 // prouvée par le jeton signé remis après vérification) ou du compte du
@@ -48,6 +49,8 @@ async function guard(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   if (!(await guard(req))) return NextResponse.json({ error: "rateLimited" }, { status: 429 });
+  // Sans clé privée sur Vercel, rien ne pourrait être envoyé : on ne promet rien.
+  if (!vapidKeys()) return NextResponse.json({ error: "notConfigured" }, { status: 503 });
   const parsed = subscribeSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "invalid" }, { status: 400 });
   const { subscription, locale } = parsed.data;

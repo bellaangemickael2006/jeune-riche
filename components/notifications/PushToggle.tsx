@@ -3,10 +3,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/components/providers/I18nProvider";
-import { vapidPublicKey } from "@/lib/push/keys";
+import { VAPID_PUBLIC_KEY } from "@/lib/push/keys";
 
-// Absente ou mal collée dans Vercel : le bouton n'apparaît pas (voir lib/push/keys.ts).
-const VAPID_PUBLIC_KEY = vapidPublicKey(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY);
 
 export type PushTarget = { type: "order"; token: string } | { type: "account" };
 
@@ -91,7 +89,7 @@ export default function PushToggle({ target, storageKey }: { target: PushTarget;
       if (!(await navigator.serviceWorker.getRegistration())) await navigator.serviceWorker.register("/sw.js");
       // Le service worker doit être actif pour s'abonner.
       const registration = await navigator.serviceWorker.ready;
-      const key = decodeKey(VAPID_PUBLIC_KEY!);
+      const key = decodeKey(VAPID_PUBLIC_KEY);
       let subscription = await registration.pushManager.getSubscription();
       // Abonnement créé avec une ancienne clé (clés changées sur le serveur) :
       // il ne recevrait plus rien, on le remplace.

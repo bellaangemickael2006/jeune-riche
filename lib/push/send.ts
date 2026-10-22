@@ -1,15 +1,38 @@
 import "server-only";
+import { createECDH } from "node:crypto";
 import webpush from "web-push";
 import { prisma } from "@/lib/prisma";
 import { siteUrl } from "@/lib/utils";
-import { vapidPrivateKey, vapidPublicKey } from "@/lib/push/keys";
+import { VAPID_PUBLIC_KEY, vapidPrivateKey } from "@/lib/push/keys";
 import { isFinalStatus, orderPushMessage, orderScope, userScope, type OrderPushEvent } from "@/lib/push/messages";
 
-/** Clés VAPID valides, ou null : sans elles, le bouton n'apparaît pas et rien n'est envoyé. */
-function vapidKeys() {
-  const publicKey = vapidPublicKey(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY);
+/** Clé publique qui correspond à une clé privée P-256, en base64url. */
+function publicKeyOf(privateKey: string): string | null {
+  try {
+    const ecdh = createECDH("prime256v1");
+    ecdh.setPrivateKey(Buffer.from(privateKey, "base64url"));
+    return ecdh.getPublicKey().toString("base64url");
+  } catch {
+    return null;
+  }
+}
+
+let warned = false;
+
+/**
+ * Clés VAPID, ou null (rien n'est alors envoyé) si la clé privée manque sur
+ * Vercel ou ne forme pas une paire avec la clé publique du code (ancienne
+ * clé, dont celle qui a fuité) : elle est vérifiée, pas supposée.
+ */
+export function vapidKeys() {
   const privateKey = vapidPrivateKey(process.env.VAPID_PRIVATE_KEY);
-  return publicKey && privateKey ? { publicKey, privateKey } : null;
+  if (!privateKey) return null;
+  if (publicKeyOf(privateKey) !== VAPID_PUBLIC_KEY) {
+    if (!warned) console.error("[push] VAPID_PRIVATE_KEY ne correspond pas à la clé publique de lib/push/keys.ts.");
+    warned = true;
+    return null;
+  }
+  return { publicKey: VAPID_PUBLIC_KEY, privateKey };
 }
 
 /**
