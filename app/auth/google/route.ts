@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { safeNext } from "@/lib/account/safeNext";
 import { finishGoogleLogin } from "@/lib/account/finishLogin";
+import { redisPipeline } from "@/lib/redis";
 import {
   GOOGLE_STATE_COOKIE,
   GOOGLE_STATE_MAX_AGE,
@@ -18,6 +19,32 @@ import {
 //     nonce gardés dans un cookie ;
 //  2. avec `code` : retour de Google, échange du code contre le jeton
 //     d'identité, puis ouverture de la session Supabase.
+//
+// Si Google refuse nos identifiants (code secret faux ou renouvelé dans
+// Google Cloud : « invalid_client »), le client n'est pas bloqué : il repart
+// aussitôt par la connexion via Supabase, et le mode direct est mis en pause
+// quelques minutes pour les suivants (Upstash) — le temps de corriger le
+// secret sur Vercel. L'erreur reste visible dans les journaux.
+
+const DIRECT_PAUSE_KEY = "google-direct:pause";
+const DIRECT_PAUSE_SECONDS = 15 * 60;
+
+async function directPaused() {
+  try {
+    const [reply] = await redisPipeline([["GET", DIRECT_PAUSE_KEY]], 1500);
+    return reply?.result === "1";
+  } catch {
+    return false;
+  }
+}
+
+async function pauseDirect() {
+  try {
+    await redisPipeline([["SET", DIRECT_PAUSE_KEY, "1", "EX", String(DIRECT_PAUSE_SECONDS)]], 1500);
+  } catch {
+    // Sans Redis : chaque connexion retentera le mode direct, puis basculera.
+  }
+}
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
@@ -29,10 +56,9 @@ export async function GET(request: NextRequest) {
   };
   const fail = (reason: string) => clearState(NextResponse.redirect(new URL(`/compte?erreur=${reason}`, origin)));
 
-  // Réglage incomplet (code secret absent) : plutôt qu'un échec, on repasse
-  // par la connexion via Supabase, comme avant.
-  const config = googleDirectConfig();
-  if (!config) {
+  // Connexion via Supabase, comme avant le mode direct. Adresse de retour
+  // inchangée (sans paramètre) : c'est celle autorisée dans Supabase.
+  const viaSupabase = async () => {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -46,11 +72,16 @@ export async function GET(request: NextRequest) {
       console.error("[auth/google] repli Supabase:", error);
       return fail("google");
     }
-    return NextResponse.redirect(data.url);
-  }
+    return clearState(NextResponse.redirect(data.url));
+  };
+
+  const config = googleDirectConfig();
+  const isStart = !searchParams.has("code") && !searchParams.has("error");
+  // Réglage incomplet (code secret absent) ou mode direct en pause : via Supabase.
+  if (!config || (isStart && (await directPaused()))) return viaSupabase();
 
   // 1. Départ vers Google.
-  if (!searchParams.has("code") && !searchParams.has("error")) {
+  if (isStart) {
     const saved = { state: randomToken(), nonce: randomToken(), next: safeNext(searchParams.get("next")) };
     const response = NextResponse.redirect(
       googleAuthUrl({ clientId: config.clientId, redirectUri, state: saved.state, nonce: saved.nonce })
@@ -75,6 +106,7 @@ export async function GET(request: NextRequest) {
   if (!saved || !code || searchParams.get("state") !== saved.state) return fail("google");
 
   let idToken: string | undefined;
+  let rejectedClient = false;
   try {
     const res = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
@@ -90,9 +122,15 @@ export async function GET(request: NextRequest) {
     });
     const body = (await res.json()) as { id_token?: string; error?: string };
     if (!res.ok) console.error("[auth/google] échange du code:", res.status, body.error);
+    rejectedClient = body.error === "invalid_client" || body.error === "unauthorized_client";
     idToken = body.id_token;
   } catch (error) {
     console.error("[auth/google] échange du code:", error);
+  }
+  if (rejectedClient) {
+    console.error("[auth/google] identifiants Google refusés : bascule via Supabase. Vérifier GOOGLE_CLIENT_SECRET sur Vercel.");
+    await pauseDirect();
+    return viaSupabase();
   }
   if (!idToken) return fail("google");
 
