@@ -258,6 +258,7 @@
     "forgotEmailSent": "Als er een account bestaat met dit e-mailadres, is er zojuist een resetlink verzonden.",
     "signupSuccess": "Account aangemaakt. Controleer uw e-mail om uw registratie te bevestigen indien nodig.",
     "invalidCredentials": "Ongeldige inloggegevens.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Inschrijving bevestigd",
     "confirmationSuccess": "Je account is geactiveerd. Welkom bij JEUNE RICHE.",
     "confirmationInvalid": "Deze bevestigingslink is ongeldig of verlopen.",

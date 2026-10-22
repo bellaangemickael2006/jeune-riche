@@ -259,6 +259,7 @@
     "forgotEmailSent": "Si un compte existe avec cet email, un lien de réinitialisation vient d'être envoyé.",
     "signupSuccess": "Compte créé. Vérifiez votre email pour confirmer votre inscription si nécessaire.",
     "invalidCredentials": "Identifiants invalides.",
+    "emailNotConfirmed": "Votre adresse email n'est pas encore confirmée : ouvrez le lien reçu par email lors de votre inscription.",
     "confirmationTitle": "Inscription confirmée",
     "confirmationSuccess": "Votre compte est activé. Bienvenue chez JEUNE RICHE.",
     "confirmationInvalid": "Ce lien de confirmation est invalide ou a expiré.",

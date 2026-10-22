@@ -106,7 +106,8 @@ export default function AuthForms() {
 
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     if (signInError) {
-      setError(t("account.invalidCredentials"));
+      // Compte jamais confirmé : le dire, sinon le client croit à un mauvais mot de passe.
+      setError(t(signInError.code === "email_not_confirmed" ? "account.emailNotConfirmed" : "account.invalidCredentials"));
       setLoading(false);
       return;
     }

@@ -258,6 +258,7 @@
     "forgotEmailSent": "Ha létezik fiók ezzel az email címmel, egy visszaállító linket most küldtünk.",
     "signupSuccess": "Fiók létrehozva. Szükség esetén ellenőrizze emailjét a regisztráció megerősítéséhez.",
     "invalidCredentials": "Érvénytelen bejelentkezési adatok.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Regisztráció megerősítve",
     "confirmationSuccess": "A fiókod aktiválva lett. Üdvözlünk a JEUNE RICHE-nél.",
     "confirmationInvalid": "Ez a megerősítő link érvénytelen vagy lejárt.",

@@ -258,6 +258,7 @@
     "forgotEmailSent": "إذا كان هناك حساب بهذا البريد الإلكتروني، فقد تم للتو إرسال رابط لإعادة التعيين.",
     "signupSuccess": "تم إنشاء الحساب. تحقق من بريدك الإلكتروني لتأكيد تسجيلك إذا لزم الأمر.",
     "invalidCredentials": "بيانات الاعتماد غير صحيحة.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "تم تأكيد التسجيل",
     "confirmationSuccess": "تم تفعيل حسابك. مرحبًا بك في JEUNE RICHE.",
     "confirmationInvalid": "رابط التأكيد هذا غير صالح أو منتهي الصلاحية.",

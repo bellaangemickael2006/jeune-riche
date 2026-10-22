@@ -258,6 +258,7 @@
     "forgotEmailSent": "Iwapo akaunti ipo kwa barua pepe hii, kiungo cha kuweka upya kimetumwa.",
     "signupSuccess": "Akaunti imefunguliwa. Angalia barua pepe yako kuthibitisha usajili wako ikiwa inahitajika.",
     "invalidCredentials": "Taarifa za kuingia si sahihi.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Usajili umethibitishwa",
     "confirmationSuccess": "Akaunti yako imewashwa. Karibu JEUNE RICHE.",
     "confirmationInvalid": "Kiungo hiki cha uthibitisho si sahihi au kimeisha muda wake.",

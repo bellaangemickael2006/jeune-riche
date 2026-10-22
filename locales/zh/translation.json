@@ -258,6 +258,7 @@
     "forgotEmailSent": "如果该邮箱已注册账户，我们刚刚已发送重置链接。",
     "signupSuccess": "账户已创建。如有需要，请查收邮箱以确认注册。",
     "invalidCredentials": "登录信息无效。",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "注册已确认",
     "confirmationSuccess": "您的账户已激活。欢迎加入 JEUNE RICHE。",
     "confirmationInvalid": "此确认链接无效或已过期。",

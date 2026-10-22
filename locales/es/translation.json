@@ -258,6 +258,7 @@
     "forgotEmailSent": "Si existe una cuenta con este email, se acaba de enviar un enlace de restablecimiento.",
     "signupSuccess": "Cuenta creada. Revisa tu email para confirmar tu registro si es necesario.",
     "invalidCredentials": "Credenciales inválidas.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Inscripción confirmada",
     "confirmationSuccess": "Tu cuenta está activada. Bienvenido a JEUNE RICHE.",
     "confirmationInvalid": "Este enlace de confirmación no es válido o ha caducado.",

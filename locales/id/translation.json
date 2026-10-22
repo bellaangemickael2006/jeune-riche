@@ -258,6 +258,7 @@
     "forgotEmailSent": "Jika akun dengan email ini ada, tautan reset baru saja dikirimkan.",
     "signupSuccess": "Akun dibuat. Periksa email Anda untuk mengonfirmasi pendaftaran jika diperlukan.",
     "invalidCredentials": "Kredensial tidak valid.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Pendaftaran dikonfirmasi",
     "confirmationSuccess": "Akun Anda telah diaktifkan. Selamat datang di JEUNE RICHE.",
     "confirmationInvalid": "Tautan konfirmasi ini tidak valid atau sudah kedaluwarsa.",

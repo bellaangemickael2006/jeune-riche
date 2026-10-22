@@ -258,6 +258,7 @@
     "forgotEmailSent": "Jeśli konto z tym adresem email istnieje, właśnie wysłano link resetujący.",
     "signupSuccess": "Konto utworzone. Sprawdź email, aby w razie potrzeby potwierdzić rejestrację.",
     "invalidCredentials": "Nieprawidłowe dane logowania.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Rejestracja potwierdzona",
     "confirmationSuccess": "Twoje konto zostało aktywowane. Witamy w JEUNE RICHE.",
     "confirmationInvalid": "Ten link potwierdzający jest nieprawidłowy lub wygasł.",

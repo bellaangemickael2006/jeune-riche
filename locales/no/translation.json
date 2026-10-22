@@ -258,6 +258,7 @@
     "forgotEmailSent": "Hvis det finnes en konto med denne e-posten, er en tilbakestillingslenke nettopp sendt.",
     "signupSuccess": "Konto opprettet. Sjekk e-posten din for å bekrefte registreringen om nødvendig.",
     "invalidCredentials": "Ugyldig påloggingsinformasjon.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Registrering bekreftet",
     "confirmationSuccess": "Kontoen din er aktivert. Velkommen til JEUNE RICHE.",
     "confirmationInvalid": "Denne bekreftelseslenken er ugyldig eller har utløpt.",

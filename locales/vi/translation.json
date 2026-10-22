@@ -258,6 +258,7 @@
     "forgotEmailSent": "Nếu tồn tại tài khoản với email này, một liên kết đặt lại vừa được gửi.",
     "signupSuccess": "Tài khoản đã được tạo. Vui lòng kiểm tra email để xác nhận đăng ký nếu cần.",
     "invalidCredentials": "Thông tin đăng nhập không hợp lệ.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Đăng ký đã được xác nhận",
     "confirmationSuccess": "Tài khoản của bạn đã được kích hoạt. Chào mừng đến với JEUNE RICHE.",
     "confirmationInvalid": "Liên kết xác nhận này không hợp lệ hoặc đã hết hạn.",

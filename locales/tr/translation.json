@@ -258,6 +258,7 @@
     "forgotEmailSent": "Bu e-posta ile bir hesap varsa, az önce bir sıfırlama bağlantısı gönderildi.",
     "signupSuccess": "Hesap oluşturuldu. Gerekirse kaydınızı onaylamak için e-postanızı kontrol edin.",
     "invalidCredentials": "Geçersiz kimlik bilgileri.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Kayıt onaylandı",
     "confirmationSuccess": "Hesabınız aktif edildi. JEUNE RICHE'e hoş geldiniz.",
     "confirmationInvalid": "Bu onay bağlantısı geçersiz veya süresi dolmuş.",

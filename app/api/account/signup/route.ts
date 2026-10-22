@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { prisma } from "@/lib/prisma";
 import { sendEmail, signupConfirmationEmail } from "@/lib/email";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
+import { isGoogleSignInEnabled } from "@/lib/account/googleEnabled";
 
 const schema = z.object({
   // Supabase enregistre l'email en minuscules : la ligne Prisma doit suivre,
@@ -41,6 +42,15 @@ export async function POST(req: NextRequest) {
 
   if (!(await rateLimit(`signup:${clientIp(req)}`, 5, 15 * 60_000))) {
     return NextResponse.json({ error: "Trop de tentatives. Réessayez plus tard." }, { status: 429 });
+  }
+
+  // Quand Google est actif, le site n'inscrit plus que par Google (voir
+  // components/account/AuthForms.tsx) : l'adresse restait pourtant ouverte,
+  // et n'importe qui pouvait y créer un compte non confirmé au nom d'une
+  // adresse qui n'est pas la sienne — l'email se retrouvait « déjà pris »
+  // pour son vrai propriétaire, et recevait un email qu'il n'avait pas demandé.
+  if (await isGoogleSignInEnabled()) {
+    return NextResponse.json({ error: "L'inscription se fait avec Google." }, { status: 403 });
   }
 
   const { email, password, name, phone } = parsed.data;

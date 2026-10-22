@@ -258,6 +258,7 @@
     "forgotEmailSent": "Se existir uma conta com este email, um link de reposição acabou de ser enviado.",
     "signupSuccess": "Conta criada. Verifique o seu email para confirmar o registo, se necessário.",
     "invalidCredentials": "Credenciais inválidas.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Inscrição confirmada",
     "confirmationSuccess": "Sua conta está ativada. Bem-vindo à JEUNE RICHE.",
     "confirmationInvalid": "Este link de confirmação é inválido ou expirou.",

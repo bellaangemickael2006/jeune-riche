@@ -258,6 +258,7 @@
     "forgotEmailSent": "यदि इस ईमेल से कोई खाता मौजूद है, तो अभी एक रीसेट लिंक भेजा गया है।",
     "signupSuccess": "खाता बन गया। यदि आवश्यक हो तो अपने पंजीकरण की पुष्टि के लिए अपना ईमेल जांचें।",
     "invalidCredentials": "अमान्य क्रेडेंशियल।",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "पंजीकरण की पुष्टि हुई",
     "confirmationSuccess": "आपका खाता सक्रिय कर दिया गया है। JEUNE RICHE में आपका स्वागत है।",
     "confirmationInvalid": "यह पुष्टिकरण लिंक अमान्य है या समाप्त हो चुका है।",

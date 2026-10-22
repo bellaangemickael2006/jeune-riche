@@ -259,6 +259,7 @@
     "forgotEmailSent": "If an account exists with this email, a reset link has just been sent.",
     "signupSuccess": "Account created. Check your email to confirm your registration if needed.",
     "invalidCredentials": "Invalid credentials.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Registration confirmed",
     "confirmationSuccess": "Your account is now active. Welcome to JEUNE RICHE.",
     "confirmationInvalid": "This confirmation link is invalid or has expired.",

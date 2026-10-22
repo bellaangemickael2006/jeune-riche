@@ -258,6 +258,7 @@
     "forgotEmailSent": "Jos tällä sähköpostilla on tili, palautuslinkki on juuri lähetetty.",
     "signupSuccess": "Tili luotu. Tarkista sähköpostisi vahvistaaksesi rekisteröitymisesi tarvittaessa.",
     "invalidCredentials": "Virheelliset kirjautumistiedot.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Rekisteröinti vahvistettu",
     "confirmationSuccess": "Tilisi on nyt aktivoitu. Tervetuloa JEUNE RICHEen.",
     "confirmationInvalid": "Tämä vahvistuslinkki on virheellinen tai vanhentunut.",

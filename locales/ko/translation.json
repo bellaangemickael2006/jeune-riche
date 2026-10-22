@@ -258,6 +258,7 @@
     "forgotEmailSent": "이 이메일로 등록된 계정이 있다면 재설정 링크를 방금 보내드렸습니다.",
     "signupSuccess": "계정이 생성되었습니다. 필요한 경우 이메일에서 가입을 확인해주세요.",
     "invalidCredentials": "인증 정보가 올바르지 않습니다.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "가입이 확인되었습니다",
     "confirmationSuccess": "계정이 활성화되었습니다. JEUNE RICHE에 오신 것을 환영합니다.",
     "confirmationInvalid": "이 확인 링크는 유효하지 않거나 만료되었습니다.",

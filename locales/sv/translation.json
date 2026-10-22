@@ -258,6 +258,7 @@
     "forgotEmailSent": "Om ett konto med denna e-post finns har en återställningslänk just skickats.",
     "signupSuccess": "Konto skapat. Kontrollera din e-post för att bekräfta registreringen om det behövs.",
     "invalidCredentials": "Ogiltiga inloggningsuppgifter.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Registrering bekräftad",
     "confirmationSuccess": "Ditt konto är nu aktiverat. Välkommen till JEUNE RICHE.",
     "confirmationInvalid": "Den här bekräftelselänken är ogiltig eller har gått ut.",

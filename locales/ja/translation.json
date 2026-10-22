@@ -258,6 +258,7 @@
     "forgotEmailSent": "このメールアドレスのアカウントが存在する場合、リセットリンクを送信しました。",
     "signupSuccess": "アカウントを作成しました。必要に応じてメールで登録を確認してください。",
     "invalidCredentials": "認証情報が正しくありません。",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "登録が確認されました",
     "confirmationSuccess": "アカウントが有効になりました。JEUNE RICHEへようこそ。",
     "confirmationInvalid": "この確認リンクは無効か、有効期限が切れています。",

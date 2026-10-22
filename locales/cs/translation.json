@@ -258,6 +258,7 @@
     "forgotEmailSent": "Pokud s tímto emailem existuje účet, byl právě odeslán odkaz pro obnovení.",
     "signupSuccess": "Účet byl vytvořen. V případě potřeby zkontrolujte email a potvrďte registraci.",
     "invalidCredentials": "Neplatné přihlašovací údaje.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Registrace potvrzena",
     "confirmationSuccess": "Váš účet byl aktivován. Vítejte v JEUNE RICHE.",
     "confirmationInvalid": "Tento potvrzovací odkaz je neplatný nebo vypršel.",

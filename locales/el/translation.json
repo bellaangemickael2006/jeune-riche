@@ -258,6 +258,7 @@
     "forgotEmailSent": "Εάν υπάρχει λογαριασμός με αυτό το email, μόλις στάλθηκε ένας σύνδεσμος επαναφοράς.",
     "signupSuccess": "Ο λογαριασμός δημιουργήθηκε. Ελέγξτε το email σας για να επιβεβαιώσετε την εγγραφή σας αν χρειάζεται.",
     "invalidCredentials": "Μη έγκυρα διαπιστευτήρια.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Η εγγραφή επιβεβαιώθηκε",
     "confirmationSuccess": "Ο λογαριασμός σας είναι ενεργός. Καλώς ήρθατε στη JEUNE RICHE.",
     "confirmationInvalid": "Αυτός ο σύνδεσμος επιβεβαίωσης δεν είναι έγκυρος ή έχει λήξει.",

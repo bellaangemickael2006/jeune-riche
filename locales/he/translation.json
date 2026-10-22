@@ -258,6 +258,7 @@
     "forgotEmailSent": "אם קיים חשבון עם אימייל זה, קישור לאיפוס סיסמה נשלח כעת.",
     "signupSuccess": "החשבון נוצר. בדקו את האימייל שלכם לאישור ההרשמה במידת הצורך.",
     "invalidCredentials": "פרטי התחברות שגויים.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "ההרשמה אושרה",
     "confirmationSuccess": "החשבון שלך הופעל. ברוכים הבאים ל-JEUNE RICHE.",
     "confirmationInvalid": "קישור האישור אינו תקף או שפג תוקפו.",

@@ -258,6 +258,7 @@
     "forgotEmailSent": "Якщо акаунт із цією поштою існує, ми щойно надіслали посилання для скидання.",
     "signupSuccess": "Акаунт створено. За потреби перевірте пошту, щоб підтвердити реєстрацію.",
     "invalidCredentials": "Невірні облікові дані.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Реєстрацію підтверджено",
     "confirmationSuccess": "Ваш обліковий запис активовано. Ласкаво просимо до JEUNE RICHE.",
     "confirmationInvalid": "Це посилання для підтвердження недійсне або застаріло.",

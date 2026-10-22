@@ -258,6 +258,7 @@
     "forgotEmailSent": "Если аккаунт с этим email существует, мы только что отправили ссылку для сброса пароля.",
     "signupSuccess": "Аккаунт создан. При необходимости подтвердите регистрацию по email.",
     "invalidCredentials": "Неверные учётные данные.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Регистрация подтверждена",
     "confirmationSuccess": "Ваш аккаунт активирован. Добро пожаловать в JEUNE RICHE.",
     "confirmationInvalid": "Эта ссылка подтверждения недействительна или истекла.",

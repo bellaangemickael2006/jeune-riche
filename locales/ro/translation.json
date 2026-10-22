@@ -258,6 +258,7 @@
     "forgotEmailSent": "Dacă există un cont cu acest email, un link de resetare tocmai a fost trimis.",
     "signupSuccess": "Cont creat. Verifică-ți emailul pentru a confirma înregistrarea dacă este necesar.",
     "invalidCredentials": "Date de conectare invalide.",
+    "emailNotConfirmed": "Your email address isn't confirmed yet: open the link we emailed you when you signed up.",
     "confirmationTitle": "Înregistrare confirmată",
     "confirmationSuccess": "Contul tău este activat. Bine ai venit la JEUNE RICHE.",
     "confirmationInvalid": "Acest link de confirmare este invalid sau a expirat.",

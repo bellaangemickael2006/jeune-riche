@@ -8,7 +8,10 @@ import { createClient } from "@/lib/supabase/client";
 
 type Status = "checking" | "ready" | "invalid" | "submitting" | "done";
 
-// Le lien généré par auth.admin.generateLink redirige ici avec soit
+// Le lien de l'email arrive ici avec ?token_hash=...&type=recovery (voir
+// api/account/forgot-password) : le jeton n'est vérifié qu'ici, au montage,
+// donc jamais par l'antivirus d'une messagerie qui ouvre le lien avant le
+// client. Anciens liens encore en circulation : ils redirigeaient ici avec soit
 // ?code=... (flux PKCE, à échanger explicitement), soit #access_token=...
 // dans le FRAGMENT de l'URL (flux implicite — c'est celui que Supabase
 // utilise en pratique pour la récupération de mot de passe). Un premier
@@ -29,6 +32,15 @@ export default function ResetPasswordPage() {
 
     async function init() {
       const url = new URL(window.location.href);
+      const tokenHash = url.searchParams.get("token_hash");
+      if (tokenHash) {
+        const { error: verifyError } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "recovery" });
+        // Jeton retiré de l'adresse : un rechargement ne le réessaie pas (usage unique).
+        window.history.replaceState(null, "", url.pathname);
+        setStatus(verifyError ? "invalid" : "ready");
+        return;
+      }
+
       const code = url.searchParams.get("code");
       if (code) {
         const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
