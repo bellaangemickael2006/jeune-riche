@@ -23,13 +23,22 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
     orderBy: { name: "asc" },
   });
   const movements = await getMovements({ take: 80 });
+  // Clients inscrits à « Prévenez-moi » et pas encore prévenus : la demande
+  // réelle à couvrir au prochain réassort.
+  const waitingRows = await prisma.restockRequest.groupBy({
+    by: ["variantId"],
+    where: { notified: false },
+    _count: { _all: true },
+  });
+  const waiting = new Map(waitingRows.map((w) => [w.variantId, w._count._all]));
 
   const rows = products
     .map((p) => {
       const total = p.variants.reduce((sum, v) => sum + v.stock, 0);
       const out = p.variants.filter((v) => v.stock <= 0).length;
       const low = p.variants.filter((v) => v.stock > 0 && v.stock <= LOW_STOCK_THRESHOLD).length;
-      return { ...p, total, out, low };
+      const waitingCount = p.variants.reduce((sum, v) => sum + (waiting.get(v.id) ?? 0), 0);
+      return { ...p, total, out, low, waitingCount };
     })
     .filter((p) => (filtre === "alertes" ? p.out > 0 || p.low > 0 : true))
     // Les produits qui demandent une action d'abord.
@@ -73,7 +82,7 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
                     .map((v) => (
                       <span
                         key={v.id}
-                        title={`${v.color} / ${v.size} : ${v.stock}`}
+                        title={`${v.color} / ${v.size} : ${v.stock}${waiting.get(v.id) ? ` — ${waiting.get(v.id)} client(s) en attente` : ""}`}
                         className={cn(
                           "border px-1.5 py-0.5 text-[10px]",
                           v.stock <= 0
@@ -84,6 +93,7 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
                         )}
                       >
                         {v.color.slice(0, 3)} {v.size} · {v.stock}
+                        {waiting.get(v.id) ? ` · ${waiting.get(v.id)} en attente` : ""}
                       </span>
                     ))}
                 </p>
@@ -95,6 +105,11 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
                     {p.out > 0 && `${p.out} en rupture`}
                     {p.out > 0 && p.low > 0 && " · "}
                     {p.low > 0 && `${p.low} faible${p.low > 1 ? "s" : ""}`}
+                  </p>
+                )}
+                {p.waitingCount > 0 && (
+                  <p className="text-paper">
+                    {p.waitingCount} client{p.waitingCount > 1 ? "s" : ""} attend{p.waitingCount > 1 ? "ent" : ""} un réassort
                   </p>
                 )}
               </div>

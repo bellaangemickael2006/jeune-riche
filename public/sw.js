@@ -10,6 +10,7 @@
 // v2 : ne met plus en cache les réponses en erreur ni les pages personnelles.
 // v3 : catalogue et fiches produit gardés d'avance pour la lecture hors
 //      connexion (message « warm » envoyé par OfflineSupport.tsx).
+// Notifications (push) : voir la fin du fichier.
 // Changer la version vide les anciens caches à l'activation.
 const CACHE_VERSION = "v3";
 const STATIC_CACHE = `jr-static-${CACHE_VERSION}`;
@@ -142,4 +143,39 @@ self.addEventListener("fetch", (event) => {
       )
     );
   }
+});
+
+// Notifications sur le téléphone (changement d'étape d'une commande, voir
+// lib/push/send.ts). Le lien ouvert est toujours une page du site.
+self.addEventListener("push", (event) => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch {
+    return;
+  }
+  if (!data.title) return;
+  event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body || "",
+      icon: "/icons/icon-192.png",
+      badge: "/icons/icon-192.png",
+      tag: data.tag,
+      renotify: Boolean(data.tag),
+      data: { url: typeof data.url === "string" && data.url.startsWith("/") && !data.url.startsWith("//") ? data.url : "/compte" },
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const url = new URL(event.notification.data?.url || "/", self.location.origin).href;
+  event.waitUntil(
+    (async () => {
+      const windows = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
+      const same = windows.find((w) => w.url === url);
+      if (same) return same.focus();
+      return self.clients.openWindow(url);
+    })()
+  );
 });

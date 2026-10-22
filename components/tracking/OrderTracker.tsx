@@ -7,6 +7,7 @@ import { TRACKING_STEPS } from "@/lib/orders/tracking";
 import { useLocale } from "@/components/providers/I18nProvider";
 import { cn, formatPrice, WHATSAPP_NUMBER } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import PushToggle from "@/components/notifications/PushToggle";
 
 // Relecture de secours si un signal temps réel se perd (réseau mobile instable).
 const FALLBACK_REFRESH_MS = 60_000;
@@ -135,10 +136,20 @@ function LiveTrackedOrder({ initial, live }: { initial: TrackedOrder; live: { to
     };
   }, [live]);
 
-  return <TrackedOrderView order={order} status={status} updatedAt={updatedAt} />;
+  return <TrackedOrderView order={order} status={status} updatedAt={updatedAt} token={live?.token ?? null} />;
 }
 
-function TrackedOrderView({ order, status, updatedAt }: { order: TrackedOrder; status: LiveStatus; updatedAt: number | null }) {
+function TrackedOrderView({
+  order,
+  status,
+  updatedAt,
+  token,
+}: {
+  order: TrackedOrder;
+  status: LiveStatus;
+  updatedAt: number | null;
+  token: string | null;
+}) {
   const { t } = useTranslation();
   const { locale } = useLocale();
   const date = (iso: string) => new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(iso));
@@ -206,6 +217,10 @@ function TrackedOrderView({ order, status, updatedAt }: { order: TrackedOrder; s
           {t(`tracking.stepHint.${TRACKING_STEPS[order.step]}`)}{" "}
           <span className="text-paper/40">{t("tracking.updatedOn", { date: date(order.updatedAt) })}</span>
         </p>
+      )}
+      {/* Notification à chaque étape, même page fermée — inutile une fois livrée ou annulée. */}
+      {token && order.step !== null && order.step < TRACKING_STEPS.length - 1 && (
+        <PushToggle target={{ type: "order", token }} storageKey={`order:${order.orderNumber}`} />
       )}
       {order.trackingNumber && (
         <p className="mt-3 text-sm text-paper">

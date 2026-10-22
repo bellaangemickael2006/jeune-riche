@@ -448,3 +448,21 @@ model AdminLog {
   @@index([actorEmail, createdAt])
   @@map("admin_logs")
 }
+
+// Notifications sur le téléphone du client (Web Push) : un abonnement par
+// appareil et par « portée » — une commande suivie sur /suivi
+// (« order:<id> ») ou le compte d'un client (« user:<id> »). Les clés
+// viennent du navigateur ; elles ne permettent que d'envoyer à cet appareil.
+model PushSubscription {
+  id        String   @id @default(cuid())
+  scope     String
+  endpoint  String
+  p256dh    String
+  auth      String
+  locale    String   @default("fr")
+  createdAt DateTime @default(now())
+
+  @@unique([endpoint, scope])
+  @@index([scope])
+  @@map("push_subscriptions")
+}

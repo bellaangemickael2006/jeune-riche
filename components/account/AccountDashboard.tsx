@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { formatPrice } from "@/lib/utils";
 import { useLocale } from "@/components/providers/I18nProvider";
 import PhoneForm from "@/components/account/PhoneForm";
+import PushToggle from "@/components/notifications/PushToggle";
 
 type Order = {
   id: string;
@@ -103,6 +104,7 @@ export default function AccountDashboard({
             {t("account.ordersLiveUpdated")}
           </p>
         )}
+        {orders.length > 0 && <PushToggle target={{ type: "account" }} storageKey="account" />}
         {orders.length === 0 ? (
           <p className="mt-3 text-sm text-paper/40">{t("account.noOrders")}</p>
         ) : (

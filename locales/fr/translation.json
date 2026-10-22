@@ -507,5 +507,15 @@
   },
   "offline": {
     "banner": "Hors connexion : vous voyez la dernière version enregistrée. Votre panier est gardé."
+  },
+  "push": {
+    "hintOrder": "Recevez une notification à chaque étape de cette commande, même site fermé.",
+    "hintAccount": "Recevez une notification à chaque étape de vos commandes, même site fermé.",
+    "enable": "Me prévenir",
+    "enabled": "Notifications activées sur cet appareil.",
+    "disable": "Désactiver",
+    "denied": "Les notifications sont bloquées pour ce site : autorisez-les dans les réglages du navigateur pour être prévenu.",
+    "iosHint": "Sur iPhone, ajoutez d'abord le site à l'écran d'accueil (Partager → Sur l'écran d'accueil) pour recevoir les notifications de vos commandes.",
+    "error": "Activation impossible pour le moment, réessayez."
   }
 }

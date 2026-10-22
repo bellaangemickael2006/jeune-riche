@@ -502,5 +502,15 @@
   },
   "offline": {
     "banner": "You are offline: you are seeing the last saved version. Your cart is kept."
+  },
+  "push": {
+    "hintOrder": "Get a notification at every step of this order, even when the site is closed.",
+    "hintAccount": "Get a notification at every step of your orders, even when the site is closed.",
+    "enable": "Notify me",
+    "enabled": "Notifications are on for this device.",
+    "disable": "Turn off",
+    "denied": "Notifications are blocked for this site: allow them in your browser settings to be notified.",
+    "iosHint": "On iPhone, first add the site to your Home Screen (Share → Add to Home Screen) to get order notifications.",
+    "error": "Couldn't turn on notifications right now, please try again."
   }
 }
