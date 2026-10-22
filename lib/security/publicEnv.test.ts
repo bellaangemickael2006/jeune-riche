@@ -22,6 +22,14 @@ test("deux variables collées dans une seule : signalée", () => {
   assert.deepEqual(suspiciousPublicEnv({ NEXT_PUBLIC_X: "abc SECRET_KEY=123" }), ["NEXT_PUBLIC_X"]);
 });
 
+test("retour à la ligne final toléré ; variables de Vercel ignorées", () => {
+  assert.deepEqual(suspiciousPublicEnv({ NEXT_PUBLIC_VAPID_PUBLIC_KEY: "BLX\n" }), []);
+  assert.deepEqual(
+    suspiciousPublicEnv({ NEXT_PUBLIC_VERCEL_GIT_COMMIT_MESSAGE: "fix: titre\n\n- VAPID_PRIVATE_KEY=… dans le texte" }),
+    []
+  );
+});
+
 test("les variables serveur (sans NEXT_PUBLIC_) ne sont pas concernées", () => {
   assert.deepEqual(suspiciousPublicEnv({ SMTP_PASSWORD: "a\nb", VAPID_PRIVATE_KEY: "X=Y" }), []);
 });
