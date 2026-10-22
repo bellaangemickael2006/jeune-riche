@@ -242,12 +242,23 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link href="/favoris" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
-              {t("navigation.favorites")}
-            </Link>
-            <Link href="/compte" onClick={() => setMenuOpen(false)} className="text-label text-paper/70">
-              {t("navigation.account")}
-            </Link>
+            {/* Compte et favoris : bien visibles (avant, 11 px à 70 % sous des liens de 24 px). */}
+            <div className="mt-2 flex flex-col gap-5 border-t border-line pt-6">
+              <Link
+                href="/compte"
+                onClick={() => setMenuOpen(false)}
+                className="text-base font-medium uppercase tracking-widest2 text-paper"
+              >
+                {t("navigation.account")}
+              </Link>
+              <Link
+                href="/favoris"
+                onClick={() => setMenuOpen(false)}
+                className="text-base font-medium uppercase tracking-widest2 text-paper"
+              >
+                {t("navigation.favorites")}
+              </Link>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

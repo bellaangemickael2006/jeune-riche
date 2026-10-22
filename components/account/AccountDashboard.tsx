@@ -79,10 +79,10 @@ export default function AccountDashboard({
     <div className="mx-auto w-full max-w-lg">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase tracking-widest2 text-paper/70">{t("navigation.account")}</p>
+          <p className="text-sm uppercase tracking-widest2 text-paper/80">{t("navigation.account")}</p>
           <p className="mt-1 font-display text-2xl uppercase text-paper">{name || email}</p>
         </div>
-        <button onClick={logout} className="text-xs uppercase tracking-widest2 text-paper/70 hover:text-paper">
+        <button onClick={logout} className="text-sm uppercase tracking-widest2 text-paper/80 underline underline-offset-4 hover:text-paper">
           {t("account.logout")}
         </button>
       </div>
