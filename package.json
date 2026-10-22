@@ -14,7 +14,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "seed": "tsx prisma/seed.ts",
-    "test": "node --import tsx --test lib/email.test.ts lib/orders/pricing.test.ts lib/actions/result.test.ts lib/demoReset.test.ts lib/orders/tracking.test.ts lib/orders/stats.test.ts lib/account/safeNext.test.ts lib/home/content.test.ts lib/account/phone.test.ts lib/csv.test.ts lib/admin/filters.test.ts lib/stock/labels.test.ts lib/admin/permissions.test.ts lib/rateLimit.test.ts lib/drops/live.test.ts lib/admin/gate.test.ts lib/unsubscribe.test.ts lib/security/csp.test.ts lib/admin/auditLabels.test.ts lib/prismaPool.test.ts lib/account/googleOAuth.test.ts lib/backup/format.test.ts lib/orders/personalization.test.ts lib/newsletter/confirm.test.ts lib/admin/search.test.ts lib/catalogue/search.test.ts lib/offline/pages.test.ts lib/theme.test.ts lib/admin/mfa.test.ts lib/cronAuth.test.ts lib/orders/liveTracking.test.ts lib/push/messages.test.ts",
+    "test": "node --import tsx --test lib/email.test.ts lib/orders/pricing.test.ts lib/actions/result.test.ts lib/demoReset.test.ts lib/orders/tracking.test.ts lib/orders/stats.test.ts lib/account/safeNext.test.ts lib/home/content.test.ts lib/account/phone.test.ts lib/csv.test.ts lib/admin/filters.test.ts lib/stock/labels.test.ts lib/admin/permissions.test.ts lib/rateLimit.test.ts lib/drops/live.test.ts lib/admin/gate.test.ts lib/unsubscribe.test.ts lib/security/csp.test.ts lib/admin/auditLabels.test.ts lib/prismaPool.test.ts lib/account/googleOAuth.test.ts lib/backup/format.test.ts lib/orders/personalization.test.ts lib/newsletter/confirm.test.ts lib/admin/search.test.ts lib/catalogue/search.test.ts lib/offline/pages.test.ts lib/theme.test.ts lib/admin/mfa.test.ts lib/cronAuth.test.ts lib/orders/liveTracking.test.ts lib/push/messages.test.ts lib/push/keys.test.ts lib/security/publicEnv.test.ts",
     "test:e2e": "playwright test"
   },
   "dependencies": {
@@ -25,7 +25,7 @@
     "@react-three/drei": "10.7.6",
     "@react-three/fiber": "9.3.0",
     "@react-three/postprocessing": "3.0.4",
-    "@sentry/nextjs": "^10.73.0",
+    "@sentry/nextjs": "^10.76.2",
     "@supabase/ssr": "0.7.0",
     "@supabase/supabase-js": "2.58.0",
     "clsx": "2.1.1",

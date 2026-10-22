@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { rateLimit, clientIp } from "@/lib/rateLimit";
 
 const schema = z.object({
-  variantId: z.string().min(1),
+  variantId: z.string().min(1).max(64),
   email: z.string().trim().toLowerCase().email().max(254),
 });
 
@@ -26,7 +26,11 @@ export async function POST(req: NextRequest) {
     // Un même client qui clique deux fois ne doit pas recevoir deux emails
     // au retour en stock.
     const existing = await prisma.restockRequest.findFirst({ where: { variantId, email, notified: false } });
-    if (!existing) await prisma.restockRequest.create({ data: { variantId, email } });
+    // Plafond par adresse : sinon, n'importe qui pouvait inscrire l'adresse
+    // d'un tiers à des dizaines d'alertes, donc à autant d'emails. Réponse
+    // identique au-delà, pour ne rien révéler.
+    const pending = existing ? 0 : await prisma.restockRequest.count({ where: { email, notified: false } });
+    if (!existing && pending < 10) await prisma.restockRequest.create({ data: { variantId, email } });
   } catch (error) {
     console.error("[api/restock]", error);
     return NextResponse.json({ error: "Erreur serveur." }, { status: 500 });

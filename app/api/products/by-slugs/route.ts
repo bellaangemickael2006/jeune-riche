@@ -1,16 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getProductsBySlugs } from "@/lib/data/products";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 
-const schema = z.object({ slugs: z.array(z.string()).max(100) });
+// Favoris et panier relisent leurs produits ici. Bornes strictes : chaque
+// liste distincte crée une entrée de cache, et des noms démesurés (150 Ko
+// acceptés avant) occupaient la base plusieurs secondes.
+const schema = z.object({ slugs: z.array(z.string().max(120)).max(100) });
 
 export async function POST(req: NextRequest) {
+  if (!(await rateLimit(`by-slugs:${clientIp(req)}`, 60, 60_000))) {
+    return NextResponse.json({ error: "Trop de requêtes." }, { status: 429 });
+  }
   const parsed = schema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Requête invalide." }, { status: 400 });
   }
 
-  const products = await getProductsBySlugs(parsed.data.slugs);
+  const products = await getProductsBySlugs([...new Set(parsed.data.slugs)]);
 
   return NextResponse.json({
     products: products.map((p) => ({

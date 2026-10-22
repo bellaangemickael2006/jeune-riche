@@ -1,6 +1,18 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 import { adminGateRewrites } from "./lib/admin/gate";
+import { suspiciousPublicEnv } from "./lib/security/publicEnv";
+
+// Une variable NEXT_PUBLIC_* est publiée dans le code des navigateurs : si sa
+// valeur contient autre chose (une 2e ligne, « SECRET=… »), on refuse de
+// compiler plutôt que de publier un secret (voir lib/security/publicEnv.ts).
+const badPublicEnv = suspiciousPublicEnv(process.env);
+if (badPublicEnv.length > 0) {
+  throw new Error(
+    `Variable(s) publique(s) mal collée(s) dans Vercel : ${badPublicEnv.join(", ")}. ` +
+      "Leur valeur contient plusieurs lignes ou une autre variable : corriger la valeur (une seule par variable) puis redéployer."
+  );
+}
 
 const nextConfig: NextConfig = {
   // Les fichiers de police lus au runtime par /api/og ne sont pas détectés

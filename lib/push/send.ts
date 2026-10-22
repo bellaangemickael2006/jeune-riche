@@ -2,11 +2,14 @@ import "server-only";
 import webpush from "web-push";
 import { prisma } from "@/lib/prisma";
 import { siteUrl } from "@/lib/utils";
+import { vapidPrivateKey, vapidPublicKey } from "@/lib/push/keys";
 import { isFinalStatus, orderPushMessage, orderScope, userScope, type OrderPushEvent } from "@/lib/push/messages";
 
-/** Clés VAPID présentes : sans elles, le bouton n'apparaît pas et rien n'est envoyé. */
-export function pushConfigured() {
-  return Boolean(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY && process.env.VAPID_PRIVATE_KEY);
+/** Clés VAPID valides, ou null : sans elles, le bouton n'apparaît pas et rien n'est envoyé. */
+function vapidKeys() {
+  const publicKey = vapidPublicKey(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY);
+  const privateKey = vapidPrivateKey(process.env.VAPID_PRIVATE_KEY);
+  return publicKey && privateKey ? { publicKey, privateKey } : null;
 }
 
 /**
@@ -21,7 +24,8 @@ export async function sendOrderPush(params: {
   orderNumber: string;
   event: OrderPushEvent;
 }) {
-  if (!pushConfigured()) return;
+  const keys = vapidKeys();
+  if (!keys) return;
   const { orderId, userId, orderNumber, event } = params;
   const scopes = [orderScope(orderId), ...(userId ? [userScope(userId)] : [])];
 
@@ -44,8 +48,7 @@ export async function sendOrderPush(params: {
             {
               vapidDetails: {
                 subject: siteUrl(),
-                publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-                privateKey: process.env.VAPID_PRIVATE_KEY!,
+                ...keys,
               },
               TTL: 24 * 3600,
               timeout: 5000,

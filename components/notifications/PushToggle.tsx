@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/components/providers/I18nProvider";
+import { vapidPublicKey } from "@/lib/push/keys";
 
-const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+// Absente ou mal collée dans Vercel : le bouton n'apparaît pas (voir lib/push/keys.ts).
+const VAPID_PUBLIC_KEY = vapidPublicKey(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY);
 
 export type PushTarget = { type: "order"; token: string } | { type: "account" };
 
@@ -13,6 +15,12 @@ type State = "hidden" | "iosHint" | "idle" | "busy" | "on" | "denied" | "error";
 function decodeKey(base64url: string) {
   const base64 = (base64url + "=".repeat((4 - (base64url.length % 4)) % 4)).replace(/-/g, "+").replace(/_/g, "/");
   return Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+}
+
+function sameKey(current: ArrayBuffer | null, expected: Uint8Array) {
+  if (!current) return true; // navigateur qui ne l'expose pas : on garde l'abonnement
+  const bytes = new Uint8Array(current);
+  return bytes.length === expected.length && bytes.every((b, i) => b === expected[i]);
 }
 
 function readStored(key: string) {
@@ -43,6 +51,9 @@ export default function PushToggle({ target, storageKey }: { target: PushTarget;
   const { t } = useTranslation();
   const { locale } = useLocale();
   const [state, setState] = useState<State>("hidden");
+  // Raison technique d'un échec (ex. « NotAllowedError », « HTTP 503 »), affichée
+  // en petit : le client peut la transmettre, ce qui évite de chercher à l'aveugle.
+  const [errorCode, setErrorCode] = useState<string | null>(null);
   const stored = `jr-push:${storageKey}`;
 
   useEffect(() => {
@@ -70,27 +81,36 @@ export default function PushToggle({ target, storageKey }: { target: PushTarget;
 
   async function enable() {
     setState("busy");
+    setErrorCode(null);
     try {
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
         setState(permission === "denied" ? "denied" : "idle");
         return;
       }
-      const registration =
-        (await navigator.serviceWorker.getRegistration()) ?? (await navigator.serviceWorker.register("/sw.js"));
-      await navigator.serviceWorker.ready;
-      const subscription =
-        (await registration.pushManager.getSubscription()) ??
-        (await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: decodeKey(VAPID_PUBLIC_KEY!) }));
+      if (!(await navigator.serviceWorker.getRegistration())) await navigator.serviceWorker.register("/sw.js");
+      // Le service worker doit être actif pour s'abonner.
+      const registration = await navigator.serviceWorker.ready;
+      const key = decodeKey(VAPID_PUBLIC_KEY!);
+      let subscription = await registration.pushManager.getSubscription();
+      // Abonnement créé avec une ancienne clé (clés changées sur le serveur) :
+      // il ne recevrait plus rien, on le remplace.
+      if (subscription && !sameKey(subscription.options.applicationServerKey, key)) {
+        await subscription.unsubscribe();
+        subscription = null;
+      }
+      subscription ??= await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: key });
       const res = await fetch("/api/push", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ target, locale, subscription: subscription.toJSON() }),
       });
-      if (!res.ok) throw new Error(String(res.status));
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       writeStored(stored, subscription.endpoint);
       setState("on");
-    } catch {
+    } catch (error) {
+      const name = error instanceof Error ? (error.name === "Error" ? error.message : error.name) : "";
+      setErrorCode(name.slice(0, 40) || null);
       setState("error");
     }
   }
@@ -142,6 +162,7 @@ export default function PushToggle({ target, storageKey }: { target: PushTarget;
           {state === "error" && (
             <p role="alert" className="w-full text-paper">
               {t("push.error")}
+              {errorCode && <span className="ml-1 text-paper/70">({errorCode})</span>}
             </p>
           )}
         </div>
