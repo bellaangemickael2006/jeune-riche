@@ -28,14 +28,14 @@ export default function PhoneStepPage() {
           height={120}
           className="jr-logo mx-auto h-12 w-12 object-contain"
         />
-        <p className="mt-4 text-center text-xs uppercase tracking-widest2 text-paper/40">{t("account.phoneStepEyebrow")}</p>
+        <p className="mt-4 text-center text-xs uppercase tracking-widest2 text-paper/70">{t("account.phoneStepEyebrow")}</p>
         <h1 className="mt-2 text-center font-editorial text-2xl text-paper">{t("account.phoneStepTitle")}</h1>
-        <p className="mb-6 mt-2 text-center text-xs leading-relaxed text-paper/50">{t("account.phoneStepText")}</p>
+        <p className="mb-6 mt-2 text-center text-xs leading-relaxed text-paper/70">{t("account.phoneStepText")}</p>
         <PhoneForm autoFocus onSaved={() => router.replace(next)} />
         <button
           type="button"
           onClick={() => router.replace(next)}
-          className="mx-auto mt-5 block text-xs text-paper/40 underline underline-offset-4 hover:text-paper/70"
+          className="mx-auto mt-5 block text-xs text-paper/70 underline underline-offset-4 hover:text-paper"
         >
           {t("account.phoneLater")}
         </button>

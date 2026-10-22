@@ -129,7 +129,7 @@ export default function AuthForms() {
           className="jr-logo mx-auto h-12 w-12 object-contain"
         />
         <h1 className="mt-4 text-center font-editorial text-2xl text-paper">{t("account.googleOnlyTitle")}</h1>
-        <p className="mt-1 text-center text-xs leading-relaxed text-paper/40">{t("account.googleOnlySubtitle")}</p>
+        <p className="mt-2 text-center text-sm leading-relaxed text-paper/70">{t("account.googleOnlySubtitle")}</p>
         {error && <p className="mt-4 text-xs font-medium text-paper">{error}</p>}
         {googleOnly ? (
           <GoogleSignInButton onError={setError} withDivider={false} />
@@ -143,7 +143,7 @@ export default function AuthForms() {
             setMode("login");
             setError(null);
           }}
-          className="mx-auto mt-8 block text-[11px] text-paper/35 underline underline-offset-4 hover:text-paper/60"
+          className="mx-auto mt-8 block text-xs text-paper/70 underline underline-offset-4 hover:text-paper"
         >
           {t("account.legacyEmailLogin")}
         </button>
@@ -163,7 +163,7 @@ export default function AuthForms() {
       <h1 className="mt-4 text-center font-editorial text-2xl text-paper">
         {mode === "login" ? t("account.welcomeBack") : mode === "signup" ? t("account.joinTitle") : t("account.forgotTitle")}
       </h1>
-      <p className="mt-1 text-center text-xs text-paper/40">
+      <p className="mt-2 text-center text-sm text-paper/70">
         {mode === "login"
           ? t("account.loginSubtitle")
           : mode === "signup"
@@ -178,7 +178,7 @@ export default function AuthForms() {
             setError(null);
             setMessage(null);
           }}
-          className="mt-8 text-xs uppercase tracking-widest2 text-paper/50 underline underline-offset-4 hover:text-paper"
+          className="mt-8 text-xs uppercase tracking-widest2 text-paper/70 underline underline-offset-4 hover:text-paper"
         >
           ← {t("account.backToGoogle")}
         </button>
@@ -189,7 +189,7 @@ export default function AuthForms() {
             setError(null);
             setMessage(null);
           }}
-          className="mt-8 text-xs uppercase tracking-widest2 text-paper/50 underline underline-offset-4 hover:text-paper"
+          className="mt-8 text-xs uppercase tracking-widest2 text-paper/70 underline underline-offset-4 hover:text-paper"
         >
           ← {t("account.backToLogin")}
         </button>
@@ -197,13 +197,13 @@ export default function AuthForms() {
         <div className="mt-8 flex gap-6 border-b border-line text-xs uppercase tracking-widest2">
           <button
             onClick={() => setMode("login")}
-            className={cn("pb-3 transition-colors", mode === "login" ? "border-b border-paper text-paper" : "text-paper/40 hover:text-paper/70")}
+            className={cn("pb-3 transition-colors", mode === "login" ? "border-b border-paper text-paper" : "text-paper/70 hover:text-paper")}
           >
             {t("account.login")}
           </button>
           <button
             onClick={() => setMode("signup")}
-            className={cn("pb-3 transition-colors", mode === "signup" ? "border-b border-paper text-paper" : "text-paper/40 hover:text-paper/70")}
+            className={cn("pb-3 transition-colors", mode === "signup" ? "border-b border-paper text-paper" : "text-paper/70 hover:text-paper")}
           >
             {t("account.signup")}
           </button>
@@ -223,7 +223,7 @@ export default function AuthForms() {
       <form onSubmit={handleSubmit} className="mt-6 flex flex-col gap-4">
         {mode === "signup" && (
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{t("account.name")}</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">{t("account.name")}</span>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -233,7 +233,7 @@ export default function AuthForms() {
           </label>
         )}
         <label className="block">
-          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{t("account.email")}</span>
+          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">{t("account.email")}</span>
           <input
             type="email"
             value={email}
@@ -244,7 +244,7 @@ export default function AuthForms() {
         </label>
         {mode === "signup" && (
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{t("account.phone")}</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">{t("account.phone")}</span>
             <input
               type="tel"
               value={phone}
@@ -256,7 +256,7 @@ export default function AuthForms() {
         )}
         {mode !== "forgot" && (
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{t("account.password")}</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">{t("account.password")}</span>
             <input
               type="password"
               value={password}
@@ -275,7 +275,7 @@ export default function AuthForms() {
               setError(null);
               setMessage(null);
             }}
-            className="-mt-2 w-fit text-xs text-paper/40 underline underline-offset-4 hover:text-paper/70"
+            className="-mt-2 w-fit text-xs text-paper/70 underline underline-offset-4 hover:text-paper"
           >
             {t("account.forgotPassword")}
           </button>

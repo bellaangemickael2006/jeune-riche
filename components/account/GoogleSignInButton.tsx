@@ -92,7 +92,7 @@ export default function GoogleSignInButton({
         <span>{redirecting ? t("account.googleRedirecting") : t("account.continueWithGoogle")}</span>
       </button>
       {withDivider && (
-        <div className="mt-6 flex items-center gap-3 text-[10px] uppercase tracking-widest2 text-paper/30" aria-hidden="true">
+        <div className="mt-6 flex items-center gap-3 text-xs uppercase tracking-widest2 text-paper/70" aria-hidden="true">
           <span className="h-px flex-1 bg-line" />
           {t("account.orWithEmail")}
           <span className="h-px flex-1 bg-line" />

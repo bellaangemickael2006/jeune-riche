@@ -79,10 +79,10 @@ export default function AccountDashboard({
     <div className="mx-auto w-full max-w-lg">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase tracking-widest2 text-paper/40">{t("navigation.account")}</p>
+          <p className="text-xs uppercase tracking-widest2 text-paper/70">{t("navigation.account")}</p>
           <p className="mt-1 font-display text-2xl uppercase text-paper">{name || email}</p>
         </div>
-        <button onClick={logout} className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
+        <button onClick={logout} className="text-xs uppercase tracking-widest2 text-paper/70 hover:text-paper">
           {t("account.logout")}
         </button>
       </div>
@@ -92,13 +92,13 @@ export default function AccountDashboard({
         // numéro manque (fréquent après une inscription avec Google).
         <div className="mt-8 border border-paper/40 p-5">
           <p className="text-xs uppercase tracking-widest2 text-paper">{t("account.phoneMissingTitle")}</p>
-          <p className="mb-4 mt-1 text-xs text-paper/50">{t("account.phoneStepText")}</p>
+          <p className="mb-4 mt-1 text-xs text-paper/70">{t("account.phoneStepText")}</p>
           <PhoneForm onSaved={() => router.refresh()} />
         </div>
       )}
 
       <div className="mt-10">
-        <p className="text-xs uppercase tracking-widest2 text-paper/50">{t("account.myOrders")}</p>
+        <p className="text-xs uppercase tracking-widest2 text-paper/70">{t("account.myOrders")}</p>
         {liveUpdate && (
           <p key={liveUpdate} role="status" className="mt-3 border border-paper/30 px-3 py-2 text-xs text-paper">
             {t("account.ordersLiveUpdated")}
@@ -106,18 +106,18 @@ export default function AccountDashboard({
         )}
         {orders.length > 0 && <PushToggle target={{ type: "account" }} storageKey="account" />}
         {orders.length === 0 ? (
-          <p className="mt-3 text-sm text-paper/40">{t("account.noOrders")}</p>
+          <p className="mt-3 text-sm text-paper/70">{t("account.noOrders")}</p>
         ) : (
           <ul className="mt-4 divide-y divide-line">
             {orders.map((o) => (
               <li key={o.id} className="flex items-center justify-between py-3 text-sm">
                 <div>
                   <p className="text-paper">{o.orderNumber}</p>
-                  <p className="text-xs text-paper/40">{new Date(o.createdAt).toLocaleDateString(locale)}</p>
+                  <p className="text-xs text-paper/70">{new Date(o.createdAt).toLocaleDateString(locale)}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-paper/70">{formatPrice(o.total, locale)}</p>
-                  <p className="text-xs text-paper/40">{t(`account.orderStatus.${o.status}`)}</p>
+                  <p className="text-xs text-paper/70">{t(`account.orderStatus.${o.status}`)}</p>
                 </div>
               </li>
             ))}
@@ -169,46 +169,46 @@ function AddressBook({ address }: { address: Address }) {
 
   return (
     <div className="mt-10 border-t border-line pt-8">
-      <p className="text-xs uppercase tracking-widest2 text-paper/50">{t("account.addressBook")}</p>
-      <p className="mt-1 text-xs text-paper/30">{t("account.addressBookHint")}</p>
+      <p className="text-xs uppercase tracking-widest2 text-paper/70">{t("account.addressBook")}</p>
+      <p className="mt-1 text-xs text-paper/70">{t("account.addressBookHint")}</p>
       <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3">
         <input
           value={form.addressLine1}
           onChange={(e) => update("addressLine1", e.target.value)}
           placeholder={t("account.addressPlaceholder")}
-          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
         />
         <div className="grid grid-cols-2 gap-3">
           <input
             value={form.addressCity}
             onChange={(e) => update("addressCity", e.target.value)}
             placeholder={t("account.cityPlaceholder")}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
           />
           <input
             value={form.addressPostalCode}
             onChange={(e) => update("addressPostalCode", e.target.value)}
             placeholder={t("account.postalCodePlaceholder")}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
           />
         </div>
         <input
           value={form.addressCountry}
           onChange={(e) => update("addressCountry", e.target.value)}
           placeholder={t("account.countryPlaceholder")}
-          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
         />
         <input
           value={form.addressPhone}
           onChange={(e) => update("addressPhone", e.target.value)}
           placeholder={t("account.phonePlaceholder")}
-          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
         />
         {error && <p className="text-xs text-paper">{error}</p>}
         <button
           type="submit"
           disabled={saving || !form.addressLine1 || !form.addressCity || !form.addressCountry}
-          className="w-fit border border-paper px-6 py-3 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-80 disabled:opacity-30"
+          className="w-fit border border-paper px-6 py-3 text-xs uppercase tracking-widest2 text-paper transition-opacity hover:opacity-80 disabled:opacity-50"
         >
           {saving ? t("account.saving") : saved ? t("account.saved") : t("account.saveAddress")}
         </button>

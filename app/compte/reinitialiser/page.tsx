@@ -105,7 +105,7 @@ export default function ResetPasswordPage() {
         <h1 className="mt-4 text-center font-editorial text-2xl text-paper">{t("account.resetTitle")}</h1>
 
         {status === "checking" && (
-          <p className="mt-8 text-center text-sm text-paper/50">{t("account.checkingLink")}</p>
+          <p className="mt-8 text-center text-sm text-paper/70">{t("account.checkingLink")}</p>
         )}
 
         {status === "invalid" && (
@@ -127,7 +127,7 @@ export default function ResetPasswordPage() {
         {(status === "ready" || status === "submitting") && (
           <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
             <label className="block">
-              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
+              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">
                 {t("account.newPassword")}
               </span>
               <input
@@ -140,7 +140,7 @@ export default function ResetPasswordPage() {
               />
             </label>
             <label className="block">
-              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
+              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">
                 {t("account.confirmPassword")}
               </span>
               <input

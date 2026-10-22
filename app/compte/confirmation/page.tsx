@@ -97,7 +97,7 @@ export default function SignupConfirmationPage() {
         <h1 className="mt-4 font-editorial text-2xl text-paper">{t("account.confirmationTitle")}</h1>
 
         {status === "checking" && (
-          <p className="mt-8 text-sm text-paper/50">{t("account.checkingLink")}</p>
+          <p className="mt-8 text-sm text-paper/70">{t("account.checkingLink")}</p>
         )}
 
         {status === "confirmed" && (

@@ -118,19 +118,19 @@ export default function PushToggle({ target, storageKey }: { target: PushTarget;
 
   return (
     <div className="mt-6 border border-line px-4 py-3 text-xs">
-      {state === "iosHint" && <p className="text-paper/60">{t("push.iosHint")}</p>}
-      {state === "denied" && <p className="text-paper/60">{t("push.denied")}</p>}
+      {state === "iosHint" && <p className="text-paper/70">{t("push.iosHint")}</p>}
+      {state === "denied" && <p className="text-paper/70">{t("push.denied")}</p>}
       {state === "on" && (
         <p className="flex flex-wrap items-center justify-between gap-2 text-paper">
           <span>{t("push.enabled")}</span>
-          <button type="button" onClick={disable} className="uppercase tracking-widest2 text-paper/50 underline underline-offset-4 hover:text-paper">
+          <button type="button" onClick={disable} className="uppercase tracking-widest2 text-paper/70 underline underline-offset-4 hover:text-paper">
             {t("push.disable")}
           </button>
         </p>
       )}
       {(state === "idle" || state === "busy" || state === "error") && (
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-paper/60">{t(target.type === "order" ? "push.hintOrder" : "push.hintAccount")}</p>
+          <p className="text-paper/70">{t(target.type === "order" ? "push.hintOrder" : "push.hintAccount")}</p>
           <button
             type="button"
             onClick={enable}
