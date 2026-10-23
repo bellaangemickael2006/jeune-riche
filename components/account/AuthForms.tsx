@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -27,7 +27,14 @@ export default function AuthForms() {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // Retour d'une connexion Google ratée (?erreur=…) : message clair dès le
+  // premier affichage, lu dans l'adresse (même valeur côté serveur et
+  // navigateur, sans effet qui réaffiche la page).
+  const searchParams = useSearchParams();
+  const [error, setError] = useState<string | null>(() => {
+    const key = GOOGLE_ERRORS[searchParams.get("erreur") ?? ""];
+    return key ? t(key) : null;
+  });
   const [message, setMessage] = useState<string | null>(null);
   // Inscription et connexion uniquement avec Google. Le formulaire email ne
   // sert plus qu'aux comptes créés avant (lien discret), ou de secours si
@@ -44,16 +51,14 @@ export default function AuthForms() {
     };
   }, []);
 
-  // Retour d'une connexion Google ratée : message clair, puis l'URL est
-  // nettoyée pour qu'un rechargement ne réaffiche pas l'erreur.
+  // Puis l'adresse est nettoyée, pour qu'un rechargement ne réaffiche pas
+  // l'erreur (le message déjà affiché reste : il est dans l'état).
   useEffect(() => {
     const url = new URL(window.location.href);
-    const key = GOOGLE_ERRORS[url.searchParams.get("erreur") ?? ""];
-    if (!key) return;
-    setError(t(key));
+    if (!url.searchParams.has("erreur")) return;
     url.searchParams.delete("erreur");
     window.history.replaceState(null, "", url.pathname + url.search + url.hash);
-  }, [t]);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

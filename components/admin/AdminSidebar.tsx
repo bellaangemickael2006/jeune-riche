@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -46,9 +46,12 @@ export default function AdminSidebar({
   const [open, setOpen] = useState(false);
   useScrollLock(open);
 
-  useEffect(() => {
+  // Fermé à chaque changement de page (ajusté pendant le rendu, sans effet).
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   async function logout() {
     const supabase = createClient();

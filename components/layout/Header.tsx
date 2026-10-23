@@ -57,11 +57,14 @@ export default function Header() {
 
   // Une navigation (lien nav desktop, logo, retour navigateur...) doit
   // toujours refermer les panneaux ouverts, pas seulement les clics gérés
-  // manuellement sur chaque lien.
-  useEffect(() => {
+  // manuellement sur chaque lien. Ajusté pendant le rendu (méthode
+  // recommandée par React) plutôt que dans un effet qui réaffiche l'en-tête.
+  const [lastPath, setLastPath] = useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
     setMenuOpen(false);
     setSearchOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     function onScroll() {

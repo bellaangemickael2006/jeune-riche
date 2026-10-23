@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PhoneForm from "@/components/account/PhoneForm";
 import { safeNext } from "@/lib/account/safeNext";
@@ -12,11 +11,8 @@ import { safeNext } from "@/lib/account/safeNext";
 export default function PhoneStepPage() {
   const { t } = useTranslation();
   const router = useRouter();
-  const [next, setNext] = useState("/?login=1");
-
-  useEffect(() => {
-    setNext(safeNext(new URL(window.location.href).searchParams.get("next")));
-  }, []);
+  // Destination lue au moment du départ (pas d'état ni d'effet au montage).
+  const goNext = () => router.replace(safeNext(new URL(window.location.href).searchParams.get("next")));
 
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center px-5 pt-24">
@@ -31,10 +27,10 @@ export default function PhoneStepPage() {
         <p className="mt-4 text-center text-xs uppercase tracking-widest2 text-paper/70">{t("account.phoneStepEyebrow")}</p>
         <h1 className="mt-2 text-center font-editorial text-2xl text-paper">{t("account.phoneStepTitle")}</h1>
         <p className="mb-6 mt-2 text-center text-xs leading-relaxed text-paper/70">{t("account.phoneStepText")}</p>
-        <PhoneForm autoFocus onSaved={() => router.replace(next)} />
+        <PhoneForm autoFocus onSaved={goNext} />
         <button
           type="button"
-          onClick={() => router.replace(next)}
+          onClick={goNext}
           className="mx-auto mt-5 block text-xs text-paper/70 underline underline-offset-4 hover:text-paper"
         >
           {t("account.phoneLater")}

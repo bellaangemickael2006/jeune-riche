@@ -35,9 +35,12 @@ export default function ImageZoomModal({
     return () => window.removeEventListener("keydown", onKey);
   }, [open, onClose]);
 
-  useEffect(() => {
+  // Zoom remis à zéro à la fermeture (ajusté pendant le rendu, sans effet).
+  const [wasOpen, setWasOpen] = useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     if (!open) setZoomed(false);
-  }, [open]);
+  }
 
   function handleMouseMove(e: React.MouseEvent) {
     if (!zoomed) return;

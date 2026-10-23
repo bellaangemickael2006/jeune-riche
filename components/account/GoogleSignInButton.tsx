@@ -53,16 +53,17 @@ export default function GoogleSignInButton({
 
   if (!available) return null;
 
+  const className =
+    "mt-6 flex h-11 w-full items-center justify-center gap-3 rounded-[4px] border border-[#747775] bg-white px-4 text-sm font-medium text-[#1f1f1f] transition-colors hover:bg-[#f2f2f2] focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper disabled:opacity-60 aria-disabled:opacity-60";
+  const label = (
+    <>
+      <GoogleLogo />
+      <span>{redirecting ? t("account.googleRedirecting") : t("account.continueWithGoogle")}</span>
+    </>
+  );
+
   async function signIn() {
     setRedirecting(true);
-    // Connexion en direct par le site (app/auth/google) dès que l'identifiant
-    // Google est configuré : l'écran Google affiche alors JEUNE RICHE au lieu
-    // de l'adresse technique <projet>.supabase.co.
-    if (process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID) {
-      // Rechargement complet voulu : la route repart aussitôt vers Google.
-      window.location.assign(`${window.location.origin}/auth/google`);
-      return;
-    }
     const { error } = await createClient().auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -81,16 +82,31 @@ export default function GoogleSignInButton({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={signIn}
-        disabled={redirecting}
-        className="mt-6 flex h-11 w-full items-center justify-center gap-3 rounded-[4px] border border-[#747775] bg-white px-4 text-sm font-medium text-[#1f1f1f] transition-colors hover:bg-[#f2f2f2] focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-paper disabled:opacity-60"
-        style={{ fontFamily: "Roboto, Arial, sans-serif" }}
-      >
-        <GoogleLogo />
-        <span>{redirecting ? t("account.googleRedirecting") : t("account.continueWithGoogle")}</span>
-      </button>
+      {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ? (
+        // Connexion en direct par le site (app/auth/google) : l'écran Google
+        // affiche JEUNE RICHE au lieu de <projet>.supabase.co. Simple lien :
+        // /auth/google est une route serveur (pas une page) qui repart
+        // aussitôt vers Google, il faut donc un vrai chargement de page.
+        <a
+          href="/auth/google"
+          onClick={() => setRedirecting(true)}
+          aria-disabled={redirecting}
+          className={className}
+          style={{ fontFamily: "Roboto, Arial, sans-serif" }}
+        >
+          {label}
+        </a>
+      ) : (
+        <button
+          type="button"
+          onClick={signIn}
+          disabled={redirecting}
+          className={className}
+          style={{ fontFamily: "Roboto, Arial, sans-serif" }}
+        >
+          {label}
+        </button>
+      )}
       {withDivider && (
         <div className="mt-6 flex items-center gap-3 text-xs uppercase tracking-widest2 text-paper/70" aria-hidden="true">
           <span className="h-px flex-1 bg-line" />

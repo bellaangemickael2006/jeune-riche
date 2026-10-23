@@ -35,9 +35,12 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  useEffect(() => {
+  // Recherche vidée à la fermeture (ajusté pendant le rendu, sans effet).
+  const [wasOpen, setWasOpen] = useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     if (!open) setFilter("");
-  }, [open]);
+  }
 
   const filtered = filter.trim()
     ? LANGUAGES.filter(
