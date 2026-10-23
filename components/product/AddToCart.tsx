@@ -215,6 +215,7 @@ export default function AddToCart({
             }
             maxLength={personalizationMaxLen}
             placeholder={t("product.personalizationPlaceholder")}
+            aria-label={t("product.personalizationPlaceholder")}
             className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
           />
           <div className="mt-2 flex items-center justify-between text-[11px] text-paper/60">
@@ -292,6 +293,7 @@ function NotifyMe({ variantId }: { variantId: string }) {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder={t("product.notifyMePlaceholder")}
+        aria-label={t("product.notifyMePlaceholder")}
         className="min-w-0 flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
       />
       <button

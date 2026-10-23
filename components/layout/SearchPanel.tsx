@@ -105,6 +105,7 @@ export default function SearchPanel({ onClose }: { onClose: () => void }) {
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={t("navigation.searchPlaceholder")}
+              aria-label={t("navigation.searchPlaceholder")}
               className="mt-2 w-full border-b border-line bg-transparent py-2 font-editorial text-heading text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
             />
           </div>

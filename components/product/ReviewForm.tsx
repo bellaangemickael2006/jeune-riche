@@ -147,6 +147,7 @@ export default function ReviewForm({
         maxLength={MAX_REVIEW_LENGTH}
         rows={3}
         placeholder={t("product.reviewPlaceholder")}
+        aria-label={t("product.reviewPlaceholder")}
         className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
       />
 

@@ -49,6 +49,7 @@ export default function NewsletterForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder={t("footer.newsletterPlaceholder")}
+          aria-label={t("footer.newsletterPlaceholder")}
           disabled={status === "submitting"}
           className="w-full bg-transparent text-body text-paper placeholder:text-paper/50 focus:outline-hidden disabled:opacity-50"
         />

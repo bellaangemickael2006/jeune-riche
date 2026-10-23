@@ -47,7 +47,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="border-t border-line bg-ink">
+    <footer className="border-t border-line bg-ink pb-20 md:pb-0">
       {/* La dernière scène du site : le wordmark, seul, en très grand —
           avant les liens utiles. Pas de logo graphique ici, le texte porte
           la marque à lui seul. */}

@@ -428,6 +428,7 @@ export default function CheckoutPage() {
                     maxLength={40}
                     onChange={(e) => setPromoInput(e.target.value)}
                     placeholder={t("checkout.promoCodePlaceholder")}
+                    aria-label={t("checkout.promoCodePlaceholder")}
                     className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/50 placeholder:normal-case focus:border-paper focus:outline-hidden"
                   />
                   <button

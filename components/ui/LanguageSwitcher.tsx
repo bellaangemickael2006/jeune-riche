@@ -78,6 +78,7 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               placeholder={t("common.search")}
+              aria-label={t("common.search")}
               className="w-full border border-line bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
             />
           </div>
