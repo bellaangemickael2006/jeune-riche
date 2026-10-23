@@ -19,7 +19,7 @@ export default async function AdminCategoriesPage() {
   return (
     <div>
       <h1 className="font-display text-2xl uppercase text-paper">Catégories</h1>
-      <p className="mt-2 text-xs text-paper/40">
+      <p className="mt-2 text-xs text-paper/60">
         Les catégories déterminent les filtres du catalogue et le menu déroulant lors de la création d&apos;un produit.
       </p>
 
@@ -31,7 +31,7 @@ export default async function AdminCategoriesPage() {
 
       {available && (
         <div className="mt-8 flex flex-col divide-y divide-line border-y border-line">
-          {categories.length === 0 && <p className="py-4 text-sm text-paper/40">Aucune catégorie.</p>}
+          {categories.length === 0 && <p className="py-4 text-sm text-paper/60">Aucune catégorie.</p>}
           {categories.map((c) => (
             <div key={c.id} className="flex flex-col gap-3 py-5 md:flex-row md:items-start md:justify-between md:gap-6">
               <ActionForm
@@ -48,7 +48,7 @@ export default async function AdminCategoriesPage() {
                   name="description"
                   defaultValue={c.description ?? ""}
                   placeholder="Description (optionnelle)"
-                  className="border border-line bg-transparent px-3 py-2 text-sm text-paper placeholder:text-paper/30"
+                  className="border border-line bg-transparent px-3 py-2 text-sm text-paper placeholder:text-paper/50"
                 />
                 <input
                   name="sortOrder"
@@ -59,19 +59,19 @@ export default async function AdminCategoriesPage() {
                   aria-label="Ordre d'affichage"
                   className="border border-line bg-transparent px-3 py-2 text-sm text-paper"
                 />
-                <SubmitButton className="border border-line px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper/70 hover:border-paper hover:text-paper">
+                <SubmitButton className="border border-line px-4 py-2 text-[11px] uppercase tracking-widest2 text-paper/70 hover:border-paper hover:text-paper">
                   Enregistrer
                 </SubmitButton>
               </ActionForm>
               <div className="flex shrink-0 items-center gap-4 md:pt-2">
-                <span className="text-[10px] uppercase tracking-widest2 text-paper/30">
+                <span className="text-[11px] uppercase tracking-widest2 text-paper/60">
                   {c._count.products} produit{c._count.products > 1 ? "s" : ""} · /{c.slug}
                 </span>
                 <ActionForm action={deleteCategory.bind(null, c.id)}>
                   <ConfirmButton
                     confirmMessage={`Supprimer la catégorie "${c.name}" ?`}
                     disabled={c._count.products > 0}
-                    className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper disabled:cursor-not-allowed disabled:opacity-30"
+                    className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper disabled:cursor-not-allowed disabled:opacity-30"
                     title={c._count.products > 0 ? "Réaffectez d'abord les produits de cette catégorie." : undefined}
                   >
                     Supprimer
@@ -84,17 +84,17 @@ export default async function AdminCategoriesPage() {
       )}
 
       <ActionForm action={createCategory} resetOnSuccess className="mt-10 flex max-w-md flex-col gap-4 border-t border-line pt-8">
-        <p className="text-xs uppercase tracking-widest2 text-paper/50">Nouvelle catégorie</p>
+        <p className="text-xs uppercase tracking-widest2 text-paper/70">Nouvelle catégorie</p>
         <input
           name="name"
           required
           placeholder="Nom (ex. Sweat)"
-          className="border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30"
+          className="border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50"
         />
         <input
           name="description"
           placeholder="Description (optionnelle)"
-          className="border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30"
+          className="border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50"
         />
         <input
           name="sortOrder"
@@ -104,7 +104,7 @@ export default async function AdminCategoriesPage() {
           defaultValue={0}
           placeholder="Ordre d'affichage"
           aria-label="Ordre d'affichage"
-          className="border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30"
+          className="border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50"
         />
         <SubmitButton className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">Créer</SubmitButton>
       </ActionForm>

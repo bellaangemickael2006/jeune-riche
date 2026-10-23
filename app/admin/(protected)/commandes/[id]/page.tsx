@@ -38,7 +38,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
 
   return (
     <div className="max-w-2xl">
-      <Link href="/admin/commandes" className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
+      <Link href="/admin/commandes" className="text-xs uppercase tracking-widest2 text-paper/60 hover:text-paper">
         ← Commandes
       </Link>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
@@ -47,36 +47,36 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
           href={`/admin/bons?ids=${order.id}&imprimer=1`}
           target="_blank"
           rel="noopener noreferrer"
-          className="border border-paper px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
+          className="border border-paper px-4 py-2 text-[11px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
         >
           Imprimer le bon
         </a>
       </div>
-      <p className="mt-1 text-xs text-paper/40">{order.createdAt.toLocaleString("fr-FR")}</p>
+      <p className="mt-1 text-xs text-paper/60">{order.createdAt.toLocaleString("fr-FR")}</p>
 
       <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
         <div>
-          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Client</h2>
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Client</h2>
           <p className="mt-2 text-sm text-paper">{order.customerName}</p>
           {address.phone && <p className="text-sm font-medium text-paper">WhatsApp : {address.phone}</p>}
           {order.customerEmail && <p className="text-sm text-paper/60">{order.customerEmail}</p>}
           {customer && (
             <Link
               href={`/admin/clients/${customer.id}`}
-              className="mt-2 inline-block text-xs uppercase tracking-widest2 text-paper/50 underline underline-offset-4 hover:text-paper"
+              className="mt-2 inline-block text-xs uppercase tracking-widest2 text-paper/70 underline underline-offset-4 hover:text-paper"
             >
               Voir la fiche client
             </Link>
           )}
         </div>
         <div>
-          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Livraison</h2>
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Livraison</h2>
           <p className="mt-2 text-sm text-paper/70">{addressLine || "—"}</p>
         </div>
       </div>
 
       <div className="mt-8">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Statut</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Statut</h2>
         <ActionForm action={updateOrderStatus.bind(null, order.id)} className="mt-3 flex flex-wrap items-center gap-3">
           <select name="status" defaultValue={order.status} className="border border-line bg-ink px-4 py-2 text-sm text-paper">
             {STATUSES.map((s) => (
@@ -90,7 +90,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
           </SubmitButton>
         </ActionForm>
         {order.status === "ANNULEE" && (
-          <p className="mt-2 text-xs text-paper/40">
+          <p className="mt-2 text-xs text-paper/60">
             Le stock des articles a été remis en rayon. Choisir un autre statut le reprend.
           </p>
         )}
@@ -106,7 +106,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
           </a>
         ) : (
           address.phone && (
-            <p className="mt-2 text-[11px] text-paper/30">
+            <p className="mt-2 text-[11px] text-paper/60">
               Pas de message auto pour le statut « {ORDER_STATUS_LABEL[order.status]} ».
             </p>
           )
@@ -114,28 +114,28 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
       </div>
 
       <div className="mt-8">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Suivi &amp; notes internes</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Suivi &amp; notes internes</h2>
         <ActionForm action={updateOrderFulfillment.bind(null, order.id)} className="mt-3 flex flex-col gap-3">
           <label className="block">
-            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/40">
+            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">
               Numéro de suivi (transporteur)
             </span>
             <input
               name="trackingNumber"
               defaultValue={order.trackingNumber ?? ""}
               placeholder="Ex. CI0123456789"
-              className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/30"
+              className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/50"
             />
           </label>
           <label className="block">
-            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/40">
+            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">
               Notes internes (jamais visibles par le client)
             </span>
             <textarea
               name="notes"
               rows={3}
               defaultValue={order.notes ?? ""}
-              className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/30"
+              className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/50"
             />
           </label>
           <SubmitButton className="w-fit border border-line px-4 py-2 text-xs uppercase tracking-widest2 text-paper/70 hover:border-paper hover:text-paper">
@@ -145,13 +145,13 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
       </div>
 
       <div className="mt-10">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Articles</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Articles</h2>
         <ul className="mt-3 divide-y divide-line">
           {order.items.map((item) => (
             <li key={item.id} className="flex justify-between gap-3 py-3 text-sm">
               <div className="min-w-0">
                 <p className="text-paper">{item.productName}</p>
-                <p className="text-paper/40">
+                <p className="text-paper/60">
                   {item.color} / {item.size} × {item.quantity}
                   {item.personalization && ` — "${item.personalization}"`}
                 </p>
@@ -173,7 +173,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
           </div>
         )}
         <div className="mt-4 flex justify-between border-t border-line pt-3 text-sm">
-          <span className="uppercase tracking-widest2 text-paper/50">Total</span>
+          <span className="uppercase tracking-widest2 text-paper/70">Total</span>
           <span className="text-paper">{formatPrice(Number(order.total))}</span>
         </div>
       </div>

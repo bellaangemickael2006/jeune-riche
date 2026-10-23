@@ -93,7 +93,7 @@ export default function ImageZoomModal({
               }}
             />
           </div>
-          <p className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 text-caption text-paper/40">
+          <p className="pointer-events-none absolute bottom-5 left-1/2 -translate-x-1/2 text-caption text-paper/60">
             {zoomed ? t("product.zoomOut") : t("product.zoomIn")}
           </p>
         </motion.div>

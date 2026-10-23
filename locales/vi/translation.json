@@ -22,7 +22,9 @@
     "switchToDarkMode": "Chuyển sang chế độ tối"
   },
   "meta": {
-    "description": "JEUNE RICHE — thời trang đường phố cao cấp, bản sắc bộ lạc."
+    "description": "JEUNE RICHE — thời trang đường phố cao cấp, bản sắc bộ lạc.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Ngôn ngữ",

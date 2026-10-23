@@ -76,7 +76,7 @@ function AdminLoginForm() {
         <h1 className="mt-4 text-center font-editorial text-2xl text-paper">
           {mode === "login" ? "Administration" : "Mot de passe oublié"}
         </h1>
-        <p className="mt-1 text-center text-xs text-paper/40">JEUNE RICHE</p>
+        <p className="mt-1 text-center text-xs text-paper/60">JEUNE RICHE</p>
 
         {erreur === "acces_refuse" && (
           <p className="mt-4 border border-paper/30 bg-paper/5 px-3 py-2 text-xs text-paper">
@@ -98,7 +98,7 @@ function AdminLoginForm() {
         {message && <p className="mt-4 text-xs text-paper/70">{message}</p>}
 
         <label className="mt-6 block">
-          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Email</span>
+          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Email</span>
           <input
             type="email"
             required
@@ -109,7 +109,7 @@ function AdminLoginForm() {
         </label>
         {mode === "login" && (
           <label className="mt-4 block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Mot de passe</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Mot de passe</span>
             <input
               type="password"
               required
@@ -127,7 +127,7 @@ function AdminLoginForm() {
               setError(null);
               setMessage(null);
             }}
-            className="mt-3 text-xs text-paper/40 underline underline-offset-4 hover:text-paper/70"
+            className="mt-3 text-xs text-paper/60 underline underline-offset-4 hover:text-paper/70"
           >
             Mot de passe oublié ?
           </button>
@@ -139,7 +139,7 @@ function AdminLoginForm() {
               setError(null);
               setMessage(null);
             }}
-            className="mt-3 text-xs text-paper/40 underline underline-offset-4 hover:text-paper/70"
+            className="mt-3 text-xs text-paper/60 underline underline-offset-4 hover:text-paper/70"
           >
             ← Retour à la connexion
           </button>

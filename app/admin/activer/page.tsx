@@ -45,9 +45,9 @@ export default function ActivateAdminPage() {
       <form onSubmit={submit} className="w-full max-w-sm border border-line px-8 py-10">
         <p className="font-display text-sm uppercase tracking-wide text-paper">Jeune Riche</p>
         <h1 className="mt-4 font-editorial text-2xl text-paper">Activer mon accès</h1>
-        <p className="mt-2 text-xs text-paper/50">Choisissez le mot de passe de votre accès à l&apos;administration.</p>
+        <p className="mt-2 text-xs text-paper/70">Choisissez le mot de passe de votre accès à l&apos;administration.</p>
         <label className="mt-6 block">
-          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Mot de passe</span>
+          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Mot de passe</span>
           <input
             type="password"
             autoComplete="new-password"
@@ -59,7 +59,7 @@ export default function ActivateAdminPage() {
           />
         </label>
         <label className="mt-4 block">
-          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Confirmer</span>
+          <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Confirmer</span>
           <input
             type="password"
             autoComplete="new-password"

@@ -107,16 +107,16 @@ export default async function AdminSearchPage({ searchParams }: { searchParams: 
           autoFocus
           maxLength={100}
           placeholder="Numéro de commande, nom, email, téléphone, produit, code promo…"
-          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+          className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
         />
       </form>
 
       {!query ? (
-        <p className="mt-6 text-sm text-paper/40">
+        <p className="mt-6 text-sm text-paper/60">
           {raw ? `Tapez au moins ${ADMIN_SEARCH_MIN} caractères.` : "Un téléphone peut être tapé avec ou sans espaces."}
         </p>
       ) : total === 0 ? (
-        <p className="mt-6 text-sm text-paper/40">Aucun résultat pour « {query.text} ».</p>
+        <p className="mt-6 text-sm text-paper/60">Aucun résultat pour « {query.text} ».</p>
       ) : (
         <div className="mt-8 flex flex-col gap-10">
           {results!.orders.length > 0 && (
@@ -125,7 +125,7 @@ export default async function AdminSearchPage({ searchParams }: { searchParams: 
                 <Row key={o.id} href={`/admin/commandes/${o.id}`}>
                   <span className="text-paper">{o.orderNumber}</span>
                   <span className="text-paper/60">{o.customerName}</span>
-                  <span className="text-paper/40">
+                  <span className="text-paper/60">
                     {ORDER_STATUS_LABEL[o.status] ?? o.status} · {xof(Number(o.total))} · {dateFormat.format(o.createdAt)}
                   </span>
                 </Row>
@@ -138,7 +138,7 @@ export default async function AdminSearchPage({ searchParams }: { searchParams: 
                 <Row key={c.id} href={`/admin/clients/${c.id}`}>
                   <span className="text-paper">{c.name ?? "Sans nom"}</span>
                   <span className="text-paper/60">{c.email}</span>
-                  <span className="text-paper/40">{c.addressPhone ?? ""}</span>
+                  <span className="text-paper/60">{c.addressPhone ?? ""}</span>
                 </Row>
               ))}
             </Section>
@@ -149,7 +149,7 @@ export default async function AdminSearchPage({ searchParams }: { searchParams: 
                 <Row key={p.id} href={`/admin/produits/${p.id}`}>
                   <span className="text-paper">{p.name}</span>
                   <span className="text-paper/60">{p.category.name}</span>
-                  <span className="text-paper/40">
+                  <span className="text-paper/60">
                     {p.price === null ? "Prix à définir" : xof(Number(p.price))} · {p.published ? "Publié" : "Brouillon"}
                   </span>
                 </Row>
@@ -162,7 +162,7 @@ export default async function AdminSearchPage({ searchParams }: { searchParams: 
                 <Row key={p.id} href="/admin/codes-promo">
                   <span className="text-paper">{p.code}</span>
                   <span className="text-paper/60">{p.active ? "Actif" : "Désactivé"}</span>
-                  <span className="text-paper/40">
+                  <span className="text-paper/60">
                     {p.usedCount} utilisation{p.usedCount > 1 ? "s" : ""}
                     {p.maxUses !== null ? ` / ${p.maxUses}` : ""}
                   </span>
@@ -179,7 +179,7 @@ export default async function AdminSearchPage({ searchParams }: { searchParams: 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="text-xs uppercase tracking-widest2 text-paper/50">{title}</h2>
+      <h2 className="text-xs uppercase tracking-widest2 text-paper/70">{title}</h2>
       <ul className="mt-3 divide-y divide-line border-y border-line">{children}</ul>
     </section>
   );

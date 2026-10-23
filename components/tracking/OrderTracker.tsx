@@ -20,7 +20,7 @@ export default function OrderTracker({ initialNumber }: { initialNumber: string 
     <div className="mx-auto w-full max-w-xl">
       <form action={formAction} className="flex flex-col gap-3">
         <label className="block">
-          <span className="mb-2 block text-label text-paper/50">{t("tracking.orderNumber")}</span>
+          <span className="mb-2 block text-label text-paper/70">{t("tracking.orderNumber")}</span>
           <input
             name="orderNumber"
             defaultValue={initialNumber}
@@ -28,17 +28,17 @@ export default function OrderTracker({ initialNumber }: { initialNumber: string 
             autoComplete="off"
             spellCheck={false}
             placeholder="JR-…"
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
           />
         </label>
         <label className="block">
-          <span className="mb-2 block text-label text-paper/50">{t("tracking.contact")}</span>
+          <span className="mb-2 block text-label text-paper/70">{t("tracking.contact")}</span>
           <input
             name="contact"
             required
             autoComplete="email"
             placeholder={t("tracking.contactPlaceholder")}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
           />
         </label>
         <button
@@ -160,7 +160,7 @@ function TrackedOrderView({
   return (
     <section aria-live="polite" className="mt-12 border-t border-line pt-10">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-label text-paper/40">{t("tracking.orderOf", { date: date(order.createdAt) })}</p>
+        <p className="text-label text-paper/60">{t("tracking.orderOf", { date: date(order.createdAt) })}</p>
         {status === "live" && (
           <p className="flex items-center gap-2 text-label text-paper/60">
             <span aria-hidden className="h-1.5 w-1.5 animate-pulse rounded-full bg-paper" />
@@ -173,7 +173,7 @@ function TrackedOrderView({
           {t("tracking.liveUpdated")}
         </p>
       )}
-      {status === "expired" && <p className="mt-3 text-xs text-paper/50">{t("tracking.liveExpired")}</p>}
+      {status === "expired" && <p className="mt-3 text-xs text-paper/70">{t("tracking.liveExpired")}</p>}
       <h2 className="mt-2 font-editorial text-heading text-paper">{order.orderNumber}</h2>
 
       {order.step === null ? (
@@ -195,14 +195,14 @@ function TrackedOrderView({
                   <span
                     aria-hidden
                     className={cn(
-                      "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[10px]",
-                      done ? "border-paper bg-paper text-ink" : "border-line text-paper/30",
+                      "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border text-[11px]",
+                      done ? "border-paper bg-paper text-ink" : "border-line text-paper/60",
                       current && "animate-pulse"
                     )}
                   >
                     {done ? "✓" : i + 1}
                   </span>
-                  <span className={cn("text-[11px] uppercase tracking-widest2", done ? "text-paper" : "text-paper/35")}>
+                  <span className={cn("text-[11px] uppercase tracking-widest2", done ? "text-paper" : "text-paper/60")}>
                     {t(`tracking.steps.${step}`)}
                   </span>
                 </span>
@@ -215,7 +215,7 @@ function TrackedOrderView({
       {order.step !== null && (
         <p className="mt-6 text-sm text-paper/60">
           {t(`tracking.stepHint.${TRACKING_STEPS[order.step]}`)}{" "}
-          <span className="text-paper/40">{t("tracking.updatedOn", { date: date(order.updatedAt) })}</span>
+          <span className="text-paper/60">{t("tracking.updatedOn", { date: date(order.updatedAt) })}</span>
         </p>
       )}
       {/* Notification à chaque étape, même page fermée — inutile une fois livrée ou annulée. */}
@@ -232,14 +232,14 @@ function TrackedOrderView({
         {order.items.map((item, i) => (
           <li key={i} className="flex justify-between gap-4 py-3 text-sm">
             <span className="text-paper">
-              {item.name} <span className="text-paper/40">— {item.color} / {item.size}</span>
+              {item.name} <span className="text-paper/60">— {item.color} / {item.size}</span>
             </span>
             <span className="text-paper/60">×{item.quantity}</span>
           </li>
         ))}
       </ul>
       <p className="mt-4 flex justify-between text-sm">
-        <span className="text-paper/50">{t("checkout.total")}</span>
+        <span className="text-paper/70">{t("checkout.total")}</span>
         <span className="text-paper">{formatPrice(order.total, locale)}</span>
       </p>
 

@@ -31,7 +31,7 @@ export default function AccessFields({
         />
         <span>
           Tous les droits (propriétaire)
-          <span className="block text-[11px] text-paper/40">Accès complet, gestion de l&apos;équipe et formatage des données.</span>
+          <span className="block text-[11px] text-paper/60">Accès complet, gestion de l&apos;équipe et formatage des données.</span>
         </span>
       </label>
       <fieldset disabled={owner} className={owner ? "opacity-40" : undefined}>
@@ -49,7 +49,7 @@ export default function AccessFields({
               />
               <span>
                 {PERMISSIONS[p].label}
-                <span className="block text-[11px] text-paper/35">{PERMISSIONS[p].hint}</span>
+                <span className="block text-[11px] text-paper/60">{PERMISSIONS[p].hint}</span>
               </span>
             </label>
           ))}

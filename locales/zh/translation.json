@@ -22,7 +22,9 @@
     "switchToDarkMode": "切换到深色模式"
   },
   "meta": {
-    "description": "JEUNE RICHE — 奢华街头服饰，部落身份。"
+    "description": "JEUNE RICHE — 奢华街头服饰，部落身份。",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "语言",

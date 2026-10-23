@@ -22,17 +22,17 @@ export default async function ProductStockPage({ params }: { params: Promise<{ i
 
   return (
     <div className="max-w-5xl">
-      <Link href={`/admin/produits/${product.id}`} className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
+      <Link href={`/admin/produits/${product.id}`} className="text-xs uppercase tracking-widest2 text-paper/60 hover:text-paper">
         ← {product.name}
       </Link>
       <h1 className="mt-3 font-display text-2xl uppercase text-paper">Stock — {product.name}</h1>
-      <p className="mt-1 text-xs text-paper/40">
+      <p className="mt-1 text-xs text-paper/60">
         {product.variants.length} variante{product.variants.length > 1 ? "s" : ""} · {total} pièce{total > 1 ? "s" : ""} en stock
       </p>
 
       <section className="mt-8 border border-line p-5">
         {product.variants.length === 0 ? (
-          <p className="text-sm text-paper/40">
+          <p className="text-sm text-paper/60">
             Aucune variante : ajoutez des tailles et couleurs depuis la{" "}
             <Link href={`/admin/produits/${product.id}`} className="underline underline-offset-4">
               fiche produit
@@ -45,7 +45,7 @@ export default async function ProductStockPage({ params }: { params: Promise<{ i
       </section>
 
       <section className="mt-10">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Historique des mouvements</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Historique des mouvements</h2>
         <StockHistory movements={movements} />
       </section>
     </div>

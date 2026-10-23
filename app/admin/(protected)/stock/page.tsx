@@ -56,7 +56,7 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
             key={label}
             href={value ? `/admin/stock?filtre=${value}` : "/admin/stock"}
             className={cn(
-              "border px-3 py-1.5 text-[10px] uppercase tracking-widest2",
+              "border px-3 py-1.5 text-[11px] uppercase tracking-widest2",
               filtre === value ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
             )}
           >
@@ -66,7 +66,7 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
       </div>
 
       {rows.length === 0 ? (
-        <p className="mt-8 text-sm text-paper/40">{filtre ? "Aucune alerte de stock." : "Aucun produit."}</p>
+        <p className="mt-8 text-sm text-paper/60">{filtre ? "Aucune alerte de stock." : "Aucun produit."}</p>
       ) : (
         <ul className="mt-6 divide-y divide-line border-y border-line">
           {rows.map((p) => (
@@ -75,7 +75,7 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
                 <Link href={`/admin/produits/${p.id}/stock`} className="text-sm text-paper hover:underline">
                   {p.name}
                 </Link>
-                {!p.published && <span className="ml-2 text-[10px] uppercase tracking-widest2 text-paper/30">Brouillon</span>}
+                {!p.published && <span className="ml-2 text-[11px] uppercase tracking-widest2 text-paper/60">Brouillon</span>}
                 <p className="mt-1 flex flex-wrap gap-1.5">
                   {[...p.variants]
                     .sort((a, b) => a.color.localeCompare(b.color, "fr") || compareSizes(a.size, b.size))
@@ -84,12 +84,12 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
                         key={v.id}
                         title={`${v.color} / ${v.size} : ${v.stock}${waiting.get(v.id) ? ` — ${waiting.get(v.id)} client(s) en attente` : ""}`}
                         className={cn(
-                          "border px-1.5 py-0.5 text-[10px]",
+                          "border px-1.5 py-0.5 text-[11px]",
                           v.stock <= 0
                             ? "border-paper bg-paper text-ink"
                             : v.stock <= LOW_STOCK_THRESHOLD
                               ? "border-paper text-paper"
-                              : "border-line text-paper/50"
+                              : "border-line text-paper/70"
                         )}
                       >
                         {v.color.slice(0, 3)} {v.size} · {v.stock}
@@ -115,7 +115,7 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
               </div>
               <Link
                 href={`/admin/produits/${p.id}/stock`}
-                className="border border-line px-3 py-1.5 text-[10px] uppercase tracking-widest2 text-paper hover:border-paper"
+                className="border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest2 text-paper hover:border-paper"
               >
                 Modifier
               </Link>
@@ -125,7 +125,7 @@ export default async function AdminStockPage({ searchParams }: { searchParams: P
       )}
 
       <section className="mt-12">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Derniers mouvements</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Derniers mouvements</h2>
         <StockHistory movements={movements} showProduct />
       </section>
     </div>

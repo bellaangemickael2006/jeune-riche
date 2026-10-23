@@ -65,7 +65,7 @@ export default async function Lookbook({ content }: { content: HomeContent["look
               ) : (
                 picture
               )}
-              {caption && <p className="mt-3 text-xs uppercase tracking-widest2 text-paper/40">{caption}</p>}
+              {caption && <p className="mt-3 text-xs uppercase tracking-widest2 text-paper/60">{caption}</p>}
             </FadeIn>
           );
         })}

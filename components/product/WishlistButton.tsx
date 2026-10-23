@@ -23,7 +23,7 @@ export default function WishlistButton({ slug, className }: { slug: string; clas
       aria-label={mounted && has ? t("product.removeFromFavorites") : t("product.addToFavorites")}
       className={cn(
         "flex items-center gap-2 text-label transition-colors",
-        mounted && has ? "text-paper" : "text-paper/50 hover:text-paper",
+        mounted && has ? "text-paper" : "text-paper/70 hover:text-paper",
         className
       )}
     >

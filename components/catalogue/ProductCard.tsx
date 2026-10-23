@@ -95,7 +95,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
             }}
           />
           {totalStock === 0 && (
-            <span className="absolute left-3 top-3 bg-ink px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper">
+            <span className="absolute left-3 top-3 bg-ink px-2 py-1 text-[11px] uppercase tracking-widest2 text-paper">
               {t("product.soldOut")}
             </span>
           )}
@@ -107,7 +107,7 @@ export default function ProductCard({ product, index }: { product: ProductCardDa
         </motion.div>
         <div className="mt-3 flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
           <div className="min-w-0">
-            <p className="truncate text-[11px] uppercase tracking-widest2 text-paper/40">{product.category.name}</p>
+            <p className="truncate text-[11px] uppercase tracking-widest2 text-paper/60">{product.category.name}</p>
             <p className="mt-1 font-editorial text-base text-paper">{product.name}</p>
           </div>
           <p className="shrink-0 text-sm text-paper/70">{formatPrice(product.price, locale, t("product.priceUndefined"))}</p>

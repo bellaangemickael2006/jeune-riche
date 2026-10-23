@@ -4,7 +4,7 @@ import { getServerTranslation } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
-  return { title: t("legal.returns.eyebrow") };
+  return { alternates: { canonical: "/retours" }, title: t("legal.returns.title") };
 }
 
 export default async function RetoursPage() {

@@ -22,7 +22,9 @@
     "switchToDarkMode": "Vaihda tummaan tilaan"
   },
   "meta": {
-    "description": "JEUNE RICHE — ylellinen streetwear, heimoidentiteetti."
+    "description": "JEUNE RICHE — ylellinen streetwear, heimoidentiteetti.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Kieli",

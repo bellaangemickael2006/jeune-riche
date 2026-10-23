@@ -22,7 +22,9 @@
     "switchToDarkMode": "다크 모드로 전환"
   },
   "meta": {
-    "description": "JEUNE RICHE — 럭셔리 스트리트웨어, 트라이벌 아이덴티티."
+    "description": "JEUNE RICHE — 럭셔리 스트리트웨어, 트라이벌 아이덴티티.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "언어",

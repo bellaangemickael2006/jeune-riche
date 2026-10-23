@@ -22,7 +22,9 @@
     "switchToDarkMode": "Badilisha kwenda hali nyeusi"
   },
   "meta": {
-    "description": "JEUNE RICHE — mavazi ya kifahari ya mitaani, utambulisho wa kikabila."
+    "description": "JEUNE RICHE — mavazi ya kifahari ya mitaani, utambulisho wa kikabila.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Lugha",

@@ -27,7 +27,7 @@ export default function SalesChart({ series }: { series: DayBucket[] }) {
 
   if (max === 0) {
     return (
-      <div className="flex h-40 items-center justify-center border border-line text-sm text-paper/40">
+      <div className="flex h-40 items-center justify-center border border-line text-sm text-paper/60">
         Aucune vente sur la période.
       </div>
     );

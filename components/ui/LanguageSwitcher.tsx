@@ -72,13 +72,13 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
           className="absolute right-0 top-full z-50 mt-3 w-64 border border-line bg-ink shadow-[0_16px_40px_-16px_rgba(0,0,0,0.6)]"
         >
           <div className="border-b border-line p-3">
-            <p className="mb-2 text-[10px] uppercase tracking-widest2 text-paper/40">{t("language.label")}</p>
+            <p className="mb-2 text-[11px] uppercase tracking-widest2 text-paper/60">{t("language.label")}</p>
             <input
               autoFocus
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               placeholder={t("common.search")}
-              className="w-full border border-line bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+              className="w-full border border-line bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
             />
           </div>
           <ul className="max-h-72 overflow-y-auto py-1">
@@ -108,7 +108,7 @@ export default function LanguageSwitcher({ className }: { className?: string }) 
               );
             })}
             {filtered.length === 0 && (
-              <li className="px-4 py-3 text-xs text-paper/40">—</li>
+              <li className="px-4 py-3 text-xs text-paper/60">—</li>
             )}
           </ul>
         </div>

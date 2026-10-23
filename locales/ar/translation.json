@@ -22,7 +22,9 @@
     "switchToDarkMode": "التبديل إلى الوضع الداكن"
   },
   "meta": {
-    "description": "JEUNE RICHE — أزياء الشارع الفاخرة، هوية قبلية."
+    "description": "JEUNE RICHE — أزياء الشارع الفاخرة، هوية قبلية.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "اللغة",

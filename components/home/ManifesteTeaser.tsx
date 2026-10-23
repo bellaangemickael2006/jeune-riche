@@ -28,7 +28,7 @@ export default async function ManifesteTeaser({ content }: { content: HomeConten
         />
       )}
       <FadeIn className="relative z-10 flex max-w-2xl flex-col items-center gap-8" y={20}>
-        <p className="text-xs uppercase tracking-widest2 text-paper/50">{t("navigation.manifesto")}</p>
+        <p className="text-xs uppercase tracking-widest2 text-paper/70">{t("navigation.manifesto")}</p>
         <p className="font-editorial text-2xl italic leading-snug text-paper md:text-4xl md:leading-10">
           {content.quote || t("home.manifestoQuote")}
         </p>

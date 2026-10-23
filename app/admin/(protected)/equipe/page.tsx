@@ -33,7 +33,7 @@ export default async function TeamPage() {
   return (
     <div className="max-w-4xl">
       <h1 className="font-display text-2xl uppercase text-paper">Équipe</h1>
-      <p className="mt-2 max-w-2xl text-sm text-paper/50">
+      <p className="mt-2 max-w-2xl text-sm text-paper/70">
         Donnez accès à l&apos;administration à vos employés, section par section. Chaque accès est vérifié côté
         serveur : un employé ne voit et ne peut modifier que ce qui est coché.
       </p>
@@ -46,7 +46,7 @@ export default async function TeamPage() {
       )}
 
       <section className="mt-10">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Membres ({admins.length})</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Membres ({admins.length})</h2>
         <ul className="mt-4 divide-y divide-line border-y border-line">
           {admins.map((a) => {
             const isOwner = !a.adminAccess;
@@ -58,17 +58,17 @@ export default async function TeamPage() {
                   <div>
                     <p className="text-sm text-paper">
                       {a.name || a.email}
-                      {isMe && <span className="ml-2 text-[10px] uppercase tracking-widest2 text-paper/40">(vous)</span>}
+                      {isMe && <span className="ml-2 text-[11px] uppercase tracking-widest2 text-paper/60">(vous)</span>}
                     </p>
-                    {a.name && <p className="text-xs text-paper/40">{a.email}</p>}
+                    {a.name && <p className="text-xs text-paper/60">{a.email}</p>}
                     <p className="mt-2 flex flex-wrap gap-1.5">
                       {isOwner ? (
-                        <span className="border border-paper bg-paper px-2 py-0.5 text-[10px] uppercase tracking-widest2 text-ink">
+                        <span className="border border-paper bg-paper px-2 py-0.5 text-[11px] uppercase tracking-widest2 text-ink">
                           Propriétaire — tous les droits
                         </span>
                       ) : (
                         permissions.map((p) => (
-                          <span key={p} className="border border-line px-2 py-0.5 text-[10px] uppercase tracking-widest2 text-paper/70">
+                          <span key={p} className="border border-line px-2 py-0.5 text-[11px] uppercase tracking-widest2 text-paper/70">
                             {PERMISSIONS[p].label}
                           </span>
                         ))
@@ -80,7 +80,7 @@ export default async function TeamPage() {
                       <ActionForm action={removeTeamMember.bind(null, a.id)}>
                         <ConfirmButton
                           confirmMessage={`Retirer l'accès à l'administration de ${a.email} ? Son compte client éventuel est conservé.`}
-                          className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                          className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
                         >
                           Retirer de l&apos;équipe
                         </ConfirmButton>
@@ -89,7 +89,7 @@ export default async function TeamPage() {
                       <ActionForm action={resetMemberMfa.bind(null, a.id)}>
                         <ConfirmButton
                           confirmMessage={`Réinitialiser la double vérification de ${a.email} ? Un nouveau téléphone lui sera demandé à sa prochaine connexion.`}
-                          className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                          className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
                         >
                           Réinitialiser la double vérification
                         </ConfirmButton>
@@ -99,12 +99,12 @@ export default async function TeamPage() {
                 </div>
                 {!isMe && migrated && (
                   <details className="mt-3">
-                    <summary className="cursor-pointer text-[10px] uppercase tracking-widest2 text-paper/50 hover:text-paper">
+                    <summary className="cursor-pointer text-[11px] uppercase tracking-widest2 text-paper/70 hover:text-paper">
                       Modifier les accès
                     </summary>
                     <ActionForm action={updateTeamMember.bind(null, a.id)} className="mt-4 flex flex-col gap-4 border border-line p-4">
                       <AccessFields idPrefix={`m-${a.id}`} initialOwner={isOwner} initial={permissions} />
-                      <SubmitButton className="w-fit border border-paper px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper">
+                      <SubmitButton className="w-fit border border-paper px-4 py-2 text-[11px] uppercase tracking-widest2 text-paper">
                         Enregistrer les accès
                       </SubmitButton>
                     </ActionForm>
@@ -118,19 +118,19 @@ export default async function TeamPage() {
 
       {migrated && (
         <section className="mt-12 border border-line p-5">
-          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Ajouter un membre</h2>
-          <p className="mt-1 text-[11px] text-paper/40">
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Ajouter un membre</h2>
+          <p className="mt-1 text-[11px] text-paper/60">
             Nouveau : il reçoit un email pour activer son accès et choisir son mot de passe. Déjà client : il se connecte
             avec son mot de passe habituel.
           </p>
           <ActionForm action={addTeamMember} resetOnSuccess className="mt-5 flex flex-col gap-5">
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="block">
-                <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Email</span>
+                <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Email</span>
                 <input name="email" type="email" required className="w-full border border-line bg-transparent px-3 py-2 text-sm text-paper" />
               </label>
               <label className="block">
-                <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Nom (facultatif)</span>
+                <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Nom (facultatif)</span>
                 <input name="name" maxLength={80} className="w-full border border-line bg-transparent px-3 py-2 text-sm text-paper" />
               </label>
             </div>

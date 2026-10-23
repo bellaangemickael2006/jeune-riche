@@ -22,7 +22,9 @@
     "switchToDarkMode": "डार्क मोड पर स्विच करें"
   },
   "meta": {
-    "description": "JEUNE RICHE — लक्ज़री स्ट्रीटवियर, ट्राइबल पहचान।"
+    "description": "JEUNE RICHE — लक्ज़री स्ट्रीटवियर, ट्राइबल पहचान।",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "भाषा",

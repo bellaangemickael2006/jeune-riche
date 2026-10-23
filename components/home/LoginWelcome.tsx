@@ -68,7 +68,7 @@ export default function LoginWelcome() {
               className="h-16 w-auto"
             />
             <div>
-              <p className="text-xs uppercase tracking-widest2 text-paper/50">{t("account.welcomeBack")}</p>
+              <p className="text-xs uppercase tracking-widest2 text-paper/70">{t("account.welcomeBack")}</p>
               <p className="mt-2 font-editorial text-2xl text-paper">
                 {name ? t("home.loginWelcomeMessageNamed", { name }) : t("home.loginWelcomeMessage")}
               </p>

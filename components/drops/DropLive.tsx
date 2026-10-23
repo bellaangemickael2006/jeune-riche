@@ -125,7 +125,7 @@ export default function DropLive({
         <div className="flex flex-wrap items-center justify-center gap-3">
           <PhaseBadge phase={allSoldOut && phase === "live" ? "soldout" : phase} />
           {viewers >= 2 && (
-            <span className="border border-line px-3 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
+            <span className="border border-line px-3 py-1 text-[11px] uppercase tracking-widest2 text-paper/70">
               {t("drops.live.viewers", { count: viewers })}
             </span>
           )}
@@ -135,7 +135,7 @@ export default function DropLive({
 
         {remaining !== null && remaining > 0 && (
           <div className="mt-10">
-            <p className="text-label text-paper/50">
+            <p className="text-label text-paper/70">
               {phase === "upcoming" ? t("drops.live.opensIn") : t("drops.countdown.endsIn")}
             </p>
             <BigCountdown ms={remaining} big={phase === "upcoming"} />
@@ -143,8 +143,8 @@ export default function DropLive({
         )}
 
         {phase === "upcoming" && <NotifyForm />}
-        {phase === "ended" && <p className="mt-10 text-sm text-paper/50">{t("drops.live.ended")}</p>}
-        {phase !== "upcoming" && allSoldOut && <p className="mt-10 text-sm text-paper/50">{t("drops.live.allGone")}</p>}
+        {phase === "ended" && <p className="mt-10 text-sm text-paper/70">{t("drops.live.ended")}</p>}
+        {phase !== "upcoming" && allSoldOut && <p className="mt-10 text-sm text-paper/70">{t("drops.live.allGone")}</p>}
 
         <AnimatePresence>
           {justOpened && (
@@ -162,7 +162,7 @@ export default function DropLive({
 
       {pieces.length > 0 && (
         <section className="mx-auto max-w-6xl px-5 pb-24 md:px-10">
-          <h2 className="text-label text-paper/50">{t("drops.live.pieces")}</h2>
+          <h2 className="text-label text-paper/70">{t("drops.live.pieces")}</h2>
           <ul className="mt-6 grid grid-cols-2 gap-x-5 gap-y-12 md:grid-cols-3">
             {pieces.map((p) => (
               <PieceCard
@@ -181,7 +181,7 @@ export default function DropLive({
       <RecentSaleToast sales={live.recentSales} now={now} />
 
       <div className="px-5 pb-16 text-center">
-        <Link href="/drops" className="text-xs uppercase tracking-widest2 text-paper/50 underline underline-offset-4 hover:text-paper">
+        <Link href="/drops" className="text-xs uppercase tracking-widest2 text-paper/70 underline underline-offset-4 hover:text-paper">
           ← {t("drops.live.allDrops")}
         </Link>
       </div>
@@ -192,7 +192,7 @@ export default function DropLive({
 function PhaseBadge({ phase }: { phase: DropPhase }) {
   const { t } = useTranslation();
   return (
-    <span className="flex items-center gap-2 border border-line px-3 py-1 text-[10px] uppercase tracking-widest2 text-paper">
+    <span className="flex items-center gap-2 border border-line px-3 py-1 text-[11px] uppercase tracking-widest2 text-paper">
       {phase === "live" && (
         <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
@@ -236,7 +236,7 @@ function BigCountdown({ ms, big }: { ms: number; big: boolean }) {
               </motion.span>
             </AnimatePresence>
           </span>
-          <span className="mt-2 text-[10px] uppercase tracking-widest2 text-paper/40">{u.caption}</span>
+          <span className="mt-2 text-[11px] uppercase tracking-widest2 text-paper/60">{u.caption}</span>
         </div>
       ))}
     </div>
@@ -280,7 +280,7 @@ function PieceCard({
           </motion.div>
         )}
         {hidden && (
-          <span className="absolute inset-x-0 bottom-3 text-center text-[10px] uppercase tracking-widest2 text-ink/70">
+          <span className="absolute inset-x-0 bottom-3 text-center text-[11px] uppercase tracking-widest2 text-ink/70">
             {t("drops.live.revealedAtOpening")}
           </span>
         )}
@@ -291,7 +291,7 @@ function PieceCard({
         )}
       </div>
       <p className={cn("mt-3 text-sm text-paper", hidden && "blur-[3px]")}>{hidden ? "••••••" : piece.name}</p>
-      {!hidden && <p className="text-sm text-paper/50">{formatPrice(piece.price, locale, t("product.priceUndefined"))}</p>}
+      {!hidden && <p className="text-sm text-paper/70">{formatPrice(piece.price, locale, t("product.priceUndefined"))}</p>}
       {!hidden && low && (
         <div className="mt-2">
           <p className="text-[11px] uppercase tracking-widest2 text-paper">{t("product.lowStock", { count: stock })}</p>
@@ -348,7 +348,7 @@ function NotifyForm() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder={t("drops.live.notifyPlaceholder")}
         aria-label={t("drops.live.notifyPlaceholder")}
-        className="flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+        className="flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
       />
       <button
         type="submit"
@@ -389,7 +389,7 @@ function RecentSaleToast({ sales, now }: { sales: DropLiveData["recentSales"]; n
         >
           <span className="mr-1">🔥</span>
           {t("drops.live.justSold", { name: latest.name })}
-          <span className="block text-paper/40">
+          <span className="block text-paper/60">
             {minutes === 0 ? t("drops.live.agoNow") : t("drops.live.agoMinutes", { count: minutes })}
           </span>
         </motion.div>

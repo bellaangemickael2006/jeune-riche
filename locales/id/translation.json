@@ -22,7 +22,9 @@
     "switchToDarkMode": "Beralih ke mode gelap"
   },
   "meta": {
-    "description": "JEUNE RICHE — streetwear mewah, identitas suku."
+    "description": "JEUNE RICHE — streetwear mewah, identitas suku.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Bahasa",

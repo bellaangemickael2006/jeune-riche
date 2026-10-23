@@ -19,9 +19,9 @@ export default function AdminError({
 
   return (
     <div className="flex min-h-[50vh] flex-col items-start justify-center gap-4">
-      <p className="text-xs uppercase tracking-widest2 text-paper/40">Erreur</p>
+      <p className="text-xs uppercase tracking-widest2 text-paper/60">Erreur</p>
       <h1 className="font-display text-2xl uppercase text-paper">Une erreur est survenue</h1>
-      <p className="max-w-md text-sm text-paper/50">
+      <p className="max-w-md text-sm text-paper/70">
         L&apos;équipe technique a été prévenue automatiquement.
       </p>
       <div className="mt-2 flex items-center gap-6">

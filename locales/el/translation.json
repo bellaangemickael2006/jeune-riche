@@ -22,7 +22,9 @@
     "switchToDarkMode": "Μετάβαση σε σκοτεινή λειτουργία"
   },
   "meta": {
-    "description": "JEUNE RICHE — πολυτελές streetwear, φυλετική ταυτότητα."
+    "description": "JEUNE RICHE — πολυτελές streetwear, φυλετική ταυτότητα.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Γλώσσα",

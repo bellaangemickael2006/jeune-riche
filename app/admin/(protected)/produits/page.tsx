@@ -50,14 +50,14 @@ export default async function AdminProductsPage({
             name="q"
             defaultValue={q ?? ""}
             placeholder="Rechercher un produit…"
-            className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/30"
+            className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/50"
           />
         </form>
         <div className="flex gap-2">
           <Link
             href={filterHref(undefined)}
             className={cn(
-              "border px-3 py-1.5 text-[10px] uppercase tracking-widest2",
+              "border px-3 py-1.5 text-[11px] uppercase tracking-widest2",
               !stock ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
             )}
           >
@@ -66,7 +66,7 @@ export default async function AdminProductsPage({
           <Link
             href={filterHref("faible")}
             className={cn(
-              "border px-3 py-1.5 text-[10px] uppercase tracking-widest2",
+              "border px-3 py-1.5 text-[11px] uppercase tracking-widest2",
               stock === "faible" ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
             )}
           >
@@ -82,7 +82,7 @@ export default async function AdminProductsPage({
       )}
 
       {available && filtered.length === 0 ? (
-        <p className="mt-8 text-sm text-paper/40">Aucun produit trouvé.</p>
+        <p className="mt-8 text-sm text-paper/60">Aucun produit trouvé.</p>
       ) : (
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {filtered.map((p) => {
@@ -104,19 +104,19 @@ export default async function AdminProductsPage({
                       className="object-cover"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-[10px] uppercase tracking-widest2 text-paper/30">
+                    <div className="flex h-full items-center justify-center text-[11px] uppercase tracking-widest2 text-paper/60">
                       Aucune image
                     </div>
                   )}
                   {p.videoUrl && (
-                    <span className="absolute right-1.5 top-1.5 bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase tracking-widest2 text-paper">
+                    <span className="absolute right-1.5 top-1.5 bg-ink/80 px-1.5 py-0.5 text-[11px] uppercase tracking-widest2 text-paper">
                       Vidéo
                     </span>
                   )}
                   {stockTotal <= LOW_STOCK_THRESHOLD && (
                     <span
                       className={cn(
-                        "absolute bottom-1.5 right-1.5 px-1.5 py-0.5 text-[9px] uppercase tracking-widest2",
+                        "absolute bottom-1.5 right-1.5 px-1.5 py-0.5 text-[11px] uppercase tracking-widest2",
                         stockTotal === 0 ? "bg-paper text-ink" : "bg-ink/80 text-paper"
                       )}
                     >
@@ -126,8 +126,8 @@ export default async function AdminProductsPage({
                   <span
                     className={
                       p.published
-                        ? "absolute left-1.5 top-1.5 border border-paper/40 bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase tracking-widest2 text-paper"
-                        : "absolute left-1.5 top-1.5 border border-line bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase tracking-widest2 text-paper/50"
+                        ? "absolute left-1.5 top-1.5 border border-paper/40 bg-ink/80 px-1.5 py-0.5 text-[11px] uppercase tracking-widest2 text-paper"
+                        : "absolute left-1.5 top-1.5 border border-line bg-ink/80 px-1.5 py-0.5 text-[11px] uppercase tracking-widest2 text-paper/70"
                     }
                   >
                     {p.published ? "Publié" : "Brouillon"}
@@ -135,7 +135,7 @@ export default async function AdminProductsPage({
                 </div>
                 <div className="px-1 py-3">
                   <p className="truncate text-sm text-paper group-hover:underline">{p.name}</p>
-                  <p className="mt-0.5 text-[11px] text-paper/40">{p.category.name}</p>
+                  <p className="mt-0.5 text-[11px] text-paper/60">{p.category.name}</p>
                   <div className="mt-1.5 flex items-center justify-between text-[11px] text-paper/60">
                     <span>{formatPrice(p.price ? Number(p.price) : null)}</span>
                     <span className={stockTotal <= LOW_STOCK_THRESHOLD ? "text-paper" : undefined}>{stockTotal} en stock</span>

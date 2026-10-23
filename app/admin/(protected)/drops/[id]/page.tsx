@@ -36,14 +36,14 @@ export default async function AdminDropDetailPage({ params }: { params: Promise<
 
   return (
     <div className="max-w-2xl">
-      <Link href="/admin/drops" className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
+      <Link href="/admin/drops" className="text-xs uppercase tracking-widest2 text-paper/60 hover:text-paper">
         ← Drops
       </Link>
       <h1 className="mt-3 font-display text-2xl uppercase text-paper">{drop.name}</h1>
 
       <ActionForm action={updateDrop.bind(null, drop.id)} className="mt-8 flex flex-col gap-4">
         <label className="block">
-          <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">Nom</span>
+          <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/70">Nom</span>
           <input
             name="name"
             defaultValue={drop.name}
@@ -53,7 +53,7 @@ export default async function AdminDropDetailPage({ params }: { params: Promise<
         </label>
         <div className="grid grid-cols-2 gap-4">
           <label className="block">
-            <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">Début</span>
+            <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/70">Début</span>
             <input
               name="startsAt"
               type="datetime-local"
@@ -63,7 +63,7 @@ export default async function AdminDropDetailPage({ params }: { params: Promise<
             />
           </label>
           <label className="block">
-            <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">
+            <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/70">
               Fin (optionnelle)
             </span>
             <input
@@ -75,7 +75,7 @@ export default async function AdminDropDetailPage({ params }: { params: Promise<
           </label>
         </div>
         <label className="block">
-          <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">Description</span>
+          <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/70">Description</span>
           <textarea
             name="description"
             rows={3}
@@ -84,7 +84,7 @@ export default async function AdminDropDetailPage({ params }: { params: Promise<
           />
         </label>
         <label className="block">
-          <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/50">Statut</span>
+          <span className="mb-1 block text-xs uppercase tracking-widest2 text-paper/70">Statut</span>
           <select
             name="status"
             defaultValue={drop.status}
@@ -103,9 +103,9 @@ export default async function AdminDropDetailPage({ params }: { params: Promise<
       </ActionForm>
 
       <div className="mt-10 border-t border-line pt-8">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Produits du drop</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Produits du drop</h2>
         {drop.products.length === 0 ? (
-          <p className="mt-3 text-sm text-paper/40">Aucun produit assigné.</p>
+          <p className="mt-3 text-sm text-paper/60">Aucun produit assigné.</p>
         ) : (
           <ul className="mt-3 divide-y divide-line">
             {drop.products.map((p) => (
@@ -114,7 +114,7 @@ export default async function AdminDropDetailPage({ params }: { params: Promise<
                   {p.name}
                 </Link>
                 <ActionForm action={removeProductFromDrop.bind(null, drop.id, p.id)} className="shrink-0">
-                  <SubmitButton className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper">
+                  <SubmitButton className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper">
                     Retirer
                   </SubmitButton>
                 </ActionForm>
@@ -145,11 +145,11 @@ export default async function AdminDropDetailPage({ params }: { params: Promise<
       <ActionForm action={deleteDrop.bind(null, drop.id)} className="mt-10 border-t border-line pt-6">
         <ConfirmButton
           confirmMessage={`Supprimer le drop "${drop.name}" ? Les produits associés seront détachés, pas supprimés.`}
-          className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper"
+          className="text-xs uppercase tracking-widest2 text-paper/60 hover:text-paper"
         >
           Supprimer ce drop
         </ConfirmButton>
-        <p className="mt-1 text-[11px] text-paper/30">Les produits associés ne sont pas supprimés, seulement détachés.</p>
+        <p className="mt-1 text-[11px] text-paper/60">Les produits associés ne sont pas supprimés, seulement détachés.</p>
       </ActionForm>
     </div>
   );

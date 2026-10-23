@@ -22,7 +22,9 @@
     "switchToDarkMode": "Váltás sötét módra"
   },
   "meta": {
-    "description": "JEUNE RICHE — luxus streetwear, törzsi identitás."
+    "description": "JEUNE RICHE — luxus streetwear, törzsi identitás.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Nyelv",

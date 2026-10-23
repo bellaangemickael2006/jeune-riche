@@ -22,7 +22,9 @@
     "switchToDarkMode": "Přepnout na tmavý režim"
   },
   "meta": {
-    "description": "JEUNE RICHE — luxusní streetwear, kmenová identita."
+    "description": "JEUNE RICHE — luxusní streetwear, kmenová identita.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Jazyk",

@@ -93,14 +93,14 @@ export default function StockGrid({ productId, variants }: { productId: string; 
             type="button"
             onClick={() => switchMode(m)}
             className={cn(
-              "border px-4 py-2 text-[10px] uppercase tracking-widest2",
+              "border px-4 py-2 text-[11px] uppercase tracking-widest2",
               mode === m ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
             )}
           >
             {label}
           </button>
         ))}
-        <span className="text-[11px] text-paper/40">
+        <span className="text-[11px] text-paper/60">
           {mode === "add" ? "Ex. 10 pour une réception, −2 pour une casse." : "Saisissez le stock compté ; cases vides = inchangé."}
         </span>
       </div>
@@ -110,7 +110,7 @@ export default function StockGrid({ productId, variants }: { productId: string; 
           <thead>
             <tr>
               <th className="p-2 text-left">
-                <button type="button" onClick={() => fill(() => true)} className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper">
+                <button type="button" onClick={() => fill(() => true)} className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper">
                   Tout remplir
                 </button>
               </th>
@@ -165,14 +165,14 @@ export default function StockGrid({ productId, variants }: { productId: string; 
                         placeholder={mode === "set" ? String(v.stock) : "+0"}
                         aria-label={`${color} ${size}`}
                         className={cn(
-                          "w-20 border bg-transparent px-2 py-1.5 text-center text-paper placeholder:text-paper/30 focus:outline-hidden",
+                          "w-20 border bg-transparent px-2 py-1.5 text-center text-paper placeholder:text-paper/50 focus:outline-hidden",
                           after === null ? "border-paper bg-paper/10" : changed ? "border-paper" : "border-line focus:border-paper"
                         )}
                       />
                       <p
                         className={cn(
-                          "mt-1 text-center text-[10px]",
-                          after === null ? "text-paper" : v.stock <= LOW_STOCK_THRESHOLD ? "text-paper/70" : "text-paper/35"
+                          "mt-1 text-center text-[11px]",
+                          after === null ? "text-paper" : v.stock <= LOW_STOCK_THRESHOLD ? "text-paper/70" : "text-paper/60"
                         )}
                       >
                         {after === null ? "sous 0 !" : changed ? `${v.stock} → ${after}` : `${v.stock} en stock`}
@@ -188,7 +188,7 @@ export default function StockGrid({ productId, variants }: { productId: string; 
 
       <div className="mt-6 grid max-w-2xl gap-4 sm:grid-cols-2">
         <label className="block">
-          <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Motif</span>
+          <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Motif</span>
           <select
             value={reason}
             onChange={(e) => setReason(e.target.value as MovementReason)}
@@ -202,13 +202,13 @@ export default function StockGrid({ productId, variants }: { productId: string; 
           </select>
         </label>
         <label className="block">
-          <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Note (facultative)</span>
+          <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Note (facultative)</span>
           <input
             value={note}
             maxLength={200}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Ex. livraison atelier du 20/10"
-            className="w-full border border-line bg-transparent px-3 py-2 text-sm text-paper placeholder:text-paper/25"
+            className="w-full border border-line bg-transparent px-3 py-2 text-sm text-paper placeholder:text-paper/50"
           />
         </label>
       </div>
@@ -230,7 +230,7 @@ export default function StockGrid({ productId, variants }: { productId: string; 
         )}
         {invalid.length > 0 && <p className="text-xs text-paper">Un stock ne peut pas passer sous zéro.</p>}
         {effective.length > 0 && (
-          <button type="button" onClick={() => setValues({})} className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper">
+          <button type="button" onClick={() => setValues({})} className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper">
             Effacer la saisie
           </button>
         )}

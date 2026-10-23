@@ -92,7 +92,7 @@ export default async function CataloguePage({
     <div className="mx-auto min-h-screen max-w-[1600px] bg-ink px-5 pb-24 pt-32 md:px-10 md:pt-40">
       <div className="mb-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <div>
-          <p className="text-label text-paper/40">{t("catalogue.eyebrow")}</p>
+          <p className="text-label text-paper/60">{t("catalogue.eyebrow")}</p>
           <h1 className="mt-3 font-editorial text-heading-lg text-paper md:text-[4.5rem] md:leading-[0.98]">
             {t("catalogue.title")}
           </h1>
@@ -101,7 +101,7 @@ export default async function CataloguePage({
       </div>
 
       <div className="mb-12 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-line pt-4">
-        <p className="text-caption text-paper/40">
+        <p className="text-caption text-paper/60">
           {query && (
             <>
               <span className="text-paper/70">{t("catalogue.resultsFor", { query })}</span>
@@ -122,14 +122,14 @@ export default async function CataloguePage({
           )}
         </p>
         <div className="flex flex-wrap items-center gap-4">
-          <span className="hidden text-caption text-paper/30 sm:inline">{t("catalogue.sort")}</span>
+          <span className="hidden text-caption text-paper/60 sm:inline">{t("catalogue.sort")}</span>
           {SORTS.map((sort) => (
             <Link
               key={sort.value}
               href={sortHref(sort.value)}
               className={cn(
                 "text-caption transition-colors",
-                activeSort === sort.value ? "text-paper underline underline-offset-4" : "text-paper/40 hover:text-paper/70"
+                activeSort === sort.value ? "text-paper underline underline-offset-4" : "text-paper/60 hover:text-paper/70"
               )}
             >
               {sort.label}
@@ -141,7 +141,7 @@ export default async function CataloguePage({
       {cardData.length === 0 ? (
         <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 border border-line py-24 text-center">
           <p className="text-body text-paper/60">{query ? t("catalogue.noResults", { query }) : t("catalogue.empty")}</p>
-          {!query && <p className="text-caption text-paper/30">{t("catalogue.emptyHint")}</p>}
+          {!query && <p className="text-caption text-paper/60">{t("catalogue.emptyHint")}</p>}
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-x-5 gap-y-16 sm:grid-cols-2 md:grid-cols-3 md:gap-x-8 xl:grid-cols-4">

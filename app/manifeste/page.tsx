@@ -6,6 +6,7 @@ import { getServerTranslation } from "@/lib/i18n/server";
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
   return {
+    alternates: { canonical: "/manifeste" },
     title: t("navigation.manifesto"),
     description: t("manifesto.metaDescription"),
   };

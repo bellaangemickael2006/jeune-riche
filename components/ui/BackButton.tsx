@@ -32,7 +32,7 @@ export default function BackButton({
     <button
       type="button"
       onClick={handleClick}
-      className={cn("text-label text-paper/50 transition-colors hover:text-paper", className)}
+      className={cn("text-label text-paper/70 transition-colors hover:text-paper", className)}
     >
       ← {label}
     </button>
@@ -51,7 +51,7 @@ export function BackLink({
   className?: string;
 }) {
   return (
-    <Link href={href} className={cn("text-label text-paper/50 transition-colors hover:text-paper", className)}>
+    <Link href={href} className={cn("text-label text-paper/70 transition-colors hover:text-paper", className)}>
       ← {label}
     </Link>
   );

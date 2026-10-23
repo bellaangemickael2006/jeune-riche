@@ -22,7 +22,9 @@
     "switchToDarkMode": "ダークモードに切り替える"
   },
   "meta": {
-    "description": "JEUNE RICHE — ラグジュアリーストリートウェア、トライバルアイデンティティ。"
+    "description": "JEUNE RICHE — ラグジュアリーストリートウェア、トライバルアイデンティティ。",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "言語",

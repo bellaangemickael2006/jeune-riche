@@ -31,9 +31,9 @@ export default function PanierPage() {
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
                       <p className="text-sm text-paper">{line.productName}</p>
-                      <p className="mt-1 text-xs text-paper/50">{line.color} · {line.size}</p>
+                      <p className="mt-1 text-xs text-paper/70">{line.color} · {line.size}</p>
                       {line.personalization && (
-                        <p className="mt-1 text-xs text-paper/50">
+                        <p className="mt-1 text-xs text-paper/70">
                           {t("cart.personalization")} : <span className="text-paper">{line.personalization}</span>
                         </p>
                       )}
@@ -58,7 +58,7 @@ export default function PanierPage() {
                     </button>
                     <button
                       onClick={() => removeLine(line.variantId, line.personalization)}
-                      className="text-paper/40 underline underline-offset-4 hover:text-paper sm:ml-4"
+                      className="text-paper/60 underline underline-offset-4 hover:text-paper sm:ml-4"
                     >
                       {t("cart.remove")}
                     </button>
@@ -70,10 +70,10 @@ export default function PanierPage() {
 
           <div className="h-fit border border-line p-6">
             <div className="flex items-center justify-between text-sm">
-              <span className="uppercase tracking-widest2 text-paper/50">{t("cart.subtotal")}</span>
+              <span className="uppercase tracking-widest2 text-paper/70">{t("cart.subtotal")}</span>
               <span className="text-paper">{formatPrice(total(), locale)}</span>
             </div>
-            <p className="mt-2 text-xs text-paper/40">{t("cart.shippingNotice")}</p>
+            <p className="mt-2 text-xs text-paper/60">{t("cart.shippingNotice")}</p>
             <Link
               href="/checkout"
               className="mt-6 block w-full bg-paper py-4 text-center text-xs uppercase tracking-widest2 text-ink transition-opacity hover:opacity-90"

@@ -31,7 +31,7 @@ export default async function AdminReviewsPage() {
       )}
 
       {available && reviews.length === 0 ? (
-        <p className="mt-8 text-sm text-paper/40">Aucun avis pour le moment.</p>
+        <p className="mt-8 text-sm text-paper/60">Aucun avis pour le moment.</p>
       ) : (
         <ul className="mt-8 divide-y divide-line">
           {reviews.map((r) => (
@@ -41,7 +41,7 @@ export default async function AdminReviewsPage() {
                   <p className="text-sm text-paper">
                     {r.product.name} — {r.user.name ?? r.user.email}
                   </p>
-                  <p className="mt-1 text-xs text-paper/40">
+                  <p className="mt-1 text-xs text-paper/60">
                     {"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)} ·{" "}
                     {r.verifiedOrder ? "Client vérifié" : "Non vérifié"} · {REVIEW_STATUS_LABEL[r.status]}
                   </p>
@@ -65,14 +65,14 @@ export default async function AdminReviewsPage() {
                 <div className="flex shrink-0 flex-wrap items-center gap-2">
                   {r.status !== "APPROVED" && (
                     <ActionForm action={moderateReview.bind(null, r.id, "APPROVED")}>
-                      <SubmitButton className="border border-paper px-3 py-1.5 text-[10px] uppercase tracking-widest2 text-paper">
+                      <SubmitButton className="border border-paper px-3 py-1.5 text-[11px] uppercase tracking-widest2 text-paper">
                         Approuver
                       </SubmitButton>
                     </ActionForm>
                   )}
                   {r.status !== "REJECTED" && (
                     <ActionForm action={moderateReview.bind(null, r.id, "REJECTED")}>
-                      <SubmitButton className="border border-line px-3 py-1.5 text-[10px] uppercase tracking-widest2 text-paper/60 hover:text-paper">
+                      <SubmitButton className="border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper">
                         {r.status === "APPROVED" ? "Masquer" : "Refuser"}
                       </SubmitButton>
                     </ActionForm>
@@ -80,7 +80,7 @@ export default async function AdminReviewsPage() {
                   <ActionForm action={deleteReview.bind(null, r.id)}>
                     <ConfirmButton
                       confirmMessage="Supprimer définitivement cet avis ?"
-                      className="px-2 py-1.5 text-[10px] uppercase tracking-widest2 text-paper/30 hover:text-paper"
+                      className="px-2 py-1.5 text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
                     >
                       Supprimer
                     </ConfirmButton>

@@ -77,7 +77,9 @@ export async function generateMetadata(): Promise<Metadata> {
       template: "%s — JEUNE RICHE",
     },
     description,
-    alternates: { canonical: "/" },
+    // Pas d'adresse canonique ici : héritée par toutes les pages, elle
+    // déclarait Drops, Manifeste, Contact… comme des copies de l'accueil.
+    // Chaque page indexable déclare la sienne.
     // Vérification de propriété Google Search Console. Sans elle, Google ne
     // découvre le site que par hasard : il n'existe aujourd'hui aucun lien
     // entrant vers le domaine.

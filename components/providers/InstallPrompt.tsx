@@ -108,12 +108,12 @@ export default function InstallPrompt() {
         <Image src="/icons/icon-192.png" alt="" width={40} height={40} className="h-10 w-10 shrink-0" />
         <div className="min-w-0 flex-1">
           <p className="text-xs font-medium text-paper">{t("pwa.installTitle")}</p>
-          <p className="mt-0.5 text-[11px] text-paper/50">{t("pwa.installSubtitle")}</p>
+          <p className="mt-0.5 text-[11px] text-paper/70">{t("pwa.installSubtitle")}</p>
         </div>
         <button
           onClick={handleDismiss}
           aria-label={t("common.close")}
-          className="shrink-0 text-paper/40 transition-colors hover:text-paper"
+          className="shrink-0 text-paper/60 transition-colors hover:text-paper"
         >
           ✕
         </button>

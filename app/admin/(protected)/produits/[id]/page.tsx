@@ -32,7 +32,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
   return (
     <div className="max-w-3xl">
-      <Link href="/admin/produits" className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
+      <Link href="/admin/produits" className="text-xs uppercase tracking-widest2 text-paper/60 hover:text-paper">
         ← Produits
       </Link>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
@@ -46,12 +46,12 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           </ConfirmButton>
         </ActionForm>
       </div>
-      <p className="mt-1 text-xs text-paper/40">
+      <p className="mt-1 text-xs text-paper/60">
         {product.category.name} · /{product.slug}
         {product.published && (
           <>
             {" · "}
-            <Link href={`/catalogue/${product.slug}`} target="_blank" className="underline underline-offset-4 hover:text-paper">
+            <Link href={`/catalogue/${product.slug}`} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 hover:text-paper">
               Voir sur le site
             </Link>
           </>
@@ -59,10 +59,10 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       </p>
 
       <section className="mt-10">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Informations</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Informations</h2>
         <ActionForm action={updateProduct.bind(null, product.id)} className="mt-4 flex flex-col gap-4">
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Nom</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Nom</span>
             <input
               name="name"
               required
@@ -71,7 +71,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
             />
           </label>
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Catégorie</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Catégorie</span>
             <select
               name="categoryId"
               defaultValue={product.categoryId}
@@ -85,7 +85,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
             </select>
           </label>
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Prix (F CFA)</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Prix (F CFA)</span>
             <input
               name="price"
               type="number"
@@ -93,11 +93,11 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
               step={1}
               defaultValue={product.price !== null ? Number(product.price) : ""}
               placeholder="Laisser vide si à définir"
-              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+              className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
             />
           </label>
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Description</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Description</span>
             <textarea
               name="description"
               defaultValue={product.description ?? ""}
@@ -110,7 +110,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
             Personnalisation activée
           </label>
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">
               Longueur max. personnalisation
             </span>
             <input
@@ -137,10 +137,10 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Variantes (taille / couleur / stock)</h2>
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Variantes (taille / couleur / stock)</h2>
           <Link
             href={`/admin/produits/${product.id}/stock`}
-            className="border border-paper px-3 py-1.5 text-[10px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
+            className="border border-paper px-3 py-1.5 text-[11px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
           >
             Modifier tout le stock · historique
           </Link>
@@ -150,11 +150,11 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
             cartes, elle reste un outil interne. */}
         <div className="mt-4 overflow-x-auto">
           {product.variants.length === 0 ? (
-            <p className="text-sm text-paper/40">Aucune variante : ajoutez au moins une taille/couleur pour vendre ce produit.</p>
+            <p className="text-sm text-paper/60">Aucune variante : ajoutez au moins une taille/couleur pour vendre ce produit.</p>
           ) : (
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead>
-                <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
+                <tr className="border-b border-line text-[11px] uppercase tracking-widest2 text-paper/60">
                   <th className="py-2">Couleur</th>
                   <th className="py-2">Taille</th>
                   <th className="py-2">SKU</th>
@@ -167,7 +167,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                   <tr key={v.id} className="border-b border-line/50 align-top">
                     <td className="py-2 text-paper">{v.color}</td>
                     <td className="py-2 text-paper">{v.size}</td>
-                    <td className="py-2 text-paper/40">{v.sku}</td>
+                    <td className="py-2 text-paper/60">{v.sku}</td>
                     <td className="py-2">
                       <ActionForm
                         action={updateVariantStock.bind(null, v.id, product.id)}
@@ -182,7 +182,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                           defaultValue={v.stock}
                           className="w-20 border border-line bg-transparent px-2 py-1 text-paper"
                         />
-                        <SubmitButton className="text-xs uppercase tracking-widest2 text-paper/40 hover:text-paper">
+                        <SubmitButton className="text-xs uppercase tracking-widest2 text-paper/60 hover:text-paper">
                           Mettre à jour
                         </SubmitButton>
                       </ActionForm>
@@ -206,15 +206,15 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
 
         <ActionForm action={addVariant.bind(null, product.id)} resetOnSuccess className="mt-4 flex flex-wrap items-end gap-3">
           <label className="block">
-            <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Couleur</span>
+            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Couleur</span>
             <input name="color" required className="w-32 border border-line bg-transparent px-3 py-2 text-sm text-paper" />
           </label>
           <label className="block">
-            <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Taille</span>
+            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Taille</span>
             <input name="size" required className="w-20 border border-line bg-transparent px-3 py-2 text-sm text-paper" />
           </label>
           <label className="block">
-            <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Stock</span>
+            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Stock</span>
             <input
               name="stock"
               type="number"
@@ -231,16 +231,16 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
       </section>
 
       <section className="mt-12">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Images</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Images</h2>
         <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {product.images.map((img) => (
             <div key={img.id} className="relative aspect-square overflow-hidden border border-line">
               <Image src={img.url} alt={img.alt} fill className="object-cover" sizes="150px" />
-              <span className="absolute left-1 top-1 bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase text-paper/70">
+              <span className="absolute left-1 top-1 bg-ink/80 px-1.5 py-0.5 text-[11px] uppercase text-paper/70">
                 {img.isPrimary ? `${img.type} · principale` : img.type}
               </span>
               {img.color && (
-                <span className="absolute bottom-7 left-1 bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase text-paper/70">
+                <span className="absolute bottom-7 left-1 bg-ink/80 px-1.5 py-0.5 text-[11px] uppercase text-paper/70">
                   {img.color}
                 </span>
               )}
@@ -248,7 +248,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                 <ConfirmButton
                   confirmMessage="Supprimer cette image ?"
                   aria-label="Supprimer cette image"
-                  className="bg-ink/80 px-1.5 py-0.5 text-[9px] uppercase text-paper"
+                  className="bg-ink/80 px-1.5 py-0.5 text-[11px] uppercase text-paper"
                 >
                   ×
                 </ConfirmButton>
@@ -261,20 +261,20 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           productId={product.id}
           colors={colors}
         />
-        <p className="mt-2 text-[11px] text-paper/30">
+        <p className="mt-2 text-[11px] text-paper/60">
           Le fichier est envoyé vers Supabase Storage ; l&apos;aperçu ci-dessus montre le rendu réel
           avant confirmation.
         </p>
       </section>
 
       <section className="mt-12">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Vidéo de présentation</h2>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Vidéo de présentation</h2>
         <VideoUploadForm productId={product.id} currentVideoUrl={product.videoUrl} />
       </section>
 
       <section className="mt-12">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Modèle 3D — vue 360° (VirtualThreads)</h2>
-        <p className="mt-2 max-w-xl text-[11px] leading-relaxed text-paper/40">
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Modèle 3D — vue 360° (VirtualThreads)</h2>
+        <p className="mt-2 max-w-xl text-[11px] leading-relaxed text-paper/60">
           Sur virtualthreads.io, placez votre design sur le T-shirt, choisissez la couleur, puis exportez le
           modèle 3D au format .glb (offre Pro). Envoyez un fichier par couleur : il remplace l&apos;ancien de la
           même couleur. L&apos;onglet « 3D 360° » apparaît sur la fiche dès qu&apos;un modèle existe pour la
@@ -289,14 +289,14 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
                   href={m.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-paper/50 underline underline-offset-4 hover:text-paper"
+                  className="text-xs text-paper/70 underline underline-offset-4 hover:text-paper"
                 >
                   Fichier .glb
                 </a>
                 <ActionForm action={deleteProductModel.bind(null, m.id, product.id)}>
                   <ConfirmButton
                     confirmMessage="Supprimer ce modèle 3D ?"
-                    className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                    className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
                   >
                     Supprimer
                   </ConfirmButton>

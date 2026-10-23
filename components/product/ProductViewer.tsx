@@ -156,7 +156,7 @@ export default function ProductViewer({
         </div>
 
         <div className="max-w-md">
-          <p className="text-label text-paper/40">{categoryName}</p>
+          <p className="text-label text-paper/60">{categoryName}</p>
           <h1 className="mt-3 font-editorial text-heading text-paper md:text-heading-lg">{productName}</h1>
           <p className="mt-4 font-editorial text-heading text-paper">{formatPrice(price, locale, t("product.priceUndefined"))}</p>
           {description && <p className="mt-4 text-body leading-relaxed text-paper/60">{description}</p>}
@@ -189,11 +189,11 @@ export default function ProductViewer({
           {sizeGuideRows ? <SizeGuide rows={sizeGuideRows as never} /> : null}
 
           <div className="mt-10 border-t border-line pt-6">
-            <p className="text-label text-paper/50">{t("product.details")}</p>
+            <p className="text-label text-paper/70">{t("product.details")}</p>
             <dl className="mt-4 flex flex-col gap-3">
               {details.map((d) => (
                 <div key={d.label} className="flex justify-between gap-6 text-caption">
-                  <dt className="text-paper/40">{d.label}</dt>
+                  <dt className="text-paper/60">{d.label}</dt>
                   <dd className="text-right text-paper/80">{d.value}</dd>
                 </div>
               ))}

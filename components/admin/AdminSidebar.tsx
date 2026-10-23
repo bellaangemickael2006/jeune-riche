@@ -65,7 +65,7 @@ export default function AdminSidebar({
       <div className="fixed inset-x-0 top-0 z-20 flex items-center justify-between border-b border-line bg-ink px-5 py-4 lg:hidden">
         <div>
           <p className="font-display text-sm uppercase tracking-wide text-paper">Jeune Riche</p>
-          <p className="text-[10px] uppercase tracking-widest2 text-paper/30">Administration</p>
+          <p className="text-[11px] uppercase tracking-widest2 text-paper/60">Administration</p>
         </div>
         <button
           onClick={() => setOpen((v) => !v)}
@@ -86,7 +86,7 @@ export default function AdminSidebar({
       >
         <div>
           <p className="hidden font-display text-sm uppercase tracking-wide text-paper lg:block">Jeune Riche</p>
-          <p className="mb-8 hidden text-[10px] uppercase tracking-widest2 text-paper/30 lg:block">Administration</p>
+          <p className="mb-8 hidden text-[11px] uppercase tracking-widest2 text-paper/60 lg:block">Administration</p>
           {/* Recherche rapide (commandes, clients, produits, codes promo) : voir /admin/recherche. */}
           <form action="/admin/recherche" role="search" className="mb-4 mt-16 lg:mt-0">
             <input
@@ -95,7 +95,7 @@ export default function AdminSidebar({
               maxLength={100}
               placeholder="Rechercher…"
               aria-label="Rechercher une commande, un client, un produit"
-              className="w-full border border-line bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+              className="w-full border border-line bg-transparent px-3 py-2 text-xs text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
             />
           </form>
           <nav className="flex flex-col gap-1">
@@ -107,7 +107,7 @@ export default function AdminSidebar({
                   href={link.href}
                   className={cn(
                     "px-3 py-2 text-xs uppercase tracking-widest2 transition-colors",
-                    active ? "bg-paper text-ink" : "text-paper/50 hover:text-paper"
+                    active ? "bg-paper text-ink" : "text-paper/70 hover:text-paper"
                   )}
                 >
                   <span className="flex items-center justify-between gap-2">
@@ -115,7 +115,7 @@ export default function AdminSidebar({
                     {badges[link.href] ? (
                       <span
                         className={cn(
-                          "min-w-5 rounded-full px-1.5 py-0.5 text-center text-[10px] leading-none tracking-normal",
+                          "min-w-5 rounded-full px-1.5 py-0.5 text-center text-[11px] leading-none tracking-normal",
                           active ? "bg-ink text-paper" : "bg-paper text-ink"
                         )}
                         aria-label={`${badges[link.href]} à traiter`}
@@ -130,10 +130,10 @@ export default function AdminSidebar({
           </nav>
         </div>
         <div className="flex items-center justify-between">
-          <button onClick={logout} className="text-left text-xs uppercase tracking-widest2 text-paper/30 hover:text-paper">
+          <button onClick={logout} className="text-left text-xs uppercase tracking-widest2 text-paper/60 hover:text-paper">
             Déconnexion
           </button>
-          <ThemeToggle className="text-paper/40 transition-colors hover:text-paper" />
+          <ThemeToggle className="text-paper/60 transition-colors hover:text-paper" />
         </div>
       </aside>
 

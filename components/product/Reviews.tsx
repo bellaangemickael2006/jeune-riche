@@ -28,16 +28,16 @@ export default function Reviews({ reviews }: { reviews: Review[] }) {
 
   return (
     <div className="mt-10 border-t border-line pt-6">
-      <p className="text-xs uppercase tracking-widest2 text-paper/50">
+      <p className="text-xs uppercase tracking-widest2 text-paper/70">
         {reviews.length > 0
           ? t("product.reviewsHeadingWithCount", { count: reviews.length })
           : t("product.reviewsHeading")}
       </p>
       {withPhotos > 0 && (
-        <p className="mt-1 text-[11px] text-paper/35">{t("product.reviewsWithPhotos", { count: withPhotos })}</p>
+        <p className="mt-1 text-[11px] text-paper/60">{t("product.reviewsWithPhotos", { count: withPhotos })}</p>
       )}
       {reviews.length === 0 ? (
-        <p className="mt-3 text-sm text-paper/40">{t("product.noReviews")}</p>
+        <p className="mt-3 text-sm text-paper/60">{t("product.noReviews")}</p>
       ) : (
         <ul className="mt-4 space-y-5">
           {reviews.map((r) => (
@@ -45,7 +45,7 @@ export default function Reviews({ reviews }: { reviews: Review[] }) {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-paper">{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</span>
                 {r.verifiedOrder && (
-                  <span className="text-[10px] uppercase tracking-widest2 text-paper/40">
+                  <span className="text-[11px] uppercase tracking-widest2 text-paper/60">
                     {t("product.verifiedCustomer")}
                   </span>
                 )}
@@ -66,7 +66,7 @@ export default function Reviews({ reviews }: { reviews: Review[] }) {
                   ))}
                 </div>
               )}
-              <p className="mt-2 text-xs text-paper/30">{r.user.name ?? t("product.anonymousCustomer")}</p>
+              <p className="mt-2 text-xs text-paper/60">{r.user.name ?? t("product.anonymousCustomer")}</p>
             </li>
           ))}
         </ul>

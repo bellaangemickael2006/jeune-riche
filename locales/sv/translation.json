@@ -22,7 +22,9 @@
     "switchToDarkMode": "Byt till mörkt läge"
   },
   "meta": {
-    "description": "JEUNE RICHE — lyxig streetwear, stamidentitet."
+    "description": "JEUNE RICHE — lyxig streetwear, stamidentitet.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Språk",

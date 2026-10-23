@@ -4,7 +4,7 @@ import { getServerTranslation } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
-  return { title: t("legal.terms.eyebrow") };
+  return { alternates: { canonical: "/conditions" }, title: t("legal.terms.title") };
 }
 
 export default async function ConditionsPage() {

@@ -20,8 +20,8 @@ async function uploadSiteImage(file: File): Promise<string> {
   return prepared.data.publicUrl;
 }
 
-const inputClass = "w-full border border-line bg-transparent px-3 py-2 text-sm text-paper placeholder:text-paper/25 focus:border-paper focus:outline-hidden";
-const labelClass = "mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40";
+const inputClass = "w-full border border-line bg-transparent px-3 py-2 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden";
+const labelClass = "mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60";
 
 /**
  * Aperçu d'une image avec choix du cadrage : un clic place le point qui
@@ -95,11 +95,11 @@ function ImageSlot({
           type="button"
           disabled={busy}
           onClick={() => fileRef.current?.click()}
-          className="border border-line px-3 py-1.5 text-[10px] uppercase tracking-widest2 text-paper hover:border-paper disabled:opacity-40"
+          className="border border-line px-3 py-1.5 text-[11px] uppercase tracking-widest2 text-paper hover:border-paper disabled:opacity-40"
         >
           Remplacer l&apos;image
         </button>
-        {canFocus && <span className="text-[11px] text-paper/35">Cliquez sur la photo pour choisir le cadrage.</span>}
+        {canFocus && <span className="text-[11px] text-paper/60">Cliquez sur la photo pour choisir le cadrage.</span>}
         {children}
       </div>
       <input
@@ -269,8 +269,8 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
     <div className="pb-28">
       {/* ---------- Hero ---------- */}
       <section className="mt-10 border border-line p-5">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Grande image d&apos;ouverture</h2>
-        <p className="mt-1 text-[11px] text-paper/35">
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Grande image d&apos;ouverture</h2>
+        <p className="mt-1 text-[11px] text-paper/60">
           Plein écran en haut de l&apos;accueil. Une photo d&apos;au moins 1600 px de large reste nette sur grand écran.
         </p>
         <div className="mt-5 grid gap-6 md:grid-cols-[1.4fr_1fr]">
@@ -313,7 +313,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
             </label>
           </div>
         </div>
-        <p className="mt-6 text-[11px] text-paper/35">
+        <p className="mt-6 text-[11px] text-paper/60">
           Textes : laissés vides, ils restent traduits automatiquement dans chaque langue. Un texte saisi
           s&apos;affiche tel quel dans toutes les langues.
         </p>
@@ -351,8 +351,8 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
 
       {/* ---------- Nos pièces ---------- */}
       <section className="mt-8 border border-line p-5">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Section « Nos pièces »</h2>
-        <p className="mt-1 text-[11px] text-paper/35">Les photos viennent des fiches produits (menu Produits).</p>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Section « Nos pièces »</h2>
+        <p className="mt-1 text-[11px] text-paper/60">Les photos viennent des fiches produits (menu Produits).</p>
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <TextField
             label="Titre de la section"
@@ -375,8 +375,8 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
       <section className="mt-8 border border-line p-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Lookbook — photos portées</h2>
-            <p className="mt-1 text-[11px] text-paper/35">Ajoutez, retirez, réordonnez. Texte vide = texte traduit par défaut.</p>
+            <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Lookbook — photos portées</h2>
+            <p className="mt-1 text-[11px] text-paper/60">Ajoutez, retirez, réordonnez. Texte vide = texte traduit par défaut.</p>
             <div className="mt-3 max-w-xs">
               <TextField
                 label="Titre de la section"
@@ -467,7 +467,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
                       return c;
                     })
                   }
-                  className="ml-auto text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                  className="ml-auto text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
                 >
                   Retirer
                 </button>
@@ -501,7 +501,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
               type="button"
               disabled={uploading === "new"}
               onClick={() => addRef.current?.click()}
-              className="flex min-h-48 flex-col items-center justify-center gap-2 border border-dashed border-line text-xs uppercase tracking-widest2 text-paper/50 transition-colors hover:border-paper hover:text-paper disabled:opacity-40"
+              className="flex min-h-48 flex-col items-center justify-center gap-2 border border-dashed border-line text-xs uppercase tracking-widest2 text-paper/70 transition-colors hover:border-paper hover:text-paper disabled:opacity-40"
             >
               <span className="text-2xl leading-none">+</span>
               {uploading === "new" ? "Envoi…" : "Ajouter une photo"}
@@ -538,8 +538,8 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
 
       {/* ---------- Manifeste ---------- */}
       <section className="mt-8 border border-line p-5">
-        <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Section Manifeste</h2>
-        <p className="mt-1 text-[11px] text-paper/35">Citation, lien et image en filigrane derrière la citation.</p>
+        <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Section Manifeste</h2>
+        <p className="mt-1 text-[11px] text-paper/60">Citation, lien et image en filigrane derrière la citation.</p>
         <div className="mt-4 grid gap-4 sm:grid-cols-[2fr_1fr]">
           <TextField
             label="Citation"
@@ -571,7 +571,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
               <button
                 type="button"
                 onClick={() => update((c) => ({ ...c, manifeste: { ...c.manifeste, url: null } }))}
-                className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
               >
                 Retirer l&apos;image
               </button>
@@ -631,7 +631,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
           type="button"
           onClick={restoreOriginal}
           disabled={isPending}
-          className="text-[10px] uppercase tracking-widest2 text-paper/35 hover:text-paper"
+          className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
         >
           Revenir aux images d&apos;origine
         </button>
@@ -661,7 +661,7 @@ export default function HomeEditor({ initial }: { initial: HomeContent }) {
             Annuler
           </button>
         </div>
-        {dirty && !error && <p className="mt-2 text-[11px] text-paper/50">Modifications non enregistrées.</p>}
+        {dirty && !error && <p className="mt-2 text-[11px] text-paper/70">Modifications non enregistrées.</p>}
         {error && (
           <p role="alert" className="mt-2 text-xs text-paper">
             {error}

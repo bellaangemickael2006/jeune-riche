@@ -91,7 +91,7 @@ export default function SearchPanel({ onClose }: { onClose: () => void }) {
       <form onSubmit={handleSubmit} role="search" className="mx-auto max-w-2xl">
         <div className="flex items-end gap-4">
           <div className="flex-1">
-            <p className="text-label text-paper/40">{t("navigation.search")}</p>
+            <p className="text-label text-paper/60">{t("navigation.search")}</p>
             <input
               ref={inputRef}
               type="search"
@@ -105,14 +105,14 @@ export default function SearchPanel({ onClose }: { onClose: () => void }) {
               onChange={(e) => setValue(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder={t("navigation.searchPlaceholder")}
-              className="mt-2 w-full border-b border-line bg-transparent py-2 font-editorial text-heading text-paper placeholder:text-paper/25 focus:border-paper focus:outline-hidden"
+              className="mt-2 w-full border-b border-line bg-transparent py-2 font-editorial text-heading text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
             />
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label={t("navigation.closeSearch")}
-            className="pb-3 text-label text-paper/50 transition-colors hover:text-paper"
+            className="pb-3 text-label text-paper/70 transition-colors hover:text-paper"
           >
             {t("common.close")}
           </button>
@@ -121,7 +121,7 @@ export default function SearchPanel({ onClose }: { onClose: () => void }) {
         {showResults && (
           <div className="mt-4">
             {shown.length === 0 ? (
-              <p className="text-caption text-paper/50">{t("navigation.searchNoResults", { query })}</p>
+              <p className="text-caption text-paper/70">{t("navigation.searchNoResults", { query })}</p>
             ) : (
               <>
                 <ul id={listId} role="listbox" aria-label={t("navigation.searchSuggestions")} className="divide-y divide-line">
@@ -140,7 +140,7 @@ export default function SearchPanel({ onClose }: { onClose: () => void }) {
                       </span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-body text-paper">{s.name}</span>
-                        <span className="block text-caption text-paper/40">{s.category}</span>
+                        <span className="block text-caption text-paper/60">{s.category}</span>
                       </span>
                       <span className="shrink-0 text-caption text-paper/70">
                         {formatPrice(s.price, locale, t("product.priceUndefined"))}

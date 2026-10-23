@@ -259,7 +259,7 @@ export default function CheckoutPage() {
                 <span
                   className={cn(
                     "flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px]",
-                    i <= stepIndex ? "bg-paper text-ink" : "border border-line text-paper/40"
+                    i <= stepIndex ? "bg-paper text-ink" : "border border-line text-paper/60"
                   )}
                 >
                   {i + 1}
@@ -268,7 +268,7 @@ export default function CheckoutPage() {
                     largeur de tracking dépassent largement un écran mobile —
                     les puces numérotées + le titre de section en dessous
                     (ex. "Vos informations") suffisent à situer l'utilisateur. */}
-                <span className={cn("hidden text-xs uppercase tracking-widest2 sm:inline", i === stepIndex ? "text-paper" : "text-paper/40")}>
+                <span className={cn("hidden text-xs uppercase tracking-widest2 sm:inline", i === stepIndex ? "text-paper" : "text-paper/60")}>
                   {STEP_LABELS[s]}
                 </span>
               </div>
@@ -369,7 +369,7 @@ export default function CheckoutPage() {
           <div className="flex flex-col gap-6">
             <h1 className="font-editorial text-2xl text-paper">{t("checkout.summary")}</h1>
             <div>
-              <p className="text-xs uppercase tracking-widest2 text-paper/40">{t("checkout.items")}</p>
+              <p className="text-xs uppercase tracking-widest2 text-paper/60">{t("checkout.items")}</p>
               <ul className="mt-3 divide-y divide-line">
                 {lines.map((l) => (
                   <li key={`${l.variantId}-${l.personalization ?? ""}`} className="flex justify-between gap-3 py-3 text-sm text-paper">
@@ -397,14 +397,14 @@ export default function CheckoutPage() {
                   <span>{freeShipping ? t("checkout.freeShipping") : t("checkout.shippingTBD")}</span>
                 </div>
                 <div className="flex justify-between border-t border-line pt-2">
-                  <span className="uppercase tracking-widest2 text-paper/50">{t("checkout.total")}</span>
+                  <span className="uppercase tracking-widest2 text-paper/70">{t("checkout.total")}</span>
                   <span>{formatPrice(grandTotal, locale)}</span>
                 </div>
               </div>
             </div>
 
             <div>
-              <p className="mb-2 text-xs uppercase tracking-widest2 text-paper/40">{t("checkout.promoCode")}</p>
+              <p className="mb-2 text-xs uppercase tracking-widest2 text-paper/60">{t("checkout.promoCode")}</p>
               {promo ? (
                 <div className="flex items-center justify-between border border-line px-4 py-3 text-sm">
                   <span className="text-paper">
@@ -416,7 +416,7 @@ export default function CheckoutPage() {
                       setPromoInput("");
                       setPromoMessage(null);
                     }}
-                    className="text-[11px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+                    className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
                   >
                     {t("common.remove")}
                   </button>
@@ -428,7 +428,7 @@ export default function CheckoutPage() {
                     maxLength={40}
                     onChange={(e) => setPromoInput(e.target.value)}
                     placeholder={t("checkout.promoCodePlaceholder")}
-                    className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/30 placeholder:normal-case focus:border-paper focus:outline-hidden"
+                    className="w-full border border-line bg-transparent px-4 py-3 text-sm uppercase text-paper placeholder:text-paper/50 placeholder:normal-case focus:border-paper focus:outline-hidden"
                   />
                   <button
                     onClick={applyPromoCode}
@@ -439,7 +439,7 @@ export default function CheckoutPage() {
                   </button>
                 </div>
               )}
-              {promoMessage && <p className="mt-2 text-xs text-paper/50">{promoMessage}</p>}
+              {promoMessage && <p className="mt-2 text-xs text-paper/70">{promoMessage}</p>}
             </div>
 
             <div className="border border-line bg-line/20 px-4 py-4 text-xs text-paper/60">
@@ -490,7 +490,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{label}</span>
+      <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">{label}</span>
       <input
         type={type}
         required={required}

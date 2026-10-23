@@ -14,13 +14,13 @@ export default function StockHistory({ movements, showProduct }: { movements: Mo
       </p>
     );
   }
-  if (movements.length === 0) return <p className="mt-3 text-sm text-paper/40">Aucun mouvement enregistré pour le moment.</p>;
+  if (movements.length === 0) return <p className="mt-3 text-sm text-paper/60">Aucun mouvement enregistré pour le moment.</p>;
 
   return (
     <div className="mt-3 overflow-x-auto">
       <table className="w-full min-w-[640px] text-left text-sm">
         <thead>
-          <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
+          <tr className="border-b border-line text-[11px] uppercase tracking-widest2 text-paper/60">
             <th className="py-2">Date</th>
             {showProduct && <th className="py-2">Produit</th>}
             <th className="py-2">Variante</th>
@@ -33,7 +33,7 @@ export default function StockHistory({ movements, showProduct }: { movements: Mo
         <tbody>
           {movements.map((m) => (
             <tr key={m.id} className="border-b border-line/50 align-top">
-              <td className="py-2 text-paper/50">
+              <td className="py-2 text-paper/70">
                 {m.createdAt.toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short", timeZone: "Africa/Abidjan" })}
               </td>
               {showProduct && (
@@ -53,14 +53,14 @@ export default function StockHistory({ movements, showProduct }: { movements: Mo
               <td className="py-2 pl-4 text-paper/70">
                 {MOVEMENT_REASONS[m.reason as MovementReason] ?? m.reason}
                 {m.orderId ? (
-                  <Link href={`/admin/commandes/${m.orderId}`} className="ml-1 text-paper/50 underline underline-offset-2 hover:text-paper">
+                  <Link href={`/admin/commandes/${m.orderId}`} className="ml-1 text-paper/70 underline underline-offset-2 hover:text-paper">
                     {m.note ?? "commande"}
                   </Link>
                 ) : (
-                  m.note && <span className="block text-[11px] text-paper/40">{m.note}</span>
+                  m.note && <span className="block text-[11px] text-paper/60">{m.note}</span>
                 )}
               </td>
-              <td className="py-2 text-[11px] text-paper/40">{m.actorEmail ?? "Client"}</td>
+              <td className="py-2 text-[11px] text-paper/60">{m.actorEmail ?? "Client"}</td>
             </tr>
           ))}
         </tbody>

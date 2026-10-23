@@ -22,7 +22,9 @@
     "switchToDarkMode": "מעבר למצב כהה"
   },
   "meta": {
-    "description": "JEUNE RICHE — סטריטוור יוקרתי, זהות שבטית."
+    "description": "JEUNE RICHE — סטריטוור יוקרתי, זהות שבטית.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "שפה",

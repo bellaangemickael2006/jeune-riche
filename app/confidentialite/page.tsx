@@ -14,7 +14,7 @@ async function getPolicy() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const policy = await getPolicy();
-  return { title: policy.title, description: policy.intro };
+  return { alternates: { canonical: "/confidentialite" }, title: policy.title, description: policy.intro };
 }
 
 export default async function ConfidentialitePage() {
@@ -22,7 +22,7 @@ export default async function ConfidentialitePage() {
   return (
     <article className="mx-auto max-w-2xl px-5 pb-24 pt-32 md:pt-40">
       <h1 className="font-editorial text-4xl text-paper md:text-5xl">{policy.title}</h1>
-      <p className="mt-3 text-xs uppercase tracking-widest2 text-paper/40">{policy.updated}</p>
+      <p className="mt-3 text-xs uppercase tracking-widest2 text-paper/60">{policy.updated}</p>
       <p className="mt-8 text-sm leading-relaxed text-paper/70">{policy.intro}</p>
       {policy.sections.map((section) => (
         <section key={section.title} className="mt-10">

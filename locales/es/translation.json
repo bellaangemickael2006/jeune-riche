@@ -22,7 +22,9 @@
     "switchToDarkMode": "Cambiar a modo oscuro"
   },
   "meta": {
-    "description": "JEUNE RICHE — streetwear de lujo, identidad tribal."
+    "description": "JEUNE RICHE — streetwear de lujo, identidad tribal.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Idioma",

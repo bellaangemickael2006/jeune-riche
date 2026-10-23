@@ -49,14 +49,14 @@ export default async function AdminOrdersPage({
             name="q"
             defaultValue={q ?? ""}
             placeholder="Référence, nom ou email…"
-            className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/30"
+            className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/50"
           />
         </form>
         <div className="flex flex-wrap gap-2">
           <Link
             href={filterHref(undefined)}
             className={cn(
-              "border px-3 py-1.5 text-[10px] uppercase tracking-widest2",
+              "border px-3 py-1.5 text-[11px] uppercase tracking-widest2",
               !statut ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
             )}
           >
@@ -67,7 +67,7 @@ export default async function AdminOrdersPage({
               key={s}
               href={filterHref(s)}
               className={cn(
-                "border px-3 py-1.5 text-[10px] uppercase tracking-widest2",
+                "border px-3 py-1.5 text-[11px] uppercase tracking-widest2",
                 statut === s ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
               )}
             >
@@ -82,14 +82,14 @@ export default async function AdminOrdersPage({
         {q && <input type="hidden" name="q" value={q} />}
         {statut && <input type="hidden" name="statut" value={statut} />}
         <label className="flex flex-col gap-1">
-          <span className="text-[10px] uppercase tracking-widest2 text-paper/40">Du</span>
+          <span className="text-[11px] uppercase tracking-widest2 text-paper/60">Du</span>
           <input type="date" name="du" className="border border-line bg-transparent px-2 py-1.5 text-paper scheme-dark" />
         </label>
         <label className="flex flex-col gap-1">
-          <span className="text-[10px] uppercase tracking-widest2 text-paper/40">Au</span>
+          <span className="text-[11px] uppercase tracking-widest2 text-paper/60">Au</span>
           <input type="date" name="au" className="border border-line bg-transparent px-2 py-1.5 text-paper scheme-dark" />
         </label>
-        <button type="submit" className="border border-paper px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink">
+        <button type="submit" className="border border-paper px-4 py-2 text-[11px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink">
           Exporter en CSV
         </button>
         {/* Même formulaire, autre destination : les bons de l'atelier. */}
@@ -97,11 +97,11 @@ export default async function AdminOrdersPage({
           type="submit"
           formAction="/admin/bons"
           formTarget="_blank"
-          className="border border-line px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper/80 hover:border-paper hover:text-paper"
+          className="border border-line px-4 py-2 text-[11px] uppercase tracking-widest2 text-paper/80 hover:border-paper hover:text-paper"
         >
           Imprimer les bons
         </button>
-        <span className="text-[11px] text-paper/35">
+        <span className="text-[11px] text-paper/60">
           {statut || q ? "Avec les filtres affichés ci-dessus." : "Toutes les commandes (ou la période choisie)."}
         </span>
       </form>
@@ -113,12 +113,12 @@ export default async function AdminOrdersPage({
       )}
 
       {available && orders.length === 0 ? (
-        <p className="mt-8 text-sm text-paper/40">Aucune commande trouvée.</p>
+        <p className="mt-8 text-sm text-paper/60">Aucune commande trouvée.</p>
       ) : (
         <div className="mt-8 overflow-x-auto">
         <table className="w-full min-w-[720px] text-left text-sm">
           <thead>
-            <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
+            <tr className="border-b border-line text-[11px] uppercase tracking-widest2 text-paper/60">
               <th className="py-2">Référence</th>
               <th className="py-2">Client</th>
               <th className="py-2">WhatsApp</th>
@@ -143,11 +143,11 @@ export default async function AdminOrdersPage({
                   <td className="py-3 text-paper/60">{o.items.length}</td>
                   <td className="py-3 text-paper/60">{formatPrice(Number(o.total))}</td>
                   <td className="py-3">
-                    <span className="border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
+                    <span className="border border-line px-2 py-1 text-[11px] uppercase tracking-widest2 text-paper/70">
                       {STATUS_LABEL[o.status]}
                     </span>
                   </td>
-                  <td className="py-3 text-paper/40">{o.createdAt.toLocaleDateString("fr-FR")}</td>
+                  <td className="py-3 text-paper/60">{o.createdAt.toLocaleDateString("fr-FR")}</td>
                 </tr>
               );
             })}

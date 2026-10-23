@@ -52,7 +52,7 @@ export default function MfaVerify() {
           {error}
         </p>
       )}
-      <p className="mt-6 text-[11px] leading-relaxed text-paper/40">
+      <p className="mt-6 text-[11px] leading-relaxed text-paper/60">
         Téléphone perdu ? Demandez à un autre propriétaire de réinitialiser votre double vérification (Admin → Équipe).
       </p>
     </MfaShell>

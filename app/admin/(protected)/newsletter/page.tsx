@@ -30,12 +30,12 @@ export default async function AdminNewsletterPage() {
       )}
 
       {available && subscribers.length === 0 ? (
-        <p className="mt-8 text-sm text-paper/40">Aucun abonné pour le moment.</p>
+        <p className="mt-8 text-sm text-paper/60">Aucun abonné pour le moment.</p>
       ) : (
         <div className="mt-8 overflow-x-auto">
         <table className="w-full min-w-[480px] text-left text-sm">
           <thead>
-            <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
+            <tr className="border-b border-line text-[11px] uppercase tracking-widest2 text-paper/60">
               <th className="py-2">Email</th>
               <th className="py-2">Source</th>
               <th className="py-2">Date</th>
@@ -47,12 +47,12 @@ export default async function AdminNewsletterPage() {
               <tr key={s.id} className="border-b border-line/50">
                 <td className="py-2 text-paper">{s.email}</td>
                 <td className="py-2 text-paper/60">{s.source}</td>
-                <td className="py-2 text-paper/40">{s.createdAt.toLocaleDateString("fr-FR")}</td>
+                <td className="py-2 text-paper/60">{s.createdAt.toLocaleDateString("fr-FR")}</td>
                 <td className="py-2 text-right">
                   <ActionForm action={deleteSubscriber.bind(null, s.id)}>
                     <ConfirmButton
                       confirmMessage={`Retirer ${s.email} de la newsletter ?`}
-                      className="text-[10px] uppercase tracking-widest2 text-paper/30 hover:text-paper"
+                      className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
                     >
                       Retirer
                     </ConfirmButton>

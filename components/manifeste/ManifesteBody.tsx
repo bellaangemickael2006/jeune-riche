@@ -29,7 +29,7 @@ export default async function ManifesteBody() {
       <section className="grid gap-10 border-t border-line px-5 py-20 md:grid-cols-[1fr_1.1fr] md:gap-16 md:px-10 md:py-28">
         <FadeIn className="flex flex-col justify-center">
           <p className="font-editorial text-heading text-paper">{t("manifesto.section2Title")}</p>
-          <p className="mt-6 max-w-sm text-body leading-relaxed text-paper/50">{t("manifesto.section2Body")}</p>
+          <p className="mt-6 max-w-sm text-body leading-relaxed text-paper/70">{t("manifesto.section2Body")}</p>
         </FadeIn>
         <FadeIn delay={0.1} x={24} className="relative aspect-4/5 overflow-hidden bg-studio">
           <Image
@@ -54,7 +54,7 @@ export default async function ManifesteBody() {
           />
         </FadeIn>
         <FadeIn className="order-1 flex flex-col justify-center md:order-2">
-          <p className="text-label text-paper/40">{t("manifesto.section3Label")}</p>
+          <p className="text-label text-paper/60">{t("manifesto.section3Label")}</p>
           <p className="mt-4 max-w-md font-editorial text-heading text-paper">{t("manifesto.section3Body")}</p>
         </FadeIn>
       </section>

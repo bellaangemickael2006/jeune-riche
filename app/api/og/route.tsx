@@ -1,4 +1,5 @@
 import { readFileSync } from "node:fs";
+import { rateLimit, clientIp } from "@/lib/rateLimit";
 import path from "node:path";
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
@@ -60,6 +61,12 @@ function litPolice(fichier: string): Buffer | null {
 const ANTON = litPolice("Anton-Regular.ttf");
 
 export async function GET(req: NextRequest) {
+  // Chaque prénom inédit coûte un rendu d'image : bornage par adresse IP
+  // (large : les robots de WhatsApp partagent quelques adresses ; les
+  // vignettes déjà générées restent servies par le cache).
+  if (!(await rateLimit(`og:${clientIp(req)}`, 120, 60_000))) {
+    return new Response("Trop de requêtes.", { status: 429 });
+  }
   const brut = req.nextUrl.searchParams.get("nom") ?? "";
   // Même nettoyage que la saisie clavier et que le rendu serveur de la page :
   // une URL fabriquée à la main ne doit pas pouvoir injecter autre chose que

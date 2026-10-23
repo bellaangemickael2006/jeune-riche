@@ -57,7 +57,7 @@ export default function ReviewForm({
 
   if (!isLoggedIn) {
     return (
-      <p className="mt-6 border-t border-line pt-6 text-sm text-paper/50">
+      <p className="mt-6 border-t border-line pt-6 text-sm text-paper/70">
         <Link href="/compte" className="underline underline-offset-4 hover:text-paper">
           {t("product.loginToReview")}
         </Link>{" "}
@@ -124,7 +124,7 @@ export default function ReviewForm({
 
   return (
     <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-3 border-t border-line pt-6">
-      <p className="text-label text-paper/50">{t("product.leaveReview")}</p>
+      <p className="text-label text-paper/70">{t("product.leaveReview")}</p>
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((n) => (
           <button
@@ -133,7 +133,7 @@ export default function ReviewForm({
             onClick={() => setRating(n)}
             aria-label={t("product.starRating", { count: n })}
             aria-pressed={n === rating}
-            className={cn("text-lg leading-none transition-colors", n <= rating ? "text-paper" : "text-paper/25 hover:text-paper/50")}
+            className={cn("text-lg leading-none transition-colors", n <= rating ? "text-paper" : "text-paper/25 hover:text-paper")}
           >
             ★
           </button>
@@ -147,7 +147,7 @@ export default function ReviewForm({
         maxLength={MAX_REVIEW_LENGTH}
         rows={3}
         placeholder={t("product.reviewPlaceholder")}
-        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+        className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
       />
 
       <div className="flex flex-wrap items-center gap-2">
@@ -166,13 +166,13 @@ export default function ReviewForm({
           </div>
         ))}
         {photos.length < MAX_REVIEW_PHOTOS && (
-          <label className="flex h-16 cursor-pointer items-center justify-center border border-dashed border-line px-4 text-[11px] uppercase tracking-widest2 text-paper/50 transition-colors hover:border-paper hover:text-paper">
+          <label className="flex h-16 cursor-pointer items-center justify-center border border-dashed border-line px-4 text-[11px] uppercase tracking-widest2 text-paper/70 transition-colors hover:border-paper hover:text-paper">
             + {t("product.reviewAddPhotos")}
             <input ref={fileRef} type="file" accept="image/*" multiple onChange={onPick} className="sr-only" />
           </label>
         )}
       </div>
-      <p className="text-[11px] text-paper/35">{t("product.reviewPhotosHint", { count: MAX_REVIEW_PHOTOS })}</p>
+      <p className="text-[11px] text-paper/60">{t("product.reviewPhotosHint", { count: MAX_REVIEW_PHOTOS })}</p>
 
       {state && !state.ok && <p className="text-xs text-paper/60">{state.message}</p>}
       {photoError && <p className="text-xs text-paper/60">{photoError}</p>}

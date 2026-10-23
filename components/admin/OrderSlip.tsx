@@ -52,13 +52,13 @@ export default function OrderSlip({ order }: { order: SlipOrder }) {
 
       <section className="mt-5 grid grid-cols-2 gap-6">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Client</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500">Client</p>
           <p className="mt-1 text-[15px] font-bold">{order.customerName}</p>
           {a.phone && <p>WhatsApp : {a.phone}</p>}
           {order.customerEmail && <p>{order.customerEmail}</p>}
         </div>
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500">Livraison</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500">Livraison</p>
           <p className="mt-1">{a.line1 || "—"}</p>
           <p>
             {[a.city, a.postalCode].filter(Boolean).join(" ")}
@@ -69,7 +69,7 @@ export default function OrderSlip({ order }: { order: SlipOrder }) {
 
       <table className="mt-6 w-full table-fixed border-collapse">
         <thead>
-          <tr className="border-y-2 border-black text-left text-[10px] uppercase tracking-[0.15em]">
+          <tr className="border-y-2 border-black text-left text-[11px] uppercase tracking-[0.15em]">
             <th className="w-[7%] py-2">✓</th>
             <th className="w-[41%] py-2">Article</th>
             <th className="w-[14%] py-2">Couleur</th>

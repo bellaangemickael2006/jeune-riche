@@ -25,12 +25,12 @@ export default function MfaShell({ title, children }: { title: string; children:
           className="jr-logo mx-auto h-10 w-10 object-contain"
         />
         <h1 className="mt-4 text-center font-editorial text-2xl text-paper">{title}</h1>
-        <p className="mt-1 text-center text-xs text-paper/40">JEUNE RICHE · Administration</p>
+        <p className="mt-1 text-center text-xs text-paper/60">JEUNE RICHE · Administration</p>
         <div className="mt-8">{children}</div>
         <button
           type="button"
           onClick={logout}
-          className="mt-8 w-full text-center text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper"
+          className="mt-8 w-full text-center text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper"
         >
           Se déconnecter
         </button>
@@ -53,7 +53,7 @@ export function CodeInput({ value, onChange }: { value: string; onChange: (v: st
       onChange={(e) => onChange(e.target.value.replace(/\D/g, "").slice(0, 6))}
       placeholder="000000"
       aria-label="Code à 6 chiffres"
-      className="w-full border border-line bg-transparent px-4 py-3 text-center font-mono text-2xl tracking-[0.5em] text-paper placeholder:text-paper/20 focus:border-paper focus:outline-hidden"
+      className="w-full border border-line bg-transparent px-4 py-3 text-center font-mono text-2xl tracking-[0.5em] text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
     />
   );
 }

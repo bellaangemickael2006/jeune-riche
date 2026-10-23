@@ -27,7 +27,7 @@ export default async function NewProductPage() {
       )}
 
       {available && categories.length === 0 ? (
-        <p className="mt-6 border border-line p-4 text-sm text-paper/50">
+        <p className="mt-6 border border-line p-4 text-sm text-paper/70">
           Aucune catégorie pour le moment.{" "}
           <Link href="/admin/categories" className="text-paper underline underline-offset-4">
             Créez d&apos;abord une catégorie
@@ -38,7 +38,7 @@ export default async function NewProductPage() {
         <ActionForm action={createProduct} className="mt-8 flex flex-col gap-4">
           <Field label="Nom" name="name" required />
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Catégorie</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Catégorie</span>
             <select
               name="categoryId"
               required
@@ -53,7 +53,7 @@ export default async function NewProductPage() {
           </label>
           <Field label="Prix (F CFA, laisser vide si à définir)" name="price" type="number" />
           <label className="block">
-            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Description</span>
+            <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Description</span>
             <textarea
               name="description"
               rows={4}
@@ -86,7 +86,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">{label}</span>
+      <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">{label}</span>
       <input
         type={type}
         name={name}

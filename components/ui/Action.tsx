@@ -29,11 +29,11 @@ const FAMILIES: Record<Family, string> = {
 // La variante « passer » vit dans le flux typographique : lui imposer une
 // hauteur de boîte la ferait ressembler aux deux autres.
 const BOX: Record<Size, string> = {
-  sm: "h-11 px-6 text-[10px]",
+  sm: "h-11 px-6 text-[11px]",
   md: "h-14 px-10 text-[11px]",
 };
 const FLOW: Record<Size, string> = {
-  sm: "pb-1 text-[10px]",
+  sm: "pb-1 text-[11px]",
   md: "pb-1.5 text-[11px]",
 };
 

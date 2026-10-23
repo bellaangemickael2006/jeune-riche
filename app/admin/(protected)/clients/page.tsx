@@ -31,12 +31,12 @@ export default async function AdminClientsPage({
             name="q"
             defaultValue={q ?? ""}
             placeholder="Rechercher un nom ou un email…"
-            className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/30"
+            className="w-full border border-line bg-transparent px-4 py-2 text-sm text-paper placeholder:text-paper/50"
           />
         </form>
         <a
           href={`/admin/export/clients${q ? `?q=${encodeURIComponent(q)}` : ""}`}
-          className="border border-paper px-4 py-2 text-[10px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
+          className="border border-paper px-4 py-2 text-[11px] uppercase tracking-widest2 text-paper hover:bg-paper hover:text-ink"
         >
           Exporter en CSV
         </a>
@@ -49,12 +49,12 @@ export default async function AdminClientsPage({
       )}
 
       {available && clients.length === 0 ? (
-        <p className="mt-8 text-sm text-paper/40">Aucun client trouvé.</p>
+        <p className="mt-8 text-sm text-paper/60">Aucun client trouvé.</p>
       ) : (
         <div className="mt-8 overflow-x-auto">
         <table className="w-full min-w-[600px] text-left text-sm">
           <thead>
-            <tr className="border-b border-line text-[10px] uppercase tracking-widest2 text-paper/40">
+            <tr className="border-b border-line text-[11px] uppercase tracking-widest2 text-paper/60">
               <th className="py-2">Nom</th>
               <th className="py-2">Email</th>
               <th className="py-2">Commandes</th>
@@ -77,7 +77,7 @@ export default async function AdminClientsPage({
                   <td className="py-2 text-paper/60">{c.email}</td>
                   <td className="py-2 text-paper/60">{c.orders.length}</td>
                   <td className="py-2 text-paper/60">{formatPrice(spent)}</td>
-                  <td className="py-2 text-paper/40">{c.createdAt.toLocaleDateString("fr-FR")}</td>
+                  <td className="py-2 text-paper/60">{c.createdAt.toLocaleDateString("fr-FR")}</td>
                 </tr>
               );
             })}

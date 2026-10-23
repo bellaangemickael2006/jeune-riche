@@ -65,13 +65,13 @@ export default function Footer() {
       <div className="px-5 pb-16 pt-14 md:px-10 md:pb-20 md:pt-16">
         <div className="grid gap-12 md:grid-cols-[1.2fr_repeat(3,1fr)]">
           <div>
-            <p className="text-body max-w-xs text-paper/50">{t("footer.newsletter")}</p>
+            <p className="text-body max-w-xs text-paper/70">{t("footer.newsletter")}</p>
             <NewsletterForm />
             <SocialLinks />
           </div>
           {COLUMNS.map((col) => (
             <div key={col.title}>
-              <p className="text-label text-paper/40">{col.title}</p>
+              <p className="text-label text-paper/60">{col.title}</p>
               <ul className="mt-4 space-y-3">
                 {col.links.map((link) => (
                   <li key={link.href}>
@@ -87,7 +87,7 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-16 flex flex-col gap-3 border-t border-line pt-6 text-caption text-paper/30 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 flex flex-col gap-3 border-t border-line pt-6 text-caption text-paper/60 sm:flex-row sm:items-center sm:justify-between">
           <span>{t("footer.copyright", { year: new Date().getFullYear() })}</span>
           <span>{t("footer.location")}</span>
         </div>

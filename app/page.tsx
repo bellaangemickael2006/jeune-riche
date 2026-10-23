@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Hero from "@/components/home/Hero";
 import CategoryGrid from "@/components/home/CategoryGrid";
 import Lookbook from "@/components/home/Lookbook";
@@ -6,6 +7,8 @@ import WelcomeToast from "@/components/home/WelcomeToast";
 import LoginWelcome from "@/components/home/LoginWelcome";
 import { getPublishedProducts } from "@/lib/data/products";
 import { getHomeContent } from "@/lib/data/homeContent";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function HomePage() {
   const products = await getPublishedProducts();

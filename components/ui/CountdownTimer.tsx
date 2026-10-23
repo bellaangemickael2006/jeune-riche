@@ -56,7 +56,7 @@ export default function CountdownTimer({
           ? `${hours}${t("drops.countdown.hoursShort")} ${minutes}${t("drops.countdown.minutesShort")}`
           : `${minutes}${t("drops.countdown.minutesShort")}`;
     return (
-      <span className="bg-ink px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper">{text}</span>
+      <span className="bg-ink px-2 py-1 text-[11px] uppercase tracking-widest2 text-paper">{text}</span>
     );
   }
 
@@ -69,12 +69,12 @@ export default function CountdownTimer({
 
   return (
     <div>
-      {labelKey && <p className="mb-2 text-label text-paper/50">{t(`drops.countdown.${labelKey}`)}</p>}
+      {labelKey && <p className="mb-2 text-label text-paper/70">{t(`drops.countdown.${labelKey}`)}</p>}
       <div className="flex gap-2">
         {units.map((u) => (
           <div key={u.caption} className="flex min-w-13 flex-col items-center border border-line px-2 py-2">
             <span className="font-display text-lg tabular-nums text-paper">{String(u.value).padStart(2, "0")}</span>
-            <span className="text-[9px] uppercase tracking-widest2 text-paper/40">{u.caption}</span>
+            <span className="text-[11px] uppercase tracking-widest2 text-paper/60">{u.caption}</span>
           </div>
         ))}
       </div>

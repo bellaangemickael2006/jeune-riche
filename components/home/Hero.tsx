@@ -75,7 +75,7 @@ export default function Hero({ content }: { content: HomeContent["hero"] }) {
       </div>
 
       <div className="absolute bottom-6 right-6 hidden flex-col items-center gap-2 text-white/50 md:flex">
-        <span className="text-[10px] uppercase tracking-widest2 [writing-mode:vertical-rl]">{t("home.scroll")}</span>
+        <span className="text-[11px] uppercase tracking-widest2 [writing-mode:vertical-rl]">{t("home.scroll")}</span>
         <span className="h-10 w-px animate-pulse bg-white/40" />
       </div>
     </section>

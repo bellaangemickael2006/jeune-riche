@@ -14,7 +14,7 @@ export default async function AdminSettingsPage() {
   return (
     <div>
       <h1 className="font-display text-2xl uppercase text-paper">Paramètres</h1>
-      <p className="mt-2 max-w-lg text-xs text-paper/40">
+      <p className="mt-2 max-w-lg text-xs text-paper/60">
         Ces valeurs sont utilisées directement par le site (seuil de livraison offerte affiché au
         paiement, coordonnées de contact affichées aux clients).
       </p>
@@ -26,15 +26,15 @@ export default async function AdminSettingsPage() {
       ) : (
         <ActionForm action={updateStoreSettings} className="mt-8 flex max-w-md flex-col gap-6">
           <div>
-            <p className="mb-4 border-b border-line pb-2 text-xs uppercase tracking-widest2 text-paper/50">
+            <p className="mb-4 border-b border-line pb-2 text-xs uppercase tracking-widest2 text-paper/70">
               Livraison
             </p>
-            <p className="text-xs text-paper/40">
+            <p className="text-xs text-paper/60">
               Les frais de livraison varient selon la destination — communiqués directement au client
               par message, pas de montant fixe ici.
             </p>
             <label className="mt-4 block">
-              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
+              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">
                 Livraison gratuite à partir de (F CFA) — laisser vide pour désactiver
               </span>
               <input
@@ -51,26 +51,26 @@ export default async function AdminSettingsPage() {
           </div>
 
           <div>
-            <p className="mb-4 border-b border-line pb-2 text-xs uppercase tracking-widest2 text-paper/50">
+            <p className="mb-4 border-b border-line pb-2 text-xs uppercase tracking-widest2 text-paper/70">
               Contact
             </p>
             <label className="block">
-              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Email de contact</span>
+              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Email de contact</span>
               <input
                 name="contactEmail"
                 type="email"
                 defaultValue={settings.contactEmail ?? ""}
                 placeholder="ekipjeuneriche@gmail.com"
-                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30"
+                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50"
               />
             </label>
             <label className="mt-4 block">
-              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">Téléphone / WhatsApp</span>
+              <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">Téléphone / WhatsApp</span>
               <input
                 name="contactPhone"
                 defaultValue={settings.contactPhone ?? ""}
                 placeholder="+225 07 00 59 05 04"
-                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30"
+                className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50"
               />
             </label>
           </div>
@@ -86,8 +86,8 @@ export default async function AdminSettingsPage() {
 
       {isOwner && (
       <section className="mt-16 max-w-md border-t border-line pt-8">
-        <p className="text-xs uppercase tracking-widest2 text-paper/50">Mode démo — formater les données</p>
-        <p className="mt-2 text-xs text-paper/40">
+        <p className="text-xs uppercase tracking-widest2 text-paper/70">Mode démo — formater les données</p>
+        <p className="mt-2 text-xs text-paper/60">
           Remet la boutique à zéro avant une démonstration : choisissez ce qui doit être effacé. Les comptes
           administrateurs, les catégories et les paramètres ci-dessus ne sont jamais touchés.{" "}
           <strong className="text-paper/70">Action définitive, sans retour possible.</strong>

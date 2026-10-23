@@ -29,17 +29,17 @@ export default async function AdminDropsPage() {
 
       {available && (
         <ul className="mt-8 divide-y divide-line">
-          {drops.length === 0 && <p className="py-4 text-sm text-paper/40">Aucun drop actuellement.</p>}
+          {drops.length === 0 && <p className="py-4 text-sm text-paper/60">Aucun drop actuellement.</p>}
           {drops.map((d) => (
             <li key={d.id} className="flex items-center justify-between gap-3 py-4">
               <Link href={`/admin/drops/${d.id}`} className="group min-w-0">
                 <p className="text-sm text-paper group-hover:underline">{d.name}</p>
-                <p className="text-xs text-paper/40">
+                <p className="text-xs text-paper/60">
                   {d.startsAt.toLocaleDateString("fr-FR")}
                   {d.endsAt ? ` → ${d.endsAt.toLocaleDateString("fr-FR")}` : ""} · {d.products.length} produit(s)
                 </p>
               </Link>
-              <span className="shrink-0 border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
+              <span className="shrink-0 border border-line px-2 py-1 text-[11px] uppercase tracking-widest2 text-paper/70">
                 {DROP_STATUS_LABEL[d.status]}
               </span>
             </li>
@@ -48,19 +48,19 @@ export default async function AdminDropsPage() {
       )}
 
       <ActionForm action={createDrop} resetOnSuccess className="mt-10 flex max-w-md flex-col gap-4 border-t border-line pt-8">
-        <p className="text-xs uppercase tracking-widest2 text-paper/50">Créer un drop</p>
+        <p className="text-xs uppercase tracking-widest2 text-paper/70">Créer un drop</p>
         <label className="block">
-          <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/40">Nom</span>
+          <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Nom</span>
           <input
             name="name"
             required
             placeholder="Nom"
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50"
           />
         </label>
         <div className="grid grid-cols-2 gap-4">
           <label className="block">
-            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/40">Début</span>
+            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Début</span>
             <input
               name="startsAt"
               type="datetime-local"
@@ -69,7 +69,7 @@ export default async function AdminDropsPage() {
             />
           </label>
           <label className="block">
-            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/40">
+            <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">
               Fin (optionnelle)
             </span>
             <input
@@ -80,16 +80,16 @@ export default async function AdminDropsPage() {
           </label>
         </div>
         <label className="block">
-          <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/40">Description</span>
+          <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Description</span>
           <textarea
             name="description"
             rows={3}
             placeholder="Description"
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50"
           />
         </label>
         <SubmitButton className="w-fit bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">Créer</SubmitButton>
-        <p className="text-[11px] text-paper/30">
+        <p className="text-[11px] text-paper/60">
           Statut initial déterminé automatiquement selon la date de début (à ajuster ensuite si besoin).
         </p>
       </ActionForm>

@@ -94,7 +94,7 @@ export function ImageUploadForm({ productId, colors }: { productId: string; colo
   return (
     <form onSubmit={onSubmit} className="mt-4 flex flex-wrap items-start gap-4">
       <div className="flex flex-col gap-2">
-        <span className="text-[10px] uppercase tracking-widest2 text-paper/40">Fichier image</span>
+        <span className="text-[11px] uppercase tracking-widest2 text-paper/60">Fichier image</span>
         <input
           ref={fileRef}
           type="file"
@@ -110,7 +110,7 @@ export function ImageUploadForm({ productId, colors }: { productId: string; colo
         )}
       </div>
       <label className="block">
-        <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Alt</span>
+        <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Alt</span>
         <input
           value={alt}
           onChange={(e) => setAlt(e.target.value)}
@@ -118,7 +118,7 @@ export function ImageUploadForm({ productId, colors }: { productId: string; colo
         />
       </label>
       <label className="block">
-        <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Type</span>
+        <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Type</span>
         <select
           value={type}
           onChange={(e) => setType(e.target.value as (typeof IMAGE_TYPES)[number])}
@@ -133,7 +133,7 @@ export function ImageUploadForm({ productId, colors }: { productId: string; colo
       </label>
       {colors.length > 0 && (
         <label className="block">
-          <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">
+          <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">
             Couleur (pour changer le rendu selon le nuancier client)
           </span>
           <select
@@ -341,7 +341,7 @@ export function ModelUploadForm({ productId, colors }: { productId: string; colo
     <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-4">
       <div className="flex flex-wrap items-end gap-4">
         <label className="flex flex-col gap-2">
-          <span className="text-[10px] uppercase tracking-widest2 text-paper/40">Fichier .glb</span>
+          <span className="text-[11px] uppercase tracking-widest2 text-paper/60">Fichier .glb</span>
           <input
             ref={fileRef}
             type="file"
@@ -351,7 +351,7 @@ export function ModelUploadForm({ productId, colors }: { productId: string; colo
           />
         </label>
         <label className="block">
-          <span className="mb-1 block text-[10px] uppercase tracking-widest2 text-paper/40">Couleur du modèle</span>
+          <span className="mb-1 block text-[11px] uppercase tracking-widest2 text-paper/60">Couleur du modèle</span>
           <select
             value={color}
             onChange={(e) => setColor(e.target.value)}

@@ -50,14 +50,14 @@ export default function DemoResetForm() {
             <input type="checkbox" name={o.name} defaultChecked={o.defaultChecked} className="mt-1 h-4 w-4" />
             <span>
               {o.label}
-              <span className="block text-[11px] text-paper/40">{o.hint}</span>
+              <span className="block text-[11px] text-paper/60">{o.hint}</span>
             </span>
           </label>
         ))}
       </fieldset>
 
       <label className="block">
-        <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/50">
+        <span className="mb-2 block text-xs uppercase tracking-widest2 text-paper/70">
           Tapez {RESET_CONFIRMATION} pour confirmer
         </span>
         <input
@@ -81,7 +81,7 @@ export default function DemoResetForm() {
         <button
           type="button"
           disabled
-          className="w-fit border border-line px-6 py-3 text-xs uppercase tracking-widest2 text-paper/30"
+          className="w-fit border border-line px-6 py-3 text-xs uppercase tracking-widest2 text-paper/60"
         >
           Formater les données
         </button>

@@ -82,7 +82,7 @@ export default function AddToCart({
     <div className="flex flex-col gap-6">
       {colors.length > 0 && (
         <div>
-          <p className="mb-2 text-label text-paper/50">{t("product.color")}</p>
+          <p className="mb-2 text-label text-paper/70">{t("product.color")}</p>
           <div className="flex flex-wrap gap-4">
             {colors.map((c) => (
               <button
@@ -101,7 +101,7 @@ export default function AddToCart({
                     color === c ? "border-paper ring-1 ring-offset-2 ring-offset-ink ring-paper" : "border-line/60"
                   )}
                 />
-                <span className={cn("text-[10px] uppercase tracking-wide", color === c ? "text-paper" : "text-paper/40")}>
+                <span className={cn("text-[11px] uppercase tracking-wide", color === c ? "text-paper" : "text-paper/60")}>
                   {c}
                 </span>
               </button>
@@ -112,7 +112,7 @@ export default function AddToCart({
 
       {sizesForColor.length > 0 && (
         <div>
-          <p className="mb-3 text-label text-paper/50">{t("product.size")}</p>
+          <p className="mb-3 text-label text-paper/70">{t("product.size")}</p>
           {/* Les tailles vivaient dans un <select> natif : le composant le
               plus anonyme du web pour une décision qui mérite d'être vue — et
               elles en sortaient dans l'ordre d'insertion en base (XL, M, L,
@@ -161,7 +161,7 @@ export default function AddToCart({
             disabled={!canAdd}
             className={cn(
               "mt-4 w-full px-6 py-3.5 text-xs uppercase tracking-widest2 transition-all",
-              canAdd ? "bg-paper text-ink hover:opacity-90" : "cursor-not-allowed bg-line text-paper/40"
+              canAdd ? "bg-paper text-ink hover:opacity-90" : "cursor-not-allowed bg-line text-paper/60"
             )}
           >
             {locked
@@ -206,7 +206,7 @@ export default function AddToCart({
 
       {personalizationEnabled && (
         <div>
-          <p className="mb-2 text-label text-paper/50">{t("product.personalization")}</p>
+          <p className="mb-2 text-label text-paper/70">{t("product.personalization")}</p>
           <input
             type="text"
             value={personalization}
@@ -215,9 +215,9 @@ export default function AddToCart({
             }
             maxLength={personalizationMaxLen}
             placeholder={t("product.personalizationPlaceholder")}
-            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+            className="w-full border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
           />
-          <div className="mt-2 flex items-center justify-between text-[11px] text-paper/40">
+          <div className="mt-2 flex items-center justify-between text-[11px] text-paper/60">
             <span>{t("product.personalizationHint")}</span>
             <span>
               {personalization.length}/{personalizationMaxLen}
@@ -225,7 +225,7 @@ export default function AddToCart({
           </div>
           {personalization && (
             <div className="mt-4 flex flex-col items-center gap-3 border border-line bg-line/20 px-6 py-10">
-              <p className="text-label text-paper/30">{t("product.personalizationPreview")}</p>
+              <p className="text-label text-paper/60">{t("product.personalizationPreview")}</p>
               <p className="font-display text-display uppercase leading-none text-paper">
                 {personalization}
               </p>
@@ -292,7 +292,7 @@ function NotifyMe({ variantId }: { variantId: string }) {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder={t("product.notifyMePlaceholder")}
-        className="min-w-0 flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/30 focus:border-paper focus:outline-hidden"
+        className="min-w-0 flex-1 border border-line bg-transparent px-4 py-3 text-sm text-paper placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
       />
       <button
         disabled={pending}

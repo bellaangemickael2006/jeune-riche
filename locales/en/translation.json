@@ -22,7 +22,9 @@
     "switchToDarkMode": "Switch to dark mode"
   },
   "meta": {
-    "description": "Ivorian streetwear you can personalise: t-shirts, polos, shirts, joggers and caps printed with your name. Delivery in Abidjan and across Côte d'Ivoire."
+    "description": "Ivorian streetwear you can personalise: t-shirts, polos, shirts, joggers and caps printed with your name. Delivery in Abidjan and across Côte d'Ivoire.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Language",

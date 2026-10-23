@@ -85,12 +85,12 @@ export default async function AtelierPage({
   return (
     <div className="mx-auto min-h-screen max-w-[1400px] bg-ink px-5 pb-24 pt-28 md:px-10 md:pt-36">
       <div className="flex items-baseline justify-between gap-6 border-t border-line pt-4">
-        <span className="text-label text-paper/30">{t("atelier.eyebrow")}</span>
+        <span className="text-label text-paper/60">{t("atelier.eyebrow")}</span>
       </div>
       <h1 className="mt-6 max-w-4xl font-editorial text-heading-lg leading-[0.98] text-paper md:mt-8 md:text-[4.5rem]">
         {t("atelier.title")}
       </h1>
-      <p className="text-body mt-6 max-w-md text-paper/50">{t("atelier.intro")}</p>
+      <p className="text-body mt-6 max-w-md text-paper/70">{t("atelier.intro")}</p>
 
       {/* ?nom=KOFI ouvre l'atelier avec le nom déjà composé sur la pièce :
           c'est ce qui rend une création partageable par lien, sur WhatsApp

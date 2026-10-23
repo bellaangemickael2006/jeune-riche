@@ -22,7 +22,9 @@
     "switchToDarkMode": "Koyu moda geç"
   },
   "meta": {
-    "description": "JEUNE RICHE — lüks sokak modası, kabile kimliği."
+    "description": "JEUNE RICHE — lüks sokak modası, kabile kimliği.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Dil",

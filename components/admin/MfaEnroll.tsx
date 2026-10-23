@@ -73,7 +73,7 @@ export default function MfaEnroll() {
           {/* QR code fourni par Supabase (image SVG en data:, autorisée par la CSP). */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={enrollment.qrCode} alt="QR code de double vérification" className="mx-auto mt-6 h-44 w-44 bg-white p-2" />
-          <p className="mt-4 text-[11px] leading-relaxed text-paper/50">
+          <p className="mt-4 text-[11px] leading-relaxed text-paper/70">
             Impossible de scanner ? Saisissez cette clé à la main. Gardez-la aussi en lieu sûr : elle permet de réinstaller
             le code sur un nouveau téléphone.
           </p>
@@ -92,7 +92,7 @@ export default function MfaEnroll() {
           </form>
         </>
       ) : (
-        !error && <p className="mt-6 text-center text-xs text-paper/40">Préparation…</p>
+        !error && <p className="mt-6 text-center text-xs text-paper/60">Préparation…</p>
       )}
       {error && (
         <p role="alert" className="mt-4 border border-paper/30 px-3 py-2 text-xs text-paper">

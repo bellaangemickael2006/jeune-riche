@@ -22,7 +22,9 @@
     "switchToDarkMode": "สลับเป็นโหมดมืด"
   },
   "meta": {
-    "description": "JEUNE RICHE — สตรีทแวร์หรูหรา อัตลักษณ์ชนเผ่า"
+    "description": "JEUNE RICHE — สตรีทแวร์หรูหรา อัตลักษณ์ชนเผ่า",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "ภาษา",

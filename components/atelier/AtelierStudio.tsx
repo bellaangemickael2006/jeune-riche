@@ -78,7 +78,7 @@ export default function AtelierStudio({
 
   if (!piece || !activeImage) {
     return (
-      <p className="text-body max-w-md text-paper/50">{t("atelier.unavailable")}</p>
+      <p className="text-body max-w-md text-paper/70">{t("atelier.unavailable")}</p>
     );
   }
 
@@ -148,7 +148,7 @@ export default function AtelierStudio({
       <div className="max-w-md">
         {/* 1 — le nom. C'est la première décision, pas la dernière. */}
         <label className="block">
-          <span className="text-label text-paper/50">{t("atelier.stepName")}</span>
+          <span className="text-label text-paper/70">{t("atelier.stepName")}</span>
           <input
             type="text"
             value={name}
@@ -156,9 +156,9 @@ export default function AtelierStudio({
             maxLength={piece.personalizationMaxLen}
             placeholder={t("product.personalizationPlaceholder")}
             autoComplete="off"
-            className="mt-3 w-full border border-line bg-transparent px-4 py-4 font-display text-lg uppercase tracking-widest2 text-paper placeholder:font-body placeholder:text-sm placeholder:normal-case placeholder:tracking-normal placeholder:text-paper/25 focus:border-paper focus:outline-hidden"
+            className="mt-3 w-full border border-line bg-transparent px-4 py-4 font-display text-lg uppercase tracking-widest2 text-paper placeholder:font-body placeholder:text-sm placeholder:normal-case placeholder:tracking-normal placeholder:text-paper/50 focus:border-paper focus:outline-hidden"
           />
-          <span className="mt-2 flex items-center justify-between text-[11px] text-paper/40">
+          <span className="mt-2 flex items-center justify-between text-[11px] text-paper/60">
             <span>{t("product.personalizationHint")}</span>
             <span className="tabular-nums">
               {name.length}/{piece.personalizationMaxLen}
@@ -169,7 +169,7 @@ export default function AtelierStudio({
         {/* 2 — la pièce. */}
         {usable.length > 1 && (
           <div className="mt-10">
-            <p className="text-label text-paper/50">{t("atelier.stepPiece")}</p>
+            <p className="text-label text-paper/70">{t("atelier.stepPiece")}</p>
             <div className="mt-3 flex flex-wrap divide-x divide-line border border-line">
               {usable.map((p) => (
                 <button
@@ -190,7 +190,7 @@ export default function AtelierStudio({
         {/* 3 — le coloris, déduit de la photo calibrée sélectionnée. */}
         {colorOfImage && (
           <div className="mt-10">
-            <p className="text-label text-paper/50">{t("product.color")}</p>
+            <p className="text-label text-paper/70">{t("product.color")}</p>
             <div className="mt-3 flex items-center gap-3">
               <span
                 style={{ backgroundColor: swatchColor(colorOfImage) }}
@@ -204,7 +204,7 @@ export default function AtelierStudio({
         {/* 4 — la taille. */}
         {sizes.length > 0 && (
           <div className="mt-10">
-            <p className="text-label text-paper/50">{t("product.size")}</p>
+            <p className="text-label text-paper/70">{t("product.size")}</p>
             <div
               role="radiogroup"
               aria-label={t("product.size")}

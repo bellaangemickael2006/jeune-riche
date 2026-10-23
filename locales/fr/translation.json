@@ -22,7 +22,9 @@
     "switchToDarkMode": "Passer en mode sombre"
   },
   "meta": {
-    "description": "Streetwear ivoirien à personnaliser : t-shirts, polos, chemises, joggers et casquettes marqués à votre nom. Livraison à Abidjan et partout en Côte d'Ivoire."
+    "description": "Streetwear ivoirien à personnaliser : t-shirts, polos, chemises, joggers et casquettes marqués à votre nom. Livraison à Abidjan et partout en Côte d'Ivoire.",
+    "checkout": "Commande",
+    "notFound": "Page introuvable"
   },
   "language": {
     "label": "Langue",

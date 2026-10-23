@@ -14,9 +14,9 @@ export default async function CategoryGrid({ items, content }: { items: Showcase
         {Array.from({ length: 6 }).map((_, i) => (
           <span
             key={i}
-            className="font-display flex items-center gap-6 whitespace-nowrap text-sm uppercase tracking-widest2 text-paper/30"
+            className="font-display flex items-center gap-6 whitespace-nowrap text-sm uppercase tracking-widest2 text-paper/60"
           >
-            {content.marquee || "Jeune Riche"} <span className="text-paper/50">•</span>
+            {content.marquee || "Jeune Riche"} <span className="text-paper/70">•</span>
           </span>
         ))}
       </Marquee>
@@ -38,7 +38,7 @@ export default async function CategoryGrid({ items, content }: { items: Showcase
       {items.length > 0 ? (
         <ProductShowcase items={items} />
       ) : (
-        <p className="px-5 text-sm text-paper/40 md:px-10">{t("home.noProducts")}</p>
+        <p className="px-5 text-sm text-paper/60 md:px-10">{t("home.noProducts")}</p>
       )}
     </section>
   );

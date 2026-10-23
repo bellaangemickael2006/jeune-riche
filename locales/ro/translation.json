@@ -22,7 +22,9 @@
     "switchToDarkMode": "Comută la modul întunecat"
   },
   "meta": {
-    "description": "JEUNE RICHE — streetwear de lux, identitate tribală."
+    "description": "JEUNE RICHE — streetwear de lux, identitate tribală.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Limbă",

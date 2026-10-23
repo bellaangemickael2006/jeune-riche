@@ -22,7 +22,9 @@
     "switchToDarkMode": "Перемкнути на темну тему"
   },
   "meta": {
-    "description": "JEUNE RICHE — люксовий вуличний одяг, племінна ідентичність."
+    "description": "JEUNE RICHE — люксовий вуличний одяг, племінна ідентичність.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Мова",

@@ -82,7 +82,7 @@ export default function SplashScreen() {
             pourcentage se retrouve collé à la dernière au lieu de suivre le
             texte sur une seule ligne. */}
         <div className="flex items-center gap-2 whitespace-nowrap text-[11px] uppercase tracking-widest2">
-          <span className="text-paper/50">Chargement de la boutique</span>
+          <span className="text-paper/70">Chargement de la boutique</span>
           <span className="tabular-nums text-paper">{progress}%</span>
         </div>
       </div>

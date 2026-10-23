@@ -26,9 +26,9 @@ export default function Error({
 
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 px-5 pt-24 text-center">
-      <p className="text-xs uppercase tracking-widest2 text-paper/40">{t("errors.generic.eyebrow")}</p>
+      <p className="text-xs uppercase tracking-widest2 text-paper/60">{t("errors.generic.eyebrow")}</p>
       <h1 className="font-editorial text-3xl text-paper md:text-4xl">{t("errors.generic.title")}</h1>
-      <p className="max-w-sm text-sm leading-relaxed text-paper/50">{t("errors.generic.message")}</p>
+      <p className="max-w-sm text-sm leading-relaxed text-paper/70">{t("errors.generic.message")}</p>
       <div className="mt-2 flex items-center gap-6">
         <button
           onClick={reset}

@@ -142,7 +142,7 @@ export default async function AdminDashboard({
       <div>
         <h1 className="font-display text-2xl uppercase text-paper">Bonjour{user.name ? ` ${user.name}` : ""}</h1>
         {refused && <p className="mt-4 border border-paper/30 bg-paper/5 px-4 py-3 text-xs text-paper">{refused}</p>}
-        <p className="mt-4 text-sm text-paper/50">Vos accès :</p>
+        <p className="mt-4 text-sm text-paper/70">Vos accès :</p>
         <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
           {shortcuts.map(([href, label]) => (
             <Link key={href} href={href} className="border border-line p-5 text-sm uppercase tracking-widest2 text-paper hover:border-paper/40">
@@ -193,7 +193,7 @@ export default async function AdminDashboard({
               href={`/admin?periode=${p}`}
               aria-current={p === period ? "page" : undefined}
               className={cn(
-                "border px-3 py-1.5 text-[10px] uppercase tracking-widest2",
+                "border px-3 py-1.5 text-[11px] uppercase tracking-widest2",
                 p === period ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
               )}
             >
@@ -206,7 +206,7 @@ export default async function AdminDashboard({
       <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
         {cards.map((card) => (
           <Link key={card.label} href={card.href} className="border border-line p-5 transition-colors hover:border-paper/40">
-            <p className="text-[10px] uppercase tracking-widest2 text-paper/40">{card.label}</p>
+            <p className="text-[11px] uppercase tracking-widest2 text-paper/60">{card.label}</p>
             <p className="mt-2 font-display text-2xl text-paper">{card.value}</p>
           </Link>
         ))}
@@ -214,12 +214,12 @@ export default async function AdminDashboard({
 
       <section className="mt-10 border border-line p-5">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
-          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Ventes par jour — {period} jours</h2>
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Ventes par jour — {period} jours</h2>
           <p className="text-sm text-paper">
             {formatPrice(stats.periodRevenue)}
-            <span className="text-paper/40"> · {stats.periodOrders} commande{stats.periodOrders > 1 ? "s" : ""}</span>
+            <span className="text-paper/60"> · {stats.periodOrders} commande{stats.periodOrders > 1 ? "s" : ""}</span>
             {stats.periodTrend !== null && (
-              <span className={cn("ml-2 text-xs", stats.periodTrend >= 0 ? "text-paper" : "text-paper/50")}>
+              <span className={cn("ml-2 text-xs", stats.periodTrend >= 0 ? "text-paper" : "text-paper/70")}>
                 {stats.periodTrend >= 0 ? "▲" : "▼"} {percent(Math.abs(stats.periodTrend))} vs période précédente
               </span>
             )}
@@ -232,16 +232,16 @@ export default async function AdminDashboard({
 
       <div className="mt-10 grid gap-10 md:grid-cols-2">
         <section>
-          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Meilleures pièces — {period} jours</h2>
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Meilleures pièces — {period} jours</h2>
           {stats.topProducts.length === 0 ? (
-            <p className="mt-3 text-sm text-paper/40">Pas encore de vente sur la période.</p>
+            <p className="mt-3 text-sm text-paper/60">Pas encore de vente sur la période.</p>
           ) : (
             <ul className="mt-3 space-y-3">
               {stats.topProducts.map((p, i) => (
                 <li key={p.name} className="text-sm">
                   <div className="flex items-baseline justify-between gap-3">
                     <span className="text-paper">
-                      <span className="text-paper/40">{i + 1}.</span> {p.name}
+                      <span className="text-paper/60">{i + 1}.</span> {p.name}
                     </span>
                     <span className="shrink-0 text-paper/60">
                       {p.quantity} vendu{p.quantity > 1 ? "s" : ""} · {formatPrice(p.revenue)}
@@ -257,15 +257,15 @@ export default async function AdminDashboard({
         </section>
 
         <section id="conversion">
-          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Conversion des paniers — {period} jours</h2>
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Conversion des paniers — {period} jours</h2>
           {stats.funnel.started === 0 ? (
-            <p className="mt-3 text-sm text-paper/40">
+            <p className="mt-3 text-sm text-paper/60">
               Aucun panier commencé sur la période (un panier est compté dès que l&apos;email est saisi au checkout).
             </p>
           ) : (
             <>
               <p className="mt-3 font-display text-4xl text-paper">{percent(stats.funnel.rate)}</p>
-              <p className="text-xs text-paper/40">des paniers commencés deviennent une commande</p>
+              <p className="text-xs text-paper/60">des paniers commencés deviennent une commande</p>
               <dl className="mt-5 space-y-3 text-sm">
                 {[
                   { label: "Paniers commencés", value: stats.funnel.started },
@@ -291,9 +291,9 @@ export default async function AdminDashboard({
 
       <div className="mt-10 grid gap-10 md:grid-cols-2">
         <section>
-          <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Statut des commandes — {period} jours</h2>
+          <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Statut des commandes — {period} jours</h2>
           {statusTotal === 0 ? (
-            <p className="mt-3 text-sm text-paper/40">Aucune commande sur la période.</p>
+            <p className="mt-3 text-sm text-paper/60">Aucune commande sur la période.</p>
           ) : (
             <>
               <div className="mt-4 flex h-2 overflow-hidden bg-line">
@@ -319,13 +319,13 @@ export default async function AdminDashboard({
 
         <section>
           <div className="flex items-center justify-between">
-            <h2 className="text-xs uppercase tracking-widest2 text-paper/50">Commandes récentes</h2>
-            <Link href="/admin/commandes" className="text-[10px] uppercase tracking-widest2 text-paper/40 hover:text-paper">
+            <h2 className="text-xs uppercase tracking-widest2 text-paper/70">Commandes récentes</h2>
+            <Link href="/admin/commandes" className="text-[11px] uppercase tracking-widest2 text-paper/60 hover:text-paper">
               Tout voir
             </Link>
           </div>
           {stats.recentOrders.length === 0 ? (
-            <p className="mt-3 text-sm text-paper/40">Aucune commande pour le moment.</p>
+            <p className="mt-3 text-sm text-paper/60">Aucune commande pour le moment.</p>
           ) : (
             <ul className="mt-3 divide-y divide-line border-y border-line">
               {stats.recentOrders.map((o) => (
@@ -333,9 +333,9 @@ export default async function AdminDashboard({
                   <Link href={`/admin/commandes/${o.id}`} className="text-paper hover:underline">
                     {o.orderNumber}
                   </Link>
-                  <span className="text-paper/50">{o.customerName}</span>
+                  <span className="text-paper/70">{o.customerName}</span>
                   <span className="text-paper/60">{formatPrice(Number(o.total))}</span>
-                  <span className="border border-line px-2 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
+                  <span className="border border-line px-2 py-1 text-[11px] uppercase tracking-widest2 text-paper/70">
                     {STATUS_LABEL[o.status] ?? o.status}
                   </span>
                 </li>

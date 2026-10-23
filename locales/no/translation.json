@@ -22,7 +22,9 @@
     "switchToDarkMode": "Bytt til mørk modus"
   },
   "meta": {
-    "description": "JEUNE RICHE — luksuriøs streetwear, stammeidentitet."
+    "description": "JEUNE RICHE — luksuriøs streetwear, stammeidentitet.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Språk",

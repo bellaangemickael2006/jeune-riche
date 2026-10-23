@@ -12,6 +12,7 @@ import { announceOpenedDropsSafely } from "@/lib/drops/announce";
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = await getServerTranslation();
   return {
+    alternates: { canonical: "/drops" },
     title: t("drops.title"),
     description: t("drops.metaDescription"),
   };
@@ -47,7 +48,7 @@ export default async function DropsPage() {
                   <Link href={`/drops/${d.slug}`} className="group flex items-center gap-3">
                     <p className="font-display text-xl uppercase text-paper group-hover:underline">{d.name}</p>
                     {isLive && (
-                      <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest2 text-paper">
+                      <span className="flex items-center gap-1.5 text-[11px] uppercase tracking-widest2 text-paper">
                         <span className="relative flex h-2 w-2">
                           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
                           <span className="relative inline-flex h-2 w-2 rounded-full bg-red-500" />
@@ -56,12 +57,12 @@ export default async function DropsPage() {
                       </span>
                     )}
                   </Link>
-                  {d.description && <p className="mt-1 max-w-md text-sm text-paper/50">{d.description}</p>}
+                  {d.description && <p className="mt-1 max-w-md text-sm text-paper/70">{d.description}</p>}
                 </div>
                 <div className="flex items-center gap-4">
                   {countdown && <CountdownTimer target={countdown.target} labelKey={countdown.labelKey} />}
-                  <span className="text-xs text-paper/40">{d.startsAt.toLocaleDateString(locale)}</span>
-                  <span className="border border-line px-3 py-1 text-[10px] uppercase tracking-widest2 text-paper/70">
+                  <span className="text-xs text-paper/60">{d.startsAt.toLocaleDateString(locale)}</span>
+                  <span className="border border-line px-3 py-1 text-[11px] uppercase tracking-widest2 text-paper/70">
                     {STATUS_LABEL[d.status]}
                   </span>
                 </div>

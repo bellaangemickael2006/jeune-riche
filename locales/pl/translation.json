@@ -22,7 +22,9 @@
     "switchToDarkMode": "Przełącz na tryb ciemny"
   },
   "meta": {
-    "description": "JEUNE RICHE — luksusowa odzież streetwear, tożsamość plemienna."
+    "description": "JEUNE RICHE — luksusowa odzież streetwear, tożsamość plemienna.",
+    "checkout": "Checkout",
+    "notFound": "Page not found"
   },
   "language": {
     "label": "Język",

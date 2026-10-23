@@ -65,7 +65,7 @@ export default async function AdminJournalPage({
   return (
     <div className="max-w-5xl">
       <h1 className="font-display text-2xl uppercase text-paper">Journal</h1>
-      <p className="mt-2 text-sm text-paper/50">
+      <p className="mt-2 text-sm text-paper/70">
         Toutes les actions faites dans l&apos;administration : qui, quoi, quand et depuis quelle adresse.
       </p>
 
@@ -75,7 +75,7 @@ export default async function AdminJournalPage({
             key={label}
             href={href({ section: value, page: 1 })}
             className={cn(
-              "border px-3 py-1.5 text-[10px] uppercase tracking-widest2",
+              "border px-3 py-1.5 text-[11px] uppercase tracking-widest2",
               section === value ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
             )}
           >
@@ -91,7 +91,7 @@ export default async function AdminJournalPage({
               key={email ?? "tous"}
               href={href({ qui: email, page: 1 })}
               className={cn(
-                "border px-3 py-1.5 text-[10px] tracking-wide",
+                "border px-3 py-1.5 text-[11px] tracking-wide",
                 qui === email ? "border-paper bg-paper text-ink" : "border-line text-paper/60 hover:text-paper"
               )}
             >
@@ -106,23 +106,23 @@ export default async function AdminJournalPage({
           Journal indisponible : appliquez d&apos;abord la migration « add_admin_logs » dans Supabase.
         </p>
       ) : rows.length === 0 ? (
-        <p className="mt-8 text-sm text-paper/40">Aucune action enregistrée{section || qui ? " pour ce filtre" : ""}.</p>
+        <p className="mt-8 text-sm text-paper/60">Aucune action enregistrée{section || qui ? " pour ce filtre" : ""}.</p>
       ) : (
         <ul className="mt-6 divide-y divide-line border-y border-line">
           {rows.map((log) => {
             const sensitive = isSensitiveAction(log.action);
             return (
               <li key={log.id} className="grid gap-1 py-3 sm:grid-cols-[9rem_1fr] sm:gap-4">
-                <p className="text-xs text-paper/50">{dateFormat.format(log.createdAt)}</p>
+                <p className="text-xs text-paper/70">{dateFormat.format(log.createdAt)}</p>
                 <div className="min-w-0">
                   <p className="text-sm text-paper">
-                    <span className={cn("mr-2 text-[10px] uppercase tracking-widest2", sensitive ? "text-paper" : "text-paper/50")}>
+                    <span className={cn("mr-2 text-[11px] uppercase tracking-widest2", sensitive ? "text-paper" : "text-paper/70")}>
                       {sensitive && "● "}
                       {auditLabel(log.action)}
                     </span>
                     <span className="wrap-break-word">{log.summary}</span>
                   </p>
-                  <p className="mt-0.5 text-xs text-paper/40">
+                  <p className="mt-0.5 text-xs text-paper/60">
                     {log.actorEmail}
                     {log.ip && ` · ${log.ip}`}
                   </p>
@@ -134,7 +134,7 @@ export default async function AdminJournalPage({
       )}
 
       {(page > 1 || hasNext) && (
-        <div className="mt-6 flex justify-between text-[10px] uppercase tracking-widest2">
+        <div className="mt-6 flex justify-between text-[11px] uppercase tracking-widest2">
           {page > 1 ? (
             <Link href={href({ page: page - 1 })} className="border border-line px-3 py-1.5 text-paper hover:border-paper">
               ← Plus récent
