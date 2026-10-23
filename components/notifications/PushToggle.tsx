@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocale } from "@/components/providers/I18nProvider";
-import { VAPID_PUBLIC_KEY } from "@/lib/push/keys";
-
 
 export type PushTarget = { type: "order"; token: string } | { type: "account" };
 
@@ -52,15 +50,21 @@ export default function PushToggle({ target, storageKey }: { target: PushTarget;
   // Raison technique d'un échec (ex. « NotAllowedError », « HTTP 503 »), affichée
   // en petit : le client peut la transmettre, ce qui évite de chercher à l'aveugle.
   const [errorCode, setErrorCode] = useState<string | null>(null);
+  // Clé publique du serveur (dérivée de son secret, voir lib/push/keys.ts).
+  const [serverKey, setServerKey] = useState<string | null>(null);
   const stored = `jr-push:${storageKey}`;
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      if (!VAPID_PUBLIC_KEY || !("serviceWorker" in navigator)) return;
-      // Serveur pas prêt à envoyer (clé privée absente ou d'une autre paire) : rien à proposer.
-      const status = (await fetch("/api/push").then((r) => r.json()).catch(() => null)) as { enabled?: boolean } | null;
-      if (!status?.enabled || cancelled) return;
+      if (!("serviceWorker" in navigator)) return;
+      // Serveur pas prêt à envoyer : rien à proposer.
+      const status = (await fetch("/api/push").then((r) => r.json()).catch(() => null)) as {
+        enabled?: boolean;
+        publicKey?: string;
+      } | null;
+      if (!status?.enabled || !status.publicKey || cancelled) return;
+      setServerKey(status.publicKey);
       if (!("PushManager" in window) || !("Notification" in window)) {
         const ios = /iPhone|iPad|iPod/.test(navigator.userAgent);
         if (ios && !cancelled) setState("iosHint");
@@ -73,7 +77,11 @@ export default function PushToggle({ target, storageKey }: { target: PushTarget;
       const registration = await navigator.serviceWorker.getRegistration();
       const subscription = await registration?.pushManager.getSubscription();
       if (cancelled) return;
-      setState(subscription && readStored(stored) === subscription.endpoint ? "on" : "idle");
+      const current =
+        subscription &&
+        readStored(stored) === subscription.endpoint &&
+        sameKey(subscription.options.applicationServerKey, decodeKey(status.publicKey));
+      setState(current ? "on" : "idle");
     })().catch(() => {});
     return () => {
       cancelled = true;
@@ -92,7 +100,8 @@ export default function PushToggle({ target, storageKey }: { target: PushTarget;
       if (!(await navigator.serviceWorker.getRegistration())) await navigator.serviceWorker.register("/sw.js");
       // Le service worker doit être actif pour s'abonner.
       const registration = await navigator.serviceWorker.ready;
-      const key = decodeKey(VAPID_PUBLIC_KEY);
+      if (!serverKey) throw new Error("NoServerKey");
+      const key = decodeKey(serverKey);
       let subscription = await registration.pushManager.getSubscription();
       // Abonnement créé avec une ancienne clé (clés changées sur le serveur) :
       // il ne recevrait plus rien, on le remplace.

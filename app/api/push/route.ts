@@ -43,9 +43,13 @@ async function resolveScope(t: z.infer<typeof target>): Promise<string | null> {
   return dbUser ? userScope(dbUser.id) : null;
 }
 
-/** Notifications opérationnelles ? Le bouton reste caché tant que la clé privée n'est pas réglée. */
+/** Notifications opérationnelles, et clé publique pour s'abonner (jamais la clé privée). */
 export async function GET() {
-  return NextResponse.json({ enabled: Boolean(vapidKeys()) }, { headers: { "Cache-Control": "public, max-age=300" } });
+  const keys = vapidKeys();
+  return NextResponse.json(
+    { enabled: Boolean(keys), publicKey: keys?.publicKey ?? null },
+    { headers: { "Cache-Control": "public, max-age=300" } }
+  );
 }
 
 async function guard(req: NextRequest) {
@@ -54,7 +58,7 @@ async function guard(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   if (!(await guard(req))) return NextResponse.json({ error: "rateLimited" }, { status: 429 });
-  // Sans clé privée sur Vercel, rien ne pourrait être envoyé : on ne promet rien.
+  // Sans secret serveur, rien ne pourrait être envoyé : on ne promet rien.
   if (!vapidKeys()) return NextResponse.json({ error: "notConfigured" }, { status: 503 });
   const parsed = subscribeSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "invalid" }, { status: 400 });
