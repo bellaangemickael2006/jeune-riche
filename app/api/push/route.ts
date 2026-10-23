@@ -43,6 +43,11 @@ async function resolveScope(t: z.infer<typeof target>): Promise<string | null> {
   return dbUser ? userScope(dbUser.id) : null;
 }
 
+/** Notifications opérationnelles ? Le bouton reste caché tant que la clé privée n'est pas réglée. */
+export async function GET() {
+  return NextResponse.json({ enabled: Boolean(vapidKeys()) }, { headers: { "Cache-Control": "public, max-age=300" } });
+}
+
 async function guard(req: NextRequest) {
   return rateLimit(`push:${clientIp(req)}`, 20, 10 * 60_000);
 }

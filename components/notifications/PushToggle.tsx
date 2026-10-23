@@ -58,6 +58,9 @@ export default function PushToggle({ target, storageKey }: { target: PushTarget;
     let cancelled = false;
     (async () => {
       if (!VAPID_PUBLIC_KEY || !("serviceWorker" in navigator)) return;
+      // Serveur pas prêt à envoyer (clé privée absente ou d'une autre paire) : rien à proposer.
+      const status = (await fetch("/api/push").then((r) => r.json()).catch(() => null)) as { enabled?: boolean } | null;
+      if (!status?.enabled || cancelled) return;
       if (!("PushManager" in window) || !("Notification" in window)) {
         const ios = /iPhone|iPad|iPod/.test(navigator.userAgent);
         if (ios && !cancelled) setState("iosHint");
