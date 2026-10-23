@@ -1,12 +1,38 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 import { adminGateRewrites } from "./lib/admin/gate";
-import { suspiciousPublicEnv } from "./lib/security/publicEnv";
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+import { referencedPublicEnv, suspiciousPublicEnv } from "./lib/security/publicEnv";
+
+/** Contenu des fichiers .ts/.tsx du site (hors tests et code généré). */
+function siteSources(): string[] {
+  const out: string[] = [];
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const path = join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name !== "generated" && entry.name !== "node_modules") walk(path);
+      } else if (/\.tsx?$/.test(entry.name) && !/\.test\.tsx?$/.test(entry.name)) {
+        out.push(readFileSync(path, "utf8"));
+      }
+    }
+  };
+  for (const dir of ["app", "components", "lib", "store"]) walk(dir);
+  for (const file of ["proxy.ts", "instrumentation.ts", "instrumentation-client.ts", "sentry.server.config.ts", "sentry.edge.config.ts"]) {
+    try {
+      out.push(readFileSync(file, "utf8"));
+    } catch {
+      // fichier absent : rien à lire
+    }
+  }
+  return out;
+}
 
 // Une variable NEXT_PUBLIC_* est publiée dans le code des navigateurs : si sa
 // valeur contient autre chose (une 2e ligne, « SECRET=… »), on refuse de
 // compiler plutôt que de publier un secret (voir lib/security/publicEnv.ts).
-const badPublicEnv = suspiciousPublicEnv(process.env);
+const badPublicEnv = suspiciousPublicEnv(process.env, referencedPublicEnv(siteSources()));
 if (badPublicEnv.length > 0) {
   throw new Error(
     `Variable(s) publique(s) mal collée(s) dans Vercel : ${badPublicEnv.join(", ")}. ` +

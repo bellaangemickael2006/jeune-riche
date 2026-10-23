@@ -3,7 +3,9 @@
 // dans Vercel peut donc publier un secret — c'est arrivé : la clé publique
 // des notifications contenait aussi la ligne « VAPID_PRIVATE_KEY=… ».
 // next.config.ts refuse de compiler dans ce cas, plutôt que de publier.
-// Fonction pure, testée.
+// Seules les variables réellement lues par le code (process.env.NEXT_PUBLIC_…)
+// sont contrôlées : une variable restée sur Vercel mais plus utilisée n'est
+// jamais recopiée, donc jamais publiée. Fonctions pures, testées.
 
 // Plusieurs lignes, ou une affectation « NOM=… » au milieu de la valeur.
 const SUSPICIOUS = /[\r\n]|(?:^|\s)[A-Z][A-Z0-9_]{2,}=/;
@@ -14,15 +16,25 @@ const SUSPICIOUS = /[\r\n]|(?:^|\s)[A-Z][A-Z0-9_]{2,}=/;
  * danger). Variables posées par Vercel lui-même (NEXT_PUBLIC_VERCEL_*, dont
  * le message du dernier commit, sur plusieurs lignes) ignorées.
  */
-export function suspiciousPublicEnv(env: Record<string, string | undefined>): string[] {
+export function suspiciousPublicEnv(env: Record<string, string | undefined>, referenced?: Set<string>): string[] {
   return Object.entries(env)
     .filter(
       ([name, value]) =>
         name.startsWith("NEXT_PUBLIC_") &&
+        (!referenced || referenced.has(name)) &&
         !name.startsWith("NEXT_PUBLIC_VERCEL_") &&
         typeof value === "string" &&
         SUSPICIOUS.test(value.trim())
     )
     .map(([name]) => name)
     .sort();
+}
+
+/** Variables NEXT_PUBLIC_* lues par ces fichiers source (process.env.NEXT_PUBLIC_…). */
+export function referencedPublicEnv(sources: string[]): Set<string> {
+  const names = new Set<string>();
+  for (const source of sources) {
+    for (const match of source.matchAll(/process\.env\.(NEXT_PUBLIC_[A-Z0-9_]+)/g)) names.add(match[1]);
+  }
+  return names;
 }
