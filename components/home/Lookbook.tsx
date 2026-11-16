@@ -5,6 +5,8 @@ import FadeIn from "@/components/ui/FadeIn";
 import { getServerTranslation } from "@/lib/i18n/server";
 import { DEFAULT_LOOKBOOK_TEXT, RATIOS, type HomeContent } from "@/lib/home/content";
 import { cn } from "@/lib/utils";
+import { getPublishedProducts } from "@/lib/data/products";
+import LookHotspots, { type LookHotspot } from "@/components/home/LookHotspots";
 
 // Photos portées de la marque, réglées dans Admin → Page d'accueil (ajout,
 // ordre, format, cadrage, légende, lien). Les deux photos d'origine gardent
@@ -20,8 +22,23 @@ const SIZES: Record<1 | 2 | 3, string> = {
   3: "(max-width: 768px) 100vw, 30vw",
 };
 
+// Positions des points sur la première photo — approximatives, à ajuster sur
+// la vraie image. Chaque point ouvre une pièce publiée (les trois premières).
+const HOTSPOT_POSITIONS = [
+  { x: 50, y: 28 },
+  { x: 50, y: 52 },
+  { x: 50, y: 78 },
+] as const;
+
 export default async function Lookbook({ content }: { content: HomeContent["lookbook"] }) {
   const { t } = await getServerTranslation();
+  const products = await getPublishedProducts();
+  const hotspots: LookHotspot[] = products.slice(0, HOTSPOT_POSITIONS.length).map((p, i) => ({
+    id: i,
+    ...HOTSPOT_POSITIONS[i],
+    name: p.name,
+    href: `/catalogue/${p.slug}`,
+  }));
 
   return (
     <section className="py-20 md:py-32">
@@ -62,6 +79,9 @@ export default async function Lookbook({ content }: { content: HomeContent["look
                 <Link href={shot.href} className="group block">
                   {picture}
                 </Link>
+              ) : i === 0 && hotspots.length > 0 ? (
+                // Première photo sans lien propre : points vers les pièces.
+                <LookHotspots hotspots={hotspots}>{picture}</LookHotspots>
               ) : (
                 picture
               )}

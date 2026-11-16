@@ -148,9 +148,12 @@ export default async function ProductPage({
       {crossSell.length > 0 && (
         <section className="mx-auto mt-32 max-w-6xl border-t border-line pt-16">
           <h2 className="font-editorial text-heading text-paper">{t("product.completeTheLook")}</h2>
-          <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-4">
+          {/* Mobile : bande défilante qui s'aligne pièce par pièce. Bureau : grille. */}
+          <div className="mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-4 md:grid md:grid-cols-4 md:gap-x-6 md:gap-y-14 md:overflow-visible">
             {crossSell.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i} />
+              <div key={p.id} className="w-[60vw] shrink-0 snap-start md:w-auto">
+                <ProductCard product={p} index={i} />
+              </div>
             ))}
           </div>
         </section>
