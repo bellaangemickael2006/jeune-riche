@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useLayoutEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useReducedMotion, useSpring, useTransform, type PanInfo } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import ImageZoomModal from "@/components/product/ImageZoomModal";
@@ -26,7 +26,11 @@ export default function Gallery({
 }) {
   const { t } = useTranslation();
   const [active, setActive] = useState(0);
+  // Sens du dernier changement de photo : la suivante arrive par la droite,
+  // la précédente par la gauche.
+  const [direction, setDirection] = useState(1);
   const [zoomOpen, setZoomOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
   const current = images[active];
   const overlay = PERSONALIZATION_OVERLAY_BY_IMAGE[current.url];
   const ref = useRef<HTMLDivElement>(null);
@@ -48,6 +52,21 @@ export default function Gallery({
     mouseY.set(0.5);
   }
 
+  function show(index: number) {
+    if (index === active || index < 0 || index >= images.length) return;
+    setDirection(index > active ? 1 : -1);
+    setActive(index);
+  }
+
+  // Glissé au doigt : au-delà d'un quart de largeur (ou d'un geste rapide),
+  // on passe à la photo voisine ; sinon l'image revient en place.
+  function handleDragEnd(_: unknown, info: PanInfo) {
+    const width = ref.current?.clientWidth ?? 300;
+    const swipe = Math.abs(info.offset.x) > width * 0.25 || Math.abs(info.velocity.x) > 500;
+    if (!swipe) return;
+    show(active + (info.offset.x < 0 ? 1 : -1));
+  }
+
   if (images.length === 0) {
     return (
       <div className="flex aspect-4/5 items-center justify-center bg-studio text-sm text-ink/40">
@@ -62,17 +81,31 @@ export default function Gallery({
         ref={ref}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleLeave}
-        style={{ rotateX, rotateY, transformPerspective: 1000 }}
+        style={{ rotateX, rotateY, transformPerspective: 1000, viewTransitionName: "product-hero" }}
         className="relative aspect-4/5 overflow-hidden bg-studio will-change-transform"
+        // Point de départ de l'animation d'ajout au panier (lib/ui/flyToCart.ts)
+        // et d'arrivée de la transition carte → fiche (ProductCard).
+        data-product-hero
       >
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
           <motion.div
             key={current.url}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0"
+            custom={direction}
+            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: `${direction * 40}%` }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, x: `${direction * -40}%` }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute inset-0 touch-pan-y"
+            // Glisser entre les photos ; en bout de série l'image résiste
+            // (élasticité) puis revient en place.
+            drag={images.length > 1 ? "x" : false}
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={{
+              left: active === images.length - 1 ? 0.15 : 0.6,
+              right: active === 0 ? 0.15 : 0.6,
+            }}
+            onDragEnd={handleDragEnd}
+            onDoubleClick={() => setZoomOpen(true)}
           >
             {overlay ? (
               <div className="flex h-full w-full items-center justify-center p-6">
@@ -121,11 +154,26 @@ export default function Gallery({
 
       <ImageZoomModal image={current} open={zoomOpen} onClose={() => setZoomOpen(false)} />
       {images.length > 1 && (
-        <div className="mt-3 grid grid-cols-5 gap-2">
+        // Sur téléphone : points de progression (on glisse la photo) ; les
+        // vignettes restent sur grand écran.
+        <div className="mt-4 flex justify-center gap-1.5 md:hidden" aria-hidden="true">
+          {images.map((img, i) => (
+            <span
+              key={i}
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-300",
+                i === active ? "w-5 bg-paper" : "w-1.5 bg-paper/30"
+              )}
+            />
+          ))}
+        </div>
+      )}
+      {images.length > 1 && (
+        <div className="mt-3 hidden grid-cols-5 gap-2 md:grid">
           {images.map((img, i) => (
             <button
               key={img.url}
-              onClick={() => setActive(i)}
+              onClick={() => show(i)}
               className={cn(
                 "relative aspect-square overflow-hidden bg-studio",
                 i === active ? "ring-2 ring-paper" : "opacity-60 hover:opacity-100"

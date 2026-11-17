@@ -191,3 +191,47 @@ select:focus-visible {
 [data-theme="light"] .jr-logo {
   filter: invert(1);
 }
+
+/* Transition carte → fiche (lib/ui/productTransition.ts) : la photo grandit
+   de la carte à la fiche, le reste de la page passe en fondu court. */
+::view-transition-group(product-hero) {
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+}
+
+/* Reflet qui traverse un badge toutes les quelques secondes (« Plus que 2 en
+   stock », compte à rebours d'un drop). */
+.badge-shine {
+  position: relative;
+  overflow: hidden;
+}
+.badge-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgb(255 255 255 / 0.55) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: badge-shine 3.2s infinite;
+  pointer-events: none;
+}
+@keyframes badge-shine {
+  0%,
+  60% {
+    transform: translateX(-120%);
+  }
+  85%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badge-shine::after {
+    animation: none;
+    display: none;
+  }
+}

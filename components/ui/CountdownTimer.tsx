@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
 function msRemaining(target: number) {
@@ -56,7 +57,7 @@ export default function CountdownTimer({
           ? `${hours}${t("drops.countdown.hoursShort")} ${minutes}${t("drops.countdown.minutesShort")}`
           : `${minutes}${t("drops.countdown.minutesShort")}`;
     return (
-      <span className="bg-ink px-2 py-1 text-[11px] uppercase tracking-widest2 text-paper">{text}</span>
+      <span className="badge-shine block bg-ink px-2 py-1 text-[11px] uppercase tracking-widest2 text-paper">{text}</span>
     );
   }
 
@@ -73,7 +74,21 @@ export default function CountdownTimer({
       <div className="flex gap-2">
         {units.map((u) => (
           <div key={u.caption} className="flex min-w-13 flex-col items-center border border-line px-2 py-2">
-            <span className="font-display text-lg tabular-nums text-paper">{String(u.value).padStart(2, "0")}</span>
+            {/* Chaque nouveau chiffre bascule depuis le haut. */}
+            <span className="relative overflow-hidden">
+              <AnimatePresence mode="popLayout" initial={false}>
+                <motion.span
+                  key={u.value}
+                  initial={{ y: "-60%", opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: "60%", opacity: 0 }}
+                  transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                  className="block font-display text-lg tabular-nums text-paper"
+                >
+                  {String(u.value).padStart(2, "0")}
+                </motion.span>
+              </AnimatePresence>
+            </span>
             <span className="text-[11px] uppercase tracking-widest2 text-paper/60">{u.caption}</span>
           </div>
         ))}

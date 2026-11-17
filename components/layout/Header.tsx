@@ -183,6 +183,8 @@ export default function Header() {
             }}
             className="text-label text-paper/80 transition-colors hover:text-paper"
             aria-label={t("navigation.cartWithCount", { count })}
+            // Cible de l'animation d'ajout au panier (lib/ui/flyToCart.ts).
+            data-cart-target
           >
             {count > 0 ? t("navigation.cartWithCount", { count }) : t("navigation.cart")}
           </button>

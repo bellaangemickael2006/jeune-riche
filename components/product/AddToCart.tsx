@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useCart } from "@/store/cart";
+import { flyToCart } from "@/lib/ui/flyToCart";
 import { sanitizePersonalization, swatchColor, cn, siteUrl, sortSizes, whatsappProductLink, LOW_STOCK_THRESHOLD } from "@/lib/utils";
 
 type Variant = { id: string; size: string; color: string; stock: number };
@@ -55,14 +57,21 @@ export default function AddToCart({
   const personalization = controlledPersonalization ?? internalPersonalization;
   const setPersonalization = onPersonalizationChange ?? setInternalPersonalization;
   const [added, setAdded] = useState(false);
+  const [flying, setFlying] = useState(false);
+  const [shakeSize, setShakeSize] = useState<{ size: string; n: number } | null>(null);
   const addLine = useCart((s) => s.addLine);
 
   const selectedVariant = variants.find((v) => v.color === color && v.size === size);
   const inStock = (selectedVariant?.stock ?? 0) > 0;
-  const canAdd = Boolean(selectedVariant) && inStock && price !== null && !locked;
+  const canAdd = Boolean(selectedVariant) && inStock && price !== null && !locked && !flying;
 
-  function handleAdd() {
+  async function handleAdd() {
     if (!selectedVariant || price === null) return;
+    // La photo vole d'abord jusqu'au panier : l'ajout ouvre le tiroir panier,
+    // qui recouvrirait sinon le bouton vers lequel elle se dirige.
+    setFlying(true);
+    await flyToCart(document.querySelector<HTMLElement>("[data-product-hero]"));
+    setFlying(false);
     addLine({
       variantId: selectedVariant.id,
       productSlug,
@@ -94,13 +103,21 @@ export default function AddToCart({
                 aria-pressed={color === c}
                 className="flex flex-col items-center gap-1.5"
               >
-                <span
-                  style={{ backgroundColor: swatchColor(c) }}
-                  className={cn(
-                    "h-7 w-7 border transition-all",
-                    color === c ? "border-paper ring-1 ring-offset-2 ring-offset-ink ring-paper" : "border-line/60"
+                <span className="relative">
+                  <span
+                    style={{ backgroundColor: swatchColor(c) }}
+                    className={cn("block h-7 w-7 border", color === c ? "border-paper" : "border-line/60")}
+                  />
+                  {/* Le cadre de sélection glisse d'une couleur à l'autre. */}
+                  {color === c && (
+                    <motion.span
+                      layoutId="color-selection"
+                      className="absolute -inset-1.5 border border-paper"
+                      transition={{ type: "spring", stiffness: 420, damping: 28 }}
+                      aria-hidden="true"
+                    />
                   )}
-                />
+                </span>
                 <span className={cn("text-[11px] uppercase tracking-wide", color === c ? "text-paper" : "text-paper/60")}>
                   {c}
                 </span>
@@ -131,27 +148,44 @@ export default function AddToCart({
             {sizesForColor.map((v) => {
               const isSelected = size === v.size;
               const soldOut = v.stock === 0;
+              const shaking = soldOut && shakeSize?.size === v.size;
               return (
                 // Une taille épuisée reste sélectionnable : c'est le seul moyen
                 // d'atteindre « Me prévenir » pour CETTE taille. Désactivée,
                 // l'alerte de retour en stock n'était presque jamais proposée.
-                <button
-                  key={v.id}
+                // Elle tremble au toucher pour signaler qu'elle est épuisée
+                // (la clé change à chaque toucher pour rejouer l'animation).
+                <motion.button
+                  key={shaking ? `${v.id}-${shakeSize.n}` : v.id}
                   type="button"
                   role="radio"
                   aria-checked={isSelected}
-                  onClick={() => setSize(v.size)}
+                  onClick={() => {
+                    setSize(v.size);
+                    if (soldOut) setShakeSize((s) => ({ size: v.size, n: (s?.n ?? 0) + 1 }));
+                  }}
+                  animate={shaking ? { x: [0, -5, 5, -4, 4, 0] } : undefined}
+                  transition={{ duration: 0.4 }}
                   title={soldOut ? t("product.outOfStock") : undefined}
                   className={cn(
-                    "min-w-14 flex-1 px-4 py-3.5 font-display text-[11px] uppercase tracking-widest2 transition-colors",
-                    isSelected && !soldOut && "bg-paper text-ink",
+                    "relative min-w-14 flex-1 px-4 py-3.5 font-display text-[11px] uppercase tracking-widest2 transition-colors duration-300",
+                    isSelected && !soldOut && "text-ink",
                     !isSelected && !soldOut && "text-paper/60 hover:bg-paper/5 hover:text-paper",
                     soldOut && "text-paper/25 line-through",
                     soldOut && isSelected && "bg-paper/10 text-paper/60"
                   )}
                 >
-                  {v.size}
-                </button>
+                  {/* Le fond blanc de la taille choisie glisse d'une case à l'autre. */}
+                  {isSelected && !soldOut && (
+                    <motion.span
+                      layoutId="size-selection"
+                      className="absolute inset-0 bg-paper"
+                      transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span className="relative">{v.size}</span>
+                </motion.button>
               );
             })}
           </div>

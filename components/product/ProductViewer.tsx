@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import Gallery from "@/components/product/Gallery";
 import AddToCart from "@/components/product/AddToCart";
@@ -146,12 +147,19 @@ export default function ProductViewer({
               />
             </div>
           ) : (
-            <Gallery
-              key={color}
-              images={galleryImages}
-              productName={productName}
-              personalization={personalization}
-            />
+            // Changement de couleur : la galerie de la nouvelle couleur arrive
+            // en fondu au lieu d'apparaître d'un coup.
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={color}
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Gallery images={galleryImages} productName={productName} personalization={personalization} />
+              </motion.div>
+            </AnimatePresence>
           )}
         </div>
 
