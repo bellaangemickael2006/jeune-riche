@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useReducedMotion } from "framer-motion";
 
 export type ActiveEvent = {
   accent: string;
@@ -12,18 +13,6 @@ export type ActiveEvent = {
 
 const BULB_COUNT = 24;
 const FLAKE_COUNT = 70;
-
-function usePrefersReducedMotion() {
-  const [reduced, setReduced] = useState(false);
-  useEffect(() => {
-    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(query.matches);
-    const onChange = () => setReduced(query.matches);
-    query.addEventListener("change", onChange);
-    return () => query.removeEventListener("change", onChange);
-  }, []);
-  return reduced;
-}
 
 // Flocons dessinés sur un canvas fixe, sans bloquer les clics. Une seule
 // boucle d'animation, arrêtée quand l'onglet n'est pas visible.
@@ -129,7 +118,7 @@ function Lights({ accent, animate }: { accent: string; animate: boolean }) {
 
 export default function SeasonalEffects({ event }: { event: ActiveEvent | null }) {
   const pathname = usePathname();
-  const reduced = usePrefersReducedMotion();
+  const reduced = useReducedMotion() ?? false;
   const [bannerClosed, setBannerClosed] = useState(false);
 
   if (!event || pathname.startsWith("/admin")) return null;

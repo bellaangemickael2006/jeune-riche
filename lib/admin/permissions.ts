@@ -45,6 +45,7 @@ export const LINK_PERMISSION: Record<string, Permission | "proprietaire"> = {
   "/admin/drops": "produits",
   "/admin/codes-promo": "promos",
   "/admin/newsletter": "newsletter",
+  "/admin/evenements": "accueil",
   "/admin/parametres": "parametres",
   "/admin/equipe": "proprietaire",
   "/admin/journal": "proprietaire",

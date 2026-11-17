@@ -1,5 +1,7 @@
 import { getAllEvents } from "@/lib/data/events";
 import { createEvent, updateEvent, deleteEvent } from "@/lib/actions/events";
+import { requireAdmin } from "@/lib/auth";
+import ActionForm, { SubmitButton } from "@/components/admin/ActionForm";
 
 type EventRow = Awaited<ReturnType<typeof getAllEvents>>[number];
 
@@ -75,6 +77,8 @@ function EventFields({ event }: { event?: EventRow }) {
 }
 
 export default async function AdminEventsPage() {
+  // Avant toute lecture en base — voir lib/auth.ts.
+  await requireAdmin("accueil");
   const events = await getAllEvents();
   const now = new Date();
 
@@ -99,19 +103,19 @@ export default async function AdminEventsPage() {
                   {live ? "En cours" : event.enabled ? "Programmé" : "Désactivé"}
                 </span>
               </summary>
-              <form action={updateEvent} className="mt-6 flex max-w-md flex-col gap-6">
+              <ActionForm action={updateEvent} className="mt-6 flex max-w-md flex-col gap-6">
                 <input type="hidden" name="id" value={event.id} />
                 <EventFields event={event} />
-                <button type="submit" className="self-start bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">
+                <SubmitButton className="self-start bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">
                   Enregistrer
-                </button>
-              </form>
-              <form action={deleteEvent} className="mt-4">
+                </SubmitButton>
+              </ActionForm>
+              <ActionForm action={deleteEvent} className="mt-4">
                 <input type="hidden" name="id" value={event.id} />
-                <button type="submit" className="text-xs uppercase tracking-widest2 text-paper/50 underline">
+                <SubmitButton className="text-xs uppercase tracking-widest2 text-paper/60 underline">
                   Supprimer
-                </button>
-              </form>
+                </SubmitButton>
+              </ActionForm>
             </details>
           );
         })}
@@ -119,12 +123,12 @@ export default async function AdminEventsPage() {
 
       <section className="mt-12 border-t border-line pt-8">
         <h2 className="mb-6 text-xs uppercase tracking-widest2 text-paper/50">Nouvel événement</h2>
-        <form action={createEvent} className="flex max-w-md flex-col gap-6">
+        <ActionForm action={createEvent} resetOnSuccess className="flex max-w-md flex-col gap-6">
           <EventFields />
-          <button type="submit" className="self-start bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">
+          <SubmitButton className="self-start bg-paper px-6 py-3 text-xs uppercase tracking-widest2 text-ink">
             Créer
-          </button>
-        </form>
+          </SubmitButton>
+        </ActionForm>
       </section>
     </div>
   );

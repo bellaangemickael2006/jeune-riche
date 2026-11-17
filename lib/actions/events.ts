@@ -1,8 +1,10 @@
 "use server";
 
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdminAction } from "@/lib/auth";
+import { logAdmin } from "@/lib/admin/audit";
+import { ActionError, runAction, type ActionResult } from "@/lib/actions/result";
 
 const HEX = /^#[0-9a-fA-F]{6}$/;
 
@@ -13,11 +15,12 @@ function readEvent(formData: FormData) {
   const accentRaw = String(formData.get("accent") ?? "").trim();
   const bannerText = String(formData.get("bannerText") ?? "").trim();
 
-  if (!name) throw new Error("Le nom est obligatoire.");
+  if (!name) throw new ActionError("Le nom est obligatoire.");
   if (Number.isNaN(startsAt.getTime()) || Number.isNaN(endsAt.getTime())) {
-    throw new Error("Dates invalides.");
+    throw new ActionError("Dates invalides.");
   }
-  if (endsAt <= startsAt) throw new Error("La fin doit être après le début.");
+  if (endsAt <= startsAt) throw new ActionError("La fin doit être après le début.");
+  if (bannerText.length > 140) throw new ActionError("Texte de bannière trop long (140 caractères max).");
 
   return {
     name,
@@ -32,26 +35,45 @@ function readEvent(formData: FormData) {
 }
 
 function refresh() {
-  revalidateTag("seasonal-events");
+  updateTag("seasonal-events");
   revalidatePath("/admin/evenements");
 }
 
-export async function createEvent(formData: FormData) {
-  await requireAdmin();
-  await prisma.seasonalEvent.create({ data: readEvent(formData) });
-  refresh();
+export async function createEvent(formData: FormData): Promise<ActionResult> {
+  return runAction(async () => {
+    const admin = await requireAdminAction("accueil");
+    const data = readEvent(formData);
+    const event = await prisma.seasonalEvent.create({ data });
+    await logAdmin(admin, "evenements.creation", `Événement « ${data.name} »`, event.id);
+    refresh();
+    return "Événement créé.";
+  });
 }
 
-export async function updateEvent(formData: FormData) {
-  await requireAdmin();
-  const id = String(formData.get("id") ?? "");
-  await prisma.seasonalEvent.update({ where: { id }, data: readEvent(formData) });
-  refresh();
+export async function updateEvent(formData: FormData): Promise<ActionResult> {
+  return runAction(async () => {
+    const admin = await requireAdminAction("accueil");
+    const id = String(formData.get("id") ?? "");
+    const data = readEvent(formData);
+    await prisma.seasonalEvent.update({ where: { id }, data });
+    await logAdmin(
+      admin,
+      "evenements.modification",
+      `Événement « ${data.name} » ${data.enabled ? "activé" : "désactivé"}`,
+      id
+    );
+    refresh();
+    return "Événement enregistré.";
+  });
 }
 
-export async function deleteEvent(formData: FormData) {
-  await requireAdmin();
-  const id = String(formData.get("id") ?? "");
-  await prisma.seasonalEvent.delete({ where: { id } });
-  refresh();
+export async function deleteEvent(formData: FormData): Promise<ActionResult> {
+  return runAction(async () => {
+    const admin = await requireAdminAction("accueil");
+    const id = String(formData.get("id") ?? "");
+    const event = await prisma.seasonalEvent.delete({ where: { id } });
+    await logAdmin(admin, "evenements.suppression", `Événement « ${event.name} »`, id);
+    refresh();
+    return "Événement supprimé.";
+  });
 }
