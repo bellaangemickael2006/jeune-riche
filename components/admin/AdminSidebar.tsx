@@ -22,6 +22,7 @@ const LINKS = [
   { href: "/admin/drops", label: "Drops" },
   { href: "/admin/codes-promo", label: "Codes promo" },
   { href: "/admin/newsletter", label: "Newsletter" },
+  { href: "/admin/evenements", label: "Événements" },
   { href: "/admin/parametres", label: "Paramètres" },
   { href: "/admin/equipe", label: "Équipe" },
   { href: "/admin/journal", label: "Journal" },

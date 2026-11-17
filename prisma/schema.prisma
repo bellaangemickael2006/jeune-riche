@@ -466,3 +466,22 @@ model PushSubscription {
   @@index([scope])
   @@map("push_subscriptions")
 }
+
+// Événement saisonnier (Noël, fêtes…) piloté depuis l'admin : pendant sa
+// période, le site applique la couleur d'accent, la bannière et les effets
+// cochés. Hors période ou désactivé, le site reste tel quel.
+model SeasonalEvent {
+  id           String   @id @default(cuid())
+  name         String
+  startsAt     DateTime
+  endsAt       DateTime
+  enabled      Boolean  @default(true)
+  accent       String   @default("#C8102E")
+  bannerText   String?
+  effectSnow   Boolean  @default(false)
+  effectLights Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("seasonal_events")
+}

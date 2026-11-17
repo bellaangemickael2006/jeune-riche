@@ -8,6 +8,8 @@ import StoreHydration from "@/components/providers/StoreHydration";
 import I18nProvider from "@/components/providers/I18nProvider";
 import PWARegister from "@/components/providers/PWARegister";
 import SplashScreen from "@/components/providers/SplashScreen";
+import SeasonalEffects from "@/components/providers/SeasonalEffects";
+import { getActiveEvent } from "@/lib/data/events";
 import { getLocale, getServerTranslation, loadResource } from "@/lib/i18n/server";
 import { getDirection } from "@/lib/i18n/languages";
 import { siteUrl } from "@/lib/utils";
@@ -153,6 +155,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const nonce = requestHeaders.get("x-nonce") ?? undefined;
   const dir = getDirection(locale);
   const initialResource = await loadResource(locale);
+  const activeEvent = await getActiveEvent();
 
   return (
     <html
@@ -183,6 +186,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <StoreHydration />
           <PWARegister />
           <SplashScreen />
+          <SeasonalEffects
+            event={
+              activeEvent && {
+                accent: activeEvent.accent,
+                bannerText: activeEvent.bannerText,
+                effectSnow: activeEvent.effectSnow,
+                effectLights: activeEvent.effectLights,
+              }
+            }
+          />
           <MotionConfig reducedMotion="user">
             <SiteChrome adminShell={adminShell}>{children}</SiteChrome>
           </MotionConfig>
